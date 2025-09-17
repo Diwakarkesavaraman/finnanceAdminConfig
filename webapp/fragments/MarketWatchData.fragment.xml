@@ -1,0 +1,71 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<ScrollContainer id="admincontrolmarketwatchdata" horizontal="true" vertical="true" height="100%" class="sapUiContentPadding">
+		<Panel height="100%" class="admupdcontpanelcls">
+			<content>
+				<HBox class="tblhdrcls">
+					<Text text="Market Watch Item Config"/>
+					<HBox>
+						<Button type="Reject" text="Delete" press="onDeleteMarketItemCon"/>
+						<!--<ToolbarSpacer width="0.5rem"/>-->
+						<Button type="Accept" text="Update" press="onUpdateMarketWatchDataDets"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewMarketItem"/>
+					</HBox>
+				</HBox>
+				<Table id="tabmarketwatchdata" alternateRowColors="false" items="{ path: 'oMarketWatchModel>/', sorter: {path: 'ZkpiId', descending: false}}"
+					growing="true" class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
+					<columns>
+						<Column width="7rem">
+							<header>
+								<Text text="KPI ID" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="15rem">
+							<header>
+								<Text text="Category" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="15rem">
+							<header>
+								<Text text="KPI Title" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="22rem">
+							<header>
+								<Text text="Roles" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="5rem">
+							<header>
+								<Text text="Visibility" class="whiteLabel"></Text>
+							</header>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle">
+							<cells>
+								<!--<Input value="{oVisiblityModel>ZkpiId}"></Input>-->
+								<Text text="{oMarketWatchModel>ZkpiId}"></Text>
+								<!--<Input value="{oMarketWatchModel>Zcategory}"></Input>-->
+								<Text text="{oMarketWatchModel>Zcategory}"></Text>
+								<Input value="{oMarketWatchModel>ZkpiTitle}"></Input>
+								<!--<MultiInput tokens="{ path: 'oVisiblityModel>arr',templateShareable: false }" width="80%" valueHelpRequest="onKPIRoleValueHelp"-->
+								<!--	showValueHelp="true">-->
+								<!--	<tokens>-->
+								<!--		<Token key="{oVisiblityModel>Value1}" text="{oVisiblityModel>Value1}"/>-->
+								<!--	</tokens>-->
+								<!--</MultiInput>-->
+								<Input value="{oMarketWatchModel>Zrole}"></Input>
+								<CheckBox text="" selected="{oMarketWatchModel>Zvisibility}"/>
+								<!--<Input id="roleid" mode="MultiSelect" value="oVisiblityModel>ZroleList" showValueHelp="true"-->
+								<!--	valueHelpRequest="onRoleValueHelp" placeholder="Select Color"></Input>-->
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</Panel>
+	</ScrollContainer>
+</core:FragmentDefinition>

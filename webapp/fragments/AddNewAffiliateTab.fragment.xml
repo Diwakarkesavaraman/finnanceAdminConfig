@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Affiliate KPI" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblnaffid" text="KPI ID"></Label>
+			<Input id="inpnaffid" value="" visible="false" required="true"></Input>
+			<Label id="lblnaffcat" text="Category"></Label>
+			<Input id="inpnaffcat" value="" required="true"></Input>
+			<!--<Label id="lblnmwtitle" text="KPI Title"></Label>-->
+			<!--<Input id="inpnmwtitle" value="" required="true"></Input>-->
+			<Label id="lblnaffrole" text="Roles"></Label>
+			<Input id="inpnaffrole" value=""></Input>
+			<Label id="lblnaffvis" text="Visibility"></Label>
+			<!--<Input id="inpgisvis" value="" required="true"></Input>-->
+			<CheckBox id="inpnaffvis" text="" selected="" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="CloseAffiliateTabDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add"  press="onAddAffiliateTab" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

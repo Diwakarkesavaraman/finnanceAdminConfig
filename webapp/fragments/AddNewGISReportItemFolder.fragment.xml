@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Financial GIs Folder" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblgisfolderid" text="GIS ID" visible="false"></Label>
+			<Input id="inpgisfolderid" value="" editable="false" visible="false" required="true"></Input>
+			<Label id="lblgisfolder" text="Folder Name"></Label>
+			<Input id="inpgisfolder" value="" required="true"></Input>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewGISFolderDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddGISItemFolder" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

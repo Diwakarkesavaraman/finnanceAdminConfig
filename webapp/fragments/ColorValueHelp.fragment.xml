@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Select Calendar Color" items="{colorModel>/colors}" liveChange="onColorValueHelpSearch" confirm="onColorValueHelpClose"
+		cancel="onColorValueHelpClose">
+		<StandardListItem title="{colorModel>Value}" description="{colorModel>Description}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

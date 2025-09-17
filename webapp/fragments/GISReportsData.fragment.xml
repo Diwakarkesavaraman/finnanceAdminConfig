@@ -1,0 +1,79 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<ScrollContainer id="admincontrolgisreports" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
+		<Panel height="100%" class="admgisreppanelcls">
+			<content>
+				<HBox class="tblhdrcls">
+					<Text text="Financials GIs Folders"/>
+					<HBox>
+						<!--<Button type="Accept" icon="sap-icon://upload" text="Upload File" press="onuploadreport"/>-->
+						<!--<ToolbarSpacer width="0.5rem"/>-->
+						<Button type="Reject" icon="sap-icon://delete" text="Delete Folder" press="onDeleteGISReportItems"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Accept" icon="sap-icon://accounting-document-verification" text="Update Folder" press="onUpdateGISItemFolder"/>
+						<!--<ToolbarSpacer width="0.5rem"/>-->
+						<!--<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewGISItem"/>-->
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Emphasized" icon="sap-icon://add" text="Add Folder" press="onAddNewGISItemFolder"/>
+					</HBox>
+				</HBox>
+				<Table id="tabGISReports" alternateRowColors="false" items="{ path: 'oGISReportModel>/'}" growing="true"
+					class="blueBackground surveytablecls" mode="MultiSelect" itemPress="onRowSelect">
+					<columns>
+						<Column width="14rem">
+							<header>
+								<Text text="Folder Title" class="whiteLabel"></Text>
+							</header>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle" type="Active">
+							<cells>
+								<Text text="{oGISReportModel>ZgisFolderTitle}"></Text>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+					<ToolbarSpacer height="1rem"/>
+				<HBox class="tblhdrcls">
+					<Text id = "tableTitle" text="GIS Report Details"/>
+					<HBox>
+						<Button type="Reject" icon="sap-icon://delete" text="Delete Folder" press="onDeleteShareKItems"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Accept" icon="sap-icon://accounting-document-verification" text="Update Folder" press="onUpdateShareKItem"/>
+						<!--<ToolbarSpacer width="0.5rem"/>-->
+						<!--<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewGISItem"/>-->
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Emphasized" icon="sap-icon://add" text="Add Folder" press="onAddShareKFolder"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Accept" icon="sap-icon://upload" text="Upload File from ShareK" press="onuploadreport"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<!--<Button type="Accept" icon="sap-icon://add" text="Add Item" press="onAddReportDetail"/>-->
+						<!--<ToolbarSpacer width="0.5rem"/>-->
+						<!--<Button type="Reject" icon="sap-icon://delete" text="Delete Item" press="onDeleteReportDetail"/>-->
+						<!--<ToolbarSpacer width="0.5rem"/>-->
+						<!--<Button type="Emphasized" icon="sap-icon://edit" text="Edit Item" press="onEditReportDetail"/>-->
+					</HBox>
+				</HBox>
+				<Table id="tabGISReportDetails" alternateRowColors="false" items="{ path: 'oShareKGISReportModel>/'}" growing="true"
+					class="blueBackground surveytablecls" mode="MultiSelect" itemPress="onShareKRowSelect">
+					<columns>
+						<Column width="12rem">
+							<header>
+								<Text text="Report Name" class="whiteLabel"></Text>
+							</header>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle" type="Active">
+							<cells>
+								<Text text="{oShareKGISReportModel>Child}"></Text>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</Panel>
+	</ScrollContainer>
+</core:FragmentDefinition>

@@ -1,0 +1,43 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Item" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="kpiid1" text="KPI ID"></Label>
+			<Input id="inpkpiID" value=""  visible="false" required="true"></Input>
+			<Label id="categoryid" text="Category"></Label>
+			<Input id="inpcatID" value=""   required="true"></Input>
+			<Label id="lblkpititle" text="KPI Title"></Label>
+			<Input id="inpkpititle" value="" required="true"></Input>
+			<Label id="lblkpivis" text="Visibility"></Label>
+			<!--<Input id="inpgisvis" value="" required="true"></Input>-->
+			<CheckBox id="inpkpivis" text="" selected="" required="true"/>
+			<!--<Label id="lblcalIcon" text="Icon"></Label>-->
+			<!--<Input id="inpcalIcon" value="" required="true"></Input>-->
+			<!--<HBox id="iconSelectionBox" justifyContent="Start">-->
+			<!--	<Image src="img/calendarassets/dollar.svg" press="onAddIconSelect" class="iconStyle" width="25px" height="23px">-->
+			<!--		<customData>-->
+			<!--			<core:CustomData key="iconKey" value="dollar" writeToDom="true"/>-->
+			<!--			<core:CustomData key="style-class-ImgSelect" value="" writeToDom="true"/>-->
+			<!--		</customData>-->
+			<!--	</Image>-->
+			<!--	<Image src="img/calendarassets/meeting.svg" press="onAddIconSelect" class="iconStyle" width="25px" height="23px">-->
+			<!--		<customData>-->
+			<!--			<core:CustomData key="iconKey" value="meeting" writeToDom="true"/>-->
+			<!--			<core:CustomData key="style-class-ImgSelect" value="" writeToDom="true"/>-->
+			<!--		</customData>-->
+			<!--	</Image>-->
+			<!--	<Image src="img/calendarassets/reports.svg" press="onAddIconSelect" class="iconStyle" width="25px" height="23px">-->
+			<!--		<customData>-->
+			<!--			<core:CustomData key="iconKey" value="reports" writeToDom="true"/>-->
+			<!--			<core:CustomData key="style-class-ImgSelect" value="" writeToDom="true"/>-->
+			<!--		</customData>-->
+			<!--	</Image>-->
+			<!--</HBox>-->
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewKPIDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddKPItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

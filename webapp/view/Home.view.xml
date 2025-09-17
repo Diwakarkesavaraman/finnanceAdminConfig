@@ -1,0 +1,74 @@
+   <mvc:View controllerName="mobilefinance.MobileFinance.controller.Home" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:tnt="sap.tnt"
+	xmlns:f="sap.f" xmlns:card="sap.f.cards" height="100%" xmlns:layout="sap.ui.layout" xmlns:w="sap.ui.integration.widgets"
+	xmlns:core="sap.ui.core" xmlns:m="sap.m" xmlns:tab="sap.ui.table">
+	<!--<Shell id="shell" appWidthLimited="false">-->
+	<HBox class="logoheadercls" justifyContent="SpaceBetween" alignItems="Center">
+		<HBox class="mainlogoboxcls">
+			<Image src="img/aramcologo.png" alt="User Image" width="100px" height="30px">
+				<layoutData>
+					<OverflowToolbarLayoutData priority="NeverOverflow"/>
+				</layoutData>
+			</Image>
+			<VBox class="verticalSeparator"></VBox>
+			<Text text="Finance Mobile Admin" class="headerBarTitle"/>
+		</HBox>
+
+	</HBox>
+	<HBox class="customSeparator"></HBox>
+	<tnt:ToolPage id="toolPage" class="testmargincls">
+		<tnt:sideContent class="tntsidenavcustomcls">
+			<tnt:SideNavigation id="sideNavigation" selectedKey="content" itemSelect=".onItemSelect" collapsed="false">
+				<tnt:NavigationList class="customNavListCls" itemSelect="onNavListItemSelect">
+					<tnt:NavigationListItem id="contentNav" key="content" text="Home Screen Config" icon="sap-icon://documents" class="sidenavtextcls"/>
+					<tnt:NavigationListItem id="gisreportNav" key="gisreport" text="Financial GIs Config" icon="sap-icon://customer-financial-fact-sheet" class="sidenavtextcls"/>
+					<tnt:NavigationListItem id="calendarNav" key="calendar" text="Financial Calendar Config" icon="sap-icon://appointment-2" class="sidenavtextcls"/>
+					<tnt:NavigationListItem id="visiblityNav" key="visiblity" text="Financial Dashboard Config" icon="sap-icon://vertical-bar-chart-2" class="sidenavtextcls"/>
+					<tnt:NavigationListItem id="marketwatchNav" key="marketwatch" text="Market Watch Config" icon="sap-icon://task" class="sidenavtextcls"/>
+					<tnt:NavigationListItem id="reportsNav" key="reports" text="Reports Config" icon="sap-icon://manager-insight" class="sidenavtextcls"/>
+					<tnt:NavigationListItem id="sharePriceNav" key="shareprice" text="Share Price KPI Config" icon="sap-icon://kpi-corporate-performance" class="sidenavtextcls"/>
+					<tnt:NavigationListItem id="affiliateNav" key="affiliate" text="Affiliate KPI Config" icon="sap-icon://group-2" class="sidenavtextcls"/>
+					<tnt:NavigationListItem id="dynamicWidgetConfigNav" key="dynamicWidgetConfig" text="Dynamic Widget Config" icon="sap-icon://group-2" class="sidenavtextcls"/>
+				</tnt:NavigationList>
+				<tnt:fixedItem>
+					<tnt:NavigationList>
+						<tnt:NavigationListItem text="{oAuthDataModel>/UserID}" icon="sap-icon://customer"/>
+					</tnt:NavigationList>
+				</tnt:fixedItem>
+			</tnt:SideNavigation>
+		</tnt:sideContent>
+		<tnt:mainContents class="tntmaincontentcls">
+			<NavContainer id="pageContainer" itemSelect=".onItemSelect" initialPage="homepage">
+				<pages>
+					<ScrollContainer id="content" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
+						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.LandingPageData" type="XML"/>
+					</ScrollContainer>
+					<ScrollContainer id="gisreport" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
+						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.GISReportsData" type="XML"/>
+					</ScrollContainer>
+					<ScrollContainer id="calendar" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
+						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.Calendar" type="XML"/>
+					</ScrollContainer>
+					<ScrollContainer id="visiblity" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
+						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.FinancialCalendar" type="XML"/>
+					</ScrollContainer>
+					<ScrollContainer id="marketwatch" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
+						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.MarketWatchTab" type="XML"/>
+					</ScrollContainer>
+					<ScrollContainer id="reports" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
+						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.Reports" type="XML"/>
+					</ScrollContainer>
+					<ScrollContainer id="shareprice" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
+						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.SharePriceTab" type="XML"/>
+					</ScrollContainer>
+					<ScrollContainer id="affiliate" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
+						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.AffiliateTab" type="XML"/>
+					</ScrollContainer>
+					<ScrollContainer id="dynamicWidgetConfig" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
+						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.DynamicWidgetConfig" type="XML"/>
+					</ScrollContainer>
+				</pages>
+			</NavContainer>
+		</tnt:mainContents>
+	</tnt:ToolPage>
+
+</mvc:View>

@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Financial Dashboard Item" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblnfdaid" text="KPI ID"></Label>
+			<Input id="inpnfdaid" value="" visible="false" required="true"></Input>
+			<Label id="lblnfdacat" text="Category"></Label>
+			<!--<Input id="inpnfdacat" value="" required="true"></Input>-->
+			<ComboBox id="inpnfdacat" required="true" items="{oFincalTabModel>/}">
+    <core:Item key="{oFincalTabModel>ZkpiId}" text="{oFincalTabModel>Zcategory}" />
+</ComboBox>
+			<Label id="lblnfdatitle" text="KPI Title"></Label>
+			<Input id="inpnfdatitle" value="" required="true"></Input>
+			<Label id="lblnfdatool" text="Tool Tip"></Label>
+			<Input id="inpnfdatool" value="" ></Input>
+			<Label id="lblnfdarole" text="Roles"></Label>
+			<Input id="inpnfdarole" value=""></Input>
+			<Label id="lblnfdavis" text="Visibility"></Label>
+			<!--<Input id="inpgisvis" value="" required="true"></Input>-->
+			<CheckBox id="inpnfdavis" text="" selected="" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewFinDashDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add"  press="onAddfdashItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

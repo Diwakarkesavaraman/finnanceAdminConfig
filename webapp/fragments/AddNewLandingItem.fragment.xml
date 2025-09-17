@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Item" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lbllndnglevelid" text="Level ID"></Label>
+			<Input id="inplndnglevelid" value="" visible="false" required="true"></Input>
+			<Label id="lbllndngTitle" text="Title"></Label>
+			<Input id="inplndngTitle" value="" required="true"></Input>
+			<Label id="lbllndngroles" text="Roles"></Label>
+			<Input id="inplndngroles" value=""></Input>
+			<Label id="lbllndngvis" text="Visibility"></Label>
+			<CheckBox id="inplndngvis" text="" selected="" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add"  press="onAddItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

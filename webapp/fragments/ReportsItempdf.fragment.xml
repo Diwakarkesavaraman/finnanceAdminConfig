@@ -1,0 +1,108 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<ScrollContainer id="admincontrolreport" horizontal="true" vertical="true" height="100%" class="sapUiContentPadding">
+		<Panel height="100%" class="admupdcontpanelcls">
+			<content>
+				<HBox class="tblhdrcls">
+					<Text text="Report and Publications Item Config"/>
+					<HBox>
+						<Button type="Reject" text="Delete" press="onDeleteReportItemCon"/>
+						<!--<ToolbarSpacer width="0.5rem"/>-->
+						<Button type="Accept" text="Update" press="onUpdateReportDataDets"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<!--<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewKPItem"/>-->
+						<Button type="Emphasized" icon="sap-icon://add" text="Add Reports" press="onAddNewReports"/>
+					</HBox>
+				</HBox>
+				<Table id="tabreport" alternateRowColors="false" items="{ path: 'oReportModel>/', sorter: {path: 'ZkpiId', descending: false}}"
+					growing="true" class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
+					<columns>
+						<Column width="5rem">
+							<header>
+								<Text text="Report ID" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="7rem">
+							<header>
+								<Text text="Category" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="7rem">
+							<header>
+								<Text text="Report Segment" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="10rem">
+							<header>
+								<Text text="Roles" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<!--<Column width="10rem">-->
+						<!--	<header>-->
+						<!--		<Text text="Update Report" class="whiteLabel"></Text>-->
+						<!--	</header>-->
+						<!--</Column>-->
+						<Column width="7rem">
+							<header>
+								<Text text="Report Name" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="5rem">
+							<header>
+								<Text text="View Report" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="6rem">
+							<header>
+								<Text text="Report Date" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="5rem">
+							<header>
+								<Text text="Access" class="whiteLabel"></Text>
+							</header>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle">
+							<cells>
+								<!--<Input value="{oVisiblityModel>ZkpiId}"></Input>-->
+								<Text text="{oReportModel>ZreportId}"></Text>
+								<!--<Input value="{oVisiblityModel>Zcategory}"></Input>-->
+								<Text text="{oReportModel>Zcategory}"></Text>
+								<Input value="{oReportModel>Zsegment}"></Input>
+								<!--<MultiInput tokens="{ path: 'oVisiblityModel>arr',templateShareable: false }" width="80%" valueHelpRequest="onKPIRoleValueHelp"-->
+								<!--	showValueHelp="true">-->
+								<!--	<tokens>-->
+								<!--		<Token key="{oVisiblityModel>Value1}" text="{oVisiblityModel>Value1}"/>-->
+								<!--	</tokens>-->
+								<!--</MultiInput>-->
+								<Input value="{oReportModel>Zreole}"></Input>
+								<!--<unified:FileUploader-->
+        <!--                    uploadUrl="/upload/url"-->
+        <!--                    change="onFileChange"-->
+        <!--                    fileType="pdf"-->
+        <!--                    mimeType="application/pdf"-->
+        <!--                    buttonText="Upload"-->
+        <!--                    icon="sap-icon://upload" />-->
+        						<Input value="{oReportModel>ZrName}"></Input>
+								<Button icon="sap-icon://pdf-attachment" press="onAttachReport">
+								<customData>
+										<core:CustomData key="style-class-Highlight" value="{= ${oReportModel>ZrName} ? 'filled' : '' }" writeToDom="true"/>
+									</customData>
+									</Button>
+									<DatePicker id="inprepdate"
+									value="{path:'oReportModel>ZdateReport', type:'sap.ui.model.type.Date', formatOptions: { UTC: true, style: 'medium', strictParsing: true }}"
+									placeholder="mm/dd/yyyy" change="onLoadFilterData" class="customDatePicker" required="true"></DatePicker>
+								<CheckBox text="" selected="{oReportModel>Zvisibility}"/>
+								<!--<Input id="roleid" mode="MultiSelect" value="oVisiblityModel>ZroleList" showValueHelp="true"-->
+								<!--	valueHelpRequest="onRoleValueHelp" placeholder="Select Color"></Input>-->
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</Panel>
+	</ScrollContainer>
+</core:FragmentDefinition>

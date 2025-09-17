@@ -1,0 +1,113 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" xmlns:l="sap.ui.layout">
+    <ScrollContainer id="dynamicWidgetConfigFragment" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
+        <Panel height="100%" class="admgisreppanelcls">
+            <content>
+                <HBox class="tblhdrcls">
+                    <Text text="Dynamic Widget Config" />
+                    <!-- <HBox><Button type="Reject" text="Delete" press="onDeleteAffiliateTabCon"/><ToolbarSpacer width="0.5rem"/><Button type="Accept" text="Update" press="onUpdateAffiliateTab"/><ToolbarSpacer width="0.5rem"/><Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewAffiliateTab"/></HBox> -->
+                    <Button id="edit" text="Edit" enabled="false" press="handleEditPress" />
+                    <Button id="save" text="Save" type="Emphasized" visible="true" press="handleSavePress" />
+                    <!-- <customData><core:CustomData key="myParam1" value="someValue" /><core:CustomData key="myParam2" value="anotherValue" /></customData> -->
+                    <Button id="submit" text="Submit" visible="false" press="handleCancelPress" />
+                    <Button id="delete" type="Reject" text="Delete" visible="true" press="deleteWidget" />
+                </HBox>
+                <Panel expandable="true" expanded="true" headerText="Panel with a header text" width="auto" class="sapUiResponsiveMargin">
+                    <content>
+                        <VBox class="sapUiSmallMargin">
+                            <form:SimpleForm id="SimpleFormChange354" editable="true" layout="ResponsiveGridLayout" title="Widget Config" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+                                <form:content>
+                                    <Label id="widgetIdLabel" text="Widget ID" />
+                                    <Input id="widgetId" value="{selectedValues>/widgetId}" editable="false" liveChange="onDataSourceChange" />
+
+                                    <Label text="Widget Type" />
+                                    <Select id="widgetType" items="{path: 'aWidgetTypeDropdownData>/'}" selectedKey="{selectedValues>/selectedWidgetType}">
+                                        <core:Item text="{aWidgetTypeDropdownData>Text}" key="{aWidgetTypeDropdownData>Id}" />
+                                    </Select>
+
+                                    <Label text="Chart Type" />
+                                    <Select id="chartType" items="{path: 'aChartTypeDropdownData>/'}" selectedKey="{selectedValues>/selectedChartType}">
+                                        <core:Item text="{aChartTypeDropdownData>Text}" key="{aChartTypeDropdownData>Id}" />
+                                    </Select>
+
+                                    <Label text="Data Source" />
+                                    <Input id="dataSourceId" value="{selectedValues>/selectedDataSource}" liveChange="onDataSourceChange" />
+                                    <Button id="check" text="Check" enabled="true" press="checkQueryValidity" />
+                                    <BusyIndicator id="busyIndicator" class="sapUiTinyMarginBottom" visible="false" />
+                                    <core:Icon id="successIcon" src="sap-icon://message-success" visible="false" class="size1" color="#107e3e" />
+                                    
+                                </form:content>
+                            </form:SimpleForm>
+                        </VBox>
+                        <HBox class="tblhdrcls">
+                    <Text text="Dynamic Widget Config" />
+                    <!-- <HBox><Button type="Reject" text="Delete" press="onDeleteAffiliateTabCon"/><ToolbarSpacer width="0.5rem"/><Button type="Accept" text="Update" press="onUpdateAffiliateTab"/><ToolbarSpacer width="0.5rem"/><Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewAffiliateTab"/></HBox> -->
+                  
+                    <Button id="formSubmit" text="Save" type="Emphasized" visible="true" press="getGroupedFormValues" />
+                   
+                </HBox>
+                        <Panel expanded="true" expandable="true" headerText="Bex Query Parameter" width="auto" class="sapUiResponsiveMargin">
+                            <content>
+                                <VBox class="sapUiSmallMargin">
+                                    <form:SimpleForm id="bexQueryParameterForm" editable="true" layout="ResponsiveGridLayout" title="Widget Config" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+                                        <form:content>
+                                                               </form:content>
+                                    </form:SimpleForm>
+                                </VBox>
+                            </content>
+                        </Panel>
+                    </content>
+                </Panel>
+                <Table id="dynamic" alternateRowColors="false" items="{ path: 'oAffiliateTabModel>/', sorter: {path: 'ZkpiId', descending: false}}" growing="true" class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
+                    <columns>
+                        <Column width="7rem">
+                            <header>
+                                <Text text="KPI ID" class="whiteLabel" />
+                            </header>
+                        </Column>
+                        <Column width="15rem">
+                            <header>
+                                <Text text="Category" class="whiteLabel" />
+                            </header>
+                        </Column>
+                        <!--<Column width="15rem">-->
+                        <!--	<header>-->
+                        <!--		<Text text="KPI Title" class="whiteLabel"></Text>-->
+                        <!--	</header>-->
+                        <!--</Column>-->
+                        <Column width="22rem">
+                            <header>
+                                <Text text="Roles" class="whiteLabel" />
+                            </header>
+                        </Column>
+                        <Column width="5rem">
+                            <header>
+                                <Text text="Visibility" class="whiteLabel" />
+                            </header>
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem vAlign="Middle">
+                            <cells>
+                                <!--<Input value="{oVisiblityModel>ZkpiId}"></Input>-->
+                                <Text text="{oAffiliateTabModel>ZkpiId}" />
+                                <!--<Input value="{oVisiblityModel>Zcategory}"></Input>-->
+                                <!--<Text text="{oMarketWatchTabModel>Zcategory}"></Text>-->
+                                <Input value="{oAffiliateTabModel>Zcategory}" />
+                                <!--<MultiInput tokens="{ path: 'oVisiblityModel>arr',templateShareable: false }" width="80%" valueHelpRequest="onKPIRoleValueHelp"-->
+                                <!-- showValueHelp="true">-->
+                                <!--	<tokens>-->
+                                <!--		<Token key="{oVisiblityModel>Value1}" text="{oVisiblityModel>Value1}"/>-->
+                                <!--	</tokens>-->
+                                <!--</MultiInput>-->
+                                <Input value="{oAffiliateTabModel>Zrole}" />
+                                <CheckBox text="" selected="{oAffiliateTabModel>Zvisibility}" />
+                                <!--<Input id="roleid" mode="MultiSelect" value="oVisiblityModel>ZroleList" showValueHelp="true"-->
+                                <!-- valueHelpRequest="onRoleValueHelp" placeholder="Select Color"></Input>-->
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </content>
+        </Panel>
+    </ScrollContainer>
+</core:FragmentDefinition>

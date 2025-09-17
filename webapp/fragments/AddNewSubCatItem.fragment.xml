@@ -1,0 +1,25 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Item" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblsubcatsubid" text="Sub ID" visible="false"></Label>
+			<Input id="inpsubcatsubid" value="" editable="false" required="true" visible="false"></Input>
+			<Label id="lblsubcatlevelid" text="Parent ID"></Label>
+			<!--<Input id="inpsubcatlevelid" value="" editable="false" required="true"></Input>-->
+			<Select id="inpsubcatlevelid" forceSelection="false" selectedKey="" class="customInputDisabled" change="onChangeLevelId" required="true"
+				items="{ path: 'oLevelIdDataModel>/' }">
+				<core:Item key="{oLevelIdDataModel>ZlevelId}" text="{oLevelIdDataModel>ZlevelId} - {oLevelIdDataModel>Ztitle}"/>
+				<!--<core:Item key="{oLandingPageDataModel>ZlevelId}" text="{oLandingPageDataModel>ZlevelId}"/>-->
+			</Select>
+			<Label id="lblsubcatTitle" text="Title"></Label>
+			<Input id="inpsubcatTitle" value="" required="true"></Input>
+			<Label id="lblsubcatroles" text="Roles"></Label>
+			<Input id="inpsubcatroles" value="" required="true"></Input>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewSubDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddSubItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

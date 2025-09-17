@@ -1,0 +1,81 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Item" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblkpiiconcat" text="Icon Category"></Label>
+			<HBox class="iconcatkpicls" justifyContent="Start">
+				<Image src="img/calendarassets/dollar.svg" press="onAddIconSelect" class="iconStyle" width="25px" height="23px">
+					<customData>
+						<core:CustomData key="iconKey" value="dollar" writeToDom="true"/>
+						<core:CustomData key="style-class-ImgSelect" value="" writeToDom="true"/>
+					</customData>
+				</Image>
+				<Image src="img/calendarassets/meeting.svg" press="onAddIconSelect" class="iconStyle" width="25px" height="23px">
+					<customData>
+						<core:CustomData key="iconKey" value="meeting" writeToDom="true"/>
+						<core:CustomData key="style-class-ImgSelect" value="" writeToDom="true"/>
+					</customData>
+				</Image>
+				<Image src="img/calendarassets/reports.svg" press="onAddIconSelect" class="iconStyle" width="25px" height="23px">
+					<customData>
+						<core:CustomData key="iconKey" value="reports" writeToDom="true"/>
+						<core:CustomData key="style-class-ImgSelect" value="" writeToDom="true"/>
+					</customData>
+				</Image>
+			</HBox>
+			<Label id="lblkpiprntlvl" text="Parent Level"></Label>
+			<Select id="inpkpiprntlvl" forceSelection="false" selectedKey="" class="customInputDisabled" change="onChangeKPILevelId" required="true"
+				items="{ path: 'oLevelIdDataModel>/' }">
+				<core:Item key="{oLevelIdDataModel>ZlevelId}" text="{oLevelIdDataModel>ZlevelId} - {oLevelIdDataModel>Ztitle}"/>
+			</Select>
+			<Label id="lblkpisublvl" text="Sub Level" visible="{oKPIAddNewVisibility>/subIdEnable}"></Label>
+			<Select id="inpkpisublvl" forceSelection="false" visible="{oKPIAddNewVisibility>/subIdEnable}" selectedKey="" class="customInputDisabled"
+				change="onChangeKPISubId" required="true" items="{ path: 'oSubLevelIdDataModel>/' }">
+				<core:Item key="{oSubLevelIdDataModel>ZsubId}" text="{oSubLevelIdDataModel>ZsubTitle}"/>
+			</Select>
+			<Label id="lblkpiwdgttyp" text="Widget Type" visible="{oKPIAddNewVisibility>/widgetEnable}"></Label>
+			<Select id="inpkpiwdgttyp" forceSelection="false" visible="{oKPIAddNewVisibility>/widgetEnable}" selectedKey="" class="customInputDisabled"
+				change="onChangeKPIWidget" required="true" items="{ path: 'oWidgetTypeDataModel>/' }">
+				<core:Item key="{oWidgetTypeDataModel>id}" text="{oWidgetTypeDataModel>desc}"/>
+			</Select>
+			<Label id="lblkpichrttyp" text="Chart Type" visible="{oKPIAddNewVisibility>/chartTypeEnable}"></Label>
+			<Select id="inpkpichrttyp" forceSelection="false" visible="{oKPIAddNewVisibility>/chartTypeEnable}" selectedKey=""
+				class="customInputDisabled" change="onChangeChrtTypeWidget" required="true" items="{ path: 'oChartTypeDataModel>/' }">
+				<core:Item key="{oChartTypeDataModel>id}" text="{oChartTypeDataModel>desc}"/>
+			</Select>
+			<Label id="lblkpimetric1" text="Metric1" visible="{oKPIAddNewVisibility>/metricsEnable}"></Label>
+			<Select id="inpkpimetric1" forceSelection="false" visible="{oKPIAddNewVisibility>/metricsEnable}" selectedKey="" class="customInputDisabled"
+				change="" required="true" items="{ path: 'oMetricsDataModel>/' }">
+				<core:Item key="{oMetricsDataModel>id}" text="{oMetricsDataModel>desc}"/>
+			</Select>
+			<Label id="lblkpimetric2" text="Metric2" visible="{oKPIAddNewVisibility>/metricsEnable}"></Label>
+			<Select id="inpkpimetric2" forceSelection="false" visible="{oKPIAddNewVisibility>/metricsEnable}" selectedKey="" class="customInputDisabled"
+				change="" required="true" items="{ path: 'oMetricsDataModel>/' }">
+				<core:Item key="{oMetricsDataModel>id}" text="{oMetricsDataModel>desc}"/>
+			</Select>
+			<Label id="lblkpidets" text="KPI" visible="{oKPIAddNewVisibility>/metricsEnable}"></Label>
+			<!--<Select id="inpkpidets" forceSelection="false" visible="{oKPIAddNewVisibility>/metricsEnable}" selectedKey="" class="customInputDisabled"-->
+			<!--	change="" required="true" items="{ path: 'oKPIListDataModel>/' }">-->
+			<!--	<core:Item key="{oKPIListDataModel>id}" text="{oKPIListDataModel>desc}"/>-->
+			<!--</Select>-->
+			<MultiInput width="100%" tokenUpdate="onFromContainerSelect" visible="{oKPIAddNewVisibility>/metricsEnable}" showClearIcon="true"
+				id="inpkpidets" suggestionItems="{oKPIListDataModel>/}" suggest="onSuggest" showSuggestion="true" showValueHelp="false">
+				<core:Item key="{oKPIListDataModel>id}" text="{oKPIListDataModel>desc}"/>
+			</MultiInput>
+			<Label id="lblkpititle" text="Title" visible="{oKPIAddNewVisibility>/genDetsEnable}"></Label>
+			<Input id="inpkpititle" value="" visible="{oKPIAddNewVisibility>/genDetsEnable}"></Input>
+			<Label id="lblkpidesc" text="Description" visible="{oKPIAddNewVisibility>/genDetsEnable}"></Label>
+			<Input id="inpkpidesc" value="" visible="{oKPIAddNewVisibility>/genDetsEnable}"></Input>
+			<Label id="lblkpisize" text="Size" visible="{oKPIAddNewVisibility>/genDetsEnable}"></Label>
+			<Select id="inpkpisize" forceSelection="false" visible="{oKPIAddNewVisibility>/genDetsEnable}" selectedKey="" class="customInputDisabled"
+				change="" required="true" items="{ path: 'oSizeDataModel>/' }">
+				<core:Item key="{oSizeDataModel>id}" text="{oSizeDataModel>desc}"/>
+			</Select>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewKPIDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddNewKPIItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

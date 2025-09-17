@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Report Tab" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblnreptid" text="KPI ID"></Label>
+			<Input id="inpnreptid" value="" visible="false" required="true"></Input>
+			<Label id="lblnreptcat" text="Category"></Label>
+			<Input id="inpnreptcat" value="" required="true"></Input>
+			<!--<Label id="lblnmwtitle" text="KPI Title"></Label>-->
+			<!--<Input id="inpnmwtitle" value="" required="true"></Input>-->
+			<Label id="lblnreptrole" text="Roles"></Label>
+			<Input id="inpnreptrole" value=""></Input>
+			<Label id="lblnreptvis" text="Visibility"></Label>
+			<!--<Input id="inpgisvis" value="" required="true"></Input>-->
+			<CheckBox id="inpnreptvis" text="" selected="" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewReportTabDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add"  press="onAddReportTab" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

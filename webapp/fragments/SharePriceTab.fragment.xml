@@ -1,0 +1,92 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<ScrollContainer id="admincontrolshare" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
+		<Panel height="100%" class="admgisreppanelcls">
+			<content>
+				<HBox class="tblhdrcls">
+					<Text text="Share Price KPI Config"/>
+					<HBox>
+						<Button type="Reject" text="Delete" press="onDeleteSharePriceTabCon"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Accept" text="Update" press="onUpdateSharePriceTabDets"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewSharePriceTab"/>
+					</HBox>
+				</HBox>
+				<Table id="tabsharepriceTab" alternateRowColors="false"
+					items="{ path: 'oSharePriceTabModel>/', sorter: {path: 'Zorderid', descending: false}}" growing="true" class="blueBackground surveytablecls"
+					mode="MultiSelect" selectionChange="onSelectionChange">
+					<columns>
+						<Column width="7rem">
+							<header>
+								<Text text="Company ID" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="15rem">
+							<header>
+								<Text text="Company Name" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="5rem">
+							<header>
+								<Text text="Order Number" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="5rem">
+							<header>
+								<Text text="Currency" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<!--<Column width="15rem">-->
+						<!--	<header>-->
+						<!--		<Text text="KPI Title" class="whiteLabel"></Text>-->
+						<!--	</header>-->
+						<!--</Column>-->
+						<Column width="22rem">
+							<header>
+								<Text text="Roles" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="5rem">
+							<header>
+								<Text text="Visibility" class="whiteLabel"></Text>
+							</header>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle">
+							<cells>
+								<!--<Input value="{oVisiblityModel>ZkpiId}"></Input>-->
+								<Text text="{oSharePriceTabModel>ZcompanyId}"></Text>
+								<!--<Input value="{oSharePriceTabModel>ZcurrencyUnit}"></Input>-->
+								<!--<Input value="{oVisiblityModel>Zcategory}"></Input>-->
+								<!--<Text text="{oMarketWatchTabModel>Zcategory}"></Text>-->
+								<Input value="{oSharePriceTabModel>ZcompanyName}"></Input>
+								<Input value="{oSharePriceTabModel>Zorderid}"></Input>
+								<ComboBox selectedKey="{oSharePriceTabModel>ZcurrencyUnit}">
+									<core:Item key="SAR" text="SAR"/>
+									<core:Item key="$" text="$"/>
+									<core:Item key="€" text="€"/>
+									<core:Item key="₩" text="₩"/>
+									<!--<core:Item key="JPY" text="JPY"/>-->
+									<core:Item key="Blank" text="Blank" />
+								</ComboBox>
+								<!--<MultiInput tokens="{ path: 'oVisiblityModel>arr',templateShareable: false }" width="80%" valueHelpRequest="onKPIRoleValueHelp"-->
+								<!--	showValueHelp="true">-->
+								<!--	<tokens>-->
+								<!--		<Token key="{oVisiblityModel>Value1}" text="{oVisiblityModel>Value1}"/>-->
+								<!--	</tokens>-->
+								<!--</MultiInput>-->
+								<Input value="{oSharePriceTabModel>Zroles}"></Input>
+								<CheckBox text="" selected="{oSharePriceTabModel>Zvisibility}"/>
+								<!--<Input id="roleid" mode="MultiSelect" value="oVisiblityModel>ZroleList" showValueHelp="true"-->
+								<!--	valueHelpRequest="onRoleValueHelp" placeholder="Select Color"></Input>-->
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</Panel>
+	</ScrollContainer>
+</core:FragmentDefinition>

@@ -1,0 +1,39 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<ScrollContainer id="admincontrolkpiconfig" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
+		<Panel height="100%" class="admgisreppanelcls">
+			<content>
+				<!--<HBox class="tblhdrcls">-->
+				<!--	<Text text="CALENDAR CONFIG"/>-->
+				<!--	<HBox>-->
+				<!--		<Button type="Reject" text="Delete" press="onDeleteCalendarItems"/>-->
+				<!--		<ToolbarSpacer width="0.5rem"/>-->
+				<!--		<Button type="Accept" text="Update" press="onUpdateCalendarDets"/>-->
+				<!--		<ToolbarSpacer width="0.5rem"/>-->
+				<!--		<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewCalendarItem"/>-->
+				<!--	</HBox>-->
+				<!--</HBox>-->
+				<HBox id="idkpiwrapper" class="kpiwrapper">
+					<GenericTile press="onAddKPITilePress" class="addTile" header="Add" subheader="Click to Add a KPI">
+						<TileContent>
+							<!--<Content>-->
+							<ImageContent src="sap-icon://add" size="2rem"/>
+							<!--<Icon src="sap-icon://add" size="2rem"/>-->
+							<!--</Content>-->
+						</TileContent>
+					</GenericTile>
+				</HBox>
+				<!--<HBox class="kpiwrapper" binding="{oKPIConfigModel>/}">-->
+				<!--<core:HTML afterRendering="onAfterRenderingChart1" content="&lt;div id='chart1'/&gt;"></core:HTML>-->
+				<!--	<GenericTile header="{oKPIConfigModel>/TITLE}" subheader="{oKPIConfigModel>/DESCRIPTION}" class="kpiTile">-->
+				<!--		<TileContent>-->
+				<!--				<core:HTML afterRendering="onAfterRenderingChart" content="&lt;div id='{oKPIConfigModel>CHARTID}' style='height:350px;'&gt;&lt;/div&gt;"/>-->
+				<!--		</TileContent>-->
+				<!--	</GenericTile>-->
+				<!--</HBox>-->
+				<FlexBox id="kpiHBox" wrap="Wrap" justifyContent="" alignItems="Center" class="kpiFlexBoxContainer" renderType="Div"></FlexBox>
+			</content>
+		</Panel>
+	</ScrollContainer>
+</core:FragmentDefinition>

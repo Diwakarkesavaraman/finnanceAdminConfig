@@ -1,0 +1,166 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<ScrollContainer id="admincontrolreportpub" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
+		<Panel height="100%" class="admgisreppanelcls">
+			<content>
+				<VBox id="tab1"
+					visible="{parts: [{path: 'oViewModel>/showNewTable'}, {path: 'oViewModel>/showThirdTable'}], formatter: '.computeVisibility'}">
+					<HBox class="tblhdrcls">
+						<HBox>
+							<Button text="Back" icon="sap-icon://nav-back" press="onBack" visible="{= ${oViewModel>/showNewTable} || ${oViewModel>/showThirdTable} }"/>
+						</HBox>
+						<Text text="Reports and Publications Tab Config"/>
+						<HBox>
+							<Button type="Reject" text="Delete" press="onDeleteReportTabpdfCon"/>
+							<ToolbarSpacer width="0.5rem"/>
+							<Button type="Accept" text="Update" press="onUpdateReportTabDets"/>
+							<ToolbarSpacer width="0.5rem"/>
+							<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewReportTab"/>
+						</HBox>
+					</HBox>
+					<!-- FIRST TABLE (Default Visible) -->
+					<Table id="tabreportandpubtab" alternateRowColors="false" items="{ path: 'oReportTabModel>/', sorter: {path: 'ZkpiId', descending: false} }"
+						growing="true" class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
+						<!--visible="{parts: [{path: 'oViewModel>/showNewTable'}, {path: 'oViewModel>/showThirdTable'}], formatter: '.computeVisibility'}">-->
+						<columns>
+							<!--<Column width="7rem">-->
+							<!--	<header><Text text="Tab ID" class="whiteLabel"/></header>-->
+							<!--</Column>-->
+							<Column width="15rem">
+								<header><Text text="Category" class="whiteLabel"/></header>
+							</Column>
+							<Column width="22rem">
+								<header><Text text="Roles" class="whiteLabel"/></header>
+							</Column>
+							<Column width="5rem">
+								<header><Text text="Access" class="whiteLabel"/></header>
+							</Column>
+							<Column width="5rem">
+								<header><Text text="Action" class="whiteLabel"/></header>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem vAlign="Middle">
+								<cells>
+									<!--<Text text="{oReportTabModel>ZtabId}"/>-->
+									<Input value="{oReportTabModel>ZtabName}"/>
+									<Input value="{oReportTabModel>Zroles}"/>
+									<CheckBox selected="{oReportTabModel>Zvisibility}"/>
+									<Button icon="sap-icon://navigation-right-arrow" press="onNavigateToTable2"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+					<!-- SECOND TABLE (Initially Hidden) -->
+					<!--<Table id="newTable" class="sapUiResponsiveMargin"-->
+					<!--	width="100%" inset="false" visible="{oViewModel>/showNewTable}">-->
+					<!-- BACK BUTTON -->
+					<!--<Button text="Back" icon="sap-icon://nav-back" press="onBack" visible="{oViewModel>/showNewTable}"/>-->
+				</VBox>
+				<VBox id="tab2" visible="{oViewModel>/showNewTable}">
+					<HBox class="tblhdrcls">
+						<HBox>
+							<Button text="Back" icon="sap-icon://nav-back" press="onBack" visible="{= ${oViewModel>/showNewTable} || ${oViewModel>/showThirdTable} }"/>
+						</HBox>
+						<Text text="Reports and Publications Tab Config"/>
+						<HBox>
+							<Button type="Reject" text="Delete" press="onDeleteSegmentTabCon"/>
+							<ToolbarSpacer width="0.5rem"/>
+							<Button type="Accept" text="Update" press="onUpdateSegmentTabDets"/>
+							<ToolbarSpacer width="0.5rem"/>
+							<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewSegmentTab"/>
+						</HBox>
+					</HBox>
+					<Table id="newTable" alternateRowColors="false" items="{ path: 'oSelectedSubReportModel>/', sorter: {path: 'ZkpiId', descending: false} }"
+						growing="true" class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange"
+						visible="{oViewModel>/showNewTable}">
+						<columns>
+							<Column>
+								<header><Text text="Category" class="whiteLabel"/></header>
+							</Column>
+							<Column>
+								<header><Text text="Segment" class="whiteLabel"/></header>
+							</Column>
+							<Column>
+								<header><Text text="Roles" class="whiteLabel"/></header>
+							</Column>
+							<Column>
+								<header><Text text="Access" class="whiteLabel"/></header>
+							</Column>
+							<Column>
+								<header><Text text="Action" class="whiteLabel"/></header>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem vAlign="Middle">
+								<cells>
+									<Text text="{oSelectedSubReportModel>ZtabName}"/>
+									<Input value="{oSelectedSubReportModel>ZsubTabName}"/>
+									<Input value="{oSelectedSubReportModel>Zroles}"/>
+									<CheckBox selected="{oSelectedSubReportModel>Zvisibility}"/>
+									<Button icon="sap-icon://navigation-right-arrow" press="onNavigateToTable3"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</VBox>
+				<VBox id="tab3" visible="{oViewModel>/showThirdTable}">
+					<HBox class="tblhdrcls">
+						<HBox>
+							<Button text="Back" icon="sap-icon://nav-back" press="onBack" visible="{= ${oViewModel>/showNewTable} || ${oViewModel>/showThirdTable} }"/>
+						</HBox>
+						<Text text="Reports and Publications Tab Config"/>
+						<HBox>
+							<Button type="Reject" text="Delete" press="onDeleteReportItemPDFCon"/>
+							<ToolbarSpacer width="0.5rem"/>
+							<Button type="Accept" text="Update" press="onUpdateReportDatapdfDets"/>
+							<ToolbarSpacer width="0.5rem"/>
+							<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewReportspdf"/>
+						</HBox>
+					</HBox>
+					<Table id="thirdTable" visible="{oViewModel>/showThirdTable}" mode="MultiSelect"
+						items="{ path: 'oSelectedReportpdfModel>/', sorter: {path: 'ZkpiId', descending: false} }" alternateRowColors="false" growing="true"
+						class="blueBackground surveytablecls">
+						<columns>
+							<Column>
+								<header><Text text="Report Name" class="whiteLabel"/></header>
+							</Column>
+							<Column>
+								<header><Text text="View Report" class="whiteLabel"/></header>
+							</Column>
+							<Column>
+								<header><Text text="Report Date" class="whiteLabel"/></header>
+							</Column>
+							<!--<Column>-->
+							<!--	<header><Text text="Roles" class="whiteLabel"/></header>-->
+							<!--</Column>-->
+							<!--<Column>-->
+							<!--	<header><Text text="Access" class="whiteLabel"/></header>-->
+							<!--</Column>-->
+						</columns>
+						<items>
+							<ColumnListItem vAlign="Middle">
+								<cells>
+									<Input value="{oSelectedReportpdfModel>ZrFileName}"/>
+									<Button icon="sap-icon://pdf-attachment" press="onAttachReportpdf">
+										<customData>
+											<core:CustomData key="style-class-Highlight" value="{= ${oSelectedReportpdfModel>ZrFileName} ? 'filled' : '' }" writeToDom="true"/>
+										</customData>
+									</Button>
+									<DatePicker id="inpreportdate"
+										value="{path:'oSelectedReportpdfModel>ZdateReport', type:'sap.ui.model.type.Date', formatOptions: { UTC: true, style: 'medium', strictParsing: true }}"
+										placeholder="mm/dd/yyyy" change="onLoadFilterData" class="customDatePicker" required="true"></DatePicker>
+									<!--<Input value="{oReportTabModel>ZtabName}"/>-->
+									<!--<Input value="{oSelectedReportpdfModel>Zroles}"/>-->
+									<!--<CheckBox selected="{oSelectedReportpdfModel>Zvisibility}"/>-->
+									<!--<Button icon="sap-icon://navigation-right-arrow" press="onNavigateToTable2"/>-->
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</VBox>
+			</content>
+		</Panel>
+	</ScrollContainer>
+</core:FragmentDefinition>

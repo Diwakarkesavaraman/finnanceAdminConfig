@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <SelectDialog id="KPIroleDialog" title="Select Roles" multiSelect="true"
+  items="{roleModel>/results}"
+        search="onKPIRoleValueHelpSearch"
+        confirm="onKPIRoleValueHelpConfirm"
+        cancel="onKPIRoleValueHelpCancel">
+        
+        <!--<List id="roleList" mode="MultiSelect" items="{roleModel>/results}">-->
+            <StandardListItem title="{roleModel>AgrName}" />
+        <!--</List>-->
+        
+    </SelectDialog>
+</core:FragmentDefinition>

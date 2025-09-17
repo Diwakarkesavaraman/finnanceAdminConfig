@@ -1,0 +1,36 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Share Price KPI Config" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblsptid" text="Company ID" required="true"></Label>
+			<VBox>
+			<HBox justifyContent="SpaceBetween" alignItems="Center">
+				<Input id="inpsptid" showValueHelp="true" valueHelpRequest="onAddCompanyIdValueHelp" placeholder="Select Company ID"
+				required="true" width="20em"/>
+				<Button id="addcom" icon="sap-icon://add" press="onAddCompName" text="Add"/>
+			</HBox>
+			<Text text="(If Company is not listed, click 'Add' to add a new Company)" class="hintText"/>
+			</VBox>	
+			<Label id="lblsptcat" text="Company Name" required="true"></Label>
+			<Input id="incompanydisname" value="" editable="false" required="true"></Input>
+			<Label id="lblordnumber" text="Order Number"></Label>
+			<Input id="inpordnumber" value="" required="true"></Input>
+			<Label id="lblcurrency" text="Currency"></Label>
+			<ComboBox id="inpcurrency">
+				<core:Item key="SAR" text="SAR" />
+    			<core:Item key="$" text="$" />
+    			<core:Item key="€" text="€" />
+    			<core:Item key="₩" text="₩"/>
+    			<core:Item key="Blank" text="Blank" />
+			</ComboBox>
+			<Label id="lblsptrole" text="Roles"></Label>
+			<Input id="inpsptrole" value=""></Input>
+			<Label id="lblsptvis" text="Visibility"></Label>
+			<CheckBox id="inpsptvis" text="" selected="" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewSPTDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add"  press="onAddSharePriceItem" text="Add"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

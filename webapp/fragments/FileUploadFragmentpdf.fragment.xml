@@ -1,0 +1,14 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified">
+   <Dialog title="Upload Report" width="400px">
+      <f:SimpleForm editable="true" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+         <Label id="fileattachpdfid" text="Attachment ID" visible="false"></Label>
+			<Input id="fileAttachmentpdfId" value="" editable="false" visible="false" required="true"></Input>
+         <Label text="Select File"></Label>
+         <unified:FileUploader id="fileUploaderpdf" uploadUrl="/upload/url" change="onFileChange" icon="sap-icon://upload" buttonText="Choose File"/>
+      </f:SimpleForm>
+      <buttons>
+         <Button text="Cancel" press="onCancelUploadpdf"/>
+         <Button text="Upload" press="onUploadFileattachpdf"/>
+      </buttons>
+   </Dialog>
+</core:FragmentDefinition>

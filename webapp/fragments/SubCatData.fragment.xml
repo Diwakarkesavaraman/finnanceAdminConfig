@@ -1,0 +1,65 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<ScrollContainer id="admincontrolsubcat" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
+		<Panel height="100%" class="admupdcontpanelcls">
+			<content>
+				<HBox class="tblhdrcls">
+					<Text text="SUB CAT CONFIG"/>
+					<HBox>
+						<Button type="Reject" text="Delete" press="onDeleteSubCatItems"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Accept" text="Update" press="onUpdateSubCatDets"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewSubItem"/>
+					</HBox>
+				</HBox>
+				<Table id="tabSubCat" alternateRowColors="false" items="{ path: 'oSubCatDataModel>/'}" growing="true" class="blueBackground surveytablecls"
+					mode="MultiSelect" selectionChange="onSelectionChange">
+					<columns>
+						<!--<Column width="9rem">-->
+						<!--	<header>-->
+						<!--		<Text text="Sub ID" class="whiteLabel"></Text>-->
+						<!--	</header>-->
+						<!--</Column>-->
+						<Column width="9rem">
+							<header>
+								<Text text="Parent ID" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column>
+							<header>
+								<Text text="Parent Title" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column>
+							<header>
+								<Text text="Sub Category" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column>
+							<header>
+								<Text text="Roles" class="whiteLabel"></Text>
+							</header>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle">
+							<cells>
+								<!--<Text text="{oSubCatDataModel>ZsubId}"></Text>-->
+								<Text text="{oSubCatDataModel>ZlevelId}"></Text>
+								<Text text="{oSubCatDataModel>Ztitle}"></Text>
+								<!--<Text text="{oAdminDispSiteDataModel>DispSite}"></Text>-->
+								<!--<Text text="{oAdminDispSiteDataModel>Lgort}"></Text>-->
+								<!--<Text text="{oAdminDispSiteDataModel>Orgeh}"></Text>-->
+								<!--<Text text="{oAdminDispSiteDataModel>Orgtxt}"></Text>-->
+								<Input value="{oSubCatDataModel>ZsubTitle}"></Input>
+								<Input value="{oSubCatDataModel>Zroles}"></Input>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</Panel>
+	</ScrollContainer>
+</core:FragmentDefinition>

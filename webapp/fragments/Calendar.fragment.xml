@@ -1,0 +1,134 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<ScrollContainer id="admincontrolgiscalendar" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
+		<Panel height="100%" class="admgisreppanelcls">
+			<content>
+				<HBox class="tblhdrcls">
+					<Text text="Financial Calendar Config"/>
+					<HBox>
+						<Button type="Reject" text="Delete Event" press="onDeleteCalendarItems"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Accept" text="Update Event" press="onUpdateCalendarDets"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Emphasized" icon="sap-icon://add" text="Add Event" press="onAddNewCalendarItem"/>
+					</HBox>
+				</HBox>
+				<Table id="tabCalendar" alternateRowColors="false" items="{ path: 'oCalendarModel>/'}" growing="true" class="blueBackground surveytablecls"
+					mode="MultiSelect" selectionChange="onSelectionChange">
+					<columns>
+						<Column>
+							<header>
+								<Text text="Start Date" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column>
+							<header>
+								<Text text="End Date" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column>
+							<header>
+								<Text text="Event Category" class="whiteLabel"></Text>
+							</header>
+						</Column>
+							<Column>
+							<header>
+								<Text text="Event" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column>
+							<header>
+								<Text text="Short Description" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<!--<Column>-->
+						<!--	<header>-->
+						<!--		<Text text="Detailed Description" class="whiteLabel"></Text>-->
+						<!--	</header>-->
+						<!--</Column>-->
+						<!--<Column>-->
+						<!--	<header>-->
+						<!--		<Text text="Event" class="whiteLabel"></Text>-->
+						<!--	</header>-->
+						<!--</Column>-->
+						<Column>
+							<header>
+								<Text text="Color" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<!--<Column width="9rem">-->
+						<!--	<header>-->
+						<!--		<Text text="Icons" class="whiteLabel"></Text>-->
+						<!--	</header>-->
+						<!--</Column>-->
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle">
+							<cells>
+								<!--<Text text="{oCalendarModel>ZcalId}"></Text>-->
+								<DatePicker id="inpcaldate"
+									value="{path:'oCalendarModel>Zstartdate', type:'sap.ui.model.type.Date', formatOptions: { UTC: true, style: 'medium', strictParsing: true }}"
+									placeholder="mm/dd/yyyy" change="onLoadFilterData" class="customDatePicker" required="true"></DatePicker>
+								<DatePicker id="inpcalenddate"
+									value="{path:'oCalendarModel>Zenddate', type:'sap.ui.model.type.Date', formatOptions: { UTC: true, style: 'medium', strictParsing: true }}"
+									placeholder="mm/dd/yyyy" change="onLoadFilterData" class="customDatePicker" required="true"></DatePicker>
+								<Input value="{oCalendarModel>Zcategory}"></Input>
+								<Input value="{oCalendarModel>Zevent}"></Input>
+								<Input value="{oCalendarModel>Zshortdesp}"></Input>
+								<!--<Input value="{oCalendarModel>Zdetaildesp}"></Input>-->
+								<!--<Input value="{oCalendarModel>Zevent}"></Input>-->
+								<Input id="colorcode" value="{path: 'oCalendarModel>Zcolor', formatter: '.formatter.formatColor'}" showValueHelp="true" valueHelpRequest="onColorValueHelp" placeholder="Select Color"></Input>
+								<!--<HBox id="iconSelectionBox" justifyContent="Start">-->
+								<!--	<Image src="img/calendarassets/dollar.svg" press="onIconSelect" class="iconStyle" width="25px" height="23px">-->
+								<!--		<customData>-->
+								<!--			<core:CustomData key="iconKey" value="dollar" writeToDom="true"/>-->
+								<!--			<core:CustomData key="style-class-ImgSelect" value="{= ${oCalendarModel>ZiconId} === 'dollar' ? 'selected' : ''}" writeToDom="true"/>-->
+								<!--		</customData>-->
+								<!--	</Image>-->
+								<!--	<Image src="img/calendarassets/meeting.svg" press="onIconSelect" class="iconStyle" width="25px" height="23px">-->
+								<!--		<customData>-->
+								<!--			<core:CustomData key="iconKey" value="meeting" writeToDom="true"/>-->
+								<!--			<core:CustomData key="style-class-ImgSelect" value="{= ${oCalendarModel>ZiconId} === 'meeting' ? 'selected' : ''}" writeToDom="true"/>-->
+								<!--		</customData>-->
+								<!--	</Image>-->
+								<!--	<Image src="img/calendarassets/reports.svg" press="onIconSelect" class="iconStyle" width="25px" height="23px">-->
+								<!--		<customData>-->
+								<!--			<core:CustomData key="iconKey" value="reports" writeToDom="true"/>-->
+								<!--			<core:CustomData key="style-class-ImgSelect" value="{= ${oCalendarModel>ZiconId} === 'reports' ? 'selected' : ''}" writeToDom="true"/>-->
+								<!--		</customData>-->
+								<!--	</Image>-->
+								<!--</HBox>-->
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+				<!--<form:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="2" columnsL="2" columnsXL="2" labelSpanM="2"-->
+				<!--	labelSpanL="2">-->
+				<!--<core:Title text="CALENDAR CONFIG"/>-->
+				<!--	<Label id="lblcalid" text="Calendar ID"></Label>-->
+				<!--	<Input id="inpcalid" value="" width="25rem" editable="false" required="true"></Input>-->
+				<!--	<Label id="lblcaldate" text="Date"></Label>-->
+				<!--<Select id="inpsusdbcatlevelid" forceSelection="false" selectedKey="" class="customInputDisabled" change="onChangeLevelId" required="true"-->
+				<!--	items="{ path: 'oLevelIdDataModel>/' }">-->
+				<!--	<core:Item key="{oLevelIdDataModel>ZlevelId}" text="{oLevelIdDataModel>ZlevelId} - {oLevelIdDataModel>Ztitle}"/>-->
+				<!--</Select>-->
+				<!--	<DatePicker id="inpcaldate" width="25rem" change="onLoadFilterData" class="customDatePicker" required="true"></DatePicker>-->
+				<!--	<Label id="lblcalevent" text="Event"></Label>-->
+				<!--	<Input id="inpcalevent" width="25rem" value="" required="true"></Input>-->
+				<!--	<Label id="lblcalicon" text="Icons"></Label>-->
+				<!--<Input id="inpcalicon" width="25rem" value="" required="true"></Input>-->
+				<!--	<HBox id="iconSelectionBox" justifyContent="Start">-->
+				<!--		<Image src="img/calendarassets/dollar.svg" press="onIconSelect" class="iconStyle" width="25px" height="23px"></Image>-->
+				<!--		<Image src="img/calendarassets/meeting.svg" press="onIconSelect" class="iconStyle" width="25px" height="23px"></Image>-->
+				<!--		<Image src="img/calendarassets/reports.svg" press="onIconSelect" class="iconStyle" width="25px" height="23px"></Image>-->
+				<!--	</HBox>-->
+				<!--</form:SimpleForm>-->
+				<!--<HBox>-->
+				<!--	<ToolbarSpacer width="20rem"/>-->
+				<!--	<Button type="Accept" width="12rem" text="Update" press="onUpdateSubCatDets"/>-->
+				<!--</HBox>-->
+			</content>
+		</Panel>
+	</ScrollContainer>
+</core:FragmentDefinition>

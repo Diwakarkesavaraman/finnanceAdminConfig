@@ -1,0 +1,2077 @@
+/* required fields star to be red */
+
+
+@font-face {
+    font-family: 'ghawarregular';
+    src: url('fonts/Ghawar_1.311-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'ghawarlight';
+    src: url('fonts/Ghawar_1.311-Light.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+
+:not(.sapUiIcon) {
+    font-family: 'ghawarregular';
+}
+
+/*.sapUiBody {*/
+/*    font-family: 'CustomFont', sans-serif !important;*/
+/*    font-weight: normal;*/
+/*    font-style: normal;*/
+/*}*/
+
+.sapMLabelRequired:before {
+    color: red !important;
+}
+
+/* Arrows in table breadcrumb navigation  */
+
+.sapMTB-Transparent-CTX .sapMLabel.crumbArrow {
+    margin-right: 0;
+}
+
+.sapMTB-Transparent-CTX .sapMText.crumbLast {
+    font-size: 0.875rem;
+    text-shadow: none;
+}
+
+
+.smallIcon .sapMITBFilterIcon,
+.smallIcon .sapMITBTab {
+    font-size: 1rem !important;
+    line-height: 2rem !important;
+    height: 2rem;
+    text-align: center !important;
+    width: 2rem;
+    margin-right: 0.5rem;
+}
+
+.smallIcon .sapMITBVertical {
+    height: 3rem;
+}
+
+.smallIcon .sapMITBItem {
+    display: inline-flex !important;
+    text-align: left;
+}
+
+.smallIcon .sapMITBArrowScroll {
+    top: 0 !important;
+}
+
+/*.smallIcon .sapMITBScrollContainer {
+    display: block;
+    margin: 0 !important;
+} */
+.smallIcon .sapMITBHead {
+    margin: 0.5rem 0.75rem 0 0.25rem !important;
+}
+
+
+/**/
+
+.smallMasterIcon .sapMITBFilterIcon,
+.smallIcon .sapMITBTab {
+    font-size: 1rem !important;
+    line-height: 2rem !important;
+    height: 2rem;
+    text-align: center !important;
+    width: 2rem;
+}
+
+.smallMasterIcon .sapMITBFilter {
+    margin: 0 0rem !important;
+}
+
+.smallMasterIcon .sapMITBVertical {
+    /* height: 3rem; */
+}
+
+.smallMasterIcon .sapMITBItem {
+    /* display: inline-flex !important; */
+    /* text-align: left; */
+}
+
+.smallMasterIcon .sapMITBArrowScroll {
+    top: 0 !important;
+}
+
+.smallMasterIcon .sapMITBScrollContainer {
+    display: block;
+    margin: 0 !important;
+}
+
+/* .smallMasterIcon .sapMITBHead {
+     margin: 0.5rem 0.75rem 0 0rem !important;
+} */
+
+.smallMasterIcon .sapMITBFilter:last-child,
+.sapMITBNoText .sapMITBFilter:last-child {
+    padding-right: 0rem;
+}
+
+
+/**/
+
+.content .sapMITBContent {
+    padding: 0 !important;
+}
+
+/* .basicForm .sapUiSmallMargin {
+    margin: 0!important;
+} */
+
+.basicForm .sapMITBContent,
+.basicForm .sapUiFormResGrid>div {
+    padding: 0 !important;
+}
+
+.itemTable .sapMSplitContainerDetail .sapUiResponsiveMargin {
+    margin: 0 !important;
+}
+
+.attch .sapMLIB.sapMUCItem.sapMUCListFirstItem,
+.attch .sapMLIB.sapMUCItem.sapMUCListLastItem,
+.attch .sapMLIB.sapMUCListSingleItem,
+.attch .sapMLIB.sapMUCItem.sapMUCListItem {
+    padding-left: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.attch .sapMUCFileName.sapMLnk {
+    font-size: 0.77rem !important;
+    padding-top: 0.9rem !important;
+}
+
+.sapMSplitContainerMaster {
+    width: 335px !important;
+}
+
+
+.BiggerLabel {
+    width: 12% !important;
+}
+
+.sapContrast.sapMFooter-CTX .sapMSegBBtn.sapMSegBBtnSel,
+.sapContrast .sapMFooter-CTX .sapMSegBBtn.sapMSegBBtnSel {
+    color: #2f3c48 !important;
+}
+
+.sapContrast.sapMFooter-CTX .sapMSegBBtn,
+.sapContrast .sapMFooter-CTX .sapMSegBBtn {
+    color: #cae4fb !important;
+
+
+}
+
+
+.sapContrast.sapMSegBBtn.sapMSegBBtnSel,
+.sapContrast .sapMSegBBtn.sapMSegBBtnSel {
+    background: #62b0f2 !important;
+}
+
+
+.roundedActionTile {
+
+    position: relative;
+    top: 4;
+    left: 2;
+    border: 1px solid #dddddd;
+    background: #a1ffce;
+    background: -webkit-linear-gradient(to right, #a1ffce, #faffd1);
+    background: linear-gradient(to right, #a1ffce, #faffd1);
+    display: inline-block;
+    transition-property: transform2d;
+    transition-duration: 0.2s;
+    margin: 2rem;
+    border-radius: 5rem;
+    width: 10rem !important;
+    height: 10rem !important;
+    outline: 0;
+}
+
+
+.roundedActionTileContent {
+    overflow: inherit;
+    width: 14rem;
+    height: 14rem;
+}
+
+
+
+.roundedActionTileIcon {
+    width: 8rem !important;
+    height: 8rem !important;
+    line-height: 2rem !important;
+    font-size: 8rem !important;
+    padding-left: 1rem !important;
+    padding-top: 1rem !important;
+
+}
+
+
+
+.roundedActionTileTitle {
+    line-height: 0.02rem !important;
+    vertical-align: center;
+    text-align: center !important;
+
+    height: 4rem;
+    width: 100%;
+    overflow: inherit;
+    word-break: break-word !important;
+}
+
+
+.background {}
+
+/* Inspection Image Popup Smaller Dimension */
+.logImgFit {
+    width: unset !important;
+    height: -webkit-fill-available !important;
+}
+
+.logDialogFit {
+    text-align: center;
+}
+
+/* Force UpperCase */
+
+.upper_case {
+    text-transform: uppercase !important;
+}
+
+.row {
+    background-color: red !important;
+}
+
+.sapMLIB.sapMLIBSelected {
+    background: #e8eff6;
+}
+
+.statusTxt {
+    color: #4280ac;
+    font-weight: bold;
+}
+
+.red {
+    background: aquamarine !important;
+}
+
+.start .sapMBtnInner {
+    background: aquamarine !important;
+    color: black !important;
+}
+
+.scroll {
+    color: blue !important;
+}
+
+.sel .sapMInputBaseInner {
+    background: aquamarine !important;
+}
+
+.sel2 .sapMInputBaseInner {
+    background: white !important;
+}
+
+.guide .sapMLIBFocusable:hover {
+    background-color: aquamarine !important;
+}
+
+.table .sapMLIBFocusable:hover {
+    background-color: white !important;
+}
+
+.guide .sapMLIBFocusable:focus {
+    outline: 5px solid #000000;
+    outline-offset: -5px;
+    outline-color: aquamarine !important;
+}
+
+
+
+tr[data-wcposidstat="CLSD"],
+tr[data-wcposidstat="TECO"] {
+    background-color: #ffbebe !important;
+}
+
+tr[data-wcposidstat="CLSD"]:hover,
+tr[data-wcposidstat="TECO"]:hover {
+    background-color: #ff9797 !important;
+}
+
+
+
+
+tr[data-accrued="true"] {
+    background-color: #d1fcd5 !important;
+}
+
+tr[data-accrued="true"]:hover {
+    background-color: #9ef1a0 !important;
+}
+
+
+
+
+tr[data-accrued="false"] {
+    background-color: #ffbebe !important;
+}
+
+tr[data-accrued="false"]:hover {
+    background-color: #ff9797 !important;
+}
+
+
+tr[data-accrued="warning"] {
+    background-color: #fefaa9 !important;
+}
+
+tr[data-accrued="warning"]:hover {
+    background-color: #fceb8b !important;
+}
+
+
+
+.boldText {
+    text-weight: bold !important;
+}
+
+
+tr[data-accrueda="(BI Total)"] {
+    background-color: #fabd64 !important;
+}
+
+tr[data-accrueda="(Grand Total)"] {
+    background-color: #91c8f6 !important;
+
+}
+
+tr[data-ZuMfRprtStat="RPRTD"] {
+    background-color: #ffbebe !important;
+}
+
+tr[data-ZuMfRprtStat="RPRTD"]:hover {
+    background-color: #ff9797 !important;
+}
+
+.ratingred .sapMRISelector {
+
+    background: red;
+}
+
+.ratingorange .sapMRISelector {
+
+    background: orange;
+}
+
+.ratinggreen .sapMRISelector {
+
+    background: green;
+}
+
+.InputRed .sapMInputBaseInner {
+    background: orange no-repeat;
+
+}
+
+.sapMImageContentImageIcon.sapUiIcon {
+    font-size: 5rem !important;
+    color: #388bd2 !important;
+}
+
+.sapMImageContentImageIcon {
+    position: inherit !important;
+}
+
+.sapMGTHdrContent {
+    height: 2.625rem !important;
+}
+
+.sapMGTHdrTxt>.sapMText {
+    color: #919191 !important;
+    font-weight: bold !important;
+}
+
+.sapMLabel {
+    font-weigh: Bold;
+}
+
+
+.sapMTB-Info-CTX.sapMTB .sapMText,
+.sapMTB-Info-CTX.sapMTB .sapMLabel,
+.sapMTB-Info-CTX.sapMTB>.sapMTitle,
+.sapMTB-Info-CTX.sapMTB>.sapUiIcon {
+    color: inherit;
+    font-weight: bold;
+}
+
+
+.whiteLabel {
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
+.rarheadercls {
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
+.greenBackground .sapMTableTH {
+    background: #0854A0 !important;
+}
+
+
+.blueBackground .sapMTableTH {
+    background: #0854A0 !important;
+}
+
+.whiteBackground .sapMTableTH {
+    background: #fff !important;
+}
+
+.hdttoolbarBackground .sapMTB.sapMTBStandard {
+    background: transparent !important;
+}
+
+.rarBackground .sapMTB.sapMTBStandard {
+    border: none !important;
+}
+
+.rarBackground .sapMListTblCell.sapMListTblCellNoData {
+    color: white !important;
+}
+
+/*.rarBackground .sapMListTblCell.sapMListTblCellNoData {*/
+/*    border: none !important;*/
+/*}*/
+
+.rarBackground .sapMListTblCell.sapMListTblHeaderCell {
+    width: 13rem !important;
+}
+
+.tableStyle .sapUiTableCell.sapUiTableHeaderCell {
+
+    background-color: #0854A0 !important;
+
+}
+
+
+.whiteLabelTree.sapMLabel {
+    color: #666;
+    font-size: .875rem;
+    font-family: "72", "72full", Arial, Helvetica, sans-serif;
+    font-weight: normal;
+    display: inline-block;
+    white-space: nowrap;
+    cursor: text;
+    overflow: hidden;
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
+
+/* Home Page Contract Id and Wbs Element Style - Start */
+/* .tableStyle div.tableStyle-selall, .tableStyle div.sapUiTableColHdrFixed, .tableStyle div.sapUiTableColHdrScr, .tableStyle div.sapUiTableSelAll, .tableStyle div.sapUiTableColRowHdr
+{
+ 
+ 
+  background-color: rgb(0,163,224);
+  //background-color: rgb(0,51,160);                   //A new UX theming - Shiva - 15022016
+} */
+.tableStyle tbody tr:nth-child(even) {
+    background: #fafafa !important;
+}
+
+
+/*div[data-accrued="true"], div[data-accrued="true"] {
+	color: #2b7c2b !important;
+}
+
+
+div[data-accrued="false"], div[data-accrued="false"] {
+	color: rgb(187, 0, 0) !important;
+}*/
+
+
+/* Code added by RAJENDNK */
+
+.customVboxCls {
+    height: 200px !important;
+    padding-top: 20px !important;
+    padding-left: 70px !important;
+}
+
+
+.customBlockLayoutCell {
+    background-image: linear-gradient(to right, #633378, #B5352C);
+    border-radius: 25px !important;
+    margin: 0 0.5rem 0 0.5rem !important;
+}
+
+/* Standard class override by RAJENDNK */
+
+.sapTntToolPageMain {
+    margin: 0 0 0.8rem 0 !Important;
+    /*box-shadow: none !important;*/
+    border-radius: 25px !important;
+    /*background: white !important;*/
+}
+
+.cntntcfgpnlcls .sapMPanelContent:not(.sapMPanelBGTransparent) {
+    border-bottom: none !important;
+
+}
+
+/* Standard class override by RAJENDNK */
+
+.scrollContainerClass::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollContainerClass {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.homeTitleCls {
+    font-size: 30px !important;
+    /*font-weight: 550 !important;*/
+    color: white !important;
+}
+
+.homeSubTitle1Cls {
+    font-size: 18px !important;
+    /*font-weight: 450 !important;*/
+    color: white !important;
+}
+
+.homeSubTitle2Cls {
+    font-size: 16px !important;
+    font-weight: lighter;
+    color: white !important;
+}
+
+.homeSubTitle3Cls {
+    font-size: 14px !important;
+    font-weight: lighter;
+    color: #E9730C !important;
+    cursor: pointer;
+}
+
+.customfreqaskquesbtncls {
+    font-size: 14px;
+    color: #E9730C !important;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.freqaskhboxcls {
+    display: flex;
+    align-items: center;
+    margin-top: 2rem;
+    cursor: pointer;
+}
+
+/*.homeSubTitle3Cls:hover{*/
+/*	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);*/
+/*    transform: translateY(-4px);*/
+/*}*/
+/*.*/
+
+
+.homeHeadingCls {
+    font-size: 17px !important;
+    font-family: ghawarlight;
+}
+
+.tileTextCls {
+    font-size: 19px !important;
+    /*font-weight: 700 !important;*/
+}
+
+.tileTextCls1 {
+    font-size: 13px !important;
+    font-weight: lighter;
+    color: #6A6D70;
+    font-family: ghawarlight;
+    margin-top: 0.5rem !important;
+    /*font-weight: 550 !important;*/
+}
+
+.headerBarLine {
+    font-size: 20px !important;
+    padding-left: 20px !important;
+}
+
+.headerBarTitle {
+    font-size: 25px !important;
+    color: #727272 !important;
+    /*font-weight: lighter;*/
+    font-family: 'ghawarlight';
+    cursor: pointer;
+    /*padding-left: 20px !important;*/
+}
+
+.headerBarSubTitle {
+    font-size: 23px !important;
+    color: #727272 !important;
+    /*font-weight: lighter;*/
+    font-family: 'ghawarlight';
+    cursor: pointer;
+    /*padding-left: 20px !important;*/
+}
+
+.pagesNormTitlecls {
+    font-size: 25px !important;
+    color: #727272 !important;
+    font-family: ghawarlight;
+    margin-left: 30px;
+}
+
+
+
+.sapUiBlockLayoutBackgroundDashboard .sapUiBlockCellContent {
+    box-shadow: none !important;
+}
+
+.customVboxCls1 {
+    height: 4rem !important;
+}
+
+.customIconSizeButton .sapUiIcon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+}
+
+.hoverPointer {
+    cursor: pointer !important;
+    background-color: #fff;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    /*padding: 10px*/
+    margin: 1rem 0.6rem 0.6rem 0.6rem !important;
+
+}
+
+.hoverPointer:hover {
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    transform: translateY(-4px);
+    background-color: #e0e0e0;
+}
+
+.customNavListCls {
+    /*margin-top: 0.4rem !important;*/
+    /*margin-left: 0.7rem !important;*/
+}
+
+
+/*Standard class overridden RAJENDNK*/
+.sapTntNLI a {
+    border-radius: 0px !important;
+    border-bottom: 0.1px solid #C7C7C7 !important;
+    margin: 0.8rem 0 0.8rem 0;
+}
+
+.sapTntNavLI a:last-child {
+    border-bottom: none
+        /* Remove border-bottom for the last item */
+}
+
+.sapTntNavLIItem .sapTntNavLIGroupIcon {
+    color: black !important;
+}
+
+.sapTntToolPageAsideContent {
+    margin: 15px !important;
+    /*border-radius: 25px !important;*/
+}
+
+.sapTntSideNavigationSeparator {
+    margin: 0px !important;
+    background-color: #C7C7C7 !important;
+}
+
+.sapTntToolHeader .sapMITH {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.sapUiBlockLayoutSizeL:not(.sapUiBlockLayoutKeepFontSize) .sapUiBlockCellContent {
+    padding: 1rem !important;
+}
+
+.sapMScrollCont.sapUiContentPadding>.sapMScrollContScroll {
+    padding: 0px !important;
+}
+
+.sapUiBlockLayoutBackgroundDashboard .sapUiBlockCellContent {
+    border-radius: 30px !important;
+}
+
+/*Standard class overridden RAJENDNK*/
+
+.verticalSeparator {
+    width: 1px;
+    background-color: #A3A3A3;
+    height: 30px;
+    margin: 0 25px;
+}
+
+.surveypanelcls .sapMPanelBGTranslucent {
+    background-color: unset !important;
+}
+
+.surveypanelchangesurveycls .sapMPanelBGTranslucent {
+    background-color: unset !important;
+}
+
+.surveypanelchangesurveycls .sapMPanelContent {
+    overflow: hidden !important;
+}
+
+.surveypanelchangesurveylistcls .sapMPanelBGTranslucent {
+    background-color: unset !important;
+}
+
+.crsinceformcls .sapUiFormResGrid.sapUiFormBackgrTranslucent {
+    background-color: unset !important;
+}
+
+.getdatasrchcls {
+    display: flex !important;
+    width: 100% !important;
+    align-items: center !important;
+    /*margin-left: 1.5rem !important;*/
+}
+
+.crtdsncelabelcls {
+    font-size: 13px;
+}
+
+.getdatabtncls {
+    margin-left: 1rem !important;
+}
+
+.icontabcustomcls .sapMITH {
+    border-radius: 25px !important;
+}
+
+.icontabbarcontentcls .sapMITBContent .sapMITBContainerContent {
+    padding: 1rem 0 0 0 !important;
+}
+
+/* customStyles.css */
+.customTabFilter .sapMITBText {
+    font-size: 18px !important;
+    /* Adjust the text size as needed */
+}
+
+.customTabFilter .sapMITBFilterIcon {
+    font-size: 2rem !important;
+    width: 2rem !important;
+    height: 2rem !important;
+
+}
+
+
+
+.surveycountVboxcls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 10px !important;
+    margin-left: 20px !important;
+    cursor: pointer;
+}
+
+
+.verticalSeparatorsurvey {
+    width: 1px;
+    background-color: #C5C5C5;
+    height: 45px;
+    margin-left: 40px !important;
+
+}
+
+.surveycnttxtcls {
+    font-size: 15px;
+    color: #0854A0 !important;
+    cursor: pointer !important;
+}
+
+.surveycntnumcls {
+    cursor: pointer !important;
+}
+
+.icontabheadercls {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.sapMITH {
+    box-shadow: none !important;
+}
+
+.surveytntcls {
+    border-radius: 25px !important;
+    display: flex;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.surveyspectntcls {
+    border-radius: 25px !important;
+    display: flex;
+    align-items: center !important;
+    justify-content: space-between !important;
+    /*width: 96.02%;*/
+    /*position: fixed;*/
+}
+
+
+.tntheaderbtncls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.strgyrdcrttntcls {
+    border-radius: 25px !important;
+    padding: 10px;
+    display: flex;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin: 20px 10px 0 10px !important;
+}
+
+
+.customTabFilter .sapMIconTabFilterIcon {
+    font-size: 24px;
+    /* Adjust the icon size */
+}
+
+.customTabFilter .sapMIconTabFilterText {
+    font-size: 16px;
+    /* Adjust the text size */
+}
+
+.customTabFilter .sapMIconTabFilterText {
+    display: block;
+    text-align: center;
+    /* Center the text */
+}
+
+.customTableBorderRadius {
+    border-radius: 10px !important;
+    /*overflow: hidden; */
+}
+
+.surveytablecls {
+    border-radius: 15px !important;
+    overflow: auto !important;
+}
+
+.normreporttablecls {
+    border-radius: 15px !important;
+    padding: 0.5rem 1rem 1rem 1rem !important;
+    height: 100%;
+    /*overflow: hidden !important;*/
+}
+
+.nrmrptpercentcls {
+    font-size: 12px;
+    color: #727272;
+}
+
+.normrprthdrfltrboxcls {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+    padding-top: 0.5rem;
+}
+
+
+.scrollContainer {
+    padding-top: 2rem !important;
+    margin-left: 0.9rem !important;
+    width: 98% !important;
+    /*transition: opacity 0.5s ease, transform 0.5s ease;*/
+    /*opacity: 0;*/
+    /*transform: translateX(-100%);*/
+}
+
+.scrollContainerUsrParam {
+    padding-top: 0.9rem !important;
+    margin-left: 0.9rem !important;
+    width: 98% !important;
+    /*transition: opacity 0.5s ease, transform 0.5s ease;*/
+    /*opacity: 0;*/
+    /*transform: translateX(-100%);*/
+}
+
+
+.scrollContainersrvy {
+    /*margin-top: 4.7rem !important;*/
+    /* Adjust to the height of the ToolHeader */
+    /*position: relative;*/
+    padding-top: 2rem !important;
+    margin-left: 0.9rem !important;
+    width: 98% !important;
+    /*opacity: 1;*/
+    /*visibility: visible;*/
+    /*transition: opacity 1s ease-in-out, visibility 1s ease-in-out;*/
+    /*animation: slideInFromRight  0.1s ease-in-out;*/
+    /*transition: opacity 0.5s ease, transform 0.5s ease;*/
+    /*opacity: 0;*/
+    /*transform: translateX(-100%);*/
+}
+
+.scrollContainersrvy.hidden {
+    opacity: 0;
+    visibility: hidden;
+    /*animation: slideInFromRight 0.5s ease-in-out;*/
+}
+
+.scrollContainersrvyitem {
+    margin-top: 4.7rem !important;
+    /* Adjust to the height of the ToolHeader */
+    position: relative;
+    padding-top: 2rem !important;
+    margin-left: 0.9rem !important;
+    width: 98% !important;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+
+    animation: slideInFromRight 1s ease-in-out;
+}
+
+.scrollContainersrvy.hidden {
+    opacity: 0;
+    visibility: hidden;
+    animation: slideInFromRight 1s ease-in-out;
+    transition: opacity 1s ease-in-out, visibility 1s ease-in-out;
+}
+
+
+
+.vboxwrappsrvycls {
+
+    /* Ensure it's the context for absolute positioning */
+
+}
+
+/*.scrollContainersrvy.sapUiHidden {*/
+/*    opacity: 0;*/
+/*    animation: slideInFromRight 2s ease-in-out;*/
+/*}*/
+
+
+/*.visible {*/
+
+/*    transition: opacity 0.5s ease-in-out;*/
+/*    opacity: 1;*/
+/*}*/
+
+/*.hidden {*/
+
+/*    transition: opacity 0.5s ease-in-out;*/
+/*    opacity: 0;*/
+/*    display: none;*/
+/*}*/
+
+
+/*.scrollContainer.visible,*/
+/*.scrollContainerChngSurvey.visible {*/
+/*    opacity: 1;*/
+/*    transform: translateX(0);*/
+/*}*/
+
+.scrollContainerNormReport {
+    /*padding-top: 2rem !important;*/
+    margin-left: 0.9rem !important;
+    width: 98% !important;
+    overflow: visible !important;
+    /*margin: 0 1rem 0 1rem;*/
+}
+
+.sapTntToolPage {
+    background-color: transparent !important;
+}
+
+
+.testmargincls {
+    margin-top: 4rem !important;
+}
+
+.logoheadercls {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0 0 1.5rem;
+}
+
+.customSeparator {
+    width: 100%;
+    height: 1px;
+    background-color: #D0D0D0;
+    /* Adjust color as needed */
+    margin: 10px 0;
+    /* Adjust spacing as needed */
+}
+
+.mainnavcontainer {
+    margin-left: 16rem;
+}
+
+.customnavhboxcls {
+    display: flex;
+    align-items: center;
+    margin: 0 0 0 10px;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.customnavhboxinnercls {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding-left: 10px !important;
+}
+
+.navseparatorcls.sapMTBSeparator {
+    margin: 0 15px 0 15px !important;
+
+    /*height: 1.5rem !important;*/
+}
+
+.customnavhboxbtncls {
+    font-size: 18px;
+}
+
+/*.customnavhboxbtncls :not(.sapMBtnDisabled) .sapMBtnBack>.sapMBtnIcon,*/
+/*:not(.sapMBtnDisabled) .sapMBtnTransparent>.sapMBtnIcon {*/
+/*    color: black;*/
+/*}*/
+
+.customnavhboxtextcls {
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.customnavhboxtextcls1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    /*cursor: pointer;*/
+    padding: 0px 10px 0px 10px;
+    /*color: #0854A0;*/
+}
+
+
+/*Standard class overridden RAJENDNK*/
+.sapTntToolPageAside {
+    height: 97% !important;
+}
+
+.sapTntSideNavigation {
+    border-radius: 16px !important;
+}
+
+.sapTntNLIFirstLevel .sapTntNLIText {
+    font-weight: lighter !important;
+}
+
+.sapMITBFilter .sapMITBText .sapMITHTextContent {
+    font-weight: lighter !important;
+}
+
+/**/
+
+.sidenavtextcls {
+    font-family: ghawarlight !important;
+    /*font-weight: lighter !important;*/
+}
+
+.flexcolumncls {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 15rem !important;
+    padding: 10px;
+}
+
+.wastedumpvalue {
+    font-size: 35px;
+    font-family: ghawarlight;
+}
+
+.wastedumptxt {
+    padding-left: 0.6rem;
+    font-size: 15px;
+    font-family: ghawarlight;
+}
+
+.flexrowbaselinecls {
+    display: flex;
+    align-items: baseline;
+
+
+}
+
+.chart7hboxcls {
+    display: flex;
+    justify-content: space-between;
+}
+
+/*Standard classes overridden RAJENDNK*/
+
+.sapFFCL,
+.sapFFCL.sapMNavItem:not(.sapMNavItemHidden) {
+    /*margin: 1rem 2rem 1rem 2rem !important;*/
+    /*width: 95.5% !important;*/
+    height: 70vh !important;
+}
+
+
+@media only screen and (min-width: 1024px) {
+    .strgyrdtablescrollcls {
+        height: 65vh !important;
+    }
+}
+
+@media only screen and (min-width: 1800px) {
+    .strgyrdtablescrollcls {
+        height: 75vh !important;
+    }
+}
+
+.sapTntToolHeader.sapMTB {
+    box-shadow: none !important;
+}
+
+.sapFFCL .sapFFCLColumnSeparator {
+    background-color: unset !important;
+}
+
+.sapFFCL>.sapFFCLColumnActive.sapFFCLColumnFirstActive {
+    border: none !important;
+
+}
+
+.sapFFCL .sapFFCLColumnContent {
+    border: 0.5px solid white !important;
+}
+
+.sapMNav {
+    /*border-radius: 25px !important;*/
+}
+
+.sapFFCL>.sapFFCLColumnActive.sapFFCLColumnLastActive {
+    border-right: none;
+    border-left: none !important;
+}
+
+.chngsrvyfclwrapperbegincls .sapFFCLColumnBegin {
+    width: 23vw !important;
+}
+
+.chngsrvyfclwrapperbegincls .sapFFCLColumnMid {
+    width: 75vw !important;
+}
+
+.sapFFCLNavigationButton .sapMBtnInner,
+.sapUiSizeCompact .sapFFCLNavigationButton .sapMBtnInner {
+    display: none;
+}
+
+
+/*Standard classes overridden RAJENDNK*/
+
+.chngsrvyitemdetsvboxcls {
+    padding: 20px;
+}
+
+.itemlisttitlecls {
+    /*color: white !important;*/
+    /*background-color: blue !important;*/
+}
+
+.chngsrvyseperatorlinecls {
+    width: 100%;
+    height: 1px;
+    background-color: #D0D0D0;
+    /* Adjust color as needed */
+    margin: 0 30px 0 0;
+}
+
+.chngsrvyitemscrollcls {
+    margin-top: 1rem !important;
+}
+
+.whitebackground {
+    background-color: white !important;
+}
+
+.pageTitle {
+    /*background-color: red !important;*/
+}
+
+.chngsrvyitemstitlebox {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.chngsrvyitemstitlebox1 {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-top: 0.7rem;
+}
+
+.chngsrvyitemstitle {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.chngsrvyitemstitle1 {
+    font-size: 18px;
+    /*margin-bottom: 10px;*/
+}
+
+.chngsrvyitemstitle1cbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.chngsrvysryorcbox {
+    display: flex;
+    align-items: center;
+}
+
+.chngsrvydetsboxcls {
+    padding: 15px 30px 15px 15px;
+}
+
+.flexjustsbcls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.flexrowalcentercls {
+    display: flex;
+    align-items: center;
+}
+
+.chngsrvysrvyorbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 33%;
+    margin-left: 12px;
+}
+
+.chngsrvysrvyorlistcls .sapMLIB {
+    border-bottom: none !important;
+}
+
+.strgyrdcls {
+    padding: 10px 20px 20px 20px !important;
+}
+
+.custom-heading {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px 0 20px 0px;
+    /*color: #333;*/
+}
+
+/*.custom-radio-button {*/
+/*    margin: 10px;*/
+/*}*/
+
+/*.custom-check-box {*/
+/*    margin: 10px;*/
+/*}*/
+
+.custom-input {
+    width: 100%;
+    margin: 5px 0;
+}
+
+.custom-label {
+    /*font-weight: bold;*/
+    /*margin-bottom: 5px;*/
+}
+
+.custom-label {
+    text-align: right;
+    padding-right: 1rem;
+    white-space: nowrap;
+}
+
+.custom-control {
+    /*margin-left: 0.5rem; */
+}
+
+.custom-controlinp {
+    /*margin-left: 0.5rem; */
+    /*   padding-right: 0.5rem !important; */
+}
+
+
+.custom-button {
+    margin-left: 0.9rem !important;
+}
+
+.custom-button-supptckt {
+    margin-left: 0.1rem !important;
+}
+
+
+.custom-button1 {
+    margin-left: 5px !important;
+}
+
+
+/*.custom-grid-style {*/
+/*border: 1px solid #ccc;*/
+/*padding: 0.5rem;*/
+/*}*/
+
+
+.custom-grid-style {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/*.custom-radio-button {*/
+/*    margin-top: 5px;*/
+/*}*/
+
+/*.custom-check-box {*/
+/*    margin-top: 5px;*/
+/*}*/
+
+/*.custom-input {*/
+/*    margin-top: 5px;*/
+/*}*/
+
+
+/*.custom-label {*/
+/*    margin-right: 1rem;*/
+/*}*/
+
+/*.custom-control {*/
+/*    margin-left: 1rem; */
+/*}*/
+
+
+
+
+.strgyrdtntcls {
+    border-radius: 25px !important;
+    display: flex;
+    align-items: center !important;
+    /*justify-content: space-between !important;*/
+    margin-bottom: 20px;
+}
+
+.strgyrdtitle {
+    font-size: 20px;
+}
+
+.strgyrdvsepratorcls {
+    height: 60px;
+    width: 1px;
+    background-color: #A3A3A3;
+}
+
+.customBackground {
+    width: 100%;
+    height: 100%;
+    /*padding-top: 20px !important;*/
+}
+
+.customBackground1 {
+    width: 100%;
+    height: 70vh;
+    background-color: white;
+}
+
+
+.strgyrdcnewpanelcls {
+    /*height: 80vh !important;*/
+    margin: 15px !important;
+}
+
+.custom-file-layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.file-size-msg {
+    text-align: right;
+    display: block;
+    font-size: 15px !important;
+    color: grey;
+}
+
+
+.custom-horizontal-layout {
+    display: flex;
+    align-items: center;
+    padding-left: 40px;
+}
+
+
+.custom-horizontal-layout1 {
+    display: flex;
+    padding-left: 40px;
+}
+
+.size1 {
+    font-size: 1.3rem;
+}
+
+.strgyrdduetxtboxcls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    /*margin-top: 10px;*/
+    /*margin-left: 25px;*/
+}
+
+.my-inline-style {
+    display: inline-block;
+    background-color: red;
+    /* Temporary color to check visibility */
+}
+
+.year0cls[data-style-class-Year0=year0] .sapMInputBaseInner {
+    background-color: orange !important;
+}
+
+.totalbline[data-style-class-Total=TOTAL] {
+    font-weight: 700 !important;
+}
+
+[data-style-class-Highlight="filled"] .sapMBtnIcon {
+    /*background-color: #F05F41 !important;*/
+    background-color: #0064d9 !important;
+    color: white !important;
+    /*border-radius: 5px !important;*/
+}
+
+
+.sapUiTableCnt {}
+
+.centertextalign {
+    text-align: center !important;
+    margin-left: 20px;
+}
+
+.sapUiTableCnt {
+    background-color: unset !important;
+    /*border: transparent;*/
+    border-radius: 25px !important;
+}
+
+
+.customDatePicker .sapMInputBaseIcon {
+    color: #0854A0 !important;
+    /* Change to your desired color */
+    /*background: #0854A0 !important;*/
+}
+
+.reportheaderboxcls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.reportheadingbox {
+    margin-left: 20px;
+}
+
+.reportheadingcls {
+    font-size: 20px;
+    color: #727272 !important;
+    /*font-weight: lighter;*/
+    font-family: 'ghawarlight';
+}
+
+.crtnwstrgdialogcls {
+    padding: 10px !important;
+}
+
+.strgyrdheadervaluescls {
+    display: flex;
+    /*width: 60%;*/
+    padding-left: 20px;
+    align-items: center;
+    /*justify-content: space-between;*/
+}
+
+
+
+.strgyrdheadervaluesvboxcls {
+    display: flex;
+    /*width: 60%;*/
+    padding-left: 20px;
+    /*justify-content: center;*/
+    /*justify-content: space-between;*/
+}
+
+.strgyrdheadervaluesupdcls {
+    display: flex;
+    align-items: center !important;
+    /*width: 20rem !important;*/
+    padding-right: 20px;
+    padding-left: 20px;
+    /*justify-content: space-between;*/
+}
+
+
+.strgyrdheaderdropdownwrapcls {
+    display: flex;
+    align-items: center !important;
+    /*width: 20rem !important;*/
+    padding-right: 60px;
+}
+
+.strgyrdheaderdropdownwrapcls1 {
+    display: flex;
+    align-items: center !important;
+    /*width: 20rem !important;*/
+    /*padding-right: 20px;*/
+}
+
+.strgyrdhdrtxtcls {
+    font-size: 15px;
+    padding-right: 20px;
+}
+
+.strgyrdhdrtxtcls1 {
+    font-size: 15px;
+    width: 10rem;
+}
+
+.vboxrarhdrspeccls {
+    display: flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+    padding: 0px 20px 0px 20px
+}
+
+.vboxrarhdrcls {
+    display: flex;
+    flex-direction: column;
+    /*justify-content: center;*/
+    /*padding: 0px 20px 0px 20px*/
+}
+
+
+
+.rarcountxtcls {
+    font-size: 25px !important;
+    font-weight: 700 !important;
+    color: black !important;
+}
+
+.rarcountboxcls {
+    padding-left: 20px;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.rarreportxtcls {
+    font-size: 13px !important;
+    padding-left: 10px;
+    color: black !important;
+    font-weight: lighter !important;
+}
+
+.attachment-filled-button {
+    /*margin-left: 0.9rem !important;*/
+}
+
+.attachment-filled-button .sapMBtnIcon {
+    background-color: #0064d9 !important;
+    color: white !important;
+    border-radius: 5px !important;
+}
+
+.attachment-filled-button1 {
+    margin-left: 0.9rem !important;
+}
+
+.attachment-filled-button1 .sapMBtnIcon {
+    background-color: #0064d9 !important;
+    color: white !important;
+    border-radius: 5px !important;
+}
+
+.attachment-filled-button-supptckt {
+
+    /*margin-left: 0.9rem !important;*/
+}
+
+.attachment-filled-button-supptckt .sapMBtnIcon {
+    background-color: #0064d9 !important;
+    color: white !important;
+    border-radius: 5px !important;
+}
+
+.notifbtncls .sapMBtnIcon {
+    border: none !important;
+    font-size: 1.4rem !important;
+    font-weight: lighter !important;
+}
+
+html.sap-desktop .sapMBtn:focus>.sapMFocusable:not(.sapMBadgeIndicator):before {
+    border: none !important;
+}
+
+.notificationBadge {
+    background-color: red !important;
+    color: white !important;
+    border-radius: 50%;
+    padding: 0.3rem 0.5rem;
+    position: relative;
+    top: -10px;
+    left: -20px;
+    font-size: 0.75rem;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.notif-content {
+    display: flex !important;
+    align-items: center !important;
+    padding: 10px !important;
+    cursor: pointer;
+}
+
+.notif-alert-icon {
+    font-size: 1.3rem !important;
+    color: #F68930 !important;
+    cursor: pointer !important;
+}
+
+.notif-text {
+    margin-left: 10px !important;
+    cursor: pointer !important;
+}
+
+.srvymstrtitlewrapcls {
+    display: flex !important;
+    align-items: center !important;
+    background-color: #0854A0 !important;
+}
+
+.srvymstrtitlecls {
+    font-size: 17px !important;
+    color: white !important;
+}
+
+.customnavhboxbtncls1 .sapUiIcon {
+    font-size: 18px;
+    color: white !important;
+}
+
+.customnavhboxbtncls1 .sapUiIcon:hover {
+
+    color: #0854A0 !important;
+    background-color: transparent !important;
+}
+
+.stickyColumn {
+    position: sticky !important;
+    top: 0 !important;
+    background-color: #ffffff !important;
+    /* Background color of the header */
+    z-index: 1 !important;
+    /* Ensure it stays on top of scrolling content */
+}
+
+.admincontrolsvboxwrapcls {
+    /*padding: 10px !important;*/
+}
+
+.admncntrlstabcls .sapMITH {
+    background-color: unset !important;
+    box-shadow: none !important;
+    font-size: 20px !important;
+    border-bottom: none !important;
+    /*padding: 0.8rem 0 0.8rem;*/
+    margin: 0px !important;
+}
+
+.admncntrlstabcls .sapMITH .sapMITBScrollContainer {
+    margin: 0px !important;
+}
+
+.admncntrlstxtcls .sapMITBFilter .sapMITBText .sapMITHTextContent {
+    font-size: 20px !important;
+}
+
+.admncntrlstxtcls .sapMSplitContainerHideMode>.sapMSplitContainerDetail .sapMITB.sapUiResponsiveContentPadding>.sapMITBContainerContent>.sapMITBContent,
+.sapMITB.sapUiResponsiveContentPadding>.sapMITBContainerContent>.sapMITBContent {
+    padding: 1rem 0rem 0rem 0rem !important;
+    border-bottom: none !important;
+    background-color: inherit !important;
+}
+
+.admbnrupdtxtcls {
+    font-size: 15px;
+    width: 15rem;
+}
+
+.admnupdcontrangewrapcls {
+    display: flex !important;
+    align-items: center !important;
+    padding: 10px 10px 10px 30px !important;
+}
+
+.admcontupdtxtcls {
+    font-size: 15px;
+    width: 4rem;
+}
+
+.admcontupdtxtcls1 {
+    font-size: 15px;
+    width: 14rem;
+}
+
+.admcontupdtitlecls {
+    font-size: 15px !important;
+    padding-left: 10px;
+    color: white !important;
+}
+
+.admnupdconttitleboxwrapcls {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center;
+    background-color: #0854A0 !important;
+    padding: 10px 0px 10px 0px !important;
+}
+
+.admnupdcontrangewrapcls1 {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    padding: 10px 10px 10px 30px !important;
+}
+
+.admupdcontpanelcls .sapMPanelContent {
+    padding: 0px !important;
+}
+
+.admgisreppanelcls .sapMPanelContent {
+    padding: 20px 30px 0px 30px !important;
+    border-bottom: none !important;
+}
+
+.charRemainingTextCls {
+    text-align: right !important;
+    font-size: 0.8rem !important;
+    color: grey !important;
+    margin-top: 5px !important;
+}
+
+.supptcktcharscls {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.admupdcontremarkstxtcls {
+    padding: 10px !important;
+}
+
+/*Standard class overridden*/
+.sapMITBSepLine {
+    height: 1.5rem !important;
+    margin: 10px !important;
+}
+
+.custom-button-error {
+    /*margin-left: 0.9rem !important;*/
+}
+
+.custom-button-error .sapMBtnIcon {
+    /*background-color: red !important;*/
+    color: red !important;
+    border-radius: 5px !important;
+}
+
+.mainlogoboxcls {
+    cursor: pointer;
+}
+
+.mainlogoboxcls1 {
+    cursor: pointer;
+    padding: 10px 0 0 10px;
+}
+
+.surveyspectntcls .sapMSF {
+    border: 1px solid #cccccc;
+    border-radius: 0.25rem !important;
+    height: auto !important;
+    padding: 0px !important;
+}
+
+.surveyspectntcls .sapMSF:focus .surveyspectntcls .sapMSF:hover {
+    border-radius: 0.25rem !important;
+}
+
+.surveytntcls .sapMSF {
+    border: 1px solid #cccccc;
+    border-radius: 0.25rem !important;
+    height: auto !important;
+    padding: 0px !important;
+}
+
+.surveytntcls .sapMSF:focus .surveytntcls .sapMSF:hover {
+    border-radius: 0.25rem !important;
+}
+
+.customInputDisabled.sapMInputBaseDisabled {
+    color: #000000 !important;
+    opacity: 0.55 !important;
+}
+
+.customInputDisabled.sapMSltDisabled {
+    color: #000000 !important;
+    opacity: 0.55 !important;
+}
+
+.tblhdrcls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.iconStyle {
+    cursor: pointer;
+    opacity: 0.8;
+    margin-right: 0.5rem;
+    border: 2px solid transparent;
+    border-radius: 5px;
+}
+
+.iconStyle:hover {
+    opacity: 1;
+    border: 2px solid #007aff;
+}
+
+.iconStyle.selected {
+    opacity: 1;
+    border: 3px solid orange;
+    /*border-radius: 5px;*/
+}
+
+[data-style-class-ImgSelect="selected"] {
+    opacity: 1 !important;
+    border: 3px solid orange !important;
+    /*border-radius: 5px !important;*/
+}
+
+.addTile.OneByOne {
+    /*width: 200px !important;*/
+    /*height: 200px !important;*/
+}
+
+
+
+.kpiwrapper {
+    padding: 10px !important;
+}
+
+.iconcatkpicls {
+    padding: 5px 0px 0px 0px;
+}
+
+
+.kpiTile {
+    width: 100% !important;
+    height: 400px;
+}
+
+.kpiTile.sapMGT.OneByOne {
+    width: 20rem !important;
+    height: 20rem !important;
+    margin: 10px;
+}
+
+.kpiTileContent .sapMTileCntContent {
+    height: 25rem !important;
+}
+
+.kpiHBoxContainer {
+    display: flex;
+    /*align-items: center;*/
+    background-color: white !important;
+    border-radius: 20px;
+    margin: 5px;
+    padding: 10px;
+}
+
+.kpiHBoxHeader {
+    display: flex;
+    align-items: center;
+    padding: 0px 10px 0px 10px;
+    justify-content: space-between;
+}
+
+
+.sectionContainer {
+    margin-bottom: 16px;
+}
+
+.sectionTitle {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.tileFlexBox {
+    gap: 16px;
+    /* Spacing between tiles */
+}
+
+.tileContainer {
+    /*width: 150px;*/
+    /* Adjust the tile width */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.sectionContainer {
+    margin-bottom: 24px;
+    /* Space between sections */
+}
+
+.sectionTitle {
+    margin-bottom: 16px;
+    font-weight: bold;
+}
+
+.tileFlexBox {
+    display: flex;
+    gap: 16px;
+    /* Space between tiles */
+    flex-wrap: wrap;
+}
+
+.tileContainer {
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    width: max-content !important;
+}
+
+.tileTitle {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.tileDescription {
+    margin-bottom: 8px;
+    color: #666;
+}
+
+.tileActionButton {
+    margin-top: 8px;
+}
+
+.kpiFlexBoxContainer {
+    margin-top: 20px !important;
+}
+
+.chartContainer {
+    width: 350px !important;
+    min-height: 350px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*margin: 16px;*/
+}
+
+.hintText {
+	font-style: italic;
+	font-size: 0.85rem;
+	color: #666;
+	/*margin-top: 0.25rem;*/
+}
+
+
+/*.selected {*/
+/*    border: 2px solid blue;*/
+/*    border-radius: 5px;*/
+/*    padding: 2px;*/
+/*}*/

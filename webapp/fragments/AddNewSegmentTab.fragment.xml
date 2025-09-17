@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Report Name Tab" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblnsegtid" text="KPI ID"></Label>
+			<Input id="inpnsegtid" value="" visible="false" required="true"></Input>
+			<Label id="lblrepCatsub" text="Report Category"></Label>
+			<!--<Input id="inprepCat" value="" required="true"></Input>-->
+			<ComboBox id="inprepCatsub" required="true" items="{oReportTabModel>/}">
+				<core:Item key="{oReportTabModel>ZtabId}" text="{oReportTabModel>ZtabName}"/>
+			</ComboBox>
+			<Label id="lblnsegtcat" text="Report Name"></Label>
+			<Input id="inpnsegtcat" value="" required="true"></Input>
+			<!--<Label id="lblnmwtitle" text="KPI Title"></Label>-->
+			<!--<Input id="inpnmwtitle" value="" required="true"></Input>-->
+			<Label id="lblnsegtrole" text="Roles"></Label>
+			<Input id="inpnsegtrole" value=""></Input>
+			<Label id="lblnsegtvis" text="Visibility"></Label>
+			<!--<Input id="inpgisvis" value="" required="true"></Input>-->
+			<CheckBox id="inpnsegtvis" text="" selected="" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewSegmentTabDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddSegmentTab" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

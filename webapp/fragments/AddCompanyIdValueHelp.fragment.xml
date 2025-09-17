@@ -1,0 +1,6 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog title="Select Company Id" items="{oCompanyIdModel>/}" liveChange="onAddCompanyIdValueHelpSearch"
+		confirm="onAddCompanyIdValueHelpClose" cancel="onAddCompanyIdValueHelpClose">
+		<StandardListItem title="{oCompanyIdModel>Name}" description="{oCompanyIdModel>DsplyName}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

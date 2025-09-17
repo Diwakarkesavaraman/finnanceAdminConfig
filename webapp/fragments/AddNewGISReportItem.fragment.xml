@@ -1,0 +1,29 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New GIs Publication" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblgisid" text="GIS ID" visible="false"></Label>
+			<Input id="inpgisid" value="" editable="false" visible="false" required="true"></Input>
+			<!--<Label id="lblgisfolderTitle" text="Folder Title"></Label>-->
+			<!--<Input-->
+			<!--   id="gisFolderInput"-->
+			<!--   showValueHelp="true"-->
+			<!--   valueHelpRequest="onValueHelpRequest"-->
+			<!--   placeholder="Select GIS Folder"-->
+			<!--   required="true"-->
+			<!-- />-->
+			<Label id="lblgisTitle" text="Title"></Label>
+			<Input id="inpgisTitle" value="" required="true"></Input>
+			<Label id="lblgisurl" text="URL"></Label>
+			<Input id="inpgisurl" value="" required="true"></Input>
+			<Label id="lblgisvis" text="Visibility"></Label>
+			<!--<Input id="inpgisvis" value="" required="true"></Input>-->
+			<CheckBox id="inpgisvis" text="" selected="" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewGISDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddGISItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

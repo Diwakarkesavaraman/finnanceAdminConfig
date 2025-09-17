@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Update GIS Folder" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblgisfolderTitle" text="Select Folder"></Label>
+			<Input id="gisFolderInput" showValueHelp="true" valueHelpRequest="onValueHelpRequest" placeholder="Select GIS Folder to be updated"
+				required="true"/>
+			<Label id="lblgisfolderupTitle" text="Folder Title to be Updated"></Label>
+			<Input id="inpgisfolderupTitle" value="" required="true"></Input>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeUpdatefolderGISDialog"/>
+			<Button type="Accept" press="onUpdateGISFolder" text="Update"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

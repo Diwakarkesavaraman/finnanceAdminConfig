@@ -1,0 +1,39 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Event" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblcalID" text="Calendar ID" visible="false"></Label>
+			<Input id="inpcalID" value="" editable="false" visible="false" required="true"></Input>
+			<Label id="lblcalstartDate" text="Start Date"></Label>
+			<DatePicker id="inpcalstartDate" class="customDatePicker" required="true"></DatePicker>
+			<Label id="lblcalendDate" text="End Date"></Label>
+			<DatePicker id="inpcalendDate" class="customDatePicker" required="true" formatOptions="{UTC: true}"></DatePicker>
+			<!--<Label id="lblcaleventcat" text="Event Category"></Label>-->
+			<!--<ComboBox id="inpcaleventcat" required="true" items="{oCalCatModel>/}">-->
+			<!--	<core:Item key="{oCalCatModel>CatId}" text="{oCalCatModel>Category}"/>-->
+			<!--</ComboBox>-->
+			<!--<Button id="addcalCat" src="sap-icon://add" press="onAddCalCategory" text="Add Event Category"/>-->
+			<Label id="lblcaleventcat" text="Event Category" required="true"/>
+			<VBox>
+			<HBox justifyContent="SpaceBetween" alignItems="Center">
+				<ComboBox id="inpcaleventcat" items="{oCalCatModel>/}" width="23em">
+					<core:Item key="{oCalCatModel>CatId}" text="{oCalCatModel>Category}"/>
+				</ComboBox>
+				<Button id="addcalCat" icon="sap-icon://add" press="onAddCalCategory" text="Add"/>
+			</HBox>
+			<Text text="(If your category is not listed, click 'Add' to add a new category)" class="hintText"/>
+			</VBox>
+			<Label id="lblcalevent" text="Event"></Label>
+			<Input id="inpcalevent" value="" required="true"></Input>
+			<Label id="lblcalshrdep" text=" Short Description"></Label>
+			<Input id="inpcalshrdep" value="" required="true"></Input>
+			<Label id="lblcalcolor" text="Select Color"></Label>
+			<Input id="lnpcalcolor" showValueHelp="true" valueHelpRequest="onAddColorValueHelp" placeholder="Select Color" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewCalendarDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddCalendarItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

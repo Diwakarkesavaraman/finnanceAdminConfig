@@ -1,0 +1,55 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:unified="sap.ui.unified"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Report" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblrepor" text="Report ID" visible="false"></Label>
+			<Input id="inprepid" value="" editable="false" visible="false" required="true"></Input>
+			<Label id="lblrepattach" text="Attachment ID" visible="false"></Label>
+			<Input id="inprepattach" value="" editable="false" visible="false" required="true"></Input>
+			<!--<Label id="lblgisfolderTitle" text="Folder Title"></Label>-->
+			<!--<Input-->
+			<!--   id="gisFolderInput"-->
+			<!--   showValueHelp="true"-->
+			<!--   valueHelpRequest="onValueHelpRequest"-->
+			<!--   placeholder="Select GIS Folder"-->
+			<!--   required="true"-->
+			<!-- />-->
+			<Label id="lblrepCat" text="Category"></Label>
+			<!--<Input id="inprepCat" value="" required="true"></Input>-->
+		<ComboBox id="inprepCat" required="true" selectionChange="onCategoryChange" items="{categoryModel>/}">
+    <core:Item key="{categoryModel>ZtabId}" text="{categoryModel>ZtabName}" />
+</ComboBox>
+			<Label id="lblrepseg" text="Segment"></Label>
+			<!--<Input id="inprepseg" value="" required="true"></Input>-->
+			<ComboBox id="inprepseg" required="true"  items="{segmentModel>/}">
+    <core:Item key="{segmentModel>ZsubTabId}" text="{segmentModel>ZsubTabName}" />
+</ComboBox>
+			<Label id="lblrepdate" text="Date"></Label>
+			<DatePicker id="inprepDate" class="customDatePicker" required="true"></DatePicker>
+			<!--	<Label id="lblrepname" text="Report Name"></Label>-->
+			<!--<Input id="inprepname" value="" required="true"></Input>-->
+
+				<Label id="lblrepUpload" text="File Upload"></Label>
+				<Button id="uploadReportButton" type="Emphasized" icon="sap-icon://add" press="onuploadreport" text="Upload Report"/>
+				<!--<Text id="uploadedFileName" text="" visible="false"/>-->
+				<Button id="uploadedFileIcon" src="sap-icon://document-text" visible="false" press="onOpenUploadedFile" text="View Report"/>
+    <!--<unified:FileUploader-->
+    <!--						id="fileUploader"-->
+    <!--                        uploadUrl="/upload/url"-->
+    <!--                        change="onFileChange"-->
+    <!--                        fileType="pdf"-->
+    <!--                        mimeType="application/pdf"-->
+    <!--                        buttonText="Upload"-->
+    <!--                        icon="sap-icon://upload" />-->
+
+			<!--<Label id="lblrepvis" text="Visibility"></Label>-->
+			<!--<Input id="inpgisvis" value="" required="true"></Input>-->
+			<!--<CheckBox id="inprepvis" text="" selected="" required="true"/>-->
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewReportDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddReportItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

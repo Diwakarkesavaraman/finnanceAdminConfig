@@ -1,0 +1,21 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Financial Dashboard Tab" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblnfdtid" text="Tab ID"></Label>
+			<Input id="inpnfdtid" value="" visible="false" required="true"></Input>
+			<Label id="lblnfdtcat" text="Category"></Label>
+			<Input id="inpnfdtcat" value="" required="true"></Input>
+			<Label id="lblnfdtrole" text="Roles"></Label>
+			<Input id="inpnfdtrole" value=""></Input>
+			<Label id="lblnfdtvis" text="Visibility"></Label>
+			<!--<Input id="inpgisvis" value="" required="true"></Input>-->
+			<CheckBox id="inpnfdtvis" text="" selected="" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddNewFDTDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add"  press="onAddfdtItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

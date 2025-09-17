@@ -1,0 +1,86 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<ScrollContainer id="admincontrolupdlandingdata" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
+		<Panel height="100%" class="admgisreppanelcls">
+			<content>
+				<HBox class="tblhdrcls">
+					<Text text="Home Screen Config"/>
+					<HBox>
+						<Button type="Reject" text="Delete" press="onDeleteLandingPageItems"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Accept" text="Update" press="onUpdateLandingDets"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewLandingItem"/>
+					</HBox>
+				</HBox>
+				<Table id="tabLandingConfig" alternateRowColors="false" items="{ path: 'oLandingPageDataModel>/' }" growing="true"
+					class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
+					<columns>
+						<Column width="9rem">
+							<header>
+								<Text text="Tile ID" class="whiteLabel"/>
+							</header>
+						</Column>
+						<Column>
+							<header>
+								<Text text="Title" class="whiteLabel"/>
+							</header>
+						</Column>
+						<Column>
+							<header>
+								<Text text="Roles" class="whiteLabel"/>
+							</header>
+						</Column>
+						<Column width="7rem">
+							<header>
+								<Text text="Visibility" class="whiteLabel"/>
+							</header>
+						</Column>
+						<!--<Column width="5rem">-->
+						<!--	<header>-->
+						<!--		<Text text="Icons" class="whiteLabel"/>-->
+						<!--	</header>-->
+						<!--</Column>-->
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle">
+							<cells>
+								<Text text="{oLandingPageDataModel>ZlevelId}"/>
+								<Input value="{oLandingPageDataModel>Ztitle}"/>
+								<Input value="{oLandingPageDataModel>Zroles}"/>
+								<!--<Input value="{oLandingPageDataModel>Zvisibility}"/>-->
+								<CheckBox text="" selected="{oLandingPageDataModel>Zvisibility}"/>
+								<!-- MultiInput for Roles -->
+								<!--<MultiInput tokens="{ path: 'oLandingPageDataModel>arr',templateShareable: false }" width="80%" valueHelpRequest="onRoleValueHelp"-->
+								<!--	showValueHelp="true">-->
+								<!--	<tokens>-->
+								<!--		<Token key="{oLandingPageDataModel>Value1}" text="{oLandingPageDataModel>Value1}"/>-->
+								<!--	</tokens>-->
+								<!--</MultiInput>-->
+								<!---->
+								<!--<Button type="Default" icon="sap-icon://attachment" press="onAttachButtonClick">-->
+								<!--	<customData>-->
+								<!--		<core:CustomData key="style-class-Highlight" value="{= ${oLandingPageDataModel>ZiName} ? 'filled' : '' }" writeToDom="true"/>-->
+								<!--	</customData>-->
+								<!--</Button>-->
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</Panel>
+		<Dialog id="fileUploadDialog" title="Upload File" stretchOnPhone="true" endButton="cancel" endButtonPress="onDialogClose" class="">
+			<content>
+				<HBox id="fileUploaderContainer"/>
+			</content>
+			<endButton>
+				<Button text="Close" press="onDialogClose"/>
+			</endButton>
+			<beginButton>
+				<Button text="Upload" press="onUploadFiles" visible="{buttonModel>/editable}"/>
+			</beginButton>
+			<ToolbarSpacer width="0.8rem"/>
+		</Dialog>
+	</ScrollContainer>
+</core:FragmentDefinition>

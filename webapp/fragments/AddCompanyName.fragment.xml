@@ -1,0 +1,15 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add Company Name" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblcompid" text="Company ID"></Label>
+			<Input id="inpcompid" value="" required="true"></Input>
+			<Label id="lblcompname" text="Company Name"></Label>
+			<Input id="inpcompname" value="" required="true"></Input>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="CloseCompanyDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddCompanyName" text="Add"/>
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

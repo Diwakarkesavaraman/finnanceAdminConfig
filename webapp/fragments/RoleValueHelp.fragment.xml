@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+  <SelectDialog id="roleDialog" title="Select Roles" multiSelect="true"
+  items="{roleModel>/results}"
+        search="onRoleValueHelpSearch"
+        confirm="onRoleValueHelpConfirm"
+        cancel="onRoleValueHelpCancel">
+        
+        <!--<List id="roleList" mode="MultiSelect" items="{roleModel>/results}">-->
+            <StandardListItem title="{roleModel>AgrName}" />
+        <!--</List>-->
+        
+    </SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,52 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc">
+	<Dialog id="gisReportDetailDialog" title="GIS Publications" draggable="true" resizable="true" contentWidth="60%">
+		<ScrollContainer horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
+			<Panel height="100%" class="admgisreppanelcls">
+				<content>
+					<HBox class="tblhdrcls">
+						<Text text="{oFolderTitleModel>/folderTitle}"/>
+						<HBox>
+							<Button type="Reject" icon="sap-icon://delete" text="Delete Item" press="onDeleteGISReportItemFolder"/>
+							<ToolbarSpacer width="0.5rem"/>
+							<Button type="Accept" icon="sap-icon://accounting-document-verification" text="Update Item" press="onUpdateGISReportDets"/>
+							<ToolbarSpacer width="0.5rem"/>
+							<Button type="Emphasized" icon="sap-icon://add" text="Add Item" press="onAddNewGISItem"/>
+						</HBox>
+					</HBox>
+					<Table id="tabGISReportsDetail" alternateRowColors="false" items="{ path: 'oSelectedGISReportModel>/'}" growing="true"
+						class="blueBackground surveytablecls" mode="MultiSelect">
+						<columns>
+							<Column width="10rem">
+								<header>
+									<Text text="Title" class="whiteLabel"/>
+								</header>
+							</Column>
+							<Column width="14rem">
+								<header>
+									<Text text="URL" class="whiteLabel"/>
+								</header>
+							</Column>
+							<Column width="5rem">
+								<header>
+									<Text text="Visibility" class="whiteLabel"/>
+								</header>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem vAlign="Middle">
+								<cells>
+									<Input value="{oSelectedGISReportModel>ZgisTitle}"/>
+									<Input value="{oSelectedGISReportModel>ZreportUrl}"/>
+									<CheckBox selected="{oSelectedGISReportModel>Zvisibility}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</content>
+			</Panel>
+		</ScrollContainer>
+		<endButton>
+			<Button text="Close" press="onCloseDetailDialog"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

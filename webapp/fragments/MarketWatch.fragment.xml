@@ -1,0 +1,55 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<Panel width="auto" class="sapUiResponsiveMargin cntntcfgpnlcls" accessibleRole="Region">
+		<content>
+			<IconTabBar id="idIconTabBarMarketWatch" select="onAdminControlTabSelect" class="sapUiResponsiveContentPadding admncntrlstabcls">
+				<items>
+					<IconTabFilter text="Market Watch Tab Config" key="marketwatchtab" class="admncntrlstxtcls">
+						<!--<core:Fragment fragmentName="norm.fragment.AdminControlsUpdateStorageYard" type="XML"/>-->
+							<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.MarketWatchTab" type="XML"/>
+						<!--<Text text="test2"/>-->
+					</IconTabFilter>
+					<!--<IconTabFilter text="Market Watch Item Config" key="MarketWatch" class="admncntrlstxtcls">-->
+					<!--	<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.MarketWatchData" type="XML"/>-->
+						<!--<Text text="test1"/>-->
+					<!--</IconTabFilter>-->
+					
+		
+				</items>
+			</IconTabBar>
+		</content>
+	</Panel>
+	<!--<ScrollContainer id="admincontrol" horizontal="true" vertical="true" height="100%" class="sapUiContentPadding">-->
+	<!--	<Page id="page" showHeader="false" title="Survey" showNavButton="true" navButtonPress="onNavButtonPress" class="customBackground1">-->
+	<!--		<footer>-->
+	<!--			<Toolbar>-->
+	<!--				<ToolbarSpacer/>-->
+	<!--				<Button id="CencelButton" text="Cancel" visible="{buttonModel>/Cancel}" press="onCencel"/>-->
+	<!--				<Button text="Update" type="Accept" press="onUpdateAdminControl"/>-->
+	<!--			</Toolbar>-->
+	<!--		</footer>-->
+	<!--		<VBox class="admincontrolsvboxwrapcls">-->
+	<!--			<IconTabBar id="idIconTabBarAdminControls" select="onAdminControlTabSelect" class="sapUiResponsiveContentPadding admncntrlstabcls">-->
+	<!--				<items>-->
+	<!--					<IconTabFilter text="Landing Page" key="updcont" class="admncntrlstxtcls">-->
+	<!--						<core:Fragment fragmentName="norm.fragment.AdminControlsUpdateContainer" type="XML"/>-->
+	<!--						<Text text="test1"/>-->
+	<!--					</IconTabFilter>-->
+	<!--					<IconTabFilter text="Sub" key="updyrddet" class="admncntrlstxtcls">-->
+	<!--						<core:Fragment fragmentName="norm.fragment.AdminControlsUpdateStorageYard" type="XML"/>-->
+	<!--						<Text text="test2"/>-->
+	<!--					</IconTabFilter>-->
+	<!--					<IconTabFilter text="Update Disposal Site " key="upddispsite" class="admncntrlstxtcls">-->
+	<!--						<core:Fragment fragmentName="norm.fragment.AdminControlsUpdateDisposalSite" type="XML"/>-->
+	<!--					</IconTabFilter>-->
+	<!--					<IconTabSeparator/>-->
+	<!--					<IconTabFilter text="Update Banner" key="updbnr" class="admncntrlstxtcls">-->
+	<!--						<core:Fragment fragmentName="norm.fragment.AdminControlsUpdateBanner" type="XML"/>-->
+	<!--					</IconTabFilter>-->
+	<!--				</items>-->
+	<!--			</IconTabBar>-->
+	<!--		</VBox>-->
+	<!--	</Page>-->
+	<!--</ScrollContainer>-->
+</core:FragmentDefinition>

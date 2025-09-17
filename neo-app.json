@@ -1,0 +1,63 @@
+{
+	"welcomeFile": "/webapp/index.html",
+	"routes": [{
+		"path": "/resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/resources",
+			"version": "1.71.70"
+		},
+		"description": "SAPUI5 Resources"
+	}, {
+		"path": "/test-resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/test-resources",
+			"version": "1.71.70"
+		},
+		"description": "SAPUI5 Resources"
+	}, {
+		"path": "/webapp/resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/resources",
+			"version": "1.71.70"
+		},
+		"description": "SAPUI5 Resources"
+	}, {
+		"path": "/webapp/test-resources",
+		"target": {
+			"type": "service",
+			"name": "sapui5",
+			"entryPath": "/test-resources",
+			"version": "1.71.70"
+		},
+		"description": "SAPUI5 Test Resources"
+	}, {
+		"path": "/sap/opu/odata",
+		"target": {
+			"type": "destination",
+			"name": "DBC032",
+			"entryPath": "/sap/opu/odata"
+		},
+		"description": "DBC_032"
+	}],
+
+	"sendWelcomeFileRedirect": true,
+	"headerWhiteList": [
+		"slug",
+		"filename",
+		"zcontenttype",
+		"doc_id",
+		"BlockSeq",
+		"FieldSeq",
+		"attachment_id",
+		"doctype",
+		"printer_ip",
+		"printer_name",
+		"qty"
+	]
+}
