@@ -1,0 +1,72 @@
+[
+  {
+    "VNAM": "ZES_PERIOD",
+    "VARTYP": "1",
+    "VPARSEL": "P",
+    "IOBJNM": "/CPMB/ZED08MN__/CPMB/YEAR",
+     "LS_VALUE": [
+      {
+        "SIGN": "EQ",
+        "OPTION": "I",
+        "LOW": "2024",
+        "HIGH": ""
+      }
+    ]
+   
+  },
+  {
+    "VNAM": "ZV_S_CAT",
+    "VARTYP": "1",
+    "VPARSEL": "S",
+    "IOBJNM": "/CPMB/ZED8YY1",
+     "LS_VALUE": [
+      {
+        "SIGN": "GE",
+        "OPTION": "I",
+        "LOW": "1",
+        "HIGH": "2"
+      },
+      {
+        "SIGN": "LE",
+        "OPTION": "E",
+        "LOW": "1",
+        "HIGH": "3"
+      }
+    ]
+   
+  },
+  {
+    "VNAM": "YORG_ENTITY_TEST",
+    "VARTYP": "1",
+    "VPARSEL": "M",
+    "IOBJNM": "/CPMB/ZED850W",
+    "LS_VALUE": [
+      {
+        "SIGN": "EQ",
+        "OPTION": "I",
+        "LOW": "1",
+        "HIGH": ""
+      },
+      {
+        "SIGN": "EQ",
+        "OPTION": "I",
+        "LOW": "2",
+        "HIGH": ""
+      }
+    ]
+  },
+  {
+    "VNAM": "YCOR_ACC_TEST",
+    "VARTYP": "1",
+    "VPARSEL": "I",
+    "IOBJNM": "/CPMB/ZEDWQND",
+    "LS_VALUE": [
+      {
+        "SIGN": "LT",
+        "OPTION": "I",
+        "LOW": "1",
+        "HIGH": "10"
+      }
+    ]
+  }
+]

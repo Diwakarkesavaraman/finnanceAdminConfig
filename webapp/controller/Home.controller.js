@@ -14,8 +14,9 @@
 	"sap/m/Select",
     "sap/ui/core/Item", 
     "sap/m/Text",
-	 "sap/m/Button"
- ], function (Controller, JSONModel, MessageBox, SelectDialog, StandardListItem, MessageToast, MultiInput, Token, FormElement, Input, Label,Select,Item,Text,Button) {
+	 "sap/m/Button",
+	 "mobilefinance/MobileFinance/utils/DynamicWidgetHelper"
+ ], function (Controller, JSONModel, MessageBox, SelectDialog, StandardListItem, MessageToast, MultiInput, Token, FormElement, Input, Label,Select,Item,Text,Button,DynamicWidgetHelper) {
  	"use strict";
 
  	var sSelectedFolderId = "";
@@ -8885,375 +8886,39 @@
 		//Dynamic Widget Config Controller
 
 		onLoadDyanmicWidgetData: async function () {
-			var that = this;
-			var finmobview = this.getView().getModel("finmobview");
-			var oDynamicWidgetModel = new JSONModel();
-
-
-			sap.ui.core.BusyIndicator.show(0);
-
-			// Create a model for selected values
-			var oSelectedValuesModel = new sap.ui.model.json.JSONModel({
-				selectedWidgetType: "",
-				selectedChartType: "",
-				selectedDataSource: "",
-				widgetId: ""
-			});
-			this.getView().setModel(oSelectedValuesModel, "selectedValues");
-
-			that.getView().byId("widgetIdLabel").setVisible(false);
-			that.getView().byId("widgetId").setVisible(false);
-
-
-			var aWidgetTypeDropdownData =  await this.getSearchHelpData('Widget_type');
-			var oModel = new sap.ui.model.json.JSONModel();
-			oModel.setData(aWidgetTypeDropdownData);
-			this.getView().setModel(oModel, "aWidgetTypeDropdownData");
-
-			var aChartTypeDropdownData =  await this.getSearchHelpData('Chart_type');
-			var oModel = new sap.ui.model.json.JSONModel();
-			oModel.setData(aChartTypeDropdownData);
-			this.getView().setModel(oModel, "aChartTypeDropdownData");
-
-			var aDataSourceDropdownData =  await this.getSearchHelpData('Data_source');
-			var oDataSourceModel = new sap.ui.model.json.JSONModel();
-			oDataSourceModel.setData(aDataSourceDropdownData);
-			this.getView().setModel(oDataSourceModel, "aDataSourceDropdownData");
-
-			
-
-			this.onAddInput();
-
-			
-
+			return await DynamicWidgetHelper.onLoadDyanmicWidgetData(this);
 		},
 
 		onDataSourceChange: function(oEvent) {
-			console.log("Data Source Changed");
-			this.getView().byId("check").setVisible(true);
-			this.getView().byId("busyIndicator").setVisible(false);
-			this.getView().byId("successIcon").setVisible(false);
-			
+			return DynamicWidgetHelper.onDataSourceChange(this, oEvent);
 		},
 
 		checkQueryValidity: function(oEvent) {
-			var that = this;
-			var finmobview = this.getView().getModel("finmobview");
-
-			// Hide button and show busy indicator
-			var oButton = this.getView().byId("check");
-			var oBusyIndicator = this.getView().byId("busyIndicator");
-			oButton.setVisible(false);
-			oBusyIndicator.setVisible(true);
-
-			// var oInput = this.getView().byId("dataSourceId");
-			// var sDataSource = oInput.getValue();
-		
-			var oSelectedValuesModel = this.getView().getModel("selectedValues");
-			var sDataSourceFromModel = oSelectedValuesModel.getProperty("/dataSource");
-
-			console.log("Model value:", sDataSourceFromModel);
-
-			var aFilters = [new sap.ui.model.Filter("Query_Name", sap.ui.model.FilterOperator.EQ, sDataSourceFromModel)];
-
-			finmobview.read("/QueryValidation", {
-				filters: aFilters,
-				success: function (data) {
-					console.log(data);
-
-					// Show button and hide busy indicator
-					// that.getView().byId("check").setVisible(true);
-					
-					debugger;
-					var response = data.results[0] || [];
-					// Handle successful response here
-					if(response['IsExist']){
-						that.getView().byId("busyIndicator").setVisible(false);
-						that.getView().byId("successIcon").setVisible(true);
-					}
-				},
-				error: function (oError) {
-					// Show button and hide busy indicator
-					that.getView().byId("check").setVisible(true);
-					that.getView().byId("busyIndicator").setVisible(false);
-
-					var responseText = oError.responseText;
-					var msg = "Error fetching data";
-
-					if (responseText.indexOf("{") > -1) {
-						try {
-							var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
-							if (errorDetails.length > 0) {
-								msg = errorDetails.map(err => err.message).join("\n");
-							}
-						} catch (e) {
-							msg = responseText;
-						}
-					}
-					sap.m.MessageBox.error(msg);
-				}
-			});
-
-
+			return DynamicWidgetHelper.checkQueryValidity(this, oEvent);
 		},
 
 		handleSavePress: function(oEvent){
-			var that = this;
-			var finmobview = this.getView().getModel("finmobview");
-			var oWidgetData = this.getView().getModel("selectedValues").getData();
-
-			var oPayload =  {
-				// "Mandt" : "032",
-				// "WidgetId" : "00505684457C1FE0A3A71EAF589E8E18",
-				"WidgetType" : oWidgetData.selectedWidgetType,
-				"ChartType" : oWidgetData.selectedChartType,
-				"DataSource" : oWidgetData.selectedDataSource,
-				"Status": "Draft"
-				// "Status": "Submit"
-			  };
-			debugger;
-			finmobview.create("/WidgetConfigurationSet", oPayload, {
-				success: function (oData) {
-					var oModel = that.getView().getModel("selectedValues");
-					var oCurrentData = oModel.getData();
-					oCurrentData.widgetId = oData.WidgetId;
-					
-					oModel.setData(oCurrentData);
-
-					that.getView().byId("widgetId").setVisible(true);
-					that.getView().byId("widgetIdLabel").setVisible(true);
-					console.log("Successfully created:", oPayload);
-
-				},
-				error: function (oError) {
-					bHasError = true;
-					console.error("Error creating:", oPayload, oError);
-					sap.ui.core.BusyIndicator.hide();
-				}
-			});
-
+			return DynamicWidgetHelper.handleSavePress(this, oEvent);
 		},
 
 		deleteWidget: function(widgetId) {
-			var that = this;
-			var finmobview = this.getView().getModel("finmobview");
-			var oWidgetData = this.getView().getModel("selectedValues").getData();
-			finmobview.remove("/WidgetConfigurationSet(WidgetId='"+oWidgetData.widgetId+"')", {
-				success: function (oData) {
-					// TODO: Clear the model data and reset UI fields
-					console.log("Successfully deleted:", oPayload);
-
-				},
-				error: function (oError) {
-					bHasError = true;
-					console.error("Error creating:", oPayload, oError);
-					sap.ui.core.BusyIndicator.hide();
-				}
-			});
-
-				
+			return DynamicWidgetHelper.deleteWidget(this, widgetId);
 		},
-		// bexQueryParameterForm
-		handleAddPress: function(paramQueryType,oEvent) {
-            // Get the source button that was clicked
-			debugger;
-            var oClickedButton = oEvent.getSource().getParent().getParent();
-			var oForm = this.byId("bexQueryParameterForm");
-			// oForm.getContent()[3].getItems()[0].getItems()
-			var iButtonIndex = oForm.getContent().findIndex(obj => obj.sId === oClickedButton.sId);
-			if(paramQueryType === 'S'){
-
-			// var oInput = new sap.m.Input({
-			// 	// placeholder: "Enter product",
-			// 	class: "sapUiSmallMarginBottom",
-			// 	type: "Text",
-			// 	showValueHelp: true,
-			// 	valueHelpIconSrc: "sap-icon://arrow-left",
-			// 	// valueHelpRequest: this.handleValueHelp.bind(this)
-			// });
-			// //
-			// var oSelectRange = new Select({
-			// 	forceSelection: false,
-			// 	items: {
-			// 		path: "inputParamModel>/selectOptionRange",
-			// 		template: new Item({
-			// 			key: "{inputParamModel>Value}",
-			// 			text: "{inputParamModel>Value}"
-			// 		})
-			// 	},
-			// 	selectedKey: "{inputParamModel>/selectOptionRange}",
-			// 	icon: "sap-icon://filter",
-			// 	autoAdjustWidth: true,
-			// 	change: "onIncludeChange"
-			// });
-
-			// // Second Select - Include Options  
-			// var oSelectInclude = new Select({
-			// 	forceSelection: false,
-			// 	items: {
-			// 		path: "inputParamModel>/selectOptionInclude",
-			// 		template: new Item({
-			// 			key: "{inputParamModel>Value}",
-			// 			text: "{inputParamModel>Description}"
-			// 		})
-			// 	},
-			// 	selectedKey: "{inputParamModel>/selectedInclude}",
-			// 	icon: "sap-icon://filter", 
-			// 	autoAdjustWidth: true,
-			// 	change: "onIncludeChange"
-			// });
-
-			// // First Input Field
-			// var oInput1 = new sap.m.Input({
-			// 	class: "sapUiSmallMarginBottom",
-			// 	type: "Text",
-			// 	placeholder: "Enter product",
-			// 	showValueHelp: true,
-			// 	valueHelpIconSrc: "sap-icon://arrow-left",
-			// 	valueHelpRequest: "handleValueHelp"
-			// });
-
-			// // Text "to"
-			// var oText = new Text({
-			// 	text: "to"
-			// });
-
-			// // Second Input Field
-			// var oInput2 = new sap.m.Input({
-			// 	class: "sapUiSmallMarginBottom", 
-			// 	type: "Text",
-			// 	placeholder: "Enter product",
-			// 	showValueHelp: true,
-			// 	valueHelpIconSrc: "sap-icon://arrow-left",
-			// 	valueHelpRequest: "handleValueHelp"
-			// });
-			// var oAddButton = new  sap.m.Button({
-			// 	enabled: true,
-			// 	icon: "sap-icon://add",
-			// 	press: this.handleAddPress.bind(this,'S')
-			// });
-			var oSelectOptionBox = 	new sap.m.VBox({
-				class: "sapUiMediumMargin",
-				items: [
-					new sap.m.HBox({
-						class: "sapUiSmallMarginBottom",
-						items: [
-							// Range Select
-							new sap.m.Select({
-								forceSelection: false,
-								items: {
-									path: "inputParamModel>/selectOptionRange",
-									template: new sap.ui.core.Item({
-										key: "{inputParamModel>Value}",
-										text: "{inputParamModel>Value}"
-									})
-								},
-								selectedKey: "{inputParamModel>/selectOptionRange}",
-								icon: "sap-icon://filter",
-								autoAdjustWidth: true,
-								change: "onIncludeChange"
-							}),
-							
-							// Include Select
-							new sap.m.Select({
-								forceSelection: false,
-								items: {
-									path: "inputParamModel>/selectOptionInclude",
-									template: new sap.ui.core.Item({
-										key: "{inputParamModel>Value}",
-										text: "{inputParamModel>Description}"
-									})
-								},
-								selectedKey: "{inputParamModel>/selectedInclude}",
-								icon: "sap-icon://filter", 
-								autoAdjustWidth: true,
-								change: "onIncludeChange"
-							}),
-							new sap.m.Input({
-								class: "sapUiSmallMarginEnd",
-								type: "Text",
-								placeholder: "Enter product",
-								showValueHelp: true,
-								valueHelpIconSrc: "sap-icon://arrow-left",
-								valueHelpRequest: "handleValueHelp"
-							}),
-							
-							// "to" Text
-							new sap.m.Text({
-								text: "to",
-								class: "sapUiSmallMarginEnd"
-							}),
-							
-							// Second Input Field
-							new sap.m.Input({
-								type: "Text",
-								placeholder: "Enter product",
-								showValueHelp: true,
-								valueHelpIconSrc: "sap-icon://arrow-left",
-								valueHelpRequest: "handleValueHelp"
-							}),
-							new sap.m.Button({
-								enabled: true,
-								icon: "sap-icon://add",
-								press: this.handleAddPress.bind(this,'S')
-							})
-						]
-					})
-
-				]});
-			
-			
-			 
-			// oForm.removeContent(iButtonIndex);
-			oForm.insertContent(oSelectOptionBox,iButtonIndex+1);
-			// oForm.insertContent(oSelectInclude,iButtonIndex+1);
-			// oForm.insertContent(oInput1,iButtonIndex+2);
-			// oForm.insertContent(oText,iButtonIndex+3);
-			// oForm.insertContent(oInput2,iButtonIndex+4);
-			// oForm.insertContent(oAddButton,iButtonIndex+5);
-		}else if(paramQueryType === 'M'){
-			var oInput = new sap.m.Input({
-				// placeholder: "Enter product",
-				class: "sapUiSmallMarginBottom",
-				type: "Text",
-				showValueHelp: true,
-				valueHelpIconSrc: "sap-icon://arrow-left",
-				// valueHelpRequest: this.handleValueHelp.bind(this)
-			});
-			var oAddButton = new  sap.m.Button({
-				enabled: true,
-				icon: "sap-icon://add",
-				press: this.handleAddPress.bind(this,'M')
-			});
-			oForm.removeContent(iButtonIndex);
-			oForm.insertContent(oInput,iButtonIndex);
-			oForm.insertContent(oAddButton,iButtonIndex+1);
-
-		}
-            
-            // // Get the container (parent)
-            // var oContainer = this.byId("buttonContainer");
-            
-            // // Create a new button
-            // var sNewButtonId = "newButton_" + Date.now(); // Unique ID
-            // var oNewButton = new Button(sNewButtonId, {
-            //     text: "New Button",
-            //     press: function() {
-            //         sap.m.MessageToast.show("New button clicked!");
-            //     }
-            // });
-            
-            // // Find the index of the clicked button and add the new button after it
-            // var aItems = oContainer.getItems();
-            // var iIndex = aItems.indexOf(oClickedButton);
-            
-            // if (iIndex !== -1) {
-            //     oContainer.insertItem(oNewButton, iIndex + 1);
-            // } else {
-            //     oContainer.addItem(oNewButton);
-            // }
-        },
+		
+		handleAddPress: function(paramQueryType, oEvent) {
+			return DynamicWidgetHelper.handleAddPress(this, paramQueryType, oEvent);
+		},
+		
 		onAddInput: async function ()  {
+			return await DynamicWidgetHelper.onAddInput(this);
+		},
+
+		getGroupedFormValues: async function() {
+			return await DynamicWidgetHelper.getGroupedFormValues(this);
+		},
+
+		// Legacy function - keeping structure but delegating to helper
+		_onAddInputLegacy: async function ()  {
 			debugger;
 			var that = this;
 			var oForm = this.byId("bexQueryParameterForm");
@@ -9262,28 +8927,6 @@
 				var oFormComponent = [];
 				switch (param.Vparsel) {
 					case 'M':
-						var oLabel = new sap.m.Label({
-							text: param.Vtxt
-						});
-						var oInput = new sap.m.Input({
-							// placeholder: "Enter product",
-							class: "sapUiSmallMarginBottom",
-							type: "Text",
-							showValueHelp: true,
-							valueHelpIconSrc: "sap-icon://arrow-left",
-							// valueHelpRequest: this.handleValueHelp.bind(this)
-						});
-						var oAddButton = new  sap.m.Button({
-							enabled: true,
-							icon: "sap-icon://add",
-							press: that.handleAddPress.bind(that,'M')
-						});
-						oForm.addContent(oLabel);
-						oForm.addContent(oInput);
-						oForm.addContent(oAddButton);
-						
-					  break;
-					case "S":
 						// var oLabel = new sap.m.Label({
 						// 	text: param.Vtxt
 						// });
@@ -9295,76 +8938,49 @@
 						// 	valueHelpIconSrc: "sap-icon://arrow-left",
 						// 	// valueHelpRequest: this.handleValueHelp.bind(this)
 						// });
-						// //
-						// var oSelectRange = new Select({
-						// 	forceSelection: false,
-						// 	items: {
-						// 		path: "inputParamModel>/selectOptionRange",
-						// 		template: new Item({
-						// 			key: "{inputParamModel>Value}",
-						// 			text: "{inputParamModel>Value}"
-						// 		})
-						// 	},
-						// 	selectedKey: "{inputParamModel>/selectOptionRange}",
-						// 	icon: "sap-icon://filter",
-						// 	autoAdjustWidth: true,
-						// 	change: "onIncludeChange"
-						// });
-			
-						// // Second Select - Include Options  
-						// var oSelectInclude = new Select({
-						// 	forceSelection: false,
-						// 	items: {
-						// 		path: "inputParamModel>/selectOptionInclude",
-						// 		template: new Item({
-						// 			key: "{inputParamModel>Value}",
-						// 			text: "{inputParamModel>Description}"
-						// 		})
-						// 	},
-						// 	selectedKey: "{inputParamModel>/selectedInclude}",
-						// 	icon: "sap-icon://filter", 
-						// 	autoAdjustWidth: true,
-						// 	change: "onIncludeChange"
-						// });
-			
-						// // First Input Field
-						// var oInput1 = new sap.m.Input({
-						// 	class: "sapUiSmallMarginBottom",
-						// 	type: "Text",
-						// 	placeholder: "Enter product",
-						// 	showValueHelp: true,
-						// 	valueHelpIconSrc: "sap-icon://arrow-left",
-						// 	valueHelpRequest: "handleValueHelp"
-						// });
-			
-						// // Text "to"
-						// var oText = new Text({
-						// 	text: "to"
-						// });
-			
-						// // Second Input Field
-						// var oInput2 = new sap.m.Input({
-						// 	class: "sapUiSmallMarginBottom", 
-						// 	type: "Text",
-						// 	placeholder: "Enter product",
-						// 	showValueHelp: true,
-						// 	valueHelpIconSrc: "sap-icon://arrow-left",
-						// 	valueHelpRequest: "handleValueHelp"
-						// });
 						// var oAddButton = new  sap.m.Button({
 						// 	enabled: true,
 						// 	icon: "sap-icon://add",
-						// 	press: that.handleAddPress.bind(that,'S')
+						// 	press: that.handleAddPress.bind(that,'M')
 						// });
+
+						var oLabel = new sap.m.Label({
+							text: param.Vtxt
+						});
+						var oMultiInputBox = new sap.m.VBox({
+							class: "sapUiMediumMargin",
+							items: [
+								new sap.m.HBox({
+									class: "sapUiSmallMarginBottom",
+									items: [
+										new sap.m.Input({
+											// placeholder: "Enter product",
+											class: "sapUiSmallMarginBottom",
+											type: "Text",
+											showValueHelp: true,
+											valueHelpIconSrc: "sap-icon://arrow-left",
+											// valueHelpRequest: this.handleValueHelp.bind(this)
+										}),
+									 new  sap.m.Button({
+											enabled: true,
+											icon: "sap-icon://add",
+											press: that.handleAddPress.bind(that,'M')
+										})
+								]})
+							]});
+						
+						
+						oForm.addContent(oLabel);
+						oForm.addContent(oMultiInputBox);
+						// oForm.addContent(oAddButton);
+						
+					  break;
+					case "S":
+					
 						// Label
 						var oLabel = new sap.m.Label({
 							text: param.Vtxt
 						});
-						
-						// var oContainer = new sap.m.VBox({
-						// 	class: "sapUiMediumMargin",
-						// 	items: [
-								// HBox for select controls
 						var oSelectOptionBox = 	new sap.m.VBox({
 							class: "sapUiMediumMargin",
 							items: [
@@ -9381,27 +8997,16 @@
 													text: "{inputParamModel>Value}"
 												})
 											},
-											selectedKey: "{inputParamModel>/selectOptionRange}",
+											// selectedKey: "{inputParamModel>/selectOptionRange}",
 											icon: "sap-icon://filter",
 											autoAdjustWidth: true,
-											change: "onIncludeChange"
+											// change: function(oEvent) {
+											// 	// Handle change event directly
+											// 	var sSelectedKey = oEvent.getSource().getSelectedKey();
+											// 	// Your logic here
+											// }
 										}),
 										
-										// Include Select
-										new sap.m.Select({
-											forceSelection: false,
-											items: {
-												path: "inputParamModel>/selectOptionInclude",
-												template: new sap.ui.core.Item({
-													key: "{inputParamModel>Value}",
-													text: "{inputParamModel>Description}"
-												})
-											},
-											selectedKey: "{inputParamModel>/selectedInclude}",
-											icon: "sap-icon://filter", 
-											autoAdjustWidth: true,
-											change: "onIncludeChange"
-										}),
 										new sap.m.Input({
 											class: "sapUiSmallMarginEnd",
 											type: "Text",
@@ -9437,32 +9042,49 @@
 								
 						oForm.addContent(oLabel);
 						oForm.addContent(oSelectOptionBox);
-
-						// oForm.addContent(oSelectRange);
-						// oForm.addContent(oSelectInclude);
-						// oForm.addContent(oInput1);
-						// oForm.addContent(oText);
-						// oForm.addContent(oInput2);
-						// oForm.addContent(oAddButton);
-			
 					  break;
-					case "P":
+					case "I":
 						var oLabel = new sap.m.Label({
 							text: param.Vtxt
 						});
-						var oInput = new sap.m.Input({
-							// placeholder: "Enter product",
-							class: "sapUiSmallMarginBottom",
-							type: "Text",
-							showValueHelp: true,
-							valueHelpIconSrc: "sap-icon://arrow-left",
-							// valueHelpRequest: this.handleValueHelp.bind(this)
-						});
+						var oIntervalBox =  new sap.m.VBox({
+							class: "sapUiMediumMargin",
+							items: [
+								new sap.m.HBox({
+									class: "sapUiSmallMarginBottom",
+									items: [
+										new sap.m.Input({
+											// placeholder: "Enter product",
+											class: "sapUiSmallMarginBottom",
+											type: "Text",
+											showValueHelp: true,
+											valueHelpIconSrc: "sap-icon://arrow-left",
+											// valueHelpRequest: this.handleValueHelp.bind(this)
+										}),
+										// "to" Text
+										new sap.m.Text({
+											text: "to",
+											class: "sapUiSmallMarginEnd"
+										}),
+										
+										// Second Input Field
+										new sap.m.Input({
+											type: "Text",
+											placeholder: "Enter product",
+											showValueHelp: true,
+											valueHelpIconSrc: "sap-icon://arrow-left",
+											valueHelpRequest: "handleValueHelp"
+										}),
+		
+									]})
+
+							]})
+						
 						oForm.addContent(oLabel);
-						oForm.addContent(oInput);
+						oForm.addContent(oIntervalBox);
 					
 						break;
-					case "I":
+					case "P":
 						var oLabel = new sap.m.Label({
 							text: param.Vtxt
 						});
@@ -9527,68 +9149,6 @@
     // // Add both controls
     // // oForm.addContent(oLabel);
     // // oForm.addContent(oInput);
-		},
-		getGroupedFormValues: async function() {
-			debugger;
-			var oForm = this.byId("bexQueryParameterForm");
-			var aContent = oForm.getContent();
-			var oFormData = {};
-			var sCurrentLabel = "";
-			
-			aContent.forEach(function(oControl) {
-				if (oControl instanceof sap.m.Label) {
-					sCurrentLabel = oControl.getText();
-					if (!oFormData[sCurrentLabel]) {
-						oFormData[sCurrentLabel] = {
-							type: "", // Will be determined by following controls
-							values: []
-						};
-					}
-				} else if (oControl instanceof sap.m.Input) {
-					if (sCurrentLabel && oFormData[sCurrentLabel]) {
-						oFormData[sCurrentLabel].values.push(
-							{
-							"SIGN": "",
-							"OPTION": "",
-							"LOW": oControl.getValue(),
-							"HIGH": ""}
-						);
-					}
-				} else if (oControl instanceof sap.m.Select) {
-					if (sCurrentLabel && oFormData[sCurrentLabel]) {
-						if (!oFormData[sCurrentLabel].selects) {
-							oFormData[sCurrentLabel].selects = [];
-						}
-						oFormData[sCurrentLabel].selects.push({
-							selectedKey: oControl.getSelectedKey(),
-							selectedItem: oControl.getSelectedItem() ? 
-								oControl.getSelectedItem().getText() : ""
-						});
-					}
-				}
-			});
-			var aQueryParam = await this.getQueryParameter();
-			Object.keys(oFormData).forEach(key => {
-				var oParam = {};
-				
-				var oQueryParam = aQueryParam.find(param => param.Vtxt === key);
-				oParam["VNAM"] = oQueryParam ? oQueryParam.Vnam : "";
-				oParam["VARTYP"] = oQueryParam ? oQueryParam.Vartyp : "";
-				oParam["VPARSEL"] = oQueryParam ? oQueryParam.Vparsel : "";
-				oParam["IOBJNM"] = oQueryParam ? oQueryParam.Iobjnm : "";
-				oParam["LS_VALUE"] = [];
-				for (let i = 0; i < oFormData[key].values.length; i++) {
-					var oValue = {};
-					oValue["SIGN"] = oFormData[key].selects && oFormData[key].selects[i] ? oFormData[key].selects[i].selectedKey : "";
-					oValue["OPTION"] = oFormData[key].selects && oFormData[key].selects[i] ? oFormData[key].selects[i].selectedKey : "";
-
-
-				}
-				debugger;
-				
-			});
-			
-			return oFormData;
 		},
 		// {
 		// 	"VNAM": "ZES_PERIOD",
