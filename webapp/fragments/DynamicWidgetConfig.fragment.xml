@@ -1,4 +1,4 @@
-<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" xmlns:l="sap.ui.layout">
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" xmlns:l="sap.ui.layout" xmlns:codeeditor="sap.ui.codeeditor">
     <ScrollContainer id="dynamicWidgetConfigFragment" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
         <Panel height="100%" class="admgisreppanelcls">
             <content>
@@ -18,40 +18,94 @@
                                 <form:content>
                                     <Label id="widgetIdLabel" text="Widget ID" />
                                     <Input id="widgetId" value="{selectedValues>/widgetId}" editable="false" liveChange="onDataSourceChange" />
-
                                     <Label text="Widget Type" />
                                     <Select id="widgetType" items="{path: 'aWidgetTypeDropdownData>/'}" selectedKey="{selectedValues>/selectedWidgetType}">
                                         <core:Item text="{aWidgetTypeDropdownData>Text}" key="{aWidgetTypeDropdownData>Id}" />
                                     </Select>
-
                                     <Label text="Chart Type" />
                                     <Select id="chartType" items="{path: 'aChartTypeDropdownData>/'}" selectedKey="{selectedValues>/selectedChartType}">
                                         <core:Item text="{aChartTypeDropdownData>Text}" key="{aChartTypeDropdownData>Id}" />
                                     </Select>
-
                                     <Label text="Data Source" />
                                     <Input id="dataSourceId" value="{selectedValues>/selectedDataSource}" liveChange="onDataSourceChange" />
                                     <Button id="check" text="Check" enabled="true" press="checkQueryValidity" />
                                     <BusyIndicator id="busyIndicator" class="sapUiTinyMarginBottom" visible="false" />
                                     <core:Icon id="successIcon" src="sap-icon://message-success" visible="false" class="size1" color="#107e3e" />
-                                    
                                 </form:content>
                             </form:SimpleForm>
                         </VBox>
                         <HBox class="tblhdrcls">
-                    <Text text="Dynamic Widget Config" />
-                    <!-- <HBox><Button type="Reject" text="Delete" press="onDeleteAffiliateTabCon"/><ToolbarSpacer width="0.5rem"/><Button type="Accept" text="Update" press="onUpdateAffiliateTab"/><ToolbarSpacer width="0.5rem"/><Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewAffiliateTab"/></HBox> -->
-                  
-                    <Button id="formSubmit" text="Save" type="Emphasized" visible="true" press="getGroupedFormValues" />
-                   
-                </HBox>
+                            <Text text="Dynamic Widget Config" />
+                            <!-- <HBox><Button type="Reject" text="Delete" press="onDeleteAffiliateTabCon"/><ToolbarSpacer width="0.5rem"/><Button type="Accept" text="Update" press="onUpdateAffiliateTab"/><ToolbarSpacer width="0.5rem"/><Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewAffiliateTab"/></HBox> -->
+                            <Button id="formSubmit" text="Save" type="Emphasized" visible="true" press="getGroupedFormValues" />
+                        </HBox>
                         <Panel expanded="true" expandable="true" headerText="Bex Query Parameter" width="auto" class="sapUiResponsiveMargin">
                             <content>
                                 <VBox class="sapUiSmallMargin">
                                     <form:SimpleForm id="bexQueryParameterForm" editable="true" layout="ResponsiveGridLayout" title="Widget Config" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
-                                        <form:content>
-                                                               </form:content>
+                                        <form:content></form:content>
                                     </form:SimpleForm>
+                                </VBox>
+                                <VBox class="sapUiSmallMargin">
+                                    <IconTabBar id="idIconTabBarInlineMode" headerMode="Inline" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
+                                        <items>
+                                            <IconTabFilter text="MetaData" key="info" >
+                                                <Table id="metaDataTable" items="{metaDataModel>/}" class="sapUiResponsiveMargin">
+                                                    <columns>
+                                                        <Column>
+                                                            <Text text="Field Name" />
+                                                        </Column>
+                                                        <Column>
+                                                            <Text text="Description" />
+                                                        </Column>
+                                                        <Column>
+                                                            <Text text="Axis" />
+                                                        </Column>
+                                                    </columns>
+                                                    <items>
+                                                        <ColumnListItem>
+                                                            <Text text="{metaDataModel>FIELDNAME}" />
+                                                            <Text text="{metaDataModel>SCRTEXT_L}" />
+                                                            <Select selectedKey="{metaDataModel>selectedAxis}">
+                                                                <core:Item key="" text="Select Axis" />
+                                                                <core:Item key="X" text="X-Axis" />
+                                                                <core:Item key="Y" text="Y-Axis" />
+                                                            </Select>
+                                                        </ColumnListItem>
+                                                    </items>
+                                                </Table>
+                                                  <VBox class="sapUiSmallMargin">
+                                    <form:SimpleForm id="dataMappingForm" editable="true" layout="ResponsiveGridLayout" title="Widget Config" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+                                        <form:content>
+                                                <Label id="xAxis" text="X Axis" />
+                                                <Input id="xAxisInput" value="{selectedValues>/widgetId}" editable="false" liveChange="onDataSourceChange" />
+                                                
+                                   
+                                        </form:content>
+                                    </form:SimpleForm>
+                                </VBox>
+                                            </IconTabFilter>
+                                            <IconTabFilter text="JSON" key="attachments" >
+                                                <codeeditor:CodeEditor id="codeEditor" width="100%"
+		type="json"
+		value='\{
+		"Chinese" : "你好世界",
+		"Dutch" : "Hallo wereld",
+		"English" : "Hello world",
+		"French" : "Bonjour monde",
+		"German" : "Hallo Welt",
+		"Greek" : "γειά σου κόσμος",
+		"Italian" : "Ciao mondo",
+		"Japanese" : "こんにちは世界",
+		"Korean" : "여보세요 세계",
+		"Portuguese" : "Olá mundo",
+		"Russian" : "Здравствуй мир",
+		"Spanish" : "Hola mundo"
+	}'
+	height="300px" />
+                                            </IconTabFilter>
+                                        </items>
+                                    </IconTabBar>
                                 </VBox>
                             </content>
                         </Panel>

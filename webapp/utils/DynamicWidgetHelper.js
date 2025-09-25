@@ -339,6 +339,7 @@ sap.ui.define([
 		getGroupedFormValues: async function(oController) {
 			debugger;
 			var that = oController;
+			var self = this;
 			var oForm = that.byId("bexQueryParameterForm");
 			var aContent = oForm.getContent();
 			var oFormData = {};
@@ -350,50 +351,176 @@ sap.ui.define([
 					if (!oFormData[sCurrentLabel]) {
 						oFormData[sCurrentLabel] = {
 							type: "",
-							values: []
+							values: [],
+							selects: []
 						};
 					}
-				} else if (oControl instanceof sap.m.Input) {
-					if (sCurrentLabel && oFormData[sCurrentLabel]) {
-						oFormData[sCurrentLabel].values.push({
-							"SIGN": "",
-							"OPTION": "",
-							"LOW": oControl.getValue(),
-							"HIGH": ""
-						});
-					}
-				} else if (oControl instanceof sap.m.Select) {
-					if (sCurrentLabel && oFormData[sCurrentLabel]) {
-						if (!oFormData[sCurrentLabel].selects) {
-							oFormData[sCurrentLabel].selects = [];
-						}
-						oFormData[sCurrentLabel].selects.push({
-							selectedKey: oControl.getSelectedKey(),
-							selectedItem: oControl.getSelectedItem() ? 
-								oControl.getSelectedItem().getText() : ""
-						});
-					}
+				} else if (oControl instanceof sap.m.VBox) {
+					// Process VBox containers that hold the form elements
+					self._processVBoxContent(oControl, sCurrentLabel, oFormData);
+				} else if (oControl instanceof sap.m.Input && sCurrentLabel) {
+					// Process direct Input controls (Parameter type)
+					var sValue = oControl.getValue();
+					oFormData[sCurrentLabel].values.push({
+						LOW: sValue,
+						HIGH: ""
+					});
 				}
 			});
 			
+			// Get query parameters to enrich the form data
 			var aQueryParam = await that.getQueryParameter();
+			var aProcessedData = [];
+			
 			Object.keys(oFormData).forEach(key => {
 				var oParam = {};
 				var oQueryParam = aQueryParam.find(param => param.Vtxt === key);
+				
 				oParam["VNAM"] = oQueryParam ? oQueryParam.Vnam : "";
 				oParam["VARTYP"] = oQueryParam ? oQueryParam.Vartyp : "";
 				oParam["VPARSEL"] = oQueryParam ? oQueryParam.Vparsel : "";
 				oParam["IOBJNM"] = oQueryParam ? oQueryParam.Iobjnm : "";
 				oParam["LS_VALUE"] = [];
 				
+				// Process values based on type
 				for (let i = 0; i < oFormData[key].values.length; i++) {
 					var oValue = {};
-					oValue["SIGN"] = oFormData[key].selects && oFormData[key].selects[i] ? oFormData[key].selects[i].selectedKey : "";
-					oValue["OPTION"] = oFormData[key].selects && oFormData[key].selects[i] ? oFormData[key].selects[i].selectedKey : "";
+					if(oParam["VPARSEL"]=='I'){
+						oValue["SIGN"] = 'BT'
+					}
+					else if(oParam["VPARSEL"]=='M' || oParam["VPARSEL"]=='P'){
+						oValue["SIGN"] = 'EQ'
+					}
+					else{
+						oValue["SIGN"] = oFormData[key].selects && oFormData[key].selects[i] ? 
+						oFormData[key].selects[i].selectedKey : "I";
+					}
+					oValue["OPTION"] = oFormData[key].selects && oFormData[key].selects[i] ? 
+						oFormData[key].selects[i].selectedKey : "EQ";
+					oValue["LOW"] = oFormData[key].values[i].LOW || "";
+					oValue["HIGH"] = oFormData[key].values[i].HIGH || "";
+					
+					oParam["LS_VALUE"].push(oValue);
+				}
+				
+				if (oParam["LS_VALUE"].length > 0) {
+					aProcessedData.push(oParam);
 				}
 			});
+			console.log(aProcessedData);
+			self.fetchQueryOutput(oController,aProcessedData)
+			// /sap/opu/odata/SAP/ZFI_MOBILE_SRV/Query_Output?$filter=DatasourceName%20eq%20%27YES_ARAMCO_PLANS_TEST%27%20and%20InputParameter%20eq%20%2
+			return aProcessedData;
+		},
+
+		fetchQueryOutput: function(oController, aFilterParams) {
+			var that = oController;
+			var finmobview = that.getView().getModel("finmobview");
+
+				var aFilters = [
+				new sap.ui.model.Filter("DatasourceName", sap.ui.model.FilterOperator.EQ, 'YES_ARAMCO_PLANS_TEST'),
+				new sap.ui.model.Filter("InputParameter", sap.ui.model.FilterOperator.EQ, JSON.stringify(aFilterParams))
+			];
+
+				finmobview.read("/Query_Output", {
+					filters: aFilters,
+					success: function (data) {
+						console.log(data);
+						// var oCodeEditor = that.getView().byId("codeEditor");
+						// if (oCodeEditor) {
+						// 	oCodeEditor.setValue(JSON.stringify(JSON.parse(data.results[0].QueryOutput).data, null, 2));
+						// }
+
+						
+						if (data.results && data.results.length > 0) {
+							var queryOutput = JSON.parse(data.results[0].QueryOutput);
+							var metaData = queryOutput.metadata || [];
+							var jsonData = queryOutput.data || [];
+							
+							// Add selectedAxis property to each metadata item
+							metaData.forEach(function(item) {
+								item.selectedAxis = "";
+							});
+							
+							// Bind CodeEditor with formatted JSON
+							var oCodeEditor = that.getView().byId("codeEditor");
+							if (oCodeEditor) {
+								oCodeEditor.setValue(JSON.stringify(jsonData, null, 2));
+							}
+							
+							// Create and set metaDataModel for the table
+							var oMetaDataModel = new sap.ui.model.json.JSONModel(metaData);
+							that.getView().setModel(oMetaDataModel, "metaDataModel");
+						}
+						
+						var response = data.results || [];
+						// resolve(response); // Note: resolve is not defined in this context
+					},
+					error: function (oError) {
+						sap.ui.core.BusyIndicator.hide(0);
+						var responseText = oError.responseText;
+						var msg = "Error fetching data";
+
+						if (responseText.indexOf("{") > -1) {
+							try {
+								var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
+								if (errorDetails.length > 0) {
+									msg = errorDetails.map(err => err.message).join("\n");
+								}
+							} catch (e) {
+								msg = responseText;
+							}
+						}
+						sap.m.MessageBox.error(msg);
+						console.error("Query output error:", oError);
+					}
+				});
+		},
+
+		
+
+
+		_processVBoxContent: function(oVBox, sCurrentLabel, oFormData) {
+			var aVBoxItems = oVBox.getItems();
 			
-			return oFormData;
+			aVBoxItems.forEach(function(oItem) {
+				if (oItem instanceof sap.m.HBox) {
+					var aHBoxItems = oItem.getItems();
+					var oValuePair = { LOW: "", HIGH: "" };
+					var oSelectInfo = {};
+					var aInputs = [];
+					
+					// First, collect all inputs in order
+					aHBoxItems.forEach(function(oHBoxItem) {
+						if (oHBoxItem instanceof sap.m.Select) {
+							oSelectInfo = {
+								selectedKey: oHBoxItem.getSelectedKey(),
+								selectedItem: oHBoxItem.getSelectedItem() ? 
+									oHBoxItem.getSelectedItem().getText() : ""
+							};
+						} else if (oHBoxItem instanceof sap.m.Input) {
+							aInputs.push(oHBoxItem.getValue());
+						}
+					});
+					
+					// Map inputs based on count
+					if (aInputs.length === 1) {
+						// Single input - goes to LOW
+						oValuePair.LOW = aInputs[0];
+					} else if (aInputs.length === 2) {
+						// Two inputs - first is LOW, second is HIGH
+						oValuePair.LOW = aInputs[0];
+						oValuePair.HIGH = aInputs[1];
+					}
+					
+					if (sCurrentLabel && oFormData[sCurrentLabel]) {
+						oFormData[sCurrentLabel].values.push(oValuePair);
+						if (Object.keys(oSelectInfo).length > 0) {
+							oFormData[sCurrentLabel].selects.push(oSelectInfo);
+						}
+					}
+				}
+			});
 		}
 	};
 });

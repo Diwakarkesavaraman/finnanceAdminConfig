@@ -83,11 +83,11 @@
  			});
 			var oInputParamModel = new sap.ui.model.json.JSONModel({
 				selectOptionRange: [{
-					Value: "<=",
+					Value: "BT",
 					Description: "Less then or equal to"
 				}, {
-					Value: "==",
-					Description: "Equals"
+					Value: "EQ",
+					Description: "EQ"
 				},],
 				selectOptionInclude:[
 					{
