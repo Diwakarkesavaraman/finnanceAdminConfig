@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" xmlns:codeeditor="sap.ui.codeeditor" beforeShow="onBeforeShow">
 	<ScrollContainer id="admincontrolupdlandingdata" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
 		<Panel height="100%" class="admgisreppanelcls">
 			<content>
@@ -44,7 +44,7 @@
 						<!--</Column>-->
 					</columns>
 					<items>
-						<ColumnListItem vAlign="Middle">
+						<ColumnListItem vAlign="Middle" type="Navigation" press="onTilePress">
 							<cells>
 								<Text text="{oLandingPageDataModel>ZlevelId}"/>
 								<Input value="{oLandingPageDataModel>Ztitle}"/>
@@ -68,6 +68,131 @@
 						</ColumnListItem>
 					</items>
 				</Table>
+<VBox id="pageConfig" visible="false">
+			
+<HBox class="tblhdrcls">
+					<Text id="tileText" text="Page Config"/>
+					<HBox>
+						<Button type="Reject" text="Delete" press="onDeletePage"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Accept" text="Update" press="onUpdatePage"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddPage"/>
+					</HBox>
+				</HBox>
+					<Table id="pageTable" alternateRowColors="false" items="{ path: 'oPageDataModel>/' }" growing="true"
+					class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
+					<columns>
+						<Column width="9rem">
+							<header>
+								<Text text="Page Title" class="whiteLabel"/>
+							</header>
+						</Column>
+						<Column>
+							<header>
+								<Text text="Roles" class="whiteLabel"/>
+							</header>
+						</Column>
+						<Column width="7rem">
+							<header>
+								<Text text="Visibility" class="whiteLabel"/>
+							</header>
+						</Column>
+						<!--<Column width="5rem">-->
+						<!--	<header>-->
+						<!--		<Text text="Icons" class="whiteLabel"/>-->
+						<!--	</header>-->
+						<!--</Column>-->
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle" type="Navigation" press="onPagePress">
+							<cells>
+								<Input value="{oPageDataModel>ZpageName}"/>
+								<Input value="{oPageDataModel>Zrole}"/>
+								<!--<Input value="{oLandingPageDataModel>Zvisibility}"/>-->
+								<CheckBox text="" selected="{oPageDataModel>Zvisibility}"/>
+								<!-- MultiInput for Roles -->
+								<!--<MultiInput tokens="{ path: 'oLandingPageDataModel>arr',templateShareable: false }" width="80%" valueHelpRequest="onRoleValueHelp"-->
+								<!--	showValueHelp="true">-->
+								<!--	<tokens>-->
+								<!--		<Token key="{oLandingPageDataModel>Value1}" text="{oLandingPageDataModel>Value1}"/>-->
+								<!--	</tokens>-->
+								<!--</MultiInput>-->
+								<!---->
+								<!--<Button type="Default" icon="sap-icon://attachment" press="onAttachButtonClick">-->
+								<!--	<customData>-->
+								<!--		<core:CustomData key="style-class-Highlight" value="{= ${oLandingPageDataModel>ZiName} ? 'filled' : '' }" writeToDom="true"/>-->
+								<!--	</customData>-->
+								<!--</Button>-->
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+				</VBox>
+				
+				<VBox id="widgetConfig" visible="false">
+			
+					<HBox class="tblhdrcls">
+					<Text id="pageText" text="Page Config"/>
+					<HBox>
+						<Button type="Reject" text="Delete" press="onDeleteWidget"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Accept" text="Update" press="onUpdateWidget"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddWidget"/>
+					</HBox>
+				</HBox>
+					<Table id="widgetTable" alternateRowColors="false" items="{ path: 'oWidgetDataModel>/' }" growing="true"
+					class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
+					<columns>
+						<Column width="9rem">
+							<header>
+								<Text text="Tile ID" class="whiteLabel"/>
+							</header>
+						</Column>
+						<Column>
+							<header>
+								<Text text="Page ID" class="whiteLabel"/>
+							</header>
+						</Column>
+						<Column width="7rem">
+							<header>
+								<Text text="Widget ID" class="whiteLabel"/>
+							</header>
+						</Column>
+						<!--<Column width="5rem">-->
+						<!--	<header>-->
+						<!--		<Text text="Icons" class="whiteLabel"/>-->
+						<!--	</header>-->
+						<!--</Column>-->
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle" type="Navigation" press="onTilePress">
+							<cells>
+								<Input value="{oWidgetDataModel>ZtitleId}"/>
+								<Input value="{oWidgetDataModel>ZpageId}"/>
+								<!--<Input value="{oLandingPageDataModel>Zvisibility}"/>-->
+								<CheckBox text="" selected="{oWidgetDataModel>WidgetId}"/>
+								<!-- MultiInput for Roles -->
+								<!--<MultiInput tokens="{ path: 'oLandingPageDataModel>arr',templateShareable: false }" width="80%" valueHelpRequest="onRoleValueHelp"-->
+								<!--	showValueHelp="true">-->
+								<!--	<tokens>-->
+								<!--		<Token key="{oLandingPageDataModel>Value1}" text="{oLandingPageDataModel>Value1}"/>-->
+								<!--	</tokens>-->
+								<!--</MultiInput>-->
+								<!---->
+								<!--<Button type="Default" icon="sap-icon://attachment" press="onAttachButtonClick">-->
+								<!--	<customData>-->
+								<!--		<core:CustomData key="style-class-Highlight" value="{= ${oLandingPageDataModel>ZiName} ? 'filled' : '' }" writeToDom="true"/>-->
+								<!--	</customData>-->
+								<!--</Button>-->
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+				</VBox>
+				<VBox id="dynamicWidgetConfigContainer">
+				</VBox>
 			</content>
 		</Panel>
 		<Dialog id="fileUploadDialog" title="Upload File" stretchOnPhone="true" endButton="cancel" endButtonPress="onDialogClose" class="">

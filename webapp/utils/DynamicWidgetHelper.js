@@ -4,10 +4,12 @@ sap.ui.define([
 	"use strict";
 
 	return {
-		onLoadDyanmicWidgetData: async function (oController) {
+		onLoadDyanmicWidgetData: async function (oController,widgetId) {
+			debugger
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
 			var oDynamicWidgetModel = new JSONModel();
+	
 
 			sap.ui.core.BusyIndicator.show(0);
 
@@ -16,7 +18,9 @@ sap.ui.define([
 				selectedWidgetType: "",
 				selectedChartType: "",
 				selectedDataSource: "",
-				widgetId: ""
+				widgetId: "",
+				inputParameter: "",
+				mapping: ""
 			});
 			that.getView().setModel(oSelectedValuesModel, "selectedValues");
 
@@ -39,6 +43,50 @@ sap.ui.define([
 			that.getView().setModel(oDataSourceModel, "aDataSourceDropdownData");
 
 			that.onAddInput();
+
+			var aFilters = [new sap.ui.model.Filter("WidgetId", sap.ui.model.FilterOperator.EQ, widgetId)];
+			if(widgetId !== ""){
+				// if(widgetId !== ""){
+			finmobview.read("/WidgetConfigurationSet", {
+				filters: aFilters,
+				success: function (oData) {
+				var test=	
+						{
+							
+							"Mandt": "032",
+							"WidgetId": "00505684457C1FE0A6D5E6B3B4720E18",
+							"WidgetType": "3value",
+							"ChartType": "lchart",
+							"DataSource": "",
+							"InputParameter": "[{\"VNAM\":\"ZES_PERIOD\",\"VARTYP\":\"1\",\"VPARSEL\":\"P\",\"IOBJNM\":\"/CPMB/ZED08MN__/CPMB/YEAR\",\"LS_VALUE\":[{\"SIGN\":\"EQ\",\"OPTION\":\"EQ\",\"LOW\":\"2020\",\"HIGH\":\"\"}]},{\"VNAM\":\"ZV_S_CAT\",\"VARTYP\":\"1\",\"VPARSEL\":\"S\",\"IOBJNM\":\"/CPMB/ZED8YY1\",\"LS_VALUE\":[{\"SIGN\":\"EQ\",\"OPTION\":\"EQ\",\"LOW\":\"PLAN_18_20_BOARD\",\"HIGH\":\"\"},{\"SIGN\":\"EQ\",\"OPTION\":\"EQ\",\"LOW\":\"PLAN_18_20_BOARD\",\"HIGH\":\"\"}]},{\"VNAM\":\"YORG_ENTITY_TEST\",\"VARTYP\":\"1\",\"VPARSEL\":\"M\",\"IOBJNM\":\"/CPMB/ZEDBS0W\",\"LS_VALUE\":[{\"SIGN\":\"EQ\",\"OPTION\":\"EQ\",\"LOW\":\"100191\",\"HIGH\":\"\"}]},{\"VNAM\":\"YCOR_ACC_TEST\",\"VARTYP\":\"1\",\"VPARSEL\":\"I\",\"IOBJNM\":\"/CPMB/ZEDWQND\",\"LS_VALUE\":[{\"SIGN\":\"BT\",\"OPTION\":\"EQ\",\"LOW\":\"CRP_LAB_SAO_S1114\",\"HIGH\":\"CRP_LAB_SAO_S1114\"}]}]",
+							"Mapping": "",
+							"Status": "Draft"
+						}
+					
+					var oModel = that.getView().getModel("selectedValues");
+					var oCurrentData = oModel.getData();
+					var oWidgetData = oData.results[0];
+					oCurrentData.widgetId = oWidgetData.WidgetId;
+					oCurrentData.selectedWidgetType = oWidgetData.WidgetType;
+					oCurrentData.selectedChartType = oWidgetData.ChartType;
+					oCurrentData.selectedDataSource = oWidgetData.DataSource;
+					oCurrentData.inputParameter = test.InputParameter;
+					oCurrentData.mapping = oWidgetData.Mapping;
+					
+					oModel.setData(oCurrentData);
+
+					that.getView().byId("widgetId").setVisible(true);
+					that.getView().byId("widgetIdLabel").setVisible(true);
+					sap.ui.core.BusyIndicator.hide();
+				},
+				error: function (oError) {
+					console.error("Error creating:", oPayload, oError);
+					sap.ui.core.BusyIndicator.hide();
+				}
+			});
+		}
+
+
 		},
 
 		onDataSourceChange: function(oController, oEvent) {
@@ -51,6 +99,7 @@ sap.ui.define([
 		checkQueryValidity: function(oController, oEvent) {
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
+			var dataSource = that.getView().byId("dataSourceId").getValue();
 
 			// Hide button and show busy indicator
 			var oButton = that.getView().byId("check");
@@ -58,10 +107,45 @@ sap.ui.define([
 			oButton.setVisible(false);
 			oBusyIndicator.setVisible(true);
 
-			// Add your validation logic here
+			var aFilters = [new sap.ui.model.Filter("Query_Name", sap.ui.model.FilterOperator.EQ, dataSource)];
+
+
+			
+			finmobview.read("/QueryValidation", {
+				filters: aFilters,
+				success: function (data) {
+					console.log(data);
+					var response = data.results[0] || [];
+					if(response.IsExist){
+						that.getView().byId("successIcon").setVisible(true);
+						var dataSource = response.Query_Name
+						that.onAddInput(that,dataSource);
+					}
+
+				},
+				error: function (oError) {
+					sap.ui.core.BusyIndicator.hide(0);
+					var responseText = oError.responseText;
+					var msg = "Error fetching data";
+
+					if (responseText.indexOf("{") > -1) {
+						try {
+							var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
+							if (errorDetails.length > 0) {
+								msg = errorDetails.map(err => err.message).join("\n");
+							}
+						} catch (e) {
+							msg = responseText;
+						}
+					}
+					MessageBox.error(msg);
+					reject(oError);
+				}
+			});
 		},
 
 		handleSavePress: function(oController, oEvent) {
+			debugger;
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
 			var oWidgetData = that.getView().getModel("selectedValues").getData();
@@ -70,6 +154,9 @@ sap.ui.define([
 				"WidgetType": oWidgetData.selectedWidgetType,
 				"ChartType": oWidgetData.selectedChartType,
 				"DataSource": oWidgetData.selectedDataSource,
+				"WidgetId": oWidgetData.widgetId,
+				"InputParameter": oWidgetData.inputParameter,
+				"Mapping": oWidgetData.mapping,
 				"Status": "Draft"
 			};
 
@@ -192,10 +279,10 @@ sap.ui.define([
 			}
 		},
 
-		onAddInput: async function(oController) {
+		onAddInput: async function(oController,dataSource) {
 			var that = oController;
 			var oForm = that.byId("bexQueryParameterForm");
-			var aQueryParam = await that.getQueryParameter();
+			var aQueryParam = await that.getQueryParameter(dataSource);
 			
 			aQueryParam.forEach(function(param) {
 				switch (param.Vparsel) {
@@ -408,6 +495,10 @@ sap.ui.define([
 				}
 			});
 			console.log(aProcessedData);
+			var oModel = that.getView().getModel("selectedValues");
+			var oCurrentData = oModel.getData();
+			oCurrentData.inputParameter = JSON.stringify(aProcessedData);
+
 			self.fetchQueryOutput(oController,aProcessedData)
 			// /sap/opu/odata/SAP/ZFI_MOBILE_SRV/Query_Output?$filter=DatasourceName%20eq%20%27YES_ARAMCO_PLANS_TEST%27%20and%20InputParameter%20eq%20%2
 			return aProcessedData;

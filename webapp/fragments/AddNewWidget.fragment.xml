@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Widget" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label text="Widget ID"></Label>
+            <Input id="widgetIDInput" value="" required="true"></Input>
+
+            <Label text="Roles"></Label>
+            <Input id="widgetRolesInput" value=""></Input>
+
+            <Label text="Visibility"></Label>
+            <CheckBox id="widgetVisibilityCheckBox" text="" selected="false"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddWidgetDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add"  press="onAddWidgetItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>
