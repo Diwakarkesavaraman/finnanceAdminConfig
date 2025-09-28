@@ -9169,21 +9169,21 @@
 			
 			// var that = oController;
 			// debugger;
-			// var oBindingContext = oEvent.getSource().getBindingContext("oPageDataModel");
-			// var oRowData = oBindingContext.getObject();
-			// var oPageDetailsModel = new JSONModel();
-			// oPageDetailsModel.setData(oRowData);
- 			// this.getView().setModel(oPageDetailsModel, "oPageDetailsModel");
+			var oBindingContext = oEvent.getSource().getBindingContext("oPageDataModel");
+			var oRowData = oBindingContext.getObject();
+			var oPageDetailsModel = new JSONModel();
+			oPageDetailsModel.setData(oRowData);
+ 			this.getView().setModel(oPageDetailsModel, "oPageDetailsModel");
 	  
-			// console.log("Row pressed - Row contents:", oRowData);
+			console.log("Row pressed - Row contents:", oRowData);
 
-			// this.getView().byId("widgetConfig").setVisible(true);
-			// this.getView().byId("pageText").setText(oRowData.ZpageName);
+			this.getView().byId("widgetConfig").setVisible(true);
+			this.getView().byId("pageText").setText(oRowData.ZpageName);
 
-			// // Navigate to another fragment
-			// this.navigateToWidgetFragment (oRowData.ZpageId);
+			// Navigate to another fragment
+			this.navigateToWidgetFragment (oRowData.ZpageId);
 
-			this.showDynamicWidgetConfig();
+			// this.showDynamicWidgetConfig();
 			// var oFragment = sap.ui.xmlfragment(
 			// 	"mobilefinance.MobileFinance.fragments.DynamicWidgetConfig",
 			// 	this

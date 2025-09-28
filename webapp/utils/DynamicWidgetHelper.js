@@ -59,6 +59,7 @@ sap.ui.define([
 							"ChartType": "lchart",
 							"DataSource": "",
 							"InputParameter": "[{\"VNAM\":\"ZES_PERIOD\",\"VARTYP\":\"1\",\"VPARSEL\":\"P\",\"IOBJNM\":\"/CPMB/ZED08MN__/CPMB/YEAR\",\"LS_VALUE\":[{\"SIGN\":\"EQ\",\"OPTION\":\"EQ\",\"LOW\":\"2020\",\"HIGH\":\"\"}]},{\"VNAM\":\"ZV_S_CAT\",\"VARTYP\":\"1\",\"VPARSEL\":\"S\",\"IOBJNM\":\"/CPMB/ZED8YY1\",\"LS_VALUE\":[{\"SIGN\":\"EQ\",\"OPTION\":\"EQ\",\"LOW\":\"PLAN_18_20_BOARD\",\"HIGH\":\"\"},{\"SIGN\":\"EQ\",\"OPTION\":\"EQ\",\"LOW\":\"PLAN_18_20_BOARD\",\"HIGH\":\"\"}]},{\"VNAM\":\"YORG_ENTITY_TEST\",\"VARTYP\":\"1\",\"VPARSEL\":\"M\",\"IOBJNM\":\"/CPMB/ZEDBS0W\",\"LS_VALUE\":[{\"SIGN\":\"EQ\",\"OPTION\":\"EQ\",\"LOW\":\"100191\",\"HIGH\":\"\"}]},{\"VNAM\":\"YCOR_ACC_TEST\",\"VARTYP\":\"1\",\"VPARSEL\":\"I\",\"IOBJNM\":\"/CPMB/ZEDWQND\",\"LS_VALUE\":[{\"SIGN\":\"BT\",\"OPTION\":\"EQ\",\"LOW\":\"CRP_LAB_SAO_S1114\",\"HIGH\":\"CRP_LAB_SAO_S1114\"}]}]",
+							// "InputParameter":"",
 							"Mapping": "",
 							"Status": "Draft"
 						}
@@ -86,7 +87,7 @@ sap.ui.define([
 			});
 		}
 
-
+		
 		},
 
 		onDataSourceChange: function(oController, oEvent) {
@@ -282,23 +283,46 @@ sap.ui.define([
 		onAddInput: async function(oController,dataSource) {
 			var that = oController;
 			var oForm = that.byId("bexQueryParameterForm");
+
+			
 			var aQueryParam = await that.getQueryParameter(dataSource);
 			
+			// Get existing inputParameter data if available
+			var oSelectedData = that.getView().getModel("selectedValues").getData();
+			var aExistingInputParam = [];
+			if (oSelectedData.inputParameter) {
+				try {
+					aExistingInputParam = JSON.parse(oSelectedData.inputParameter);
+				} catch (e) {
+					console.error("Error parsing inputParameter:", e);
+				}
+			}
+			
 			aQueryParam.forEach(function(param) {
+				// Find existing data for this parameter
+				var oExistingParam = aExistingInputParam.find(function(existingParam) {
+					return existingParam.VNAM === param.Vnam;
+				});
+				
 				switch (param.Vparsel) {
 					case 'M':
 						var oLabel = new sap.m.Label({
 							text: param.Vtxt
 						});
-						var oMultiInputBox = new sap.m.VBox({
-							class: "sapUiMediumMargin",
-							items: [
-								new sap.m.HBox({
+						
+						// Create initial input box
+						var aMultiInputItems = [];
+						
+						if (oExistingParam && oExistingParam.LS_VALUE && oExistingParam.LS_VALUE.length > 0) {
+							// Create input boxes for existing values
+							oExistingParam.LS_VALUE.forEach(function(value) {
+								aMultiInputItems.push(new sap.m.HBox({
 									class: "sapUiSmallMarginBottom",
 									items: [
 										new sap.m.Input({
 											class: "sapUiSmallMarginBottom",
 											type: "Text",
+											value: value.LOW,
 											showValueHelp: true,
 											valueHelpIconSrc: "sap-icon://arrow-left"
 										}),
@@ -308,9 +332,33 @@ sap.ui.define([
 											press: that.handleAddPress.bind(that, 'M')
 										})
 									]
-								})
-							]
+								}));
+							});
+						} else {
+							// Create empty input box
+							aMultiInputItems.push(new sap.m.HBox({
+								class: "sapUiSmallMarginBottom",
+								items: [
+									new sap.m.Input({
+										class: "sapUiSmallMarginBottom",
+										type: "Text",
+										showValueHelp: true,
+										valueHelpIconSrc: "sap-icon://arrow-left"
+									}),
+									new sap.m.Button({
+										enabled: true,
+										icon: "sap-icon://add",
+										press: that.handleAddPress.bind(that, 'M')
+									})
+								]
+							}));
+						}
+						
+						var oMultiInputBox = new sap.m.VBox({
+							class: "sapUiMediumMargin",
+							items: aMultiInputItems
 						});
+						
 						oForm.addContent(oLabel);
 						oForm.addContent(oMultiInputBox);
 						break;
@@ -318,14 +366,19 @@ sap.ui.define([
 						var oLabel = new sap.m.Label({
 							text: param.Vtxt
 						});
-						var oSelectOptionBox = new sap.m.VBox({
-							class: "sapUiMediumMargin",
-							items: [
-								new sap.m.HBox({
+						
+						// Create initial select option items
+						var aSelectOptionItems = [];
+						
+						if (oExistingParam && oExistingParam.LS_VALUE && oExistingParam.LS_VALUE.length > 0) {
+							// Create select option boxes for existing values
+							oExistingParam.LS_VALUE.forEach(function(value) {
+								aSelectOptionItems.push(new sap.m.HBox({
 									class: "sapUiSmallMarginBottom",
 									items: [
 										new sap.m.Select({
 											forceSelection: false,
+											selectedKey: value.OPTION || "EQ",
 											items: {
 												path: "inputParamModel>/selectOptionRange",
 												template: new sap.ui.core.Item({
@@ -343,6 +396,7 @@ sap.ui.define([
 										new sap.m.Input({
 											class: "sapUiSmallMarginEnd",
 											type: "Text",
+											value: value.LOW,
 											placeholder: "Enter product",
 											showValueHelp: true,
 											valueHelpIconSrc: "sap-icon://arrow-left",
@@ -354,6 +408,7 @@ sap.ui.define([
 										}),
 										new sap.m.Input({
 											type: "Text",
+											value: value.HIGH,
 											placeholder: "Enter product",
 											showValueHelp: true,
 											valueHelpIconSrc: "sap-icon://arrow-left",
@@ -365,9 +420,62 @@ sap.ui.define([
 											press: that.handleAddPress.bind(that, 'S')
 										})
 									]
-								})
-							]
+								}));
+							});
+						} else {
+							// Create empty select option box
+							aSelectOptionItems.push(new sap.m.HBox({
+								class: "sapUiSmallMarginBottom",
+								items: [
+									new sap.m.Select({
+										forceSelection: false,
+										items: {
+											path: "inputParamModel>/selectOptionRange",
+											template: new sap.ui.core.Item({
+												key: "{inputParamModel>Value}",
+												text: "{inputParamModel>Value}"
+											})
+										},
+										icon: "sap-icon://filter",
+										autoAdjustWidth: true,
+										change: function(oEvent) {
+											var sSelectedKey = oEvent.getSource().getSelectedKey();
+											console.log("Selected key:", sSelectedKey);
+										}
+									}),
+									new sap.m.Input({
+										class: "sapUiSmallMarginEnd",
+										type: "Text",
+										placeholder: "Enter product",
+										showValueHelp: true,
+										valueHelpIconSrc: "sap-icon://arrow-left",
+										valueHelpRequest: "handleValueHelp"
+									}),
+									new sap.m.Text({
+										text: "to",
+										class: "sapUiSmallMarginEnd"
+									}),
+									new sap.m.Input({
+										type: "Text",
+										placeholder: "Enter product",
+										showValueHelp: true,
+										valueHelpIconSrc: "sap-icon://arrow-left",
+										valueHelpRequest: "handleValueHelp"
+									}),
+									new sap.m.Button({
+										enabled: true,
+										icon: "sap-icon://add",
+										press: that.handleAddPress.bind(that, 'S')
+									})
+								]
+							}));
+						}
+						
+						var oSelectOptionBox = new sap.m.VBox({
+							class: "sapUiMediumMargin",
+							items: aSelectOptionItems
 						});
+						
 						oForm.addContent(oLabel);
 						oForm.addContent(oSelectOptionBox);
 						break;
@@ -375,6 +483,15 @@ sap.ui.define([
 						var oLabel = new sap.m.Label({
 							text: param.Vtxt
 						});
+						
+						// Get existing values for interval
+						var sLowValue = "";
+						var sHighValue = "";
+						if (oExistingParam && oExistingParam.LS_VALUE && oExistingParam.LS_VALUE.length > 0) {
+							sLowValue = oExistingParam.LS_VALUE[0].LOW || "";
+							sHighValue = oExistingParam.LS_VALUE[0].HIGH || "";
+						}
+						
 						var oIntervalBox = new sap.m.VBox({
 							class: "sapUiMediumMargin",
 							items: [
@@ -384,6 +501,7 @@ sap.ui.define([
 										new sap.m.Input({
 											class: "sapUiSmallMarginBottom",
 											type: "Text",
+											value: sLowValue,
 											showValueHelp: true,
 											valueHelpIconSrc: "sap-icon://arrow-left"
 										}),
@@ -393,6 +511,7 @@ sap.ui.define([
 										}),
 										new sap.m.Input({
 											type: "Text",
+											value: sHighValue,
 											placeholder: "Enter product",
 											showValueHelp: true,
 											valueHelpIconSrc: "sap-icon://arrow-left",
@@ -409,9 +528,17 @@ sap.ui.define([
 						var oLabel = new sap.m.Label({
 							text: param.Vtxt
 						});
+						
+						// Get existing value for parameter
+						var sParameterValue = "";
+						if (oExistingParam && oExistingParam.LS_VALUE && oExistingParam.LS_VALUE.length > 0) {
+							sParameterValue = oExistingParam.LS_VALUE[0].LOW || "";
+						}
+						
 						var oInput = new sap.m.Input({
 							class: "sapUiSmallMarginBottom",
 							type: "Text",
+							value: sParameterValue,
 							showValueHelp: true,
 							valueHelpIconSrc: "sap-icon://arrow-left"
 						});
@@ -542,9 +669,121 @@ sap.ui.define([
 							// Create and set metaDataModel for the table
 							var oMetaDataModel = new sap.ui.model.json.JSONModel(metaData);
 							that.getView().setModel(oMetaDataModel, "metaDataModel");
+
 						}
 						
 						var response = data.results || [];
+
+						var oForm = that.byId("dataMappingForm");
+						// Clear existing form content first
+						oForm.removeAllContent();
+
+						var oXLabel = new sap.m.Label({
+							text: "Select X Axis Field"
+						});
+						var oXInput = new sap.m.Input({
+							class: "sapUiSmallMarginEnd",
+							type: "Text",
+							placeholder: "Select field",
+							showValueHelp: true,
+							valueHelpIconSrc: "sap-icon://value-help",
+							valueHelpRequest: function(oEvent) {
+								var self = this;
+								var oSource = oEvent.getSource();
+								var oMetaDataModel = that.getView().getModel("metaDataModel");
+								
+								if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
+									sap.m.MessageToast.show("No metadata available. Please fetch query data first.");
+									return;
+								}
+								
+								// Create value help dialog if it doesn't exist
+								if (!that._oMetaDataValueHelpDialog) {
+									that._oMetaDataValueHelpDialog = new sap.m.SelectDialog({
+										title: "Select Field",
+										items: {
+											path: "metaDataModel>/",
+											template: new sap.m.StandardListItem({
+												title: "{metaDataModel>FIELDNAME}",
+												description: "{metaDataModel>SCRTEXT_L}",
+												type: "Active"
+											})
+										},
+										confirm: function(oEvent) {
+											var oSelectedItem = oEvent.getParameter("selectedItem");
+											if (oSelectedItem) {
+												var sFieldName = oSelectedItem.getTitle();
+												oSource.setValue(sFieldName);
+											}
+										},
+										cancel: function() {
+											// Dialog closed without selection
+										}
+									});
+									that.getView().addDependent(that._oMetaDataValueHelpDialog);
+								}
+								
+								// Set the model and open the dialog
+								that._oMetaDataValueHelpDialog.setModel(oMetaDataModel, "metaDataModel");
+								that._oMetaDataValueHelpDialog.open();
+							}
+						});
+						var oYLabel = new sap.m.Label({
+							text: "Select Y Axis Field"
+						});
+						var oYInput = new sap.m.Input({
+							class: "sapUiSmallMarginEnd",
+							type: "Text",
+							placeholder: "Select field",
+							showValueHelp: true,
+							valueHelpIconSrc: "sap-icon://value-help",
+							valueHelpRequest: function(oEvent) {
+								var self = this;
+								var oSource = oEvent.getSource();
+								var oMetaDataModel = that.getView().getModel("metaDataModel");
+								
+								if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
+									sap.m.MessageToast.show("No metadata available. Please fetch query data first.");
+									return;
+								}
+								
+								// Create value help dialog if it doesn't exist
+								if (!that._oMetaDataValueHelpDialog) {
+									that._oMetaDataValueHelpDialog = new sap.m.SelectDialog({
+										title: "Select Field",
+										items: {
+											path: "metaDataModel>/",
+											template: new sap.m.StandardListItem({
+												title: "{metaDataModel>FIELDNAME}",
+												description: "{metaDataModel>SCRTEXT_L}",
+												type: "Active"
+											})
+										},
+										confirm: function(oEvent) {
+											var oSelectedItem = oEvent.getParameter("selectedItem");
+											if (oSelectedItem) {
+												var sFieldName = oSelectedItem.getTitle();
+												oSource.setValue(sFieldName);
+											}
+										},
+										cancel: function() {
+											// Dialog closed without selection
+										}
+									});
+									that.getView().addDependent(that._oMetaDataValueHelpDialog);
+								}
+								
+								// Set the model and open the dialog
+								that._oMetaDataValueHelpDialog.setModel(oMetaDataModel, "metaDataModel");
+								that._oMetaDataValueHelpDialog.open();
+							}
+						});
+						
+						oForm.addContent(oXLabel);
+						oForm.addContent(oXInput);
+						oForm.addContent(oYLabel);
+						oForm.addContent(oYInput);
+
 						// resolve(response); // Note: resolve is not defined in this context
 					},
 					error: function (oError) {
@@ -568,8 +807,46 @@ sap.ui.define([
 				});
 		},
 
-		
-
+		handleMetaDataValueHelp: function(oController, oEvent) {
+			var that = oController;
+			var oSource = oEvent.getSource();
+			var oMetaDataModel = that.getView().getModel("metaDataModel");
+			
+			if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
+				sap.m.MessageToast.show("No metadata available. Please fetch query data first.");
+				return;
+			}
+			
+			// Create value help dialog if it doesn't exist
+			if (!that._oMetaDataValueHelpDialog) {
+				that._oMetaDataValueHelpDialog = new sap.m.SelectDialog({
+					title: "Select Field",
+					items: {
+						path: "metaDataModel>/",
+						template: new sap.m.StandardListItem({
+							title: "{metaDataModel>FIELDNAME}",
+							description: "{metaDataModel>SCRTEXT_L}",
+							type: "Active"
+						})
+					},
+					confirm: function(oEvent) {
+						var oSelectedItem = oEvent.getParameter("selectedItem");
+						if (oSelectedItem) {
+							var sFieldName = oSelectedItem.getTitle();
+							oSource.setValue(sFieldName);
+						}
+					},
+					cancel: function() {
+						// Dialog closed without selection
+					}
+				});
+				that.getView().addDependent(that._oMetaDataValueHelpDialog);
+			}
+			
+			// Set the model and open the dialog
+			that._oMetaDataValueHelpDialog.setModel(oMetaDataModel, "metaDataModel");
+			that._oMetaDataValueHelpDialog.open();
+		},
 
 		_processVBoxContent: function(oVBox, sCurrentLabel, oFormData) {
 			var aVBoxItems = oVBox.getItems();
