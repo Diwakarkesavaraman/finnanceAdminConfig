@@ -5,10 +5,10 @@
 	<VBox id="createDynamicWidgetConfigContainer">
 		<HBox class="tblhdrcls">
 			<Text text="Dynamic Widget Config"/>
-			<Button id="editBtn" text="Edit" enabled="false" press="handleEditPress"/>
-			<Button id="saveBtn" text="Save" type="Emphasized" visible="true" press="handleSavePress"/>
-			<Button id="submitBtn" text="Submit" visible="false" press="handleCancelPress"/>
-			<Button id="deleteBtn" type="Reject" text="Delete" visible="true" press="deleteWidget"/>
+			<Button id="editBtn" text="Edit" enabled="false" press="onCreateEditPress"/>
+			<Button id="saveBtn" text="Save" type="Emphasized" visible="true" press="onCreateSavePress"/>
+			<Button id="submitBtn" text="Submit" visible="false" press="onCreateCancelPress"/>
+			<Button id="deleteBtn" type="Reject" text="Delete" visible="true" press="onCreateDeleteWidget"/>
 		</HBox>
 		<Panel expandable="true" expanded="true" headerText="Panel with a header text" width="auto" class="sapUiResponsiveMargin">
 			<content>
@@ -18,20 +18,20 @@
 						columnsL="1" columnsM="1" singleContainerFullSize="false">
 						<form:content>
 							<Label id="createWidgetIdLabel" text="Widget ID"/>
-							<Input id="createWidgetId" value="{selectedValues>/widgetId}" editable="false" liveChange="onDataSourceChange"/>
+							<Input id="createWidgetId" value="{createWidgetValues>/widgetId}" editable="false" liveChange="onCreateDataSourceChange"/>
 							<Label id="createWidgetNameLabel" text="Widget Name"/>
-							<Input id="createWidgetName" value="{selectedValues>/widgetName}" editable="true" liveChange="onDataSourceChange"/>
+							<Input id="createWidgetName" value="{createWidgetValues>/widgetName}" editable="true" liveChange="onCreateDataSourceChange"/>
 							<Label text="Widget Type"/>
-							<Select id="createWidgetType" items="{path: 'aWidgetTypeDropdownData>/'}" selectedKey="{selectedValues>/selectedWidgetType}">
-								<core:Item text="{aWidgetTypeDropdownData>Text}" key="{aWidgetTypeDropdownData>Id}"/>
+							<Select id="createWidgetType" items="{path: 'createWidgetTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedWidgetType}">
+								<core:Item text="{createWidgetTypeDropdownData>Text}" key="{createWidgetTypeDropdownData>Id}"/>
 							</Select>
 							<Label text="Chart Type"/>
-							<Select id="createChartType" items="{path: 'aChartTypeDropdownData>/'}" selectedKey="{selectedValues>/selectedChartType}">
-								<core:Item text="{aChartTypeDropdownData>Text}" key="{aChartTypeDropdownData>Id}"/>
+							<Select id="createChartType" items="{path: 'createChartTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedChartType}">
+								<core:Item text="{createChartTypeDropdownData>Text}" key="{createChartTypeDropdownData>Id}"/>
 							</Select>
 							<Label text="Data Source"/>
-							<Input id="createDataSourceId" value="{selectedValues>/selectedDataSource}" liveChange="onDataSourceChange"/>
-							<Button id="createCheckBtn" text="Check" enabled="true" press="checkQueryValidity"/>
+							<Input id="createDataSourceId" value="{createWidgetValues>/selectedDataSource}" liveChange="onCreateDataSourceChange"/>
+							<Button id="createCheckBtn" text="Check" enabled="true" press="onCreateCheckQueryValidity"/>
 							<BusyIndicator id="createBusyIndicator" class="sapUiTinyMarginBottom" visible="false"/>
 							<core:Icon id="createSuccessIcon" src="sap-icon://message-success" visible="false" class="size1" color="#107e3e"/>
 						</form:content>
@@ -39,7 +39,7 @@
 				</VBox>
 				<HBox class="tblhdrcls">
 					<Text text="Dynamic Widget Config"/>
-					<Button id="createFormSubmit" text="Save" type="Emphasized" visible="true" press="getGroupedFormValues"/>
+					<Button id="createFormSubmit" text="Save" type="Emphasized" visible="true" press="onCreateGetGroupedFormValues"/>
 				</HBox>
 				<Panel expanded="true" expandable="true" headerText="Bex Query Parameter" width="auto" class="sapUiResponsiveMargin">
 					<content>
@@ -64,7 +64,7 @@
 										</VBox>
 									</IconTabFilter>
 									<IconTabFilter text="JSON" key="attachments">
-										<Table id="createJsonDataTable" items="{jsonDataModel>/}" class="sapUiResponsiveMargin">
+										<Table id="createJsonDataTable" items="{createJsonDataModel>/}" class="sapUiResponsiveMargin">
 											<columns></columns>
 											<items>
 												<ColumnListItem></ColumnListItem>

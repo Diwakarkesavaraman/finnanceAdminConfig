@@ -15,8 +15,9 @@
     "sap/ui/core/Item", 
     "sap/m/Text",
 	 "sap/m/Button",
-	 "mobilefinance/MobileFinance/utils/DynamicWidgetHelper"
- ], function (Controller, JSONModel, MessageBox, SelectDialog, StandardListItem, MessageToast, MultiInput, Token, FormElement, Input, Label,Select,Item,Text,Button,DynamicWidgetHelper) {
+	 "mobilefinance/MobileFinance/utils/DynamicWidgetHelper",
+	 "mobilefinance/MobileFinance/utils/CreateDynamicWidgetHelper"
+ ], function (Controller, JSONModel, MessageBox, SelectDialog, StandardListItem, MessageToast, MultiInput, Token, FormElement, Input, Label,Select,Item,Text,Button,DynamicWidgetHelper,CreateDynamicWidgetHelper) {
  	"use strict";
 
  	var sSelectedFolderId = "";
@@ -63,6 +64,7 @@
 			this.onLoadAffiliateTab();
  			this.onLoadShareKGISReportsData();
 			this.onLoadDyanmicWidgetData('');
+			this.onLoadCreateDynamicWidgetData('');
 		
 		
  			var oColorModel = new sap.ui.model.json.JSONModel({
@@ -8921,6 +8923,40 @@
 
 		getGroupedFormValues: async function() {
 			return await DynamicWidgetHelper.getGroupedFormValues(this);
+		},
+
+		//Create Dynamic Widget Config Controller
+
+		onLoadCreateDynamicWidgetData: async function (widgetId) {
+			return await CreateDynamicWidgetHelper.onLoadCreateDynamicWidgetData(this, widgetId);
+		},
+
+		onCreateDataSourceChange: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateDataSourceChange(this, oEvent);
+		},
+
+		onCreateCheckQueryValidity: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateCheckQueryValidity(this, oEvent);
+		},
+
+		onCreateSavePress: function(oEvent){
+			return CreateDynamicWidgetHelper.onCreateSavePress(this, oEvent);
+		},
+
+		onCreateDeleteWidget: function(widgetId) {
+			return CreateDynamicWidgetHelper.onCreateDeleteWidget(this, widgetId);
+		},
+
+		onCreateGetGroupedFormValues: async function() {
+			return await CreateDynamicWidgetHelper.onCreateGetGroupedFormValues(this);
+		},
+
+		onCreateEditPress: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateEditPress(this, oEvent);
+		},
+
+		onCreateCancelPress: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateCancelPress(this, oEvent);
 		},
 
 		onTilePress: function(oEvent) {
