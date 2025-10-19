@@ -295,9 +295,12 @@
 													</VBox>
 												</IconTabFilter>
 												<IconTabFilter text="JSON" key="attachments">
-													<codeeditor:CodeEditor id="codeEditor" width="100%" type="json"
-														value='\{ "Chinese" : "你好世界", "Dutch" : "Hallo wereld", "English" : "Hello world", "French" : "Bonjour monde", "German" : "Hallo Welt", "Greek" : "γειά σου κόσμος", "Italian" : "Ciao mondo", "Japanese" : "こんにちは世界", "Korean" : "여보세요 세계", "Portuguese" : "Olá mundo", "Russian" : "Здравствуй мир", "Spanish" : "Hola mundo" }'
-														height="300px"/>
+													<Table id="jsonDataTable" items="{jsonDataModel>/}" class="sapUiResponsiveMargin" height="300px">
+														<columns></columns>
+														<items>
+															<ColumnListItem></ColumnListItem>
+														</items>
+													</Table>
 												</IconTabFilter>
 											</items>
 										</IconTabBar>

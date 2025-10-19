@@ -773,15 +773,56 @@ sap.ui.define([
 						var metaData = queryOutput.metadata || [];
 						var jsonData = queryOutput.data || [];
 
+						debugger;
 						// Add selectedAxis property to each metadata item
 						metaData.forEach(function (item) {
 							item.selectedAxis = "";
 						});
 
-						// Bind CodeEditor with formatted JSON
-						var oCodeEditor = that.getView().byId("codeEditor");
-						if (oCodeEditor) {
-							oCodeEditor.setValue(JSON.stringify(jsonData, null, 2));
+						// Create and set jsonDataModel for the table
+						var oJsonDataModel = new sap.ui.model.json.JSONModel(jsonData);
+						that.getView().setModel(oJsonDataModel, "jsonDataModel");
+						
+						// Create dynamic columns for the table
+						var oTable = that.getView().byId("jsonDataTable");
+						if (oTable && jsonData.length > 0) {
+							// Clear existing columns
+							oTable.removeAllColumns();
+							
+							// Get column names from first data row
+							var aColumnNames = Object.keys(jsonData[0]);
+							
+							// Create columns dynamically with proper display names
+							aColumnNames.forEach(function(sColumnName) {
+								// Find the corresponding SCRTEXT_L from metadata
+								var sDisplayName = sColumnName; // Default to field name
+								var oMetaField = metaData.find(function(oItem) {
+									return oItem.FIELDNAME === sColumnName;
+								});
+								if (oMetaField && oMetaField.SCRTEXT_L) {
+									sDisplayName = oMetaField.SCRTEXT_L;
+								}
+								
+								var oColumn = new sap.m.Column({
+									header: new sap.m.Text({text: sDisplayName})
+								});
+								oTable.addColumn(oColumn);
+							});
+							
+							// Clear and recreate template
+							oTable.removeAllItems();
+							var oCells = aColumnNames.map(function(sColumnName) {
+								return new sap.m.Text({text: "{jsonDataModel>" + sColumnName + "}"});
+							});
+							
+							var oColumnListItem = new sap.m.ColumnListItem({
+								cells: oCells
+							});
+							
+							oTable.bindItems({
+								path: "jsonDataModel>/",
+								template: oColumnListItem
+							});
 						}
 
 						// Create and set metaDataModel for the table
