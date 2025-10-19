@@ -27,7 +27,7 @@
 					<tnt:NavigationListItem id="reportsNav" key="reports" text="Reports Config" icon="sap-icon://manager-insight" class="sidenavtextcls"/>
 					<tnt:NavigationListItem id="sharePriceNav" key="shareprice" text="Share Price KPI Config" icon="sap-icon://kpi-corporate-performance" class="sidenavtextcls"/>
 					<tnt:NavigationListItem id="affiliateNav" key="affiliate" text="Affiliate KPI Config" icon="sap-icon://group-2" class="sidenavtextcls"/>
-					<tnt:NavigationListItem id="dynamicWidgetConfigNav" key="dynamicWidgetConfig" text="Dynamic Widget Config" icon="sap-icon://group-2" class="sidenavtextcls"/>
+					<!--<tnt:NavigationListItem id="dynamicWidgetConfigNav" key="dynamicWidgetConfig" text="Dynamic Widget Config" icon="sap-icon://group-2" class="sidenavtextcls"/>-->
 				</tnt:NavigationList>
 				<tnt:fixedItem>
 					<tnt:NavigationList>
@@ -63,9 +63,9 @@
 					<ScrollContainer id="affiliate" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
 						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.AffiliateTab" type="XML"/>
 					</ScrollContainer>
-					<ScrollContainer id="dynamicWidgetConfig" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
-						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.DynamicWidgetConfig" type="XML"/>
-					</ScrollContainer>
+					<!--<ScrollContainer id="dynamicWidgetConfig" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">-->
+					<!--	<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.CreateDynamicWidgetConfig" type="XML"/>-->
+					<!--</ScrollContainer>-->
 				</pages>
 			</NavContainer>
 		</tnt:mainContents>

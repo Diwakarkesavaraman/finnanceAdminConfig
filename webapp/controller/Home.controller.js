@@ -62,7 +62,8 @@
  			this.onLoadSharePriceTab();
 			this.onLoadAffiliateTab();
  			this.onLoadShareKGISReportsData();
-			this.onLoadDyanmicWidgetData('00505684457C1FE0A6D3C64CCF25CE18');
+			this.onLoadDyanmicWidgetData('');
+		
 		
  			var oColorModel = new sap.ui.model.json.JSONModel({
  				colors: [{
@@ -8846,11 +8847,15 @@
 
 		getQueryParameter: function(datasource){
 			return new Promise((resolve, reject) => {
+				debugger;
 
 				var finmobview = this.getView().getModel("finmobview");
 
-				var dataSourceValue = datasource || 'YES_ARAMCO_PLANS_TEST';
+				// var dataSourceValue = datasource || 'YES_ARAMCO_PLANS_TEST';
+				
+				var dataSourceValue = datasource || '';
 				var aFilters = [new sap.ui.model.Filter("DataSource", sap.ui.model.FilterOperator.EQ, dataSourceValue)];
+				
 
 				finmobview.read("/VariableMetaDataSet", {
 					filters: aFilters,
@@ -8910,8 +8915,8 @@
 			return DynamicWidgetHelper.handleAddPress(this, paramQueryType, oEvent);
 		},
 		
-		onAddInput: async function ()  {
-			return await DynamicWidgetHelper.onAddInput(this);
+		onAddInput: async function (dataSource)  {
+			return await DynamicWidgetHelper.onAddInput(this,dataSource);
 		},
 
 		getGroupedFormValues: async function() {
@@ -9013,9 +9018,10 @@
  					//     console.log("Formatted Zroles:", oItem.Zroles);
  					// }
  						//TODO: Update by
- 					var sPath = "/DynamicPageSet('" + oItem.ZpageId + "')";
+ 					 var sPath = "/DynamicPageSet(ZtitleId='"+oItem.ZtitleId+"',ZpageId='" +oItem.ZpageId +"')";
 
  					oModel.update(sPath, oItem, {
+ 							// method: "MERGE",
  						success: function () {
  							resolve(); // Update succeeded
  						},
@@ -9043,7 +9049,7 @@
 		onDeletePage: function () {
 
  			var that = this;
- 			var oTable = this.getView().byId("tabLandingConfig");
+ 			var oTable = this.getView().byId("pageTable");
 
  			var aContexts = oTable.getSelectedContexts();
  			if (aContexts.length) {
@@ -9087,7 +9093,7 @@
  				var addRow = deletionItems[i];
  				delete addRow.__metadata;
  				//TODO: Delete by
- 				var deletePath = `/DynamicPageSet(ZlevelId='${addRow.ZlevelId}')`;
+ 				var deletePath = `/DynamicPageSet(ZtitleId='${addRow.ZtitleId}',ZpageId='${addRow.ZpageId}')`;
 
  				batchChanges.push(oDataModel.createBatchOperation(deletePath, "DELETE"));
 
@@ -9102,7 +9108,7 @@
  					if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
  						sap.ui.core.BusyIndicator.hide(0);
  						sap.m.MessageBox.success("Selected items deleted successfully.");
- 						that.onLoadLandingPageData();
+ 						that.navigateToDetailFragment(addRow.ZtitleId);
  					}
  				},
  				function (oError) {
@@ -9253,10 +9259,14 @@
 
 		},
 		
-		onAddWidget: function() {
+		onAddWidget: async function() {
 			debugger;
 			var that = this;
 			var finmobview = this.getView().getModel("finmobview");
+			var aDataSourceDropdownData = await this.getSearchHelpData('Widget_ID');
+			var oDataSourceModel = new sap.ui.model.json.JSONModel();
+			oDataSourceModel.setData(aDataSourceDropdownData);
+			that.getView().setModel(oDataSourceModel, "aDataSourceDropdownData");
 
 			if (!this.AddNewWidgetDialog) {
 				this.AddNewWidgetDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewWidget", this);
@@ -9314,12 +9324,214 @@
 
 		},
 		
+		onUpdateWidget: function(){
+			var oModel = this.getView().getModel("finmobview");
+ 			var aData = this.getView().getModel("oWidgetDataModel").getData();
+
+ 			sap.ui.core.BusyIndicator.show(0);
+
+ 			var aUpdatePromises = aData.map(function (oItem) {
+ 				return new Promise(function (resolve, reject) {
+ 					// Clean up object before updating
+ 					// if (oItem.hasOwnProperty("arr")) {
+ 					//     delete oItem.arr;
+ 					// }
+
+ 					// if (oItem.Zroles && Array.isArray(oItem.Zroles)) {
+ 					//     oItem.Zroles = "[" + oItem.Zroles.map(role => "'" + role + "'").join(", ") + "]";
+ 					//     console.log("Formatted Zroles:", oItem.Zroles);
+ 					// }
+ 						//TODO: Update by
+ 					 var sPath = "/DynamicWidgetSet(ZtitleId='"+oItem.ZtitleId+"',ZpageId='" +oItem.ZpageId +"',WidgetId='" +oItem.WidgetId +"')";
+
+ 					oModel.update(sPath, oItem, {
+ 							// method: "MERGE",
+ 						success: function () {
+ 							resolve(); // Update succeeded
+ 						},
+ 						error: function () {
+ 							reject(); // Update failed
+ 						}
+ 					});
+ 				});
+ 			});
+
+ 			// Wait for all updates to complete
+ 			Promise.allSettled(aUpdatePromises).then(function (results) {
+ 				sap.ui.core.BusyIndicator.hide();
+
+ 				var bHasError = results.some(result => result.status === "rejected");
+
+ 				if (bHasError) {
+ 					MessageBox.error("Some records failed to update.");
+ 				} else {
+ 					MessageBox.success("Data updated successfully!");
+ 				}
+ 			});
+		},
+		
+		onDeleteWidget: function () {
+
+ 			var that = this;
+ 			var oTable = this.getView().byId("widgetTable");
+
+ 			var aContexts = oTable.getSelectedContexts();
+ 			if (aContexts.length) {
+ 				sap.m.MessageBox.show(
+ 					"Are you sure you want to delete the selected item?", {
+ 						icon: sap.m.MessageBox.Icon.QUESTION,
+ 						title: "Confirmation",
+ 						actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+ 						onClose: function (oAction) {
+ 							if (oAction === "YES") {
+
+ 								that.onDeleteWidgetItems();
+ 								//  mainController.getView().getModel("oVisitModel").refresh(true);
+ 							}
+ 						}
+ 					}
+ 				);
+ 			}
+ 		},
+
+ 		onDeleteWidgetItems: function () {
+ 			debugger;
+ 			var that = this;
+ 			var oTable = this.getView().byId("widgetTable");
+ 			var aContexts = oTable.getSelectedContexts();
+
+ 			var deletionItems = [];
+
+ 			for (var i = 0; i < aContexts.length; i++) {
+ 				deletionItems.push(aContexts[i].getObject())
+ 			};
+
+ 			var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
+ 			var uPath = "/DynamicWidgetSet";
+ 			var oDataModel = new sap.ui.model.odata.ODataModel(url);
+ 			oDataModel.setUseBatch(true);
+
+ 			var batchChanges = [];
+
+ 			for (var i = 0; i < deletionItems.length; i++) {
+ 				var addRow = deletionItems[i];
+ 				delete addRow.__metadata;
+ 				//TODO: Delete by
+ 				var deletePath = `/DynamicWidgetSet(ZtitleId='${addRow.ZtitleId}',ZpageId='${addRow.ZpageId}',WidgetId='${addRow.WidgetId}')`;
+
+ 				batchChanges.push(oDataModel.createBatchOperation(deletePath, "DELETE"));
+
+ 			}
+
+ 			oDataModel.addBatchChangeOperations(batchChanges);
+
+ 			sap.ui.core.BusyIndicator.show(0);
+
+ 			oDataModel.submitBatch(
+ 				function (oData, oResponse) {
+ 					if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
+ 						sap.ui.core.BusyIndicator.hide(0);
+ 						sap.m.MessageBox.success("Selected items deleted successfully.");
+ 						that.navigateToWidgetFragment(addRow.ZpageId);
+ 					}
+ 				},
+ 				function (oError) {
+ 					sap.ui.core.BusyIndicator.hide();
+ 					sap.m.MessageBox.error("Failed to delete selected items.");
+ 				}
+ 			);
+
+ 		},
+ 		
+ 		onWidgetPress: function(oEvent) {
+ 				// var that = oController;
+			debugger;
+			var oBindingContext = oEvent.getSource().getBindingContext("oWidgetDataModel");
+			var oRowData = oBindingContext.getObject();
+		
+	  
+			// console.log("Row pressed - Row contents:", oRowData);
+
+			// this.getView().byId("widgetConfig").setVisible(true);
+			// this.getView().byId("pageText").setText(oRowData.ZpageName);
+
+			// // Navigate to another fragment
+			// this.navigateToWidgetFragment (oRowData.ZpageId);
+			// this.getView().byId("dynamicWidgetConfigContainer").setVisible(true);
+			this.showDynamicWidgetConfig(oRowData.WidgetId);
+			// var oFragment = sap.ui.xmlfragment(
+			// 	"mobilefinance.MobileFinance.fragments.DynamicWidgetConfig",
+			// 	this
+			// );
+
+			// var params = {};	
+	  
+			// // Pass parameters to fragment
+			// oFragment.data("params", params);
+	  
+			// this.byId("dynamicWidgetConfig").removeAllContent();
+			// this.byId("dynamicWidgetConfig").addContent(oFragment);
+
+			// if (!this.oFragment) {
+			// 	// this.openWidgetConfig = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewPage", this);
+			// 	this.getView().addDependent(this.oFragment);
+
+			// }
+			// this.oFragment.open();
+ 		},
+
+		
 		closeAddWidgetDialog: function() {
 			if (this.AddNewWidgetDialog) {
 				this.AddNewWidgetDialog.close();
 			}
 		},
 		
+		widgetSearchHelp: async function(oEvent) {
+			debugger;
+			var oWidgetListDropdownData = await this.getSearchHelpData('Widget_ID');
+			var oWidgetListModel = new sap.ui.model.json.JSONModel();
+			oWidgetListModel.setData(oWidgetListDropdownData);
+			this.getView().setModel(oWidgetListModel, "oWidgetListDropdownData");
+			
+			    this._oCurrentInput = oEvent.getSource();
+
+			
+			var oView = this.getView();
+			// this._sInputId = oEvent.getSource().getId();
+			
+			if (!this._pValueHelpDialog) {
+				this._pValueHelpDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.SearchDialog", this);
+				this.getView().addDependent(this._pValueHelpDialog);
+
+			}
+			this._pValueHelpDialog.open();
+	
+
+		},
+		_handleValueHelpSearch: function(oEvent) {
+    var sValue = oEvent.getParameter("value");
+    var oFilter = new sap.ui.model.Filter("Text", sap.ui.model.FilterOperator.Contains, sValue);
+    var oBinding = oEvent.getSource().getBinding("items");
+    oBinding.filter([oFilter]);
+},
+
+_handleValueHelpClose: function(oEvent) {
+     var oSelectedItem = oEvent.getParameter("selectedItem");
+    if (oSelectedItem && this._oCurrentInput) {
+        var sSelectedId = oSelectedItem.getDescription();
+        var sSelectedText = oSelectedItem.getTitle();
+        
+        // Use the stored input reference
+        this._oCurrentInput.setValue(sSelectedText || sSelectedId);
+        this._oCurrentInput.data("selectedId", sSelectedId);
+        this._oCurrentInput.data("selectedText", sSelectedText);
+        
+        // Clear the reference
+        this._oCurrentInput = null;
+    }
+    oEvent.getSource().getBinding("items").filter([]);
+},
 
 
 		// Legacy function - keeping structure but delegating to helper
@@ -9660,14 +9872,15 @@
 			}
 		},
 
-		showDynamicWidgetConfig: function() {
+		showDynamicWidgetConfig: function(widgetId) {
 			this.loadDynamicWidgetConfigFragment();
 			var oContainer = this.byId("dynamicWidgetConfigContainer");
 			if (oContainer) {
 				oContainer.setVisible(true);
 			}
 			this.getDynamicWidgetParams();
-			this.onLoadDyanmicWidgetData('00505684457C1FE0A6D3C64CCF25CE18');
+			// this.onLoadDyanmicWidgetData('00505684457C1FE0A6D3C64CCF25CE18');
+			this.onLoadDyanmicWidgetData(widgetId);
 		},
 
 		getDynamicWidgetParams: function() {
