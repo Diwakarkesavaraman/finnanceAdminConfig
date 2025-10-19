@@ -230,13 +230,21 @@ sap.ui.define([
 
 					if (oNextControl) {
 						// Handle Input controls
-						if (oNextControl instanceof sap.m.Input) {
-							// formValues[sLabelText] = oNextControl.getValue();
-						}
+						// if (oNextControl instanceof sap.m.Input) {
+						// 	// formValues[sLabelText] = oNextControl.getValue();
+						// }
 						// Handle Select controls
-						else if (oNextControl instanceof sap.m.Select) {
+						
+						if (oNextControl instanceof sap.m.Select) {
 							aFields.push(oNextControl.getSelectedKey());
-
+						}
+						// Handle MultiInput controls
+						else if (oNextControl instanceof sap.m.MultiInput) {
+							var aTokens = oNextControl.getTokens();
+							var aTokenValues = aTokens.map(function(oToken) {
+								return oToken.getKey();
+							});
+							aFields.push(...aTokenValues);
 						}
 					}
 				}
@@ -789,7 +797,7 @@ sap.ui.define([
 					oForm.removeAllContent();
 
 					var oXLabel = new sap.m.Label({
-						text: "Select X Axis Field"
+						text: "Select Dimensions"
 					});
 					var oXSelect = new sap.m.Select({
 						width: "100%",
@@ -798,8 +806,8 @@ sap.ui.define([
 							path: "metaDataModel>/",
 							template: new sap.ui.core.ListItem({
 								key: "{metaDataModel>FIELDNAME}",
-								text: "{metaDataModel>FIELDNAME}",
-								additionalText: "{metaDataModel>SCRTEXT_L}"
+								text: "{metaDataModel>SCRTEXT_L}",
+								additionalText: "{metaDataModel>FIELDNAME}"
 							})
 						}
 					});
@@ -826,8 +834,8 @@ sap.ui.define([
 									items: {
 										path: "metaDataModel>/",
 										template: new sap.m.StandardListItem({
-											title: "{metaDataModel>FIELDNAME}",
-											description: "{metaDataModel>SCRTEXT_L}",
+											title: "{metaDataModel>SCRTEXT_L}",
+											description: "{metaDataModel>FIELDNAME}",
 											type: "Active"
 										})
 									},
@@ -851,18 +859,69 @@ sap.ui.define([
 						}
 					});
 					var oYLabel = new sap.m.Label({
-						text: "Select Y Axis Field"
+						text: "Select Measures"
 					});
-					var oYSelect = new sap.m.Select({
+					var oYSelect = new sap.m.MultiInput({
 						width: "100%",
-						showSecondaryValues: true,
-						items: {
-							path: "metaDataModel>/",
-							template: new sap.ui.core.ListItem({
-								key: "{metaDataModel>FIELDNAME}",
-								text: "{metaDataModel>FIELDNAME}",
-								additionalText: "{metaDataModel>SCRTEXT_L}"
-							})
+						showValueHelp: true,
+						valueHelpRequest: function(oEvent) {
+							var oSource = oEvent.getSource();
+							var oMetaDataModel = that.getView().getModel("metaDataModel");
+
+							if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
+								sap.m.MessageToast.show("No metadata available. Please fetch query data first.");
+								return;
+							}
+
+							// Create value help dialog if it doesn't exist
+							if (!that._oYMetaDataValueHelpDialog) {
+								that._oYMetaDataValueHelpDialog = new sap.m.SelectDialog({
+									title: "Select Y Axis Fields",
+									multiSelect: true,
+									items: {
+										path: "metaDataModel>/",
+										template: new sap.m.StandardListItem({
+											title: "{metaDataModel>SCRTEXT_L}",
+											description: "{metaDataModel>FIELDNAME}",
+											type: "Active"
+										})
+									},
+									confirm: function(oEvent) {
+										debugger;
+										var aSelectedItems = oEvent.getParameter("selectedItems");
+										if (aSelectedItems && aSelectedItems.length > 0) {
+											// Clear existing tokens
+											oSource.removeAllTokens();
+											
+											// Add selected items as tokens
+											aSelectedItems.forEach(function(oItem) {
+												var sFieldName = oItem.getDescription(); // FIELDNAME is in description
+												var sDisplayText = oItem.getTitle(); // SCRTEXT_L is in title
+												var oToken = new sap.m.Token({
+													key: sFieldName,
+													text: sDisplayText
+												});
+												oSource.addToken(oToken);
+											});
+										}
+									},
+									cancel: function() {
+										// Dialog closed without selection
+									}
+								});
+								that.getView().addDependent(that._oYMetaDataValueHelpDialog);
+							}
+
+							// Filter out the field already selected in X Axis
+							var sSelectedXField = oXSelect.getSelectedKey();
+							var aFilteredData = oMetaDataModel.getData().filter(function(oItem) {
+								return oItem.FIELDNAME !== sSelectedXField;
+							});
+							
+							// Create a filtered model
+							var oFilteredModel = new sap.ui.model.json.JSONModel(aFilteredData);
+							that._oYMetaDataValueHelpDialog.setModel(oFilteredModel, "metaDataModel");
+							that._oYMetaDataValueHelpDialog.open();
 						}
 					});
 					// 	var oYInput = new sap.m.Input({
@@ -936,7 +995,32 @@ sap.ui.define([
 
 							// Set Y-axis selections
 							if (mappingData.y && Array.isArray(mappingData.y) && oYSelect) {
-								oYSelect.setSelectedKey(mappingData.y[0]);
+								// Clear existing tokens
+								oYSelect.removeAllTokens();
+								
+								// Add each field as a token
+								for (var i = 0; i < mappingData.y.length; i++) {
+									var sField = mappingData.y[i];
+									// Find the corresponding description from metaDataModel
+									var oMetaDataModel = that.getView().getModel("metaDataModel");
+									var sDisplayText = sField; // Default to field name
+									
+									if (oMetaDataModel && oMetaDataModel.getData()) {
+										var aMetaData = oMetaDataModel.getData();
+										var oField = aMetaData.find(function(oItem) {
+											return oItem.FIELDNAME === sField;
+										});
+										if (oField && oField.SCRTEXT_L) {
+											sDisplayText = oField.SCRTEXT_L;
+										}
+									}
+									
+									var oToken = new sap.m.Token({
+										key: sField,
+										text: sDisplayText
+									});
+									oYSelect.addToken(oToken);
+								}
 							}
 						} catch (e) {
 							console.error("Error parsing mapping data:", e);
