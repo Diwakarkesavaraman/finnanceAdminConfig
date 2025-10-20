@@ -1,23 +1,26 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+<Panel height="100%" class="admgisreppanelcls">
+	<content>
 	<VBox id="widgetListContainer">
 		<HBox class="tblhdrcls">
 			<Text text="Widget Configuration List"/>
 			<Button id="addNewWidgetBtn" text="Add New Widget" type="Emphasized" press="onAddNewWidget"/>
 		</HBox>
-		<Panel expandable="true" expanded="true" headerText="Existing Widgets" width="auto" class="sapUiResponsiveMargin">
-			<content>
+		
 				<VBox class="sapUiSmallMargin">
 					<BusyIndicator id="widgetListBusyIndicator" visible="false" />
-					<Table id="widgetListTable" items="{widgetListModel>/}" class="sapUiResponsiveMargin">
+					<!-- <Table id="widgetListTable" items="{widgetListModel>/}" class="sapUiResponsiveMargin"> -->
+					<Table id="widgetListTable" alternateRowColors="false" items="{widgetListModel>/}"  growing="true"
+					class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
 						<columns>
 							<Column>
-								<Text text="Widget ID"/>
+								<Text text="Widget ID"  class="whiteLabel"/>
 							</Column>
 							<Column>
-								<Text text="Widget Name"/>
+								<Text text="Widget Name"  class="whiteLabel"/>
 							</Column>
 							<Column>
-								<Text text="Actions"/>
+								<Text text="Actions"  class="whiteLabel"/>
 							</Column>
 						</columns>
 						<items>
@@ -34,7 +37,8 @@
 						</items>
 					</Table>
 				</VBox>
-			</content>
-		</Panel>
+			
 	</VBox>
+	</content>
+	</Panel>
 </core:FragmentDefinition>

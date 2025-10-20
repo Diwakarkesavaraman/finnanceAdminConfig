@@ -8,12 +8,11 @@ sap.ui.define([
 	"sap/m/Text",
 	"sap/m/ColumnListItem",
 	"sap/m/Label",
-	"sap/m/Input",
 	"sap/m/MultiInput",
 	"sap/m/Token",
 	"sap/m/SelectDialog",
 	"sap/m/StandardListItem"
-], function (JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Column, Text, ColumnListItem, Label, Input, MultiInput, Token, SelectDialog, StandardListItem) {
+], function (JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Column, Text, ColumnListItem, Label, MultiInput, Token, SelectDialog, StandardListItem) {
 	"use strict";
 
 	return {
@@ -160,6 +159,7 @@ sap.ui.define([
 		onLoadCreateDynamicWidgetData: async function (oController, widgetId) {
 			debugger;
 			var that = oController;
+			var self = this;
 			var finmobview = that.getView().getModel("finmobview");
 			
 			sap.ui.core.BusyIndicator.show(0);
@@ -237,7 +237,7 @@ sap.ui.define([
 						
 						// Load form data
 						if (oWidgetData.DataSource) {
-							that.onCreateAddInput(oWidgetData.DataSource);
+							self.onCreateAddInput(that, oWidgetData.DataSource);
 						}
 						
 						sap.ui.core.BusyIndicator.hide();
@@ -295,7 +295,7 @@ sap.ui.define([
 						
 						// Load query parameters and fetch output data
 						self.onCreateAddInput(that, dataSource);
-						self.fetchCreateQueryOutput(that, dataSource);
+						self.fetchQueryOutput(that, []);
 					}
 				},
 				error: function (oError) {
@@ -318,7 +318,9 @@ sap.ui.define([
 			});
 		},
 
+
 		onCreateSavePress: function (oController, oEvent) {
+			debugger;
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
 			var oWidgetData = that.getView().getModel("createWidgetValues").getData();
@@ -446,7 +448,8 @@ sap.ui.define([
 			
 			console.log("Create Widget Form Values:", oFormData);
 			MessageToast.show("Form values saved for Create Widget Config");
-			
+
+			self.fetchQueryOutput(oController, oFormData);
 			return JSON.stringify(oFormData);
 		},
 
@@ -485,9 +488,11 @@ sap.ui.define([
 
 		onCreateAddInput: async function (oController, dataSource) {
 			var that = oController;
+			var self = this;
 			var oForm = that.byId("createBexQueryParameterForm");
 			oForm.removeAllContent();
 			var aQueryParam = await this.getQueryParameter(oController, dataSource);
+			debugger;
 		
 			// Get existing inputParameter data if available
 			var oSelectedData = that.getView().getModel("createWidgetValues").getData();
@@ -689,6 +694,8 @@ sap.ui.define([
 						break;
 				}
 			}.bind(this));
+			debugger;
+			self.fetchQueryOutput(oController, '');
 		},
 
 		handleCreateAddPress: function (oController, paramQueryType, oEvent) {
@@ -764,8 +771,12 @@ sap.ui.define([
 		},
 
 		getCreateMappingFormValues: function (oController) {
+			debugger;
 			var that = oController;
-			var oForm = that.byId("createDataMappingForm");
+			var oModel = that.getView().getModel("selectedValues");
+			var oCurrentData = oModel.getData();
+		
+			var oForm = that.getView().byId("createDataMappingForm");
 			var aFormContent = oForm.getContent();
 
 			var oformValues = {};
@@ -777,14 +788,20 @@ sap.ui.define([
 
 				// Check if it's a Label
 				if (oControl instanceof sap.m.Label) {
+					var sLabelText = oControl.getText();
 					var oNextControl = aFormContent[i + 1]; // Get the next control after label
 
 					if (oNextControl) {
-						// Handle Input controls (X-axis)
-						if (oNextControl instanceof sap.m.Input) {
-							aFields.push(oNextControl.getValue());
+						// Handle Input controls
+						// if (oNextControl instanceof sap.m.Input) {
+						// 	// formValues[sLabelText] = oNextControl.getValue();
+						// }
+						// Handle Select controls
+						
+						if (oNextControl instanceof sap.m.Select) {
+							aFields.push(oNextControl.getSelectedKey());
 						}
-						// Handle MultiInput controls (Y-axis)
+						// Handle MultiInput controls
 						else if (oNextControl instanceof sap.m.MultiInput) {
 							var aTokens = oNextControl.getTokens();
 							var aTokenValues = aTokens.map(function(oToken) {
@@ -801,7 +818,8 @@ sap.ui.define([
 			return JSON.stringify(oformValues);
 		},
 
-		fetchCreateQueryOutput: function (oController, sDataSource) {
+		fetchQueryOutput: function (oController, aFilterParams) {
+			debugger;
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
 			var oBusyIndicator = that.byId("createTabBarBusyIndicator");
@@ -814,9 +832,10 @@ sap.ui.define([
 				oIconTabBar.setVisible(false);
 			}
 
+			var sDataSource = that.getView().byId("createDataSourceId").getValue();
 			var aFilters = [
 				new Filter("DatasourceName", FilterOperator.EQ, sDataSource),
-				new Filter("InputParameter", FilterOperator.EQ, JSON.stringify([]))
+				new Filter("InputParameter", FilterOperator.EQ, JSON.stringify(aFilterParams))
 			];
 
 			finmobview.read("/Query_Output", {
@@ -898,52 +917,65 @@ sap.ui.define([
 						var oXLabel = new Label({
 							text: "Select Dimensions"
 						});
-						
-						var oXInput = new Input({
-							class: "sapUiSmallMarginEnd",
-							type: "Text",
-							placeholder: "Select field",
-							showValueHelp: true,
-							valueHelpIconSrc: "sap-icon://value-help",
-							valueHelpRequest: function (oEvent) {
-								var oSource = oEvent.getSource();
-								var oMetaDataModel = that.getView().getModel("createMetaDataModel");
 
-								if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
-									MessageToast.show("No metadata available. Please fetch query data first.");
-									return;
-								}
-
-								// Create value help dialog if it doesn't exist
-								if (!that._oCreateMetaDataValueHelpDialog) {
-									that._oCreateMetaDataValueHelpDialog = new SelectDialog({
-										title: "Select Field",
-										items: {
-											path: "createMetaDataModel>/",
-											template: new StandardListItem({
-												title: "{createMetaDataModel>SCRTEXT_L}",
-												description: "{createMetaDataModel>FIELDNAME}",
-												type: "Active"
-											})
-										},
-										confirm: function (oEvent) {
-											var oSelectedItem = oEvent.getParameter("selectedItem");
-											if (oSelectedItem) {
-												var sFieldName = oSelectedItem.getTitle();
-												oSource.setValue(sFieldName);
-											}
-										},
-										cancel: function () {
-											// Dialog closed without selection
-										}
-									});
-									that.getView().addDependent(that._oCreateMetaDataValueHelpDialog);
-								}
-
-								that._oCreateMetaDataValueHelpDialog.setModel(oMetaDataModel, "createMetaDataModel");
-								that._oCreateMetaDataValueHelpDialog.open();
+						var oXSelect = new sap.m.Select({
+							width: "100%",
+							showSecondaryValues: true,
+							items: {
+								path: "createMetaDataModel>/",
+								template: new sap.ui.core.ListItem({
+									key: "{createMetaDataModel>FIELDNAME}",
+									text: "{createMetaDataModel>SCRTEXT_L}",
+									additionalText: "{createMetaDataModel>FIELDNAME}"
+								})
 							}
 						});
+						
+						// var oXInput = new Input({
+						// 	class: "sapUiSmallMarginEnd",
+						// 	type: "Text",
+						// 	placeholder: "Select field",
+						// 	showValueHelp: true,
+						// 	valueHelpIconSrc: "sap-icon://value-help",
+						// 	valueHelpRequest: function (oEvent) {
+						// 		var oSource = oEvent.getSource();
+						// 		var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+
+						// 		if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
+						// 			MessageToast.show("No metadata available. Please fetch query data first.");
+						// 			return;
+						// 		}
+
+						// 		// Create value help dialog if it doesn't exist
+						// 		if (!that._oCreateMetaDataValueHelpDialog) {
+						// 			that._oCreateMetaDataValueHelpDialog = new SelectDialog({
+						// 				title: "Select Field",
+						// 				items: {
+						// 					path: "createMetaDataModel>/",
+						// 					template: new StandardListItem({
+						// 						title: "{createMetaDataModel>SCRTEXT_L}",
+						// 						description: "{createMetaDataModel>FIELDNAME}",
+						// 						type: "Active"
+						// 					})
+						// 				},
+						// 				confirm: function (oEvent) {
+						// 					var oSelectedItem = oEvent.getParameter("selectedItem");
+						// 					if (oSelectedItem) {
+						// 						var sFieldName = oSelectedItem.getTitle();
+						// 						oSource.setValue(sFieldName);
+						// 					}
+						// 				},
+						// 				cancel: function () {
+						// 					// Dialog closed without selection
+						// 				}
+						// 			});
+						// 			that.getView().addDependent(that._oCreateMetaDataValueHelpDialog);
+						// 		}
+
+						// 		that._oCreateMetaDataValueHelpDialog.setModel(oMetaDataModel, "createMetaDataModel");
+						// 		that._oCreateMetaDataValueHelpDialog.open();
+						// 	}
+						// });
 
 						var oYLabel = new Label({
 							text: "Select Measures"
@@ -1000,9 +1032,9 @@ sap.ui.define([
 								}
 
 								// Filter out the field already selected in X Axis
-								var sSelectedXField = oXInput.getValue();
+								var sSelectedXField = oXSelect.getSelectedKey();
 								var aFilteredData = oMetaDataModel.getData().filter(function(oItem) {
-									return oItem.SCRTEXT_L !== sSelectedXField;
+									return oItem.FIELDNAME !== sSelectedXField;
 								});
 								
 								// Create a filtered model
@@ -1013,9 +1045,96 @@ sap.ui.define([
 						});
 
 						oForm.addContent(oXLabel);
-						oForm.addContent(oXInput);
+						oForm.addContent(oXSelect);
 						oForm.addContent(oYLabel);
 						oForm.addContent(oYMultiInput);
+
+						//Filter Form
+						debugger;
+						var oFilterForm = that.byId("createFilterMappingForm");
+						oFilterForm.removeAllContent();
+
+						var oFilterLabel = new Label({
+							text: "Select Filter Field"
+						});
+
+						var oFilterSelect = new sap.m.Select({
+							width: "100%",
+							showSecondaryValues: true
+						});
+						
+						// Manually populate filter select items from metadata
+						var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+						var aMetaData = oMetaDataModel.getData();
+						aMetaData.forEach(function(item) {
+							oFilterSelect.addItem(new sap.ui.core.ListItem({
+								key: item.FIELDNAME,
+								text: item.SCRTEXT_L,
+								additionalText: item.FIELDNAME
+							}));
+						});
+
+						
+						var oFilterValueSelect = new sap.m.Select({
+							width: "100%",
+							showSecondaryValues: true
+						});
+						
+						// Filter value select will be populated when filter field is selected
+
+						oFilterForm.addContent(oFilterLabel);
+						oFilterForm.addContent(oFilterSelect);
+						oFilterForm.addContent(oFilterValueSelect);
+
+
+
+
+						// Handle existing mapping data if available
+						var oModel = that.getView().getModel("createWidgetValues");
+						var oCurrentData = oModel.getData();
+
+						if (oCurrentData.mapping) {
+							try {
+								var mappingData = JSON.parse(oCurrentData.mapping);
+
+								// Set X-axis selection
+								if (mappingData.x && oXSelect) {
+									oXSelect.setSelectedKey(mappingData.x);
+								}
+
+								// Set Y-axis selections
+								if (mappingData.y && Array.isArray(mappingData.y) && oYMultiInput) {
+									// Clear existing tokens
+									oYMultiInput.removeAllTokens();
+									
+									// Add each field as a token
+									for (var i = 0; i < mappingData.y.length; i++) {
+										var sField = mappingData.y[i];
+										// Find the corresponding description from metaDataModel
+										var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+										var sDisplayText = sField; // Default to field name
+										
+										if (oMetaDataModel && oMetaDataModel.getData()) {
+											var aMetaData = oMetaDataModel.getData();
+											var oField = aMetaData.find(function(oItem) {
+												return oItem.FIELDNAME === sField;
+											});
+											if (oField && oField.SCRTEXT_L) {
+												sDisplayText = oField.SCRTEXT_L;
+											}
+										}
+										
+										var oToken = new Token({
+											key: sField,
+											text: sDisplayText
+										});
+										oYMultiInput.addToken(oToken);
+									}
+								}
+							} catch (e) {
+								console.error("Error parsing mapping data:", e);
+							}
+						}
 					}
 				},
 				error: function (oError) {

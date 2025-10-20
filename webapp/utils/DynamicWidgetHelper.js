@@ -633,8 +633,10 @@ sap.ui.define([
 		getGroupedFormValues: async function (oController) {
 			debugger;
 			var that = oController;
-			var self = this;
 			var oForm = that.byId("bexQueryParameterForm");
+			
+			var self = this;
+			
 			var aContent = oForm.getContent();
 			var oFormData = {};
 			var sCurrentLabel = "";
@@ -852,53 +854,53 @@ sap.ui.define([
 							})
 						}
 					});
-					var oXInput = new sap.m.Input({
-						class: "sapUiSmallMarginEnd",
-						type: "Text",
-						placeholder: "Select field",
-						showValueHelp: true,
-						valueHelpIconSrc: "sap-icon://value-help",
-						valueHelpRequest: function (oEvent) {
-							var self = this;
-							var oSource = oEvent.getSource();
-							var oMetaDataModel = that.getView().getModel("metaDataModel");
+					// var oXInput = new sap.m.Input({
+					// 	class: "sapUiSmallMarginEnd",
+					// 	type: "Text",
+					// 	placeholder: "Select field",
+					// 	showValueHelp: true,
+					// 	valueHelpIconSrc: "sap-icon://value-help",
+					// 	valueHelpRequest: function (oEvent) {
+					// 		var self = this;
+					// 		var oSource = oEvent.getSource();
+					// 		var oMetaDataModel = that.getView().getModel("metaDataModel");
 
-							if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
-								sap.m.MessageToast.show("No metadata available. Please fetch query data first.");
-								return;
-							}
+					// 		if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
+					// 			sap.m.MessageToast.show("No metadata available. Please fetch query data first.");
+					// 			return;
+					// 		}
 
-							// Create value help dialog if it doesn't exist
-							if (!that._oMetaDataValueHelpDialog) {
-								that._oMetaDataValueHelpDialog = new sap.m.SelectDialog({
-									title: "Select Field",
-									items: {
-										path: "metaDataModel>/",
-										template: new sap.m.StandardListItem({
-											title: "{metaDataModel>SCRTEXT_L}",
-											description: "{metaDataModel>FIELDNAME}",
-											type: "Active"
-										})
-									},
-									confirm: function (oEvent) {
-										var oSelectedItem = oEvent.getParameter("selectedItem");
-										if (oSelectedItem) {
-											var sFieldName = oSelectedItem.getTitle();
-											oSource.setValue(sFieldName);
-										}
-									},
-									cancel: function () {
-										// Dialog closed without selection
-									}
-								});
-								that.getView().addDependent(that._oMetaDataValueHelpDialog);
-							}
+					// 		// Create value help dialog if it doesn't exist
+					// 		if (!that._oMetaDataValueHelpDialog) {
+					// 			that._oMetaDataValueHelpDialog = new sap.m.SelectDialog({
+					// 				title: "Select Field",
+					// 				items: {
+					// 					path: "metaDataModel>/",
+					// 					template: new sap.m.StandardListItem({
+					// 						title: "{metaDataModel>SCRTEXT_L}",
+					// 						description: "{metaDataModel>FIELDNAME}",
+					// 						type: "Active"
+					// 					})
+					// 				},
+					// 				confirm: function (oEvent) {
+					// 					var oSelectedItem = oEvent.getParameter("selectedItem");
+					// 					if (oSelectedItem) {
+					// 						var sFieldName = oSelectedItem.getTitle();
+					// 						oSource.setValue(sFieldName);
+					// 					}
+					// 				},
+					// 				cancel: function () {
+					// 					// Dialog closed without selection
+					// 				}
+					// 			});
+					// 			that.getView().addDependent(that._oMetaDataValueHelpDialog);
+					// 		}
 
-							// Set the model and open the dialog
-							that._oMetaDataValueHelpDialog.setModel(oMetaDataModel, "metaDataModel");
-							that._oMetaDataValueHelpDialog.open();
-						}
-					});
+					// 		// Set the model and open the dialog
+					// 		that._oMetaDataValueHelpDialog.setModel(oMetaDataModel, "metaDataModel");
+					// 		that._oMetaDataValueHelpDialog.open();
+					// 	}
+					// });
 					var oYLabel = new sap.m.Label({
 						text: "Select Measures"
 					});
