@@ -107,23 +107,23 @@ sap.ui.define([
 			this.onLoadCreateDynamicWidgetData(that, null);
 		},
 
-		onEditWidget: function (oController, oEvent) {
-			var that = oController;
-			var oBindingContext = oEvent.getSource().getBindingContext("widgetListModel");
-			var oSelectedWidget = oBindingContext.getObject();
+		// onEditWidget: function (oController, oEvent) {
+		// 	var that = oController;
+		// 	var oBindingContext = oEvent.getSource().getBindingContext("widgetListModel");
+		// 	var oSelectedWidget = oBindingContext.getObject();
 			
-			console.log("Edit widget:", oSelectedWidget);
+		// 	console.log("Edit widget:", oSelectedWidget);
 			
-			// Prevent event bubbling to avoid triggering row press
-			oEvent.stopPropagation();
+		// 	// Prevent event bubbling to avoid triggering row press
+		// 	oEvent.stopPropagation();
 			
-			// Hide widget list and show create dynamic widget config
-			that.byId("widgetListContainer").setVisible(false);
-			that.byId("createDynamicWidgetConfigContainer").setVisible(true);
+		// 	// Hide widget list and show create dynamic widget config
+		// 	that.byId("widgetListContainer").setVisible(false);
+		// 	that.byId("createDynamicWidgetConfigContainer").setVisible(true);
 			
-			// Load the selected widget data for editing
-			this.onLoadCreateDynamicWidgetData(that, oSelectedWidget.Id);
-		},
+		// 	// Load the selected widget data for editing
+		// 	this.onLoadCreateDynamicWidgetData(that, oSelectedWidget.Id);
+		// },
 
 		onDeleteWidgetFromList: function (oController, oEvent) {
 			var that = oController;
@@ -131,7 +131,17 @@ sap.ui.define([
 			var oSelectedWidget = oBindingContext.getObject();
 			
 			// Prevent event bubbling to avoid triggering row press
-			oEvent.stopPropagation();
+			if (oEvent.preventDefault) {
+				oEvent.preventDefault();
+			}
+			if (oEvent.cancelBubble !== undefined) {
+				oEvent.cancelBubble = true;
+			}
+			// Get browser event and stop propagation
+			var oBrowserEvent = oEvent.getParameter("domEvent") || oEvent.originalEvent;
+			if (oBrowserEvent && oBrowserEvent.stopPropagation) {
+				oBrowserEvent.stopPropagation();
+			}
 			
 			MessageBox.confirm("Are you sure you want to delete the widget '" + (oSelectedWidget.Text || oSelectedWidget.Id) + "'?", {
 				title: "Confirm Delete",
@@ -325,6 +335,10 @@ sap.ui.define([
 			var finmobview = that.getView().getModel("finmobview");
 			var oWidgetData = that.getView().getModel("createWidgetValues").getData();
 			var mappingFormData = this.getCreateMappingFormValues(oController);
+			//Fetch mapping from createFilterMappingForm
+			var filterMappingData = this.getCreateFilterMappingFormValues(oController);
+			//Fetch mapping from createTileMappingForm
+			var tileMappingData = this.getCreateTileMappingFormValues(oController); 
 			
 			var oPayload = {
 				"WidgetType": oWidgetData.selectedWidgetType,
@@ -334,6 +348,8 @@ sap.ui.define([
 				"WidgetId": oWidgetData.widgetId,
 				"InputParameter": oWidgetData.inputParameter,
 				"Mapping": mappingFormData,
+				"WlabelMapping": tileMappingData,
+				"Filter": filterMappingData,
 				"Status": "Draft"
 			};
 			
@@ -378,17 +394,17 @@ sap.ui.define([
 		onCreateDeleteWidget: function (oController, widgetId) {
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
-			var oWidgetData = that.getView().getModel("createWidgetValues").getData();
+		
 			
-			if (!oWidgetData.widgetId) {
+			if (!widgetId) {
 				MessageToast.show("No widget to delete");
 				return;
 			}
 			
-			finmobview.remove("/WidgetConfigurationSet(WidgetId='" + oWidgetData.widgetId + "')", {
+			finmobview.remove("/WidgetConfigurationSet(WidgetId='" + widgetId + "')", {
 				success: function (oData) {
 					console.log("Successfully deleted:", oData);
-					MessageToast.show("Widget configuration deleted successfully");
+					MessageToast.show("Widget deleted successfully");
 					// Clear the form
 					this._clearCreateForm(oController);
 				}.bind(this),
@@ -818,6 +834,92 @@ sap.ui.define([
 			return JSON.stringify(oformValues);
 		},
 
+		getCreateFilterMappingFormValues: function (oController) {
+			debugger;
+			var that = oController;
+			var oForm = that.getView().byId("createFilterMappingForm");
+			var aFormContent = oForm.getContent();
+
+			var aFilterValues = [];
+
+			// First check if the filter switch is enabled
+			var bFilterEnabled = false;
+			for (var j = 0; j < aFormContent.length; j++) {
+				if (aFormContent[j] instanceof sap.m.Switch) {
+					bFilterEnabled = aFormContent[j].getState();
+					break;
+				}
+			}
+
+			// Only collect filter values if the switch is enabled
+			if (bFilterEnabled) {
+				// Loop through form content to get Label-Control pairs
+				for (var i = 0; i < aFormContent.length; i++) {
+					var oControl = aFormContent[i];
+
+					// Check if it's a Label with "Select Filter Field" text
+					if (oControl instanceof sap.m.Label && oControl.getText() === "Select Filter Field") {
+						var oFilterFieldSelect = aFormContent[i + 1]; // Get the field select control
+						var oFilterValueSelect = aFormContent[i + 2]; // Get the value select control (skip value label)
+
+						if (oFilterFieldSelect instanceof sap.m.Select && oFilterValueSelect instanceof sap.m.Select) {
+							var sSelectedField = oFilterFieldSelect.getSelectedKey();
+							var sSelectedValue = oFilterValueSelect.getSelectedKey();
+							
+							if (sSelectedField && sSelectedValue) {
+								aFilterValues.push({
+									field: sSelectedField,
+									value: sSelectedValue
+								});
+							}
+						}
+					}
+				}
+			}
+
+			return JSON.stringify(aFilterValues);
+		},
+
+		getCreateTileMappingFormValues: function (oController) {
+			var that = oController;
+			var oForm = that.getView().byId("createTileMappingForm");
+			var aTileValues = [];
+
+			// Get selected widget type to determine expected number of fields
+			var oWidgetValues = that.getView().getModel("createWidgetValues");
+			var sSelectedWidgetType = oWidgetValues.getData().selectedWidgetType;
+			var iNumberOfFields = 0; // Default to 1 field
+			
+			if (sSelectedWidgetType.includes("1")) { // 2 Value Widget
+				iNumberOfFields = 1;
+			}else if (sSelectedWidgetType.includes("2")) { // 3 Value Widget
+				iNumberOfFields = 2;
+			} 
+			else if (sSelectedWidgetType.includes("3")) { // 3 Value Widget
+				iNumberOfFields = 3;
+			}
+
+			// Collect values for each field
+			for (var i = 1; i <= iNumberOfFields; i++) {
+				var oFieldSelect = that.byId("createTileFieldSelect" + i);
+				var oTextInput = that.byId("createTileTextInput" + i);
+				
+				if (oFieldSelect && oTextInput) {
+					var sSelectedField = oFieldSelect.getSelectedKey();
+					var sDisplayText = oTextInput.getValue();
+					
+					if (sSelectedField) {
+						aTileValues.push({
+							field: sSelectedField,
+							label: sDisplayText || sSelectedField // Use field name as default if no display text
+						});
+					}
+				}
+			}
+
+			return JSON.stringify(aTileValues);
+		},
+
 		fetchQueryOutput: function (oController, aFilterParams) {
 			debugger;
 			var that = oController;
@@ -1054,62 +1156,171 @@ sap.ui.define([
 						var oFilterForm = that.byId("createFilterMappingForm");
 						oFilterForm.removeAllContent();
 
-						var oFilterLabel = new Label({
-							text: "Select Filter Field"
+						// Add switch button to enable/disable filter
+						var oFilterSwitchLabel = new Label({
+							text: "Enable Filter"
 						});
 
-						var oFilterSelect = new sap.m.Select({
-							width: "100%",
-							showSecondaryValues: true
-						});
-						
-						// Manually populate filter select items from metadata
-						var oMetaDataModel = that.getView().getModel("createMetaDataModel");
-						var aMetaData = oMetaDataModel.getData();
-						aMetaData.forEach(function(item) {
-							oFilterSelect.addItem(new sap.ui.core.ListItem({
-								key: item.FIELDNAME,
-								text: item.SCRTEXT_L,
-								additionalText: item.FIELDNAME
-							}));
-						});
-
-						
-						var oFilterValueSelect = new sap.m.Select({
-							width: "100%",
-							showSecondaryValues: true
-						});
-						
-						// Add change event to filter select to populate filter value select
-						oFilterSelect.attachChange(function(oEvent) {
-							var sSelectedField = oEvent.getParameter("selectedItem").getKey();
-							oFilterValueSelect.destroyItems();
-							
-							// Get unique values from createJsonDataModel for the selected field
-							var oJsonDataModel = that.getView().getModel("createJsonDataModel");
-							if (oJsonDataModel) {
-								var aJsonData = oJsonDataModel.getData();
-								var aUniqueValues = [];
+						var oFilterSwitch = new sap.m.Switch({
+							state: false,
+							change: function(oEvent) {
+								var bState = oEvent.getParameter("state");
 								
-								aJsonData.forEach(function(item) {
-									if (item[sSelectedField] && aUniqueValues.indexOf(item[sSelectedField]) === -1) {
-										aUniqueValues.push(item[sSelectedField]);
+								// Remove existing filter fields
+								var aContent = oFilterForm.getContent();
+								for (var i = aContent.length - 1; i >= 0; i--) {
+									if (aContent[i] !== oFilterSwitchLabel && aContent[i] !== oFilterSwitch) {
+										oFilterForm.removeContent(aContent[i]);
 									}
-								});
+								}
 								
-								// Add unique values to filter value select
-								aUniqueValues.forEach(function(value) {
-									oFilterValueSelect.addItem(new sap.ui.core.ListItem({
-										key: value,
-										text: value
-									}));
-								});
+								if (bState) {
+									// Create filter fields when switch is enabled
+									createFilterFields();
+								}
 							}
 						});
 
-						oFilterForm.addContent(oFilterLabel);
-						oFilterForm.addContent(oFilterSelect);
-						oFilterForm.addContent(oFilterValueSelect);
+						// Function to create filter fields
+						var createFilterFields = function() {
+							var oFilterLabel = new Label({
+								text: "Select Filter Field"
+							});
+
+							var oFilterSelect = new sap.m.Select({
+								width: "100%",
+								showSecondaryValues: true
+							});
+							
+							// Manually populate filter select items from metadata
+							var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+							var aMetaData = oMetaDataModel.getData();
+							aMetaData.forEach(function(item) {
+								oFilterSelect.addItem(new sap.ui.core.ListItem({
+									key: item.FIELDNAME,
+									text: item.SCRTEXT_L,
+									additionalText: item.FIELDNAME
+								}));
+							});
+
+					
+							
+							var oFilterValueSelect = new sap.m.Select({
+								width: "100%",
+								showSecondaryValues: true
+							});
+							
+							// Function to populate filter value select based on selected field
+							var populateFilterValues = function(sFieldName) {
+								oFilterValueSelect.destroyItems();
+								
+								// Get unique values from createJsonDataModel for the selected field
+								var oJsonDataModel = that.getView().getModel("createJsonDataModel");
+								if (oJsonDataModel) {
+									var aJsonData = oJsonDataModel.getData();
+									var aUniqueValues = [];
+									
+									aJsonData.forEach(function(item) {
+										if (item[sFieldName] && aUniqueValues.indexOf(item[sFieldName]) === -1) {
+											aUniqueValues.push(item[sFieldName]);
+										}
+									});
+									
+									// Add unique values to filter value select
+									aUniqueValues.forEach(function(value) {
+										oFilterValueSelect.addItem(new sap.ui.core.ListItem({
+											key: value,
+											text: value
+										}));
+									});
+								}
+							};
+							
+							// Add change event to filter select to populate filter value select
+							oFilterSelect.attachChange(function(oEvent) {
+								var sSelectedField = oEvent.getParameter("selectedItem").getKey();
+								populateFilterValues(sSelectedField);
+							});
+							
+							// Initially populate filter value select with first field's values
+							if (aMetaData.length > 0) {
+								populateFilterValues(aMetaData[0].FIELDNAME);
+								oFilterSelect.setSelectedKey(aMetaData[0].FIELDNAME);
+							}
+
+							oFilterForm.addContent(oFilterLabel);
+							oFilterForm.addContent(oFilterSelect);
+							oFilterForm.addContent(oFilterValueSelect);
+						};
+
+						// Add switch components to form
+						oFilterForm.addContent(oFilterSwitchLabel);
+						oFilterForm.addContent(oFilterSwitch);
+
+						// Tile Mapping Form - Dynamic based on Widget Type
+						var oTileMappingForm = that.byId("createTileMappingForm");
+						oTileMappingForm.removeAllContent();
+						
+						// Get selected widget type to determine number of fields
+						var oWidgetValues = that.getView().getModel("createWidgetValues");
+						var sSelectedWidgetType = oWidgetValues.getData().selectedWidgetType;
+						var iNumberOfFields = 0; // Default to 1 field
+						debugger;
+						
+						if (sSelectedWidgetType.includes("1")) { // 2 Value Widget
+							iNumberOfFields = 1;
+						} else if (sSelectedWidgetType.includes("2")) { // 3 Value Widget
+							iNumberOfFields = 2;
+						}
+						else if (sSelectedWidgetType.includes("3")) { // 3 Value Widget
+							iNumberOfFields = 3;
+						}
+						
+						// Create dynamic fields based on widget type
+						for (var k = 1; k <= iNumberOfFields; k++) {
+							// Field Select Label
+							var oFieldLabel = new Label({
+								text: "Select Field " + k
+							});
+							
+							// Field Select Control
+							var oFieldSelect = new sap.m.Select({
+								width: "100%",
+								showSecondaryValues: true,
+								id: that.createId("createTileFieldSelect" + k)
+							});
+							
+							// Manually populate field select items from metadata
+							var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+							var aMetaData = oMetaDataModel.getData();
+							aMetaData.forEach(function(item) {
+								oFieldSelect.addItem(new sap.ui.core.ListItem({
+									key: item.FIELDNAME,
+									text: item.SCRTEXT_L,
+									additionalText: item.FIELDNAME
+								}));
+							});
+							
+							// Display Text Label
+							var oTextLabel = new Label({
+								text: "Display Text " + k
+							});
+							
+							// Display Text Input
+							var oTextInput = new sap.m.Input({
+								width: "100%",
+								placeholder: "Enter display text for field " + k,
+								id: that.createId("createTileTextInput" + k)
+							});
+							
+							// Add components to form
+							oTileMappingForm.addContent(oFieldLabel);
+							oTileMappingForm.addContent(oFieldSelect);
+							oTileMappingForm.addContent(oTextLabel);
+							oTileMappingForm.addContent(oTextInput);
+						}
+
+						// Data Binding Form
 
 
 

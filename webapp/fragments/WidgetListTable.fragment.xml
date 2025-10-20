@@ -29,7 +29,6 @@
 									<Text text="{widgetListModel>Id}"/>
 									<Text text="{widgetListModel>Text}"/>
 									<HBox>
-										<Button text="Edit" type="Emphasized" press="onEditWidget"/>
 										<Button text="Delete" type="Reject" press="onDeleteWidgetFromList"/>
 									</HBox>
 								</cells>

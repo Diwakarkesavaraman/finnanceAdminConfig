@@ -2,19 +2,24 @@
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
 	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt"
 	xmlns:codeeditor="sap.ui.codeeditor">
-	<VBox id="createDynamicWidgetConfigContainer" visible="false">
-		<HBox class="tblhdrcls">
-			<Button id="backToListBtn" text="Back to List" icon="sap-icon://nav-back" press="onBackToWidgetList"/>
-			<Text text="Dynamic Widget Config"/>
-			<Button id="editBtn" text="Edit" enabled="false" press="onCreateEditPress"/>
-			<Button id="saveBtn" text="Save" type="Emphasized" visible="true" press="onCreateSavePress"/>
-			<Button id="submitBtn" text="Submit" visible="false" press="onCreateCancelPress"/>
-			<Button id="deleteBtn" type="Reject" text="Delete" visible="true" press="onCreateDeleteWidget"/>
-		</HBox>
-		<Panel expandable="true" expanded="true" headerText="Panel with a header text" width="auto" class="sapUiResponsiveMargin">
+	<Panel height="100%" class="admgisreppanelcls">
 			<content>
+	<VBox id="createDynamicWidgetConfigContainer" visible="false">
+		<HBox class="tblhdrcls" justifyContent="SpaceBetween" alignItems="Center">
+			<HBox alignItems="Center">
+				<Button id="backToListBtn" text="" icon="sap-icon://nav-back" press="onBackToWidgetList"/>
+				<Text text="Dynamic Widget Config" class="sapUiTinyMarginBegin"/>
+			</HBox>
+			<HBox>
+				<!-- <Button id="editBtn" text="Edit" enabled="false" press="onCreateEditPress"/> -->
+				<Button id="saveBtn" text="Save" type="Emphasized" visible="true" press="onCreateSavePress"/>
+				<!-- <Button id="submitBtn" text="Submit" visible="false" press="onCreateCancelPress"/> -->
+				<!-- <Button id="deleteBtn" type="Reject" text="Delete" visible="true" press="onCreateDeleteWidget"/> -->
+			</HBox>
+		</HBox>
+		
 				<VBox class="sapUiSmallMargin">
-					<form:SimpleForm id="createWidgetSimpleForm" editable="true" layout="ResponsiveGridLayout" title="Widget Config" labelSpanXL="3" labelSpanL="3"
+					<form:SimpleForm id="createWidgetSimpleForm" editable="true" layout="ResponsiveGridLayout" title="Widget Details" labelSpanXL="3" labelSpanL="3"
 						labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
 						columnsL="1" columnsM="1" singleContainerFullSize="false">
 						<form:content>
@@ -38,12 +43,12 @@
 						</form:content>
 					</form:SimpleForm>
 				</VBox>
-				<HBox class="tblhdrcls">
-					<Text text="Dynamic Widget Config"/>
-					<Button id="createFormSubmit" text="Save" type="Emphasized" visible="true" press="onCreateGetGroupedFormValues"/>
+				<HBox class="tblhdrcls" justifyContent="SpaceBetween" alignItems="Center">
+					<Text text=""/>
+					<Button id="createFormSubmit" text="Refresh Query Data" type="Emphasized" visible="true" press="onCreateGetGroupedFormValues"/>
 				</HBox>
-				<Panel expanded="true" expandable="true" headerText="Bex Query Parameter" width="auto" class="sapUiResponsiveMargin">
-					<content>
+				<!-- <Panel expanded="true" expandable="true" headerText="Bex Query Parameter" width="auto" class="sapUiResponsiveMargin">
+					<content> -->
 						<VBox class="sapUiSmallMargin">
 							<form:SimpleForm id="createBexQueryParameterForm" editable="true" layout="ResponsiveGridLayout" title="Widget Config" labelSpanXL="3"
 								labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0"
@@ -58,6 +63,13 @@
 									<IconTabFilter text="MetaData" key="info">
 										<VBox class="sapUiSmallMargin">
 											<form:SimpleForm id="createFilterMappingForm" editable="true" layout="ResponsiveGridLayout" title="Filters" labelSpanXL="3" labelSpanL="3"
+												labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
+												columnsL="1" columnsM="1" singleContainerFullSize="false">
+												<form:content></form:content>
+											</form:SimpleForm>
+										</VBox>
+										<VBox class="sapUiSmallMargin">
+											<form:SimpleForm id="createTileMappingForm" editable="true" layout="ResponsiveGridLayout" title="Data Binding" labelSpanXL="3" labelSpanL="3"
 												labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
 												columnsL="1" columnsM="1" singleContainerFullSize="false">
 												<form:content></form:content>
@@ -82,9 +94,11 @@
 								</items>
 							</IconTabBar>
 						</VBox>
-					</content>
-				</Panel>
-			</content>
-		</Panel>
+					<!-- </content>
+				</Panel> -->
+			
+	
 	</VBox>
+	</content>
+	</Panel>
 </core:FragmentDefinition>
