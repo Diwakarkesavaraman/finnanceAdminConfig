@@ -1080,7 +1080,32 @@ sap.ui.define([
 							showSecondaryValues: true
 						});
 						
-						// Filter value select will be populated when filter field is selected
+						// Add change event to filter select to populate filter value select
+						oFilterSelect.attachChange(function(oEvent) {
+							var sSelectedField = oEvent.getParameter("selectedItem").getKey();
+							oFilterValueSelect.destroyItems();
+							
+							// Get unique values from createJsonDataModel for the selected field
+							var oJsonDataModel = that.getView().getModel("createJsonDataModel");
+							if (oJsonDataModel) {
+								var aJsonData = oJsonDataModel.getData();
+								var aUniqueValues = [];
+								
+								aJsonData.forEach(function(item) {
+									if (item[sSelectedField] && aUniqueValues.indexOf(item[sSelectedField]) === -1) {
+										aUniqueValues.push(item[sSelectedField]);
+									}
+								});
+								
+								// Add unique values to filter value select
+								aUniqueValues.forEach(function(value) {
+									oFilterValueSelect.addItem(new sap.ui.core.ListItem({
+										key: value,
+										text: value
+									}));
+								});
+							}
+						});
 
 						oFilterForm.addContent(oFilterLabel);
 						oFilterForm.addContent(oFilterSelect);
