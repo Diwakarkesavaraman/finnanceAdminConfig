@@ -64,6 +64,7 @@
 						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.AffiliateTab" type="XML"/>
 					</ScrollContainer>
 					<ScrollContainer id="dynamicWidgetConfig" horizontal="false" vertical="true" height="100%" class="sapUiContentPadding">
+						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.WidgetListTable" type="XML"/>
 						<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.CreateDynamicWidgetConfig" type="XML"/>
 					</ScrollContainer>
 				</pages>

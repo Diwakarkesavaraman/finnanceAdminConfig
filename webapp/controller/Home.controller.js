@@ -1826,8 +1826,18 @@
 
  		onItemSelect: function (oEvent) {
  			var oItem = oEvent.getParameter("item");
+			var sKey = oItem.getKey();
 
- 			this.byId("pageContainer").to(this.getView().createId(oItem.getKey()));
+ 			this.byId("pageContainer").to(this.getView().createId(sKey));
+
+			// Initialize widget list when Dynamic Widget Config is selected
+			if (sKey === "dynamicWidgetConfig") {
+				// Show widget list and hide create config initially
+				this.byId("widgetListContainer").setVisible(true);
+				this.byId("createDynamicWidgetConfigContainer").setVisible(false);
+				// Load the widget list data
+				this.onLoadWidgetListData();
+			}
 
  		},
 
@@ -8957,6 +8967,32 @@
 
 		onCreateCancelPress: function(oEvent) {
 			return CreateDynamicWidgetHelper.onCreateCancelPress(this, oEvent);
+		},
+
+		//Widget List Management
+
+		onLoadWidgetListData: async function() {
+			return await CreateDynamicWidgetHelper.onLoadWidgetListData(this);
+		},
+
+		onWidgetListItemPress: function(oEvent) {
+			return CreateDynamicWidgetHelper.onWidgetListItemPress(this, oEvent);
+		},
+
+		onAddNewWidget: function(oEvent) {
+			return CreateDynamicWidgetHelper.onAddNewWidget(this, oEvent);
+		},
+
+		onEditWidget: function(oEvent) {
+			return CreateDynamicWidgetHelper.onEditWidget(this, oEvent);
+		},
+
+		onDeleteWidgetFromList: function(oEvent) {
+			return CreateDynamicWidgetHelper.onDeleteWidgetFromList(this, oEvent);
+		},
+
+		onBackToWidgetList: function(oEvent) {
+			return CreateDynamicWidgetHelper.onBackToWidgetList(this, oEvent);
 		},
 
 		onTilePress: function(oEvent) {

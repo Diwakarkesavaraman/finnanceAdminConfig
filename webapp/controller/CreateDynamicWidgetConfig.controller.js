@@ -258,7 +258,7 @@ sap.ui.define([
 				var dataSourceValue = datasource || '';
 				var aFilters = [new Filter("DataSource", FilterOperator.EQ, dataSourceValue)];
 				
-				finmobview.read("/QueryParameterSet", {
+				finmobview.read("/VariableMetaDataSet", {
 					filters: aFilters,
 					success: function (data) {
 						console.log("Query parameters fetched:", data);

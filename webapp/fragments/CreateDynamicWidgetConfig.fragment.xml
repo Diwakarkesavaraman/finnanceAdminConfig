@@ -2,8 +2,9 @@
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
 	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt"
 	xmlns:codeeditor="sap.ui.codeeditor">
-	<VBox id="createDynamicWidgetConfigContainer">
+	<VBox id="createDynamicWidgetConfigContainer" visible="false">
 		<HBox class="tblhdrcls">
+			<Button id="backToListBtn" text="Back to List" icon="sap-icon://nav-back" press="onBackToWidgetList"/>
 			<Text text="Dynamic Widget Config"/>
 			<Button id="editBtn" text="Edit" enabled="false" press="onCreateEditPress"/>
 			<Button id="saveBtn" text="Save" type="Emphasized" visible="true" press="onCreateSavePress"/>

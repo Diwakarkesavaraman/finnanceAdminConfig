@@ -3,11 +3,160 @@ sap.ui.define([
 	"sap/m/MessageBox",
 	"sap/m/MessageToast",
 	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator"
-], function (JSONModel, MessageBox, MessageToast, Filter, FilterOperator) {
+	"sap/ui/model/FilterOperator",
+	"sap/m/Column",
+	"sap/m/Text",
+	"sap/m/ColumnListItem",
+	"sap/m/Label",
+	"sap/m/Input",
+	"sap/m/MultiInput",
+	"sap/m/Token",
+	"sap/m/SelectDialog",
+	"sap/m/StandardListItem"
+], function (JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Column, Text, ColumnListItem, Label, Input, MultiInput, Token, SelectDialog, StandardListItem) {
 	"use strict";
 
 	return {
+		onLoadWidgetListData: async function (oController) {
+			var that = oController;
+			var finmobview = that.getView().getModel("finmobview");
+			
+			// Show busy indicator
+			var oBusyIndicator = that.byId("widgetListBusyIndicator");
+			if (oBusyIndicator) {
+				oBusyIndicator.setVisible(true);
+			}
+			
+			var aFilters = [new Filter("Filter", FilterOperator.EQ, "Widget_ID")];
+			
+			try {
+				return new Promise((resolve, reject) => {
+					finmobview.read("/WidgetSearchHelpSet", {
+						filters: aFilters,
+						success: function (data) {
+							console.log("Widget list data fetched:", data);
+							
+							// Create and set widget list model
+							var oWidgetListModel = new JSONModel(data.results);
+							that.getView().setModel(oWidgetListModel, "widgetListModel");
+							
+							// Hide busy indicator
+							if (oBusyIndicator) {
+								oBusyIndicator.setVisible(false);
+							}
+							
+							resolve(data.results);
+						},
+						error: function (oError) {
+							console.error("Error fetching widget list:", oError);
+							var responseText = oError.responseText;
+							var msg = "Error fetching widget list";
+							if (responseText.indexOf("{") > -1) {
+								try {
+									var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
+									if (errorDetails.length > 0) {
+										msg = errorDetails.map(err => err.message).join("\n");
+									}
+								} catch (e) {
+									msg = responseText;
+								}
+							}
+							MessageBox.error(msg);
+							
+							// Hide busy indicator
+							if (oBusyIndicator) {
+								oBusyIndicator.setVisible(false);
+							}
+							
+							reject(oError);
+						}
+					});
+				});
+			} catch (error) {
+				console.error("Error in onLoadWidgetListData:", error);
+				if (oBusyIndicator) {
+					oBusyIndicator.setVisible(false);
+				}
+				throw error;
+			}
+		},
+
+		onWidgetListItemPress: function (oController, oEvent) {
+			var that = oController;
+			var oBindingContext = oEvent.getSource().getBindingContext("widgetListModel");
+			var oSelectedWidget = oBindingContext.getObject();
+			
+			console.log("Selected widget:", oSelectedWidget);
+			
+			// Hide widget list and show create dynamic widget config
+			that.byId("widgetListContainer").setVisible(false);
+			that.byId("createDynamicWidgetConfigContainer").setVisible(true);
+			
+			// Load the selected widget data
+			this.onLoadCreateDynamicWidgetData(that, oSelectedWidget.Id);
+		},
+
+		onAddNewWidget: function (oController, oEvent) {
+			var that = oController;
+			
+			// Hide widget list and show create dynamic widget config
+			that.byId("widgetListContainer").setVisible(false);
+			that.byId("createDynamicWidgetConfigContainer").setVisible(true);
+			
+			// Clear form and load with empty data
+			this._clearCreateForm(that);
+			this.onLoadCreateDynamicWidgetData(that, null);
+		},
+
+		onEditWidget: function (oController, oEvent) {
+			var that = oController;
+			var oBindingContext = oEvent.getSource().getBindingContext("widgetListModel");
+			var oSelectedWidget = oBindingContext.getObject();
+			
+			console.log("Edit widget:", oSelectedWidget);
+			
+			// Prevent event bubbling to avoid triggering row press
+			oEvent.stopPropagation();
+			
+			// Hide widget list and show create dynamic widget config
+			that.byId("widgetListContainer").setVisible(false);
+			that.byId("createDynamicWidgetConfigContainer").setVisible(true);
+			
+			// Load the selected widget data for editing
+			this.onLoadCreateDynamicWidgetData(that, oSelectedWidget.Id);
+		},
+
+		onDeleteWidgetFromList: function (oController, oEvent) {
+			var that = oController;
+			var oBindingContext = oEvent.getSource().getBindingContext("widgetListModel");
+			var oSelectedWidget = oBindingContext.getObject();
+			
+			// Prevent event bubbling to avoid triggering row press
+			oEvent.stopPropagation();
+			
+			MessageBox.confirm("Are you sure you want to delete the widget '" + (oSelectedWidget.Text || oSelectedWidget.Id) + "'?", {
+				title: "Confirm Delete",
+				onClose: function (oAction) {
+					if (oAction === MessageBox.Action.OK) {
+						this.onCreateDeleteWidget(that, oSelectedWidget.Id);
+						// Refresh the widget list after deletion
+						this.onLoadWidgetListData(that);
+					}
+				}.bind(this)
+			});
+		},
+
+		onBackToWidgetList: function (oController, oEvent) {
+			var that = oController;
+			
+			// Hide create dynamic widget config and show widget list
+			that.byId("createDynamicWidgetConfigContainer").setVisible(false);
+			that.byId("widgetListContainer").setVisible(true);
+			
+			// Refresh the widget list
+			this.onLoadWidgetListData(that);
+		},
+
 		onLoadCreateDynamicWidgetData: async function (oController, widgetId) {
 			debugger;
 			var that = oController;
@@ -114,6 +263,7 @@ sap.ui.define([
 		onCreateCheckQueryValidity: function (oController, oEvent) {
 			debugger;
 			var that = oController;
+			var self = this;
 			var finmobview = that.getView().getModel("finmobview");
 			var dataSource = that.byId("createDataSourceId").getValue();
 			
@@ -137,7 +287,15 @@ sap.ui.define([
 					if (response.IsExist) {
 						that.byId("createSuccessIcon").setVisible(true);
 						var dataSource = response.Query_Name;
-						that.onCreateAddInput(dataSource);
+						
+						// Show the tab bar and hide busy indicator
+						oBusyIndicator.setVisible(false);
+						that.byId("createTabBarBusyIndicator").setVisible(false);
+						that.byId("createIconTabBarInlineMode").setVisible(true);
+						
+						// Load query parameters and fetch output data
+						self.onCreateAddInput(that, dataSource);
+						self.fetchCreateQueryOutput(that, dataSource);
 					}
 				},
 				error: function (oError) {
@@ -164,7 +322,7 @@ sap.ui.define([
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
 			var oWidgetData = that.getView().getModel("createWidgetValues").getData();
-			var mappingFormData = this.getMappingFormValues(oController);
+			var mappingFormData = this.getCreateMappingFormValues(oController);
 			
 			var oPayload = {
 				"WidgetType": oWidgetData.selectedWidgetType,
@@ -298,7 +456,7 @@ sap.ui.define([
 				var dataSourceValue = datasource || '';
 				var aFilters = [new Filter("DataSource", FilterOperator.EQ, dataSourceValue)];
 				
-				finmobview.read("/QueryParameterSet", {
+				finmobview.read("/VariableMetaDataSet", {
 					filters: aFilters,
 					success: function (data) {
 						console.log("Query parameters fetched:", data);
@@ -605,7 +763,7 @@ sap.ui.define([
 			}
 		},
 
-		getMappingFormValues: function (oController) {
+		getCreateMappingFormValues: function (oController) {
 			var that = oController;
 			var oForm = that.byId("createDataMappingForm");
 			var aFormContent = oForm.getContent();
@@ -622,11 +780,11 @@ sap.ui.define([
 					var oNextControl = aFormContent[i + 1]; // Get the next control after label
 
 					if (oNextControl) {
-						// Handle Select controls
-						if (oNextControl instanceof sap.m.Select) {
-							aFields.push(oNextControl.getSelectedKey());
+						// Handle Input controls (X-axis)
+						if (oNextControl instanceof sap.m.Input) {
+							aFields.push(oNextControl.getValue());
 						}
-						// Handle MultiInput controls
+						// Handle MultiInput controls (Y-axis)
 						else if (oNextControl instanceof sap.m.MultiInput) {
 							var aTokens = oNextControl.getTokens();
 							var aTokenValues = aTokens.map(function(oToken) {
@@ -641,6 +799,250 @@ sap.ui.define([
 			oformValues['y'] = aFields.slice(1);
 
 			return JSON.stringify(oformValues);
+		},
+
+		fetchCreateQueryOutput: function (oController, sDataSource) {
+			var that = oController;
+			var finmobview = that.getView().getModel("finmobview");
+			var oBusyIndicator = that.byId("createTabBarBusyIndicator");
+			var oIconTabBar = that.byId("createIconTabBarInlineMode");
+			
+			if (oBusyIndicator) {
+				oBusyIndicator.setVisible(true);
+			}
+			if (oIconTabBar) {
+				oIconTabBar.setVisible(false);
+			}
+
+			var aFilters = [
+				new Filter("DatasourceName", FilterOperator.EQ, sDataSource),
+				new Filter("InputParameter", FilterOperator.EQ, JSON.stringify([]))
+			];
+
+			finmobview.read("/Query_Output", {
+				filters: aFilters,
+				success: function (data) {
+					if (oBusyIndicator) {
+						oBusyIndicator.setVisible(false);
+					}
+					if (oIconTabBar) {
+						oIconTabBar.setVisible(true);
+					}
+					
+					console.log("Create Query Output:", data);
+
+					if (data.results && data.results.length > 0) {
+						var queryOutput = JSON.parse(data.results[0].QueryOutput);
+						var metaData = queryOutput.metadata || [];
+						var jsonData = queryOutput.data || [];
+
+						// Add selectedAxis property to each metadata item
+						metaData.forEach(function (item) {
+							item.selectedAxis = "";
+						});
+
+						// Create and set jsonDataModel for the table
+						var oJsonDataModel = new JSONModel(jsonData);
+						that.getView().setModel(oJsonDataModel, "createJsonDataModel");
+						
+						// Create dynamic columns for the table
+						var oTable = that.getView().byId("createJsonDataTable");
+						if (oTable && jsonData.length > 0) {
+							// Clear existing columns
+							oTable.removeAllColumns();
+							
+							// Get column names from first data row
+							var aColumnNames = Object.keys(jsonData[0]);
+							
+							// Create columns dynamically with proper display names
+							aColumnNames.forEach(function(sColumnName) {
+								// Find the corresponding SCRTEXT_L from metadata
+								var sDisplayName = sColumnName; // Default to field name
+								var oMetaField = metaData.find(function(oItem) {
+									return oItem.FIELDNAME === sColumnName;
+								});
+								if (oMetaField && oMetaField.SCRTEXT_L) {
+									sDisplayName = oMetaField.SCRTEXT_L;
+								}
+								
+								var oColumn = new Column({
+									header: new Text({text: sDisplayName})
+								});
+								oTable.addColumn(oColumn);
+							});
+							
+							// Clear and recreate template
+							oTable.removeAllItems();
+							var oCells = aColumnNames.map(function(sColumnName) {
+								return new Text({text: "{createJsonDataModel>" + sColumnName + "}"});
+							});
+							
+							var oColumnListItem = new ColumnListItem({
+								cells: oCells
+							});
+							
+							oTable.bindItems({
+								path: "createJsonDataModel>/",
+								template: oColumnListItem
+							});
+						}
+
+						// Create and set metaDataModel
+						var oMetaDataModel = new JSONModel(metaData);
+						that.getView().setModel(oMetaDataModel, "createMetaDataModel");
+
+						// Create data mapping form
+						var oForm = that.byId("createDataMappingForm");
+						oForm.removeAllContent();
+
+						var oXLabel = new Label({
+							text: "Select Dimensions"
+						});
+						
+						var oXInput = new Input({
+							class: "sapUiSmallMarginEnd",
+							type: "Text",
+							placeholder: "Select field",
+							showValueHelp: true,
+							valueHelpIconSrc: "sap-icon://value-help",
+							valueHelpRequest: function (oEvent) {
+								var oSource = oEvent.getSource();
+								var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+
+								if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
+									MessageToast.show("No metadata available. Please fetch query data first.");
+									return;
+								}
+
+								// Create value help dialog if it doesn't exist
+								if (!that._oCreateMetaDataValueHelpDialog) {
+									that._oCreateMetaDataValueHelpDialog = new SelectDialog({
+										title: "Select Field",
+										items: {
+											path: "createMetaDataModel>/",
+											template: new StandardListItem({
+												title: "{createMetaDataModel>SCRTEXT_L}",
+												description: "{createMetaDataModel>FIELDNAME}",
+												type: "Active"
+											})
+										},
+										confirm: function (oEvent) {
+											var oSelectedItem = oEvent.getParameter("selectedItem");
+											if (oSelectedItem) {
+												var sFieldName = oSelectedItem.getTitle();
+												oSource.setValue(sFieldName);
+											}
+										},
+										cancel: function () {
+											// Dialog closed without selection
+										}
+									});
+									that.getView().addDependent(that._oCreateMetaDataValueHelpDialog);
+								}
+
+								that._oCreateMetaDataValueHelpDialog.setModel(oMetaDataModel, "createMetaDataModel");
+								that._oCreateMetaDataValueHelpDialog.open();
+							}
+						});
+
+						var oYLabel = new Label({
+							text: "Select Measures"
+						});
+
+						var oYMultiInput = new MultiInput({
+							width: "100%",
+							showValueHelp: true,
+							valueHelpRequest: function(oEvent) {
+								var oSource = oEvent.getSource();
+								var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+
+								if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
+									MessageToast.show("No metadata available. Please fetch query data first.");
+									return;
+								}
+
+								// Create value help dialog if it doesn't exist
+								if (!that._oCreateYMetaDataValueHelpDialog) {
+									that._oCreateYMetaDataValueHelpDialog = new SelectDialog({
+										title: "Select Y Axis Fields",
+										multiSelect: true,
+										items: {
+											path: "createMetaDataModel>/",
+											template: new StandardListItem({
+												title: "{createMetaDataModel>SCRTEXT_L}",
+												description: "{createMetaDataModel>FIELDNAME}",
+												type: "Active"
+											})
+										},
+										confirm: function(oEvent) {
+											var aSelectedItems = oEvent.getParameter("selectedItems");
+											if (aSelectedItems && aSelectedItems.length > 0) {
+												// Clear existing tokens
+												oSource.removeAllTokens();
+												
+												// Add selected items as tokens
+												aSelectedItems.forEach(function(oItem) {
+													var sFieldName = oItem.getDescription(); // FIELDNAME is in description
+													var sDisplayText = oItem.getTitle(); // SCRTEXT_L is in title
+													var oToken = new Token({
+														key: sFieldName,
+														text: sDisplayText
+													});
+													oSource.addToken(oToken);
+												});
+											}
+										},
+										cancel: function() {
+											// Dialog closed without selection
+										}
+									});
+									that.getView().addDependent(that._oCreateYMetaDataValueHelpDialog);
+								}
+
+								// Filter out the field already selected in X Axis
+								var sSelectedXField = oXInput.getValue();
+								var aFilteredData = oMetaDataModel.getData().filter(function(oItem) {
+									return oItem.SCRTEXT_L !== sSelectedXField;
+								});
+								
+								// Create a filtered model
+								var oFilteredModel = new JSONModel(aFilteredData);
+								that._oCreateYMetaDataValueHelpDialog.setModel(oFilteredModel, "createMetaDataModel");
+								that._oCreateYMetaDataValueHelpDialog.open();
+							}
+						});
+
+						oForm.addContent(oXLabel);
+						oForm.addContent(oXInput);
+						oForm.addContent(oYLabel);
+						oForm.addContent(oYMultiInput);
+					}
+				},
+				error: function (oError) {
+					if (oBusyIndicator) {
+						oBusyIndicator.setVisible(false);
+					}
+					if (oIconTabBar) {
+						oIconTabBar.setVisible(true);
+					}
+					
+					var responseText = oError.responseText;
+					var msg = "Error fetching data";
+
+					if (responseText.indexOf("{") > -1) {
+						try {
+							var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
+							if (errorDetails.length > 0) {
+								msg = errorDetails.map(err => err.message).join("\n");
+							}
+						} catch (e) {
+							msg = responseText;
+						}
+					}
+					MessageBox.error(msg);
+					console.error("Create Query output error:", oError);
+				}
+			});
 		},
 
 		_clearCreateForm: function (oController) {

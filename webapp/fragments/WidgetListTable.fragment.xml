@@ -1,0 +1,40 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<VBox id="widgetListContainer">
+		<HBox class="tblhdrcls">
+			<Text text="Widget Configuration List"/>
+			<Button id="addNewWidgetBtn" text="Add New Widget" type="Emphasized" press="onAddNewWidget"/>
+		</HBox>
+		<Panel expandable="true" expanded="true" headerText="Existing Widgets" width="auto" class="sapUiResponsiveMargin">
+			<content>
+				<VBox class="sapUiSmallMargin">
+					<BusyIndicator id="widgetListBusyIndicator" visible="false" />
+					<Table id="widgetListTable" items="{widgetListModel>/}" class="sapUiResponsiveMargin">
+						<columns>
+							<Column>
+								<Text text="Widget ID"/>
+							</Column>
+							<Column>
+								<Text text="Widget Name"/>
+							</Column>
+							<Column>
+								<Text text="Actions"/>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem press="onWidgetListItemPress" type="Active">
+								<cells>
+									<Text text="{widgetListModel>Id}"/>
+									<Text text="{widgetListModel>Text}"/>
+									<HBox>
+										<Button text="Edit" type="Emphasized" press="onEditWidget"/>
+										<Button text="Delete" type="Reject" press="onDeleteWidgetFromList"/>
+									</HBox>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</VBox>
+			</content>
+		</Panel>
+	</VBox>
+</core:FragmentDefinition>
