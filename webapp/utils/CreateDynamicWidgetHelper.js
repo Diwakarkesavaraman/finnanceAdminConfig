@@ -11,8 +11,9 @@ sap.ui.define([
 	"sap/m/MultiInput",
 	"sap/m/Token",
 	"sap/m/SelectDialog",
-	"sap/m/StandardListItem"
-], function (JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Column, Text, ColumnListItem, Label, MultiInput, Token, SelectDialog, StandardListItem) {
+	"sap/m/StandardListItem",
+	"sap/m/ComboBox"
+], function (JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Column, Text, ColumnListItem, Label, MultiInput, Token, SelectDialog, StandardListItem, ComboBox) {
 	"use strict";
 
 	return {
@@ -878,9 +879,11 @@ sap.ui.define([
 						var oFilterFieldSelect = aFormContent[i + 1]; // Get the field select control
 						var oFilterValueSelect = aFormContent[i + 2]; // Get the value select control (skip value label)
 
-						if (oFilterFieldSelect instanceof sap.m.Select && oFilterValueSelect instanceof sap.m.Select) {
+						if (oFilterFieldSelect instanceof sap.m.Select && (oFilterValueSelect instanceof sap.m.Select || oFilterValueSelect instanceof sap.m.ComboBox)) {
 							var sSelectedField = oFilterFieldSelect.getSelectedKey();
-							var sSelectedValue = oFilterValueSelect.getSelectedKey();
+							// var sSelectedValue = oFilterValueSelect.getSelectedKey ? oFilterValueSelect.getSelectedKey() : oFilterValueSelect.getValue();
+							var sSelectedValue = oFilterValueSelect.getValue();
+
 							
 							if (sSelectedField && sSelectedValue) {
 								aFilterValues.push({
@@ -1295,9 +1298,10 @@ sap.ui.define([
 
 					
 							
-							var oFilterValueSelect = new sap.m.Select({
+							var oFilterValueSelect = new sap.m.ComboBox({
 								width: "100%",
-								showSecondaryValues: true
+								showSecondaryValues: true,
+								placeholder: "Select or enter value"
 							});
 							
 							// Function to populate filter value select based on selected field
@@ -1466,7 +1470,14 @@ sap.ui.define([
 														});
 														
 														// Set the selected value
-														oFilterValueSelect.setSelectedKey(firstFilter.value);
+														// For ComboBox, use setValue to handle both dropdown and free text values
+														if (oFilterValueSelect instanceof sap.m.ComboBox) {
+															oFilterValueSelect.setValue(firstFilter.value);
+														} else if (oFilterValueSelect.setSelectedKey) {
+															oFilterValueSelect.setSelectedKey(firstFilter.value);
+														} else {
+															oFilterValueSelect.setValue(firstFilter.value);
+														}
 													}
 												};
 												
