@@ -28,7 +28,7 @@
 							<Label id="createWidgetNameLabel" text="Widget Name"/>
 							<Input id="createWidgetName" value="{createWidgetValues>/widgetName}" editable="true" liveChange="onCreateDataSourceChange"/>
 							<Label text="Widget Type"/>
-							<Select id="createWidgetType" items="{path: 'createWidgetTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedWidgetType}">
+							<Select id="createWidgetType" items="{path: 'createWidgetTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedWidgetType}" change="onCreateWidgetTypeChange">
 								<core:Item text="{createWidgetTypeDropdownData>Text}" key="{createWidgetTypeDropdownData>Id}"/>
 							</Select>
 							<Label text="Chart Type"/>

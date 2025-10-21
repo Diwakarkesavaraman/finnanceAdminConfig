@@ -273,6 +273,18 @@ sap.ui.define([
 			oController.getView().byId("createSuccessIcon").setVisible(false);
 		},
 
+		onCreateWidgetTypeChange: function (oController, oEvent) {
+			console.log("Create Widget Type Changed");
+			var that = oController;
+			
+			// Check if metadata is available (form has been created)
+			var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+			if (oMetaDataModel && oMetaDataModel.getData() && oMetaDataModel.getData().length > 0) {
+				// Recreate the tile mapping form with the new widget type
+				this.createTileMappingForm(that);
+			}
+		},
+
 		onCreateCheckQueryValidity: function (oController, oEvent) {
 			debugger;
 			var that = oController;
@@ -929,9 +941,75 @@ sap.ui.define([
 			return JSON.stringify(aTileValues);
 		},
 
+		createTileMappingForm: function (oController) {
+			var that = oController;
+			
+			// Tile Mapping Form - Dynamic based on Widget Type
+			var oTileMappingForm = that.byId("createTileMappingForm");
+			oTileMappingForm.removeAllContent();
+			
+			// Get selected widget type to determine number of fields
+			var oWidgetValues = that.getView().getModel("createWidgetValues");
+			var sSelectedWidgetType = oWidgetValues.getData().selectedWidgetType;
+			var iNumberOfFields = 0; // Default to 1 field
+			
+			if (sSelectedWidgetType.includes("1")) { // 1 Value Widget
+				iNumberOfFields = 1;
+			} else if (sSelectedWidgetType.includes("2")) { // 2 Value Widget
+				iNumberOfFields = 2;
+			} else if (sSelectedWidgetType.includes("3")) { // 3 Value Widget
+				iNumberOfFields = 3;
+			}
+			
+			// Create dynamic fields based on widget type
+			for (var k = 1; k <= iNumberOfFields; k++) {
+				// Field Select Label
+				var oFieldLabel = new Label({
+					text: "Select Field " + k
+				});
+				
+				// Field Select Control
+				var oFieldSelect = new sap.m.Select({
+					width: "100%",
+					showSecondaryValues: true
+				});
+				
+				// Manually populate field select items from metadata
+				var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+				var aMetaData = oMetaDataModel.getData();
+				aMetaData.forEach(function(item) {
+					oFieldSelect.addItem(new sap.ui.core.ListItem({
+						key: item.FIELDNAME,
+						text: item.SCRTEXT_L,
+						additionalText: item.FIELDNAME
+					}));
+				});
+				
+				// Display Text Label
+				var oTextLabel = new Label({
+					text: "Display Text " + k
+				});
+				
+				// Display Text Input
+				var oTextInput = new sap.m.Input({
+					width: "100%",
+					placeholder: "Enter display text for field " + k
+				});
+				
+				// Add components to form
+				oTileMappingForm.addContent(oFieldLabel);
+				oTileMappingForm.addContent(oFieldSelect);
+				oTileMappingForm.addContent(oTextLabel);
+				oTileMappingForm.addContent(oTextInput);
+			}
+			
+			return iNumberOfFields;
+		},
+
 		fetchQueryOutput: function (oController, aFilterParams) {
 			debugger;
 			var that = oController;
+			var self = this;
 			var finmobview = that.getView().getModel("finmobview");
 			var oBusyIndicator = that.byId("createTabBarBusyIndicator");
 			var oIconTabBar = that.byId("createIconTabBarInlineMode");
@@ -1266,66 +1344,8 @@ sap.ui.define([
 						oFilterForm.addContent(oFilterSwitchLabel);
 						oFilterForm.addContent(oFilterSwitch);
 
-						// Tile Mapping Form - Dynamic based on Widget Type
-						var oTileMappingForm = that.byId("createTileMappingForm");
-						oTileMappingForm.removeAllContent();
-						
-						// Get selected widget type to determine number of fields
-						var oWidgetValues = that.getView().getModel("createWidgetValues");
-						var sSelectedWidgetType = oWidgetValues.getData().selectedWidgetType;
-						var iNumberOfFields = 0; // Default to 1 field
-						debugger;
-						
-						if (sSelectedWidgetType.includes("1")) { // 2 Value Widget
-							iNumberOfFields = 1;
-						} else if (sSelectedWidgetType.includes("2")) { // 3 Value Widget
-							iNumberOfFields = 2;
-						}
-						else if (sSelectedWidgetType.includes("3")) { // 3 Value Widget
-							iNumberOfFields = 3;
-						}
-						
-						// Create dynamic fields based on widget type
-						for (var k = 1; k <= iNumberOfFields; k++) {
-							// Field Select Label
-							var oFieldLabel = new Label({
-								text: "Select Field " + k
-							});
-							
-							// Field Select Control
-							var oFieldSelect = new sap.m.Select({
-								width: "100%",
-								showSecondaryValues: true
-							});
-							
-							// Manually populate field select items from metadata
-							var oMetaDataModel = that.getView().getModel("createMetaDataModel");
-							var aMetaData = oMetaDataModel.getData();
-							aMetaData.forEach(function(item) {
-								oFieldSelect.addItem(new sap.ui.core.ListItem({
-									key: item.FIELDNAME,
-									text: item.SCRTEXT_L,
-									additionalText: item.FIELDNAME
-								}));
-							});
-							
-							// Display Text Label
-							var oTextLabel = new Label({
-								text: "Display Text " + k
-							});
-							
-							// Display Text Input
-							var oTextInput = new sap.m.Input({
-								width: "100%",
-								placeholder: "Enter display text for field " + k
-							});
-							
-							// Add components to form
-							oTileMappingForm.addContent(oFieldLabel);
-							oTileMappingForm.addContent(oFieldSelect);
-							oTileMappingForm.addContent(oTextLabel);
-							oTileMappingForm.addContent(oTextInput);
-						}
+						// Create Tile Mapping Form
+						var iNumberOfFields = self.createTileMappingForm(that);
 
 						// Data Binding Form
 
@@ -1462,6 +1482,7 @@ sap.ui.define([
 						// map the data with the field in createTileMappingForm
 						if (oCurrentData.wlabelMapping) {
 							try {
+								var oTileMappingForm = that.byId("createTileMappingForm");
 								var tileMappingData = JSON.parse(oCurrentData.wlabelMapping);
 								
 								// Check if tile mapping data exists and has entries

@@ -16,12 +16,17 @@
     "sap/m/Text",
 	 "sap/m/Button",
 	 "mobilefinance/MobileFinance/utils/DynamicWidgetHelper",
-	 "mobilefinance/MobileFinance/utils/CreateDynamicWidgetHelper"
- ], function (Controller, JSONModel, MessageBox, SelectDialog, StandardListItem, MessageToast, MultiInput, Token, FormElement, Input, Label,Select,Item,Text,Button,DynamicWidgetHelper,CreateDynamicWidgetHelper) {
+	 "mobilefinance/MobileFinance/utils/CreateDynamicWidgetHelper",
+	 'sap/m/ResponsivePopover',
+	 'sap/ui/unified/ColorPicker',
+	 'sap/ui/unified/library',
+	 'sap/ui/Device'
+ ], function (Controller, JSONModel, MessageBox, SelectDialog, StandardListItem, MessageToast, MultiInput, Token, FormElement, Input, Label,Select,Item,Text,Button,DynamicWidgetHelper,CreateDynamicWidgetHelper,ResponsivePopover,ColorPicker,unifiedLibrary,Device) {
  	"use strict";
 
  	var sSelectedFolderId = "";
  	var sSelectedFolderTitle = "";
+	 var ColorPickerMode = unifiedLibrary.ColorPickerMode;
 
  	return Controller.extend("mobilefinance.MobileFinance.controller.Home", {
  		formatter: {
@@ -697,20 +702,52 @@
  			});
  		},
 
- 		onColorValueHelp: function (oEvent) {
- 			this._oInputField = oEvent.getSource();
- 			this._oRowContext = this._oInputField.getBindingContext("oCalendarModel");
+ 		// onColorValueHelp: function (oEvent) {
+ 		// 	this._oInputField = oEvent.getSource();
+ 		// 	this._oRowContext = this._oInputField.getBindingContext("oCalendarModel");
 
- 			if (!this.ColorValueHelpDialog) {
- 				this.ColorValueHelpDialog = sap.ui.xmlfragment(
- 					"mobilefinance.MobileFinance.fragments.ColorValueHelp",
- 					this
- 				);
- 				this.getView().addDependent(this.ColorValueHelpDialog);
- 			}
+ 		// 	if (!this.ColorValueHelpDialog) {
+ 		// 		this.ColorValueHelpDialog = sap.ui.xmlfragment(
+ 		// 			"mobilefinance.MobileFinance.fragments.ColorValueHelp",
+ 		// 			this
+ 		// 		);
+ 		// 		this.getView().addDependent(this.ColorValueHelpDialog);
+ 		// 	}
 
- 			this.ColorValueHelpDialog.open();
- 		},
+ 		// 	this.ColorValueHelpDialog.open();
+ 		// },
+		 onColorValueHelp: function(oEvent) {
+			var oRP = new ResponsivePopover({
+				title: "Color Picker",
+				content:[
+					new ColorPicker({
+						mode: ColorPickerMode.HSL
+					})
+				]
+			});
+
+			if (Device.system.phone) {
+				oRP.setBeginButton(
+					new Button({
+						text: "Submit",
+						press: function () {
+							oRP.close();
+						}
+					})
+				);
+				oRP.setEndButton(
+					new Button({
+						text: "Cancel",
+						press: function () {
+							oRP.close();
+						}
+					}));
+			} else {
+				oRP.setShowHeader(false);
+			}
+
+			oRP.openBy(oEvent.getSource());
+		},
 
  		onColorValueHelpSearch: function (oEvent) {
  			var sValue = oEvent.getParameter("value");
@@ -8993,6 +9030,10 @@
 
 		onBackToWidgetList: function(oEvent) {
 			return CreateDynamicWidgetHelper.onBackToWidgetList(this, oEvent);
+		},
+		
+		onCreateWidgetTypeChange: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateWidgetTypeChange(this,oEvent);
 		},
 
 		onTilePress: function(oEvent) {
