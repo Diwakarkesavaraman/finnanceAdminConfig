@@ -227,6 +227,7 @@ sap.ui.define([
 				finmobview.read("/WidgetConfigurationSet", {
 					filters: aFilters,
 					success: function (oData) {
+						debugger;
 						var oModel = that.getView().getModel("createWidgetValues");
 						var oCurrentData = oModel.getData();
 						var oWidgetData = oData.results[0];
@@ -238,6 +239,8 @@ sap.ui.define([
 						oCurrentData.selectedDataSource = oWidgetData.DataSource;
 						oCurrentData.inputParameter = oWidgetData.InputParameter;
 						oCurrentData.mapping = oWidgetData.Mapping;
+						oCurrentData.filter = oWidgetData.Filter;
+						oCurrentData.wlabelMapping = oWidgetData.WlabelMapping;
 						
 						oModel.setData(oCurrentData);
 						
@@ -1371,6 +1374,120 @@ sap.ui.define([
 								console.error("Error parsing mapping data:", e);
 							}
 						}
+
+						//Handle existing mapping for createFilterMappingForm form 
+						// in oCurrentData there will be a filter field and contains data like this "Filter": "[{\"field\":\"0O2TFR0L0AE1J9CWDYXZ7RIW\",\"value\":\"Support Service\"}]",
+						// map the data with the field in createFilterMappingForm
+						if (oCurrentData.filter) {
+							try {
+								var filterData = JSON.parse(oCurrentData.filter);
+								
+								// Check if filter data exists and has entries
+								if (filterData && Array.isArray(filterData) && filterData.length > 0) {
+									// Enable the filter switch
+									var oFilterSwitch = oFilterForm.getContent().find(function(control) {
+										return control instanceof sap.m.Switch;
+									});
+									if (oFilterSwitch) {
+										oFilterSwitch.setState(true);
+										// Trigger the change event to create filter fields
+										oFilterSwitch.fireChange({ state: true });
+										
+										// Set the field and value selections
+										var firstFilter = filterData[0];
+										if (firstFilter.field && firstFilter.value) {
+											// Find the filter field select control
+											var aFormContent = oFilterForm.getContent();
+											var oFilterFieldSelect = null;
+											var oFilterValueSelect = null;
+											
+											for (var i = 0; i < aFormContent.length; i++) {
+												if (aFormContent[i] instanceof sap.m.Label && 
+													aFormContent[i].getText() === "Select Filter Field") {
+													oFilterFieldSelect = aFormContent[i + 1];
+													oFilterValueSelect = aFormContent[i + 2];
+													break;
+												}
+											}
+											
+											if (oFilterFieldSelect && oFilterValueSelect) {
+												// Set the selected field
+												oFilterFieldSelect.setSelectedKey(firstFilter.field);
+												
+												// Populate and set the filter value
+												var populateAndSetFilterValue = function() {
+													oFilterValueSelect.destroyItems();
+													
+													// Get unique values from createJsonDataModel for the selected field
+													var oJsonDataModel = that.getView().getModel("createJsonDataModel");
+													if (oJsonDataModel) {
+														var aJsonData = oJsonDataModel.getData();
+														var aUniqueValues = [];
+														
+														aJsonData.forEach(function(item) {
+															if (item[firstFilter.field] && aUniqueValues.indexOf(item[firstFilter.field]) === -1) {
+																aUniqueValues.push(item[firstFilter.field]);
+															}
+														});
+														
+														// Add unique values to filter value select
+														aUniqueValues.forEach(function(value) {
+															oFilterValueSelect.addItem(new sap.ui.core.ListItem({
+																key: value,
+																text: value
+															}));
+														});
+														
+														// Set the selected value
+														oFilterValueSelect.setSelectedKey(firstFilter.value);
+													}
+												};
+												
+												populateAndSetFilterValue();
+											}
+										}
+									}
+								}
+							} catch (e) {
+								console.error("Error parsing filter data:", e);
+							}
+						}
+
+						//Handle existing mapping for createTileMappingForm form 
+						// in oCurrentData there will be a filter field and contains data like this "WlabelMapping": "[{\"field\":\"0O2TFR0L0AE1J9CWDYXZ7RIW\",\"label\":\"test1\"},{\"field\":\"0O2TFR0L0AE1J9CWDYXZ7RIW\",\"label\":\"test2\"}]",
+						// map the data with the field in createTileMappingForm
+						if (oCurrentData.wlabelMapping) {
+							try {
+								var tileMappingData = JSON.parse(oCurrentData.wlabelMapping);
+								
+								// Check if tile mapping data exists and has entries
+								if (tileMappingData && Array.isArray(tileMappingData) && tileMappingData.length > 0) {
+									// Map each tile mapping entry to the corresponding form fields
+									for (var tileIndex = 0; tileIndex < tileMappingData.length && tileIndex < iNumberOfFields; tileIndex++) {
+										var tileData = tileMappingData[tileIndex];
+										var fieldNumber = tileIndex + 1; // Field numbers start from 1
+										
+										if (tileData.field && tileData.label) {
+											// Find the field select control for this field number
+											var oTileFieldSelect = that.byId("createTileFieldSelect" + fieldNumber);
+											var oTileTextInput = that.byId("createTileTextInput" + fieldNumber);
+											
+											if (oTileFieldSelect && oTileTextInput) {
+												// Set the selected field
+												oTileFieldSelect.setSelectedKey(tileData.field);
+												
+												// Set the display text
+												oTileTextInput.setValue(tileData.label);
+											}
+										}
+									}
+								}
+							} catch (e) {
+								console.error("Error parsing tile mapping data:", e);
+							}
+						}
+
+
 					}
 				},
 				error: function (oError) {
