@@ -716,37 +716,68 @@
 
  		// 	this.ColorValueHelpDialog.open();
  		// },
-		 onColorValueHelp: function(oEvent) {
-			var oRP = new ResponsivePopover({
-				title: "Color Picker",
-				content:[
-					new ColorPicker({
-						mode: ColorPickerMode.HSL
-					})
-				]
-			});
+		onColorValueHelp: function(oEvent) {
+			this._oInputField = oEvent.getSource();
+			this._oRowContext = this._oInputField.getBindingContext("oCalendarModel");
 
-			if (Device.system.phone) {
-				oRP.setBeginButton(
-					new Button({
-						text: "Submit",
-						press: function () {
-							oRP.close();
-						}
-					})
+			if (!this._oColorPickerDialog) {
+				this._oColorPickerDialog = sap.ui.xmlfragment(
+					"mobilefinance.MobileFinance.fragments.ColorPickerDialog",
+					this
 				);
-				oRP.setEndButton(
-					new Button({
-						text: "Cancel",
-						press: function () {
-							oRP.close();
-						}
-					}));
-			} else {
-				oRP.setShowHeader(false);
+				this.getView().addDependent(this._oColorPickerDialog);
 			}
 
-			oRP.openBy(oEvent.getSource());
+			// Set current color if available
+			if (this._oRowContext) {
+				var sCurrentColor = this._oRowContext.getProperty("Zcolor");
+				if (sCurrentColor) {
+					// Add # if not present for color picker
+					var sColorForPicker = sCurrentColor.startsWith("#") ? sCurrentColor : "#" + sCurrentColor;
+					
+					// Find the color picker control in the dialog
+					var aContent = this._oColorPickerDialog.getContent();
+					if (aContent && aContent.length > 0) {
+						var oVBox = aContent[0];
+						var aVBoxItems = oVBox.getItems();
+						if (aVBoxItems && aVBoxItems.length > 0) {
+							var oColorPicker = aVBoxItems[0];
+							if (oColorPicker && oColorPicker.setColorString) {
+								oColorPicker.setColorString(sColorForPicker);
+							}
+						}
+					}
+				}
+			}
+
+			this._oColorPickerDialog.open();
+		},
+
+		onColorPickerChange: function(oEvent) {
+			var sColor = oEvent.getParameter("hex");
+			this._selectedColor = sColor;
+		},
+
+		onColorPickerOK: function() {
+			if (this._selectedColor && this._oInputField && this._oRowContext) {
+				var sPath = this._oRowContext.getPath();
+				var oModel = this._oRowContext.getModel();
+				
+				// Remove # from color code before saving
+				var sColorCode = this._selectedColor.replace("#", "");
+				
+				// Update the model with the selected color (without #)
+				oModel.setProperty(sPath + "/Zcolor", sColorCode);
+				
+				// Update the input field value (without #)
+				this._oInputField.setValue(sColorCode);
+			}
+			this._oColorPickerDialog.close();
+		},
+
+		onColorPickerCancel: function() {
+			this._selectedColor = null;
+			this._oColorPickerDialog.close();
 		},
 
  		onColorValueHelpSearch: function (oEvent) {
@@ -5291,6 +5322,9 @@
 
  		//ShareK Code
  		onUpdateShareKItem: function (oEvent) {
+
+			//when this fucntion is call get the data from oShareKGISReportModel model ad loop throught the items and call the
+			//	var sPath = "/ShareKGISet('" + ParentId + "')";  pass the parent id to the endpoint and update the items one by one
  			debugger;
  			var finmobview = this.getView().getModel("finmobview");
  			if (!this.updateShareKFolderDialog) {

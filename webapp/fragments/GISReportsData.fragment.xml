@@ -64,13 +64,26 @@
 								<Text text="Report Name" class="whiteLabel"></Text>
 							</header>
 						</Column>
+						<Column width="12rem">
+							<header>
+								<Text text="Type" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="12rem">
+							<header>
+								<Text text="ShareK Link" class="whiteLabel"></Text>
+							</header>
+						</Column>
 					</columns>
 					<items>
 						<ColumnListItem vAlign="Middle" type="Active">
 							<cells>
 								<Text text="{oShareKGISReportModel>Child}"></Text>
+								<Text text="{= ${oShareKGISReportModel>Path} ? 'File' : 'Folder'}"></Text>
+								<Input value="{oShareKGISReportModel>Path}" editable="true"></Input>
 							</cells>
 						</ColumnListItem>
+						
 					</items>
 				</Table>
 			</content>
