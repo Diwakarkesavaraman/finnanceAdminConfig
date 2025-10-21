@@ -902,12 +902,17 @@ sap.ui.define([
 				iNumberOfFields = 3;
 			}
 
-			// Collect values for each field
-			for (var i = 1; i <= iNumberOfFields; i++) {
-				var oFieldSelect = that.byId("createTileFieldSelect" + i);
-				var oTextInput = that.byId("createTileTextInput" + i);
+			// Get form content and iterate through it to find field pairs
+			var aFormContent = oForm.getContent();
+			var fieldIndex = 0;
+			
+			// Form structure: Label, Select, Label, Input, Label, Select, Label, Input, ...
+			// Each field has 4 controls: Field Label, Field Select, Text Label, Text Input
+			for (var i = 0; i < aFormContent.length && fieldIndex < iNumberOfFields; i += 4) {
+				var oFieldSelect = aFormContent[i + 1]; // Field select is after field label
+				var oTextInput = aFormContent[i + 3]; // Text input is after text label
 				
-				if (oFieldSelect && oTextInput) {
+				if (oFieldSelect instanceof sap.m.Select && oTextInput instanceof sap.m.Input) {
 					var sSelectedField = oFieldSelect.getSelectedKey();
 					var sDisplayText = oTextInput.getValue();
 					
@@ -918,6 +923,7 @@ sap.ui.define([
 						});
 					}
 				}
+				fieldIndex++;
 			}
 
 			return JSON.stringify(aTileValues);
@@ -1289,8 +1295,7 @@ sap.ui.define([
 							// Field Select Control
 							var oFieldSelect = new sap.m.Select({
 								width: "100%",
-								showSecondaryValues: true,
-								id: that.createId("createTileFieldSelect" + k)
+								showSecondaryValues: true
 							});
 							
 							// Manually populate field select items from metadata
@@ -1312,8 +1317,7 @@ sap.ui.define([
 							// Display Text Input
 							var oTextInput = new sap.m.Input({
 								width: "100%",
-								placeholder: "Enter display text for field " + k,
-								id: that.createId("createTileTextInput" + k)
+								placeholder: "Enter display text for field " + k
 							});
 							
 							// Add components to form
@@ -1462,17 +1466,22 @@ sap.ui.define([
 								
 								// Check if tile mapping data exists and has entries
 								if (tileMappingData && Array.isArray(tileMappingData) && tileMappingData.length > 0) {
+									// Get form content to access controls by position
+									var aTileMappingContent = oTileMappingForm.getContent();
+									
 									// Map each tile mapping entry to the corresponding form fields
 									for (var tileIndex = 0; tileIndex < tileMappingData.length && tileIndex < iNumberOfFields; tileIndex++) {
 										var tileData = tileMappingData[tileIndex];
-										var fieldNumber = tileIndex + 1; // Field numbers start from 1
 										
 										if (tileData.field && tileData.label) {
-											// Find the field select control for this field number
-											var oTileFieldSelect = that.byId("createTileFieldSelect" + fieldNumber);
-											var oTileTextInput = that.byId("createTileTextInput" + fieldNumber);
+											// Calculate the position of controls for this field
+											// Form structure: Label, Select, Label, Input, Label, Select, Label, Input, ...
+											// Each field has 4 controls: Field Label, Field Select, Text Label, Text Input
+											var controlIndex = tileIndex * 4;
+											var oTileFieldSelect = aTileMappingContent[controlIndex + 1]; // Field select is after field label
+											var oTileTextInput = aTileMappingContent[controlIndex + 3]; // Text input is after text label
 											
-											if (oTileFieldSelect && oTileTextInput) {
+											if (oTileFieldSelect instanceof sap.m.Select && oTileTextInput instanceof sap.m.Input) {
 												// Set the selected field
 												oTileFieldSelect.setSelectedKey(tileData.field);
 												
