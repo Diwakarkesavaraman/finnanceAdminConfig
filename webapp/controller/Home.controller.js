@@ -5322,29 +5322,80 @@
 
  		//ShareK Code
  		onUpdateShareKItem: function (oEvent) {
-
-			//when this fucntion is call get the data from oShareKGISReportModel model ad loop throught the items and call the
-			//	var sPath = "/ShareKGISet('" + ParentId + "')";  pass the parent id to the endpoint and update the items one by one
- 			debugger;
- 			var finmobview = this.getView().getModel("finmobview");
- 			if (!this.updateShareKFolderDialog) {
- 				this.updateShareKFolderDialog = sap.ui.xmlfragment("updateShareKFolderDialog",
- 					"mobilefinance.MobileFinance.fragments.UpdateShareKFolder", this);
- 				this.getView().addDependent(this.updateShareKFolderDialog);
-
- 			}
- 			var oGISFolderInput = sap.ui.core.Fragment.byId("updateShareKFolderDialog", "gisFolderInput");
- 			var oGISFolderTitle = sap.ui.core.Fragment.byId("updateShareKFolderDialog", "inpgisfolderupTitle");
-
- 			if (oGISFolderInput) {
- 				oGISFolderInput.setValue(""); // Clear the value for F4 Input
- 			}
- 			if (oGISFolderTitle) {
- 				oGISFolderTitle.setValue(""); // Clear the value for title input
- 			}
-
- 			this.updateShareKFolderDialog.open();
- 		},
+			var that = this;
+			var finmobview = this.getView().getModel("finmobview");
+			
+			// Get data from oShareKGISReportModel
+			var oShareKModel = this.getView().getModel("oShareKGISReportModel");
+			if (!oShareKModel) {
+				sap.m.MessageToast.show("No ShareK data available to update");
+				return;
+			}
+			
+			var aShareKData = oShareKModel.getData();
+			if (!aShareKData || aShareKData.length === 0) {
+				sap.m.MessageToast.show("No items to update");
+				return;
+			}
+			
+			// Show busy indicator
+			sap.ui.core.BusyIndicator.show(0);
+			
+			// Counter for tracking completed updates
+			var iCompletedUpdates = 0;
+			var iTotalUpdates = aShareKData.length;
+			var aErrors = [];
+			
+			// Function to handle completion
+			var handleCompletion = function() {
+				iCompletedUpdates++;
+				if (iCompletedUpdates === iTotalUpdates) {
+					sap.ui.core.BusyIndicator.hide();
+					if (aErrors.length > 0) {
+						sap.m.MessageBox.error("Some updates failed: " + aErrors.join(", "));
+					} else {
+						sap.m.MessageToast.show("All ShareK items updated successfully");
+					}
+				}
+			};
+			
+			// Loop through items and update each one
+			aShareKData.forEach(function(oItem, index) {
+				if (oItem.ParentId) {
+					var sPath = "/ShareKGISet('" + oItem.ParentId + "')";
+					
+					// Prepare update payload
+					var oUpdatePayload = {
+						ParentId: oItem.ParentId,
+						Child: oItem.Child,
+						Path: oItem.Path || "",
+						Parent: oItem.Parent,
+						Name: oItem.Name,
+						Title: oItem.Title,
+						IssuingOrg: oItem.IssuingOrg,
+						ContactPerson: oItem.ContactPerson,
+						IssueDate: oItem.IssueDate,
+						ItemType: oItem.ItemType,
+					};
+					
+					// Update the item
+					finmobview.update(sPath, oUpdatePayload, {
+						success: function(oData) {
+							console.log("Successfully updated ShareK item:", oItem.ParentId);
+							handleCompletion();
+						},
+						error: function(oError) {
+							console.error("Error updating ShareK item:", oItem.ParentId, oError);
+							aErrors.push("Item " + (index + 1) + ": " + oItem.ParentId);
+							handleCompletion();
+						}
+					});
+				} else {
+					console.warn("Skipping item without ParentId:", oItem);
+					handleCompletion();
+				}
+			});
+		},
  		onUpdateShareKFolder: function () {
  			var that = this;
  			debugger;

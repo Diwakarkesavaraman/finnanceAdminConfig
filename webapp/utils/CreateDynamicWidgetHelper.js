@@ -241,6 +241,7 @@ sap.ui.define([
 						oCurrentData.mapping = oWidgetData.Mapping;
 						oCurrentData.filter = oWidgetData.Filter;
 						oCurrentData.wlabelMapping = oWidgetData.WlabelMapping;
+						oCurrentData.tooltip = oWidgetData.WidgetId;
 						
 						oModel.setData(oCurrentData);
 						
@@ -1283,11 +1284,13 @@ sap.ui.define([
 							var oMetaDataModel = that.getView().getModel("createMetaDataModel");
 							var aMetaData = oMetaDataModel.getData();
 							aMetaData.forEach(function(item) {
-								oFilterSelect.addItem(new sap.ui.core.ListItem({
-									key: item.FIELDNAME,
-									text: item.SCRTEXT_L,
-									additionalText: item.FIELDNAME
-								}));
+								if (!item.FIELDNAME.startsWith("VALUE")) {
+									oFilterSelect.addItem(new sap.ui.core.ListItem({
+										key: item.FIELDNAME,
+										text: item.SCRTEXT_L,
+										additionalText: item.FIELDNAME
+									}));
+								}
 							});
 
 					

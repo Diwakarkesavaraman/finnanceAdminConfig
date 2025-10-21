@@ -35,6 +35,8 @@
 							<Select id="createChartType" items="{path: 'createChartTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedChartType}">
 								<core:Item text="{createChartTypeDropdownData>Text}" key="{createChartTypeDropdownData>Id}"/>
 							</Select>
+							<Label id="createTooltipLabel" text="Tooltip"/>
+							<Input id="createTooltip" value="{createWidgetValues>/widgetId}" editable="true" />
 							<Label text="Data Source"/>
 							<Input id="createDataSourceId" value="{createWidgetValues>/selectedDataSource}" liveChange="onCreateDataSourceChange"/>
 							<Button id="createCheckBtn" text="Check" enabled="true" press="onCreateCheckQueryValidity"/>

@@ -78,7 +78,7 @@
 					<items>
 						<ColumnListItem vAlign="Middle" type="Active">
 							<cells>
-								<Text text="{oShareKGISReportModel>Child}"></Text>
+								<Input value="{oShareKGISReportModel>Child}" editable="true"></Input >
 								<Text text="{= ${oShareKGISReportModel>Path} ? 'File' : 'Folder'}"></Text>
 								<Input value="{oShareKGISReportModel>Path}" editable="true"></Input>
 							</cells>
