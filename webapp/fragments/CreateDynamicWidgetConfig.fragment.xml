@@ -18,21 +18,26 @@
 			</HBox>
 		</HBox>
 		
-				<VBox class="sapUiSmallMargin">
-					<form:SimpleForm id="createWidgetSimpleForm" editable="true" layout="ResponsiveGridLayout" title="Widget Details" labelSpanXL="3" labelSpanL="3"
-						labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
-						columnsL="1" columnsM="1" singleContainerFullSize="false">
+		<!-- Main Content Area with Form on Left and Mobile Preview on Right -->
+		<HBox class="sapUiSmallMargin" height="100%">
+			<!-- Left Side - Configuration Forms -->
+			<VBox width="60%" class="sapUiSmallMarginEnd">
+				<Panel headerText="Widget Details" class="sapUiMediumMargin">
+					<content>
+						<form:SimpleForm id="createWidgetSimpleForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3"
+							labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
+							columnsL="1" columnsM="1" singleContainerFullSize="false">
 						<form:content>
 							<Label id="createWidgetIdLabel" text="Widget ID"/>
 							<Input id="createWidgetId" value="{createWidgetValues>/widgetId}" editable="false" liveChange="onCreateDataSourceChange"/>
 							<Label id="createWidgetNameLabel" text="Widget Name"/>
-							<Input id="createWidgetName" value="{createWidgetValues>/widgetName}" editable="true" liveChange="onCreateDataSourceChange"/>
+							<Input id="createWidgetName" value="{createWidgetValues>/widgetName}" editable="true" change="onCreateWidgetNameChange" liveChange="onCreateWidgetNameChange"/>
 							<Label text="Widget Type"/>
 							<Select id="createWidgetType" items="{path: 'createWidgetTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedWidgetType}" change="onCreateWidgetTypeChange">
 								<core:Item text="{createWidgetTypeDropdownData>Text}" key="{createWidgetTypeDropdownData>Id}"/>
 							</Select>
 							<Label text="Chart Type"/>
-							<Select id="createChartType" items="{path: 'createChartTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedChartType}">
+							<Select id="createChartType" items="{path: 'createChartTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedChartType}" change="onCreateChartTypeChange">
 								<core:Item text="{createChartTypeDropdownData>Text}" key="{createChartTypeDropdownData>Id}"/>
 							</Select>
 							<Label id="createTooltipLabel" text="Tooltip"/>
@@ -44,7 +49,8 @@
 							<core:Icon id="createSuccessIcon" src="sap-icon://message-success" visible="false" class="size1" color="#107e3e"/>
 						</form:content>
 					</form:SimpleForm>
-				</VBox>
+					</content>
+				</Panel>
 				<HBox class="tblhdrcls" justifyContent="SpaceBetween" alignItems="Center">
 					<Text text=""/>
 					<Button id="createFormSubmit" text="Refresh Query Data" type="Emphasized" visible="true" press="onCreateGetGroupedFormValues"/>
@@ -98,8 +104,29 @@
 						</VBox>
 					<!-- </content>
 				</Panel> -->
+			</VBox>
 			
-	
+			<!-- Right Side - Mobile Preview -->
+			<VBox width="40%" class="sapUiSmallMarginBegin">
+				<Panel headerText="Mobile Preview" class="sapUiMediumMargin">
+					<content>
+						<VBox id="mobilePreviewContainer" class="sapUiMediumMargin" alignItems="Center">
+							<VBox width="500px" height="750px" class="sapUiContentPadding mobilePhoneFrame" justifyContent="Center" alignItems="Center">
+								<VBox width="100%" height="100%" class="sapUiContentPadding mobileScreen" justifyContent="Center" alignItems="Center">
+									<VBox id="defaultPreviewContent" justifyContent="Center" alignItems="Center">
+										<Text text="Mobile Preview Area" class="sapUiMediumText"/>
+										<Text text="Widget will appear here" class="sapUiSmallText"/>
+									</VBox>
+									<VBox id="chartPreviewContainer" visible="false" width="100%" height="100%" justifyContent="Center" alignItems="Center">
+										<!-- Chart will be dynamically inserted here -->
+									</VBox>
+								</VBox>
+							</VBox>
+						</VBox>
+					</content>
+				</Panel>
+			</VBox>
+		</HBox>
 	</VBox>
 	</content>
 	</Panel>

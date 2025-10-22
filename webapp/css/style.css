@@ -2075,3 +2075,26 @@ html.sap-desktop .sapMBtn:focus>.sapMFocusable:not(.sapMBadgeIndicator):before {
 /*    border-radius: 5px;*/
 /*    padding: 2px;*/
 /*}*/
+
+/* Mobile Phone Preview Styling */
+.mobilePhoneFrame {
+    border: 20px solid #2c2c2c !important;
+    border-radius: 25px !important;
+    background-color: #000 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+}
+
+.mobileScreen {
+    background-color: #f8f9fa !important;
+    border-radius: 10px !important;
+    border: 2px solid #e9ecef !important;
+}
+
+/* Widget Title Styling */
+.widgetTitleText {
+    text-align: left !important;
+    font-size: 1.5rem !important;
+    font-weight: bold !important;
+    width: 100% !important;
+    color: #333 !important;
+}

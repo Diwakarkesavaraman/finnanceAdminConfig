@@ -9121,6 +9121,14 @@
 			return CreateDynamicWidgetHelper.onCreateWidgetTypeChange(this,oEvent);
 		},
 
+		onCreateChartTypeChange: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateChartTypeChange(this,oEvent);
+		},
+
+		onCreateWidgetNameChange: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateWidgetNameChange(this, oEvent);
+		},
+
 		onTilePress: function(oEvent) {
 			// var that = oController;
 			var oBindingContext = oEvent.getSource().getBindingContext("oLandingPageDataModel");

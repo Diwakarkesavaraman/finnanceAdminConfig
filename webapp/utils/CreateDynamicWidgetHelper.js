@@ -12,8 +12,11 @@ sap.ui.define([
 	"sap/m/Token",
 	"sap/m/SelectDialog",
 	"sap/m/StandardListItem",
-	"sap/m/ComboBox"
-], function (JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Column, Text, ColumnListItem, Label, MultiInput, Token, SelectDialog, StandardListItem, ComboBox) {
+	"sap/m/ComboBox",
+	"sap/viz/ui5/controls/VizFrame",
+	"sap/viz/ui5/data/FlattenedDataset",
+	"sap/viz/ui5/controls/common/feeds/FeedItem"
+], function (JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Column, Text, ColumnListItem, Label, MultiInput, Token, SelectDialog, StandardListItem, ComboBox, VizFrame, FlattenedDataset, FeedItem) {
 	"use strict";
 
 	return {
@@ -289,6 +292,30 @@ sap.ui.define([
 			if (oMetaDataModel && oMetaDataModel.getData() && oMetaDataModel.getData().length > 0) {
 				// Recreate the tile mapping form with the new widget type
 				this.createTileMappingForm(that);
+			}
+		},
+
+		onCreateChartTypeChange: function (oController, oEvent) {
+			var sSelectedChartType = oEvent.getParameter("selectedItem").getKey();
+			this._showChartPreview(oController, sSelectedChartType);
+		},
+
+		onCreateWidgetNameChange: function (oController, oEvent) {
+			// Update chart preview when widget name changes
+			var that = oController;
+			
+			// Get the current widget name from the input field
+			var sNewWidgetName = oEvent.getSource().getValue();
+			
+			// Update the model with the new widget name
+			var oWidgetValues = that.getView().getModel("createWidgetValues");
+			oWidgetValues.setProperty("/widgetName", sNewWidgetName);
+			
+			var sSelectedChartType = oWidgetValues.getData().selectedChartType;
+			
+			if (sSelectedChartType) {
+				// Refresh the chart preview with the new widget name
+				this._showChartPreview(oController, sSelectedChartType);
 			}
 		},
 
@@ -1791,6 +1818,180 @@ sap.ui.define([
 			that.byId("submitBtn").setVisible(false);
 			
 			MessageToast.show("Create Widget Config cancelled and form cleared");
+		},
+
+		_showChartPreview: function (oController, sChartType) {
+			var that = oController;
+			var oDefaultContent = that.byId("defaultPreviewContent");
+			var oChartContainer = that.byId("chartPreviewContainer");
+			
+			if (!sChartType) {
+				// Show default content if no chart type selected
+				oDefaultContent.setVisible(true);
+				oChartContainer.setVisible(false);
+				return;
+			}
+
+			// Hide default content and show chart
+			oDefaultContent.setVisible(false);
+			oChartContainer.setVisible(true);
+
+			// Clear any existing chart
+			oChartContainer.removeAllItems();
+
+			// Get widget name from the model
+			var oWidgetValues = that.getView().getModel("createWidgetValues");
+			var sWidgetName = oWidgetValues.getData().widgetName || "Sample Widget";
+
+			// Add widget name as title
+			var oWidgetTitle = new Text({
+				text: sWidgetName,
+				class: "sapUiLargeText"
+			}).addStyleClass("sapUiMediumMarginBottom")
+			 .addStyleClass("widgetTitleText");
+			
+			oChartContainer.addItem(oWidgetTitle);
+
+			// Create sample chart based on type
+			if (sChartType.toLowerCase().includes("bchart") || sChartType.toLowerCase().includes("column")) {
+				this._createSampleBarChart(oChartContainer);
+			} else if (sChartType.toLowerCase().includes("lchart")) {
+				this._createSampleLineChart(oChartContainer);
+			} else {
+				// Default to bar chart for unknown types
+				this._createSampleBarChart(oChartContainer);
+			}
+		},
+
+		_createSampleBarChart: function (oContainer) {
+			// Sample data for bar chart
+			var aSampleData = [
+				{ Category: "Q1", Value: 120 },
+				{ Category: "Q2", Value: 142 },
+				{ Category: "Q3", Value: 108 },
+				{ Category: "Q4", Value: 175 }
+			];
+
+			var oModel = new JSONModel(aSampleData);
+
+			var oDataset = new FlattenedDataset({
+				dimensions: [{
+					name: "Category",
+					value: "{Category}"
+				}],
+				measures: [{
+					name: "Value",
+					value: "{Value}"
+				}],
+				data: {
+					path: "/"
+				}
+			});
+
+			var oVizFrame = new VizFrame({
+				width: "350px",
+				height: "400px",
+				vizType: "column",
+				dataset: oDataset
+			});
+
+			oVizFrame.setModel(oModel);
+
+			// Add feeds
+			var oFeedValueAxis = new FeedItem({
+				uid: "valueAxis",
+				type: "Measure",
+				values: ["Value"]
+			});
+
+			var oFeedCategoryAxis = new FeedItem({
+				uid: "categoryAxis",
+				type: "Dimension",
+				values: ["Category"]
+			});
+
+			oVizFrame.addFeed(oFeedValueAxis);
+			oVizFrame.addFeed(oFeedCategoryAxis);
+
+			// Set chart properties
+			oVizFrame.setVizProperties({
+				title: {
+					text: "Sample Bar Chart"
+				},
+				plotArea: {
+					colorPalette: ["#5899DA", "#E8743B", "#19A979", "#ED4A7B", "#945ECF"]
+				}
+			});
+
+			oContainer.addItem(oVizFrame);
+		},
+
+		_createSampleLineChart: function (oContainer) {
+			// Sample data for line chart
+			var aSampleData = [
+				{ Month: "Jan", Sales: 120, Target: 100 },
+				{ Month: "Feb", Sales: 142, Target: 110 },
+				{ Month: "Mar", Sales: 108, Target: 120 },
+				{ Month: "Apr", Sales: 175, Target: 130 },
+				{ Month: "May", Sales: 190, Target: 140 },
+				{ Month: "Jun", Sales: 165, Target: 150 }
+			];
+
+			var oModel = new JSONModel(aSampleData);
+
+			var oDataset = new FlattenedDataset({
+				dimensions: [{
+					name: "Month",
+					value: "{Month}"
+				}],
+				measures: [{
+					name: "Sales",
+					value: "{Sales}"
+				}, {
+					name: "Target",
+					value: "{Target}"
+				}],
+				data: {
+					path: "/"
+				}
+			});
+
+			var oVizFrame = new VizFrame({
+				width: "350px",
+				height: "400px",
+				vizType: "line",
+				dataset: oDataset
+			});
+
+			oVizFrame.setModel(oModel);
+
+			// Add feeds
+			var oFeedValueAxis = new FeedItem({
+				uid: "valueAxis",
+				type: "Measure",
+				values: ["Sales", "Target"]
+			});
+
+			var oFeedCategoryAxis = new FeedItem({
+				uid: "categoryAxis",
+				type: "Dimension",
+				values: ["Month"]
+			});
+
+			oVizFrame.addFeed(oFeedValueAxis);
+			oVizFrame.addFeed(oFeedCategoryAxis);
+
+			// Set chart properties
+			oVizFrame.setVizProperties({
+				title: {
+					text: "Sample Line Chart"
+				},
+				plotArea: {
+					colorPalette: ["#5899DA", "#E8743B", "#19A979", "#ED4A7B", "#945ECF"]
+				}
+			});
+
+			oContainer.addItem(oVizFrame);
 		}
 	};
 });
