@@ -247,6 +247,7 @@ sap.ui.define([
 						oCurrentData.filter = oWidgetData.Filter;
 						oCurrentData.wlabelMapping = oWidgetData.WlabelMapping;
 						oCurrentData.tooltip = oWidgetData.WidgetId;
+						oCurrentData.selectionType = oWidgetData.SelectionType;
 						
 						oModel.setData(oCurrentData);
 						
@@ -369,9 +370,10 @@ sap.ui.define([
 				"WidgetId": oWidgetData.widgetId,
 				"InputParameter": oWidgetData.inputParameter,
 				"Mapping": mappingFormData,
-				"WlabelMapping": tileMappingData,
+				"WlabelMapping": JSON.stringify(tileMappingData.tileMapping),
+				"SelectionType": tileMappingData.selectionType,
 				"Filter": filterMappingData,
-				"Status": "Draft"
+				"Status": "Draft",
 			};
 			
 			sap.ui.core.BusyIndicator.show(0);
@@ -928,9 +930,9 @@ sap.ui.define([
 			var sSelectedWidgetType = oWidgetValues.getData().selectedWidgetType;
 			var iNumberOfFields = 0; // Default to 1 field
 			
-			if (sSelectedWidgetType.includes("1")) { // 2 Value Widget
+			if (sSelectedWidgetType.includes("1")) { // 1 Value Widget
 				iNumberOfFields = 1;
-			}else if (sSelectedWidgetType.includes("2")) { // 3 Value Widget
+			}else if (sSelectedWidgetType.includes("2")) { // 2 Value Widget
 				iNumberOfFields = 2;
 			} 
 			else if (sSelectedWidgetType.includes("3")) { // 3 Value Widget
@@ -939,11 +941,19 @@ sap.ui.define([
 
 			// Get form content and iterate through it to find field pairs
 			var aFormContent = oForm.getContent();
+			
+			// Get selection type from the second control in the form (first is label, second is select)
+			var sSelectionType = "";
+			if (aFormContent.length > 1 && aFormContent[1] instanceof sap.m.Select) {
+				sSelectionType = aFormContent[1].getSelectedKey();
+			}
+			
 			var fieldIndex = 0;
 			
-			// Form structure: Label, Select, Label, Input, Label, Select, Label, Input, ...
+			// New form structure: Selection Type Label, Selection Type Select, Field Label, Field Select, Text Label, Text Input, Field Label, Field Select, Text Label, Text Input, ...
+			// Skip the first two controls (Selection Type Label and Select) and start from index 2
 			// Each field has 4 controls: Field Label, Field Select, Text Label, Text Input
-			for (var i = 0; i < aFormContent.length && fieldIndex < iNumberOfFields; i += 4) {
+			for (var i = 2; i < aFormContent.length && fieldIndex < iNumberOfFields; i += 4) {
 				var oFieldSelect = aFormContent[i + 1]; // Field select is after field label
 				var oTextInput = aFormContent[i + 3]; // Text input is after text label
 				
@@ -961,7 +971,13 @@ sap.ui.define([
 				fieldIndex++;
 			}
 
-			return JSON.stringify(aTileValues);
+			// Return new structure with selectionType at top level and tileMapping array
+			var oTileMappingResult = {
+				selectionType: sSelectionType,
+				tileMapping: aTileValues
+			};
+
+			return oTileMappingResult;
 		},
 
 		createTileMappingForm: function (oController) {
@@ -984,6 +1000,11 @@ sap.ui.define([
 				iNumberOfFields = 3;
 			}
 
+			// Add Selection Type Label and Select
+			var oSelectionTypeLabel = new Label({
+				text: "Selection Type"
+			});
+			
 			var oFieldTileMappingTypeSelect = new sap.m.Select({
 				width: "100%",
 				showSecondaryValues: true
@@ -998,6 +1019,8 @@ sap.ui.define([
 					additionalText: item.Id
 				}));
 			});
+			
+			oTileMappingForm.addContent(oSelectionTypeLabel);
 			oTileMappingForm.addContent(oFieldTileMappingTypeSelect);
 			
 			// Create dynamic fields based on widget type
@@ -1623,34 +1646,42 @@ sap.ui.define([
 						//Handle existing mapping for createTileMappingForm form 
 						// in oCurrentData there will be a filter field and contains data like this "WlabelMapping": "[{\"field\":\"0O2TFR0L0AE1J9CWDYXZ7RIW\",\"label\":\"test1\"},{\"field\":\"0O2TFR0L0AE1J9CWDYXZ7RIW\",\"label\":\"test2\"}]",
 						// map the data with the field in createTileMappingForm
-						if (oCurrentData.wlabelMapping) {
+						if (oCurrentData.wlabelMapping || oCurrentData.selectionType) {
 							try {
 								var oTileMappingForm = that.byId("createTileMappingForm");
-								var tileMappingData = JSON.parse(oCurrentData.wlabelMapping);
+								var aTileMappingContent = oTileMappingForm.getContent();
 								
-								// Check if tile mapping data exists and has entries
-								if (tileMappingData && Array.isArray(tileMappingData) && tileMappingData.length > 0) {
-									// Get form content to access controls by position
-									var aTileMappingContent = oTileMappingForm.getContent();
+								// Set selection type from oCurrentData.selectionType
+								if (oCurrentData.selectionType && aTileMappingContent.length > 1 && aTileMappingContent[1] instanceof sap.m.Select) {
+									aTileMappingContent[1].setSelectedKey(oCurrentData.selectionType);
+								}
+								
+								// Handle tile mapping data from oCurrentData.wlabelMapping
+								if (oCurrentData.wlabelMapping) {
+									var tileMappingData = JSON.parse(oCurrentData.wlabelMapping);
 									
-									// Map each tile mapping entry to the corresponding form fields
-									for (var tileIndex = 0; tileIndex < tileMappingData.length && tileIndex < iNumberOfFields; tileIndex++) {
-										var tileData = tileMappingData[tileIndex];
-										
-										if (tileData.field && tileData.label) {
-											// Calculate the position of controls for this field
-											// Form structure: Label, Select, Label, Input, Label, Select, Label, Input, ...
-											// Each field has 4 controls: Field Label, Field Select, Text Label, Text Input
-											var controlIndex = tileIndex * 4;
-											var oTileFieldSelect = aTileMappingContent[controlIndex + 1]; // Field select is after field label
-											var oTileTextInput = aTileMappingContent[controlIndex + 3]; // Text input is after text label
+									// Check if tile mapping data exists and has entries
+									if (tileMappingData && Array.isArray(tileMappingData) && tileMappingData.length > 0) {
+										// Map each tile mapping entry to the corresponding form fields
+										for (var tileIndex = 0; tileIndex < tileMappingData.length && tileIndex < iNumberOfFields; tileIndex++) {
+											var tileData = tileMappingData[tileIndex];
 											
-											if (oTileFieldSelect instanceof sap.m.Select && oTileTextInput instanceof sap.m.Input) {
-												// Set the selected field
-												oTileFieldSelect.setSelectedKey(tileData.field);
+											if (tileData.field && tileData.label) {
+												// Calculate the position of controls for this field
+												// New form structure: Selection Type Label, Selection Type Select, Field Label, Field Select, Text Label, Text Input, Field Label, Field Select, Text Label, Text Input, ...
+												// Skip the first two controls (Selection Type Label and Select) and start from index 2
+												// Each field has 4 controls: Field Label, Field Select, Text Label, Text Input
+												var controlIndex = 2 + (tileIndex * 4); // Start from index 2 to skip selection type label and select
+												var oTileFieldSelect = aTileMappingContent[controlIndex + 1]; // Field select is after field label
+												var oTileTextInput = aTileMappingContent[controlIndex + 3]; // Text input is after text label
 												
-												// Set the display text
-												oTileTextInput.setValue(tileData.label);
+												if (oTileFieldSelect instanceof sap.m.Select && oTileTextInput instanceof sap.m.Input) {
+													// Set the selected field
+													oTileFieldSelect.setSelectedKey(tileData.field);
+													
+													// Set the display text
+													oTileTextInput.setValue(tileData.label);
+												}
 											}
 										}
 									}
