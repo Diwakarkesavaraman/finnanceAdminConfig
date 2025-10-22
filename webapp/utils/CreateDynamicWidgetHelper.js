@@ -215,6 +215,10 @@ sap.ui.define([
 			var oCreateChartTypeModel = new JSONModel(aCreateChartTypes);
 			that.getView().setModel(oCreateChartTypeModel, "createChartTypeDropdownData");
 
+			var aCreateDataBindingTypes = await that.getSearchHelpData('Selection_type');
+			var oCreateDataBindingTypeModel = new JSONModel(aCreateDataBindingTypes);
+			that.getView().setModel(oCreateDataBindingTypeModel, "createDataBindingTypeDropdownData");
+
 			// Initialize metadata and JSON data models
 			var oCreateMetaDataModel = new JSONModel([]);
 			that.getView().setModel(oCreateMetaDataModel, "createMetaDataModel");
@@ -870,26 +874,41 @@ sap.ui.define([
 
 			// Only collect filter values if the switch is enabled
 			if (bFilterEnabled) {
-				// Loop through form content to get Label-Control pairs
+				// Loop through form content to find filter containers
 				for (var i = 0; i < aFormContent.length; i++) {
 					var oControl = aFormContent[i];
 
-					// Check if it's a Label with "Select Filter Field" text
-					if (oControl instanceof sap.m.Label && oControl.getText() === "Select Filter Field") {
-						var oFilterFieldSelect = aFormContent[i + 1]; // Get the field select control
-						var oFilterValueSelect = aFormContent[i + 2]; // Get the value select control (skip value label)
+					// Check if it's a VBox container (filter field container)
+					if (oControl instanceof sap.m.VBox && oControl.getItems && oControl.getItems().length > 0) {
+						var oHBox = oControl.getItems()[0];
+						if (oHBox instanceof sap.m.HBox) {
+							var oVBoxWithFields = oHBox.getItems()[0];
+							if (oVBoxWithFields instanceof sap.m.VBox) {
+								var aFieldItems = oVBoxWithFields.getItems();
+								
+								// Find the Select and ComboBox controls
+								var oFilterFieldSelect = null;
+								var oFilterValueSelect = null;
+								
+								for (var k = 0; k < aFieldItems.length; k++) {
+									if (aFieldItems[k] instanceof sap.m.Select) {
+										oFilterFieldSelect = aFieldItems[k];
+									} else if (aFieldItems[k] instanceof sap.m.ComboBox) {
+										oFilterValueSelect = aFieldItems[k];
+									}
+								}
+								
+								if (oFilterFieldSelect && oFilterValueSelect) {
+									var sSelectedField = oFilterFieldSelect.getSelectedKey();
+									var sSelectedValue = oFilterValueSelect.getValue();
 
-						if (oFilterFieldSelect instanceof sap.m.Select && (oFilterValueSelect instanceof sap.m.Select || oFilterValueSelect instanceof sap.m.ComboBox)) {
-							var sSelectedField = oFilterFieldSelect.getSelectedKey();
-							// var sSelectedValue = oFilterValueSelect.getSelectedKey ? oFilterValueSelect.getSelectedKey() : oFilterValueSelect.getValue();
-							var sSelectedValue = oFilterValueSelect.getValue();
-
-							
-							if (sSelectedField && sSelectedValue) {
-								aFilterValues.push({
-									field: sSelectedField,
-									value: sSelectedValue
-								});
+									if (sSelectedField && sSelectedValue) {
+										aFilterValues.push({
+											field: sSelectedField,
+											value: sSelectedValue
+										});
+									}
+								}
 							}
 						}
 					}
@@ -964,6 +983,22 @@ sap.ui.define([
 			} else if (sSelectedWidgetType.includes("3")) { // 3 Value Widget
 				iNumberOfFields = 3;
 			}
+
+			var oFieldTileMappingTypeSelect = new sap.m.Select({
+				width: "100%",
+				showSecondaryValues: true
+			});
+
+			var oTitleBindingModel = that.getView().getModel("createDataBindingTypeDropdownData");
+			var aTileBindingData = oTitleBindingModel.getData();
+			aTileBindingData.forEach(function(item) {
+				oFieldTileMappingTypeSelect.addItem(new sap.ui.core.ListItem({
+					key: item.Id,
+					text: item.Text,
+					additionalText: item.Id
+				}));
+			});
+			oTileMappingForm.addContent(oFieldTileMappingTypeSelect);
 			
 			// Create dynamic fields based on widget type
 			for (var k = 1; k <= iNumberOfFields; k++) {
@@ -1274,6 +1309,30 @@ sap.ui.define([
 
 						// Function to create filter fields
 						var createFilterFields = function() {
+							// Add initial filter field
+							addFilterField();
+							
+							// Add button to add more filter fields
+							var oAddFilterButton = new sap.m.Button({
+								text: "Add Filter",
+								icon: "sap-icon://add",
+								press: function() {
+									addFilterField();
+								}
+							});
+							
+							oFilterForm.addContent(oAddFilterButton);
+						};
+						
+						// Function to add a single filter field
+						var addFilterField = function() {
+							var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+							var aMetaData = oMetaDataModel.getData();
+							
+							// Create a container for this filter field set
+							var oFilterContainer = new sap.m.VBox();
+							oFilterContainer.addStyleClass("sapUiMediumMarginBottom");
+							
 							var oFilterLabel = new Label({
 								text: "Select Filter Field"
 							});
@@ -1284,8 +1343,6 @@ sap.ui.define([
 							});
 							
 							// Manually populate filter select items from metadata
-							var oMetaDataModel = that.getView().getModel("createMetaDataModel");
-							var aMetaData = oMetaDataModel.getData();
 							aMetaData.forEach(function(item) {
 								if (!item.FIELDNAME.startsWith("VALUE")) {
 									oFilterSelect.addItem(new sap.ui.core.ListItem({
@@ -1296,12 +1353,24 @@ sap.ui.define([
 								}
 							});
 
-					
+							var oFilterValueLabel = new Label({
+								text: "Filter Value"
+							});
 							
 							var oFilterValueSelect = new sap.m.ComboBox({
 								width: "100%",
 								showSecondaryValues: true,
 								placeholder: "Select or enter value"
+							});
+							
+							// Create remove button for this filter field
+							var oRemoveButton = new sap.m.Button({
+								text: "Remove",
+								icon: "sap-icon://delete",
+								type: "Transparent",
+								press: function() {
+									oFilterForm.removeContent(oFilterContainer);
+								}
 							});
 							
 							// Function to populate filter value select based on selected field
@@ -1342,9 +1411,33 @@ sap.ui.define([
 								oFilterSelect.setSelectedKey(aMetaData[0].FIELDNAME);
 							}
 
-							oFilterForm.addContent(oFilterLabel);
-							oFilterForm.addContent(oFilterSelect);
-							oFilterForm.addContent(oFilterValueSelect);
+							// Create horizontal box for field and remove button
+							var oFieldHBox = new sap.m.HBox({
+								alignItems: "End",
+								items: [
+									new sap.m.VBox({
+										width: "100%",
+										items: [oFilterLabel, oFilterSelect, oFilterValueLabel, oFilterValueSelect]
+									}),
+									oRemoveButton
+								]
+							});
+							
+							oFilterContainer.addItem(oFieldHBox);
+							
+							// Add the container to the form (before the Add Filter button if it exists)
+							var aFormContent = oFilterForm.getContent();
+							var iInsertIndex = aFormContent.length;
+							
+							// Find the Add Filter button and insert before it
+							for (var i = 0; i < aFormContent.length; i++) {
+								if (aFormContent[i] instanceof sap.m.Button && aFormContent[i].getText() === "Add Filter") {
+									iInsertIndex = i;
+									break;
+								}
+							}
+							
+							oFilterForm.insertContent(oFilterContainer, iInsertIndex);
 						};
 
 						// Add switch components to form
@@ -1421,69 +1514,105 @@ sap.ui.define([
 									});
 									if (oFilterSwitch) {
 										oFilterSwitch.setState(true);
-										// Trigger the change event to create filter fields
+										// Trigger the change event to create initial filter field
 										oFilterSwitch.fireChange({ state: true });
 										
-										// Set the field and value selections
-										var firstFilter = filterData[0];
-										if (firstFilter.field && firstFilter.value) {
-											// Find the filter field select control
-											var aFormContent = oFilterForm.getContent();
-											var oFilterFieldSelect = null;
-											var oFilterValueSelect = null;
-											
-											for (var i = 0; i < aFormContent.length; i++) {
-												if (aFormContent[i] instanceof sap.m.Label && 
-													aFormContent[i].getText() === "Select Filter Field") {
-													oFilterFieldSelect = aFormContent[i + 1];
-													oFilterValueSelect = aFormContent[i + 2];
-													break;
-												}
+										// Wait for the form to be created, then set values for each filter
+										setTimeout(function() {
+											// Add additional filter fields if needed (first one is already created)
+											for (var filterIndex = 1; filterIndex < filterData.length; filterIndex++) {
+												addFilterField();
 											}
+											debugger;
 											
-											if (oFilterFieldSelect && oFilterValueSelect) {
-												// Set the selected field
-												oFilterFieldSelect.setSelectedKey(firstFilter.field);
-												
-												// Populate and set the filter value
-												var populateAndSetFilterValue = function() {
-													oFilterValueSelect.destroyItems();
+											// Set the field and value selections for all filters
+											filterData.forEach(function(filterItem, index) {
+												if (filterItem.field && filterItem.value) {
+													// Find the filter containers
+													var aFormContent = oFilterForm.getContent();
+													var oFilterContainer = null;
+													var containerIndex = 0;
 													
-													// Get unique values from createJsonDataModel for the selected field
-													var oJsonDataModel = that.getView().getModel("createJsonDataModel");
-													if (oJsonDataModel) {
-														var aJsonData = oJsonDataModel.getData();
-														var aUniqueValues = [];
-														
-														aJsonData.forEach(function(item) {
-															if (item[firstFilter.field] && aUniqueValues.indexOf(item[firstFilter.field]) === -1) {
-																aUniqueValues.push(item[firstFilter.field]);
+													// Find the Nth filter container (VBox with class sapUiMediumMarginBottom)
+													for (var i = 0; i < aFormContent.length; i++) {
+														if (aFormContent[i] instanceof sap.m.VBox && 
+															aFormContent[i].hasStyleClass("sapUiMediumMarginBottom")) {
+															if (containerIndex === index) {
+																oFilterContainer = aFormContent[i];
+																break;
 															}
-														});
-														
-														// Add unique values to filter value select
-														aUniqueValues.forEach(function(value) {
-															oFilterValueSelect.addItem(new sap.ui.core.ListItem({
-																key: value,
-																text: value
-															}));
-														});
-														
-														// Set the selected value
-														// For ComboBox, use setValue to handle both dropdown and free text values
-														if (oFilterValueSelect instanceof sap.m.ComboBox) {
-															oFilterValueSelect.setValue(firstFilter.value);
-														} else if (oFilterValueSelect.setSelectedKey) {
-															oFilterValueSelect.setSelectedKey(firstFilter.value);
-														} else {
-															oFilterValueSelect.setValue(firstFilter.value);
+															containerIndex++;
 														}
 													}
-												};
-												
-												populateAndSetFilterValue();
-											}
-										}
+													
+													if (oFilterContainer) {
+														// Navigate to the field controls within the container
+														var oHBox = oFilterContainer.getItems()[0];
+														if (oHBox instanceof sap.m.HBox) {
+															var oVBoxWithFields = oHBox.getItems()[0];
+															if (oVBoxWithFields instanceof sap.m.VBox) {
+																var aFieldItems = oVBoxWithFields.getItems();
+																
+																// Find the Select and ComboBox controls
+																var oFilterFieldSelect = null;
+																var oFilterValueSelect = null;
+																
+																for (var k = 0; k < aFieldItems.length; k++) {
+																	if (aFieldItems[k] instanceof sap.m.Select) {
+																		oFilterFieldSelect = aFieldItems[k];
+																	} else if (aFieldItems[k] instanceof sap.m.ComboBox) {
+																		oFilterValueSelect = aFieldItems[k];
+																	}
+																}
+																
+																if (oFilterFieldSelect && oFilterValueSelect) {
+																	// Set the selected field
+																	oFilterFieldSelect.setSelectedKey(filterItem.field);
+																	
+																	// Populate and set the filter value
+																	var populateAndSetFilterValue = function(fieldName, fieldValue, valueSelect) {
+																		valueSelect.destroyItems();
+																		
+																		// Get unique values from createJsonDataModel for the selected field
+																		var oJsonDataModel = that.getView().getModel("createJsonDataModel");
+																		if (oJsonDataModel) {
+																			var aJsonData = oJsonDataModel.getData();
+																			var aUniqueValues = [];
+																			
+																			aJsonData.forEach(function(item) {
+																				if (item[fieldName] && aUniqueValues.indexOf(item[fieldName]) === -1) {
+																					aUniqueValues.push(item[fieldName]);
+																				}
+																			});
+																			
+																			// Add unique values to filter value select
+																			aUniqueValues.forEach(function(value) {
+																				valueSelect.addItem(new sap.ui.core.ListItem({
+																					key: value,
+																					text: value
+																				}));
+																			});
+																			
+																			// Set the selected value
+																			// For ComboBox, use setValue to handle both dropdown and free text values
+																			if (valueSelect instanceof sap.m.ComboBox) {
+																				valueSelect.setValue(fieldValue);
+																			} else if (valueSelect.setSelectedKey) {
+																				valueSelect.setSelectedKey(fieldValue);
+																			} else {
+																				valueSelect.setValue(fieldValue);
+																			}
+																		}
+																	};
+																	
+																	populateAndSetFilterValue(filterItem.field, filterItem.value, oFilterValueSelect);
+																}
+															}
+														}
+													}
+												}
+											});
+										}, 100); // Small delay to ensure form creation is complete
 									}
 								}
 							} catch (e) {
