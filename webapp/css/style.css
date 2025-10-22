@@ -2098,3 +2098,22 @@ html.sap-desktop .sapMBtn:focus>.sapMFocusable:not(.sapMBadgeIndicator):before {
     width: 100% !important;
     color: #333 !important;
 }
+
+/* Field and Value Container Styling */
+.fieldValueContainer {
+    padding: 0.5rem 1rem !important;
+    border-bottom: 1px solid #e9ecef !important;
+    background-color: #f8f9fa !important;
+    border-radius: 4px !important;
+    margin-bottom: 0.25rem !important;
+}
+
+.fieldText {
+    font-weight: 500 !important;
+    color: #495057 !important;
+}
+
+.valueText {
+    font-weight: bold !important;
+    color: #0854A0 !important;
+}

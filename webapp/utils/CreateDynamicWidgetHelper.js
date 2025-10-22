@@ -293,6 +293,15 @@ sap.ui.define([
 				// Recreate the tile mapping form with the new widget type
 				this.createTileMappingForm(that);
 			}
+
+			// Update chart preview when widget type changes
+			var oWidgetValues = that.getView().getModel("createWidgetValues");
+			var sSelectedChartType = oWidgetValues.getData().selectedChartType;
+			
+			if (sSelectedChartType) {
+				// Refresh the chart preview with the new widget type
+				this._showChartPreview(oController, sSelectedChartType);
+			}
 		},
 
 		onCreateChartTypeChange: function (oController, oEvent) {
@@ -1839,9 +1848,11 @@ sap.ui.define([
 			// Clear any existing chart
 			oChartContainer.removeAllItems();
 
-			// Get widget name from the model
+			// Get widget data from the model
 			var oWidgetValues = that.getView().getModel("createWidgetValues");
-			var sWidgetName = oWidgetValues.getData().widgetName || "Sample Widget";
+			var oWidgetData = oWidgetValues.getData();
+			var sWidgetName = oWidgetData.widgetName || "Sample Widget";
+			var sWidgetType = oWidgetData.selectedWidgetType;
 
 			// Add widget name as title
 			var oWidgetTitle = new Text({
@@ -1852,6 +1863,9 @@ sap.ui.define([
 			
 			oChartContainer.addItem(oWidgetTitle);
 
+			// Add field and value texts based on widget type
+			this._addFieldValueTexts(oChartContainer, sWidgetType);
+
 			// Create sample chart based on type
 			if (sChartType.toLowerCase().includes("bchart") || sChartType.toLowerCase().includes("column")) {
 				this._createSampleBarChart(oChartContainer);
@@ -1861,6 +1875,59 @@ sap.ui.define([
 				// Default to bar chart for unknown types
 				this._createSampleBarChart(oChartContainer);
 			}
+		},
+
+		_addFieldValueTexts: function (oContainer, sWidgetType) {
+			if (!sWidgetType) {
+				return;
+			}
+
+			var iNumberOfFields = 0;
+			
+			// Determine number of fields based on widget type
+			if (sWidgetType.includes("2")) { // 2 Value Widget
+				iNumberOfFields = 2;
+			} else if (sWidgetType.includes("3")) { // 3 Value Widget
+				iNumberOfFields = 3;
+			} else {
+				return; // No field/value display for other types
+			}
+
+			// Sample field data
+			var aSampleFieldData = [
+				{ field: "Revenue", value: "€ 125,430" },
+				{ field: "Profit", value: "€ 42,150" },
+				{ field: "Growth", value: "15.2%" }
+			];
+
+			// Create field and value texts
+			for (var i = 0; i < iNumberOfFields && i < aSampleFieldData.length; i++) {
+				var oFieldValueContainer = new sap.m.HBox({
+					justifyContent: "SpaceBetween",
+					alignItems: "Center",
+					width: "100%"
+				}).addStyleClass("sapUiSmallMarginBottom")
+				 .addStyleClass("fieldValueContainer");
+
+				var oFieldText = new Text({
+					text: aSampleFieldData[i].field + ":",
+					class: "sapUiMediumText"
+				}).addStyleClass("fieldText");
+
+				var oValueText = new Text({
+					text: aSampleFieldData[i].value,
+					class: "sapUiMediumText"
+				}).addStyleClass("valueText");
+
+				oFieldValueContainer.addItem(oFieldText);
+				oFieldValueContainer.addItem(oValueText);
+				
+				oContainer.addItem(oFieldValueContainer);
+			}
+
+			// Add margin after field/value section
+			var oSpacer = new sap.m.Text().addStyleClass("sapUiMediumMarginBottom");
+			oContainer.addItem(oSpacer);
 		},
 
 		_createSampleBarChart: function (oContainer) {
