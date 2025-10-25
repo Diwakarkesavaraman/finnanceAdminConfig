@@ -1,0 +1,89 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<VBox id="pageConfigurationContainer" visible="false">
+		<HBox class="tblhdrcls" justifyContent="SpaceBetween" alignItems="Center">
+			<Text id="pageConfigTitle" text="Page Configuration"/>
+			<HBox>
+				<Button type="Reject" text="Delete" press="onDeletePageConfig"/>
+				<ToolbarSpacer width="0.5rem"/>
+				<Button type="Accept" text="Update" press="onUpdatePageConfig"/>
+				<ToolbarSpacer width="0.5rem"/>
+				<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddPageConfig"/>
+			</HBox>
+		</HBox>
+		<Table id="pageConfigTable" alternateRowColors="false" items="{ path: 'oPageConfigDataModel>/' }" growing="true" class="blueBackground surveytablecls"
+			mode="MultiSelect" selectionChange="onPageConfigSelectionChange">
+			<columns>
+				<Column width="9rem">
+					<header>
+						<Text text="Page Title" class="whiteLabel"/>
+					</header>
+				</Column>
+				<Column>
+					<header>
+						<Text text="Roles" class="whiteLabel"/>
+					</header>
+				</Column>
+				<Column width="7rem">
+					<header>
+						<Text text="Visibility" class="whiteLabel"/>
+					</header>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle" type="Navigation" press="onPageConfigPress">
+					<cells>
+						<Input value="{oPageConfigDataModel>ZpageName}"/>
+						<Input value="{oPageConfigDataModel>Zrole}"/>
+						<CheckBox text="" selected="{oPageConfigDataModel>Zvisibility}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</VBox>
+	<VBox id="pageWidgetConfigContainer" visible="false">
+		<HBox class="tblhdrcls" justifyContent="SpaceBetween" alignItems="Center">
+			<HBox alignItems="Center">
+				<Button id="backToPageConfigBtn" text="" icon="sap-icon://nav-back" press="onBackToPageConfig"/>
+				<Text id="selectedPageConfigTitle" text="Page Widgets" class="sapUiTinyMarginBegin"/>
+			</HBox>
+			<HBox>
+				<Button type="Emphasized" icon="sap-icon://add" text="Add Widget to Page" press="onAddWidgetToPageConfig"/>
+			</HBox>
+		</HBox>
+		<Table id="pageWidgetConfigTable" alternateRowColors="false" items="{ path: 'oPageWidgetConfigDataModel>/' }" growing="true" class="blueBackground surveytablecls"
+			mode="MultiSelect" selectionChange="onPageWidgetConfigSelectionChange">
+			<columns>
+				<Column width="9rem">
+					<header>
+						<Text text="Widget Name" class="whiteLabel"/>
+					</header>
+				</Column>
+				<Column>
+					<header>
+						<Text text="Widget Type" class="whiteLabel"/>
+					</header>
+				</Column>
+				<Column width="7rem">
+					<header>
+						<Text text="Chart Type" class="whiteLabel"/>
+					</header>
+				</Column>
+				<Column width="5rem">
+					<header>
+						<Text text="Actions" class="whiteLabel"/>
+					</header>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem vAlign="Middle" type="Navigation" press="onPageWidgetConfigPress">
+					<cells>
+						<Text text="{oPageWidgetConfigDataModel>WidgetName}"/>
+						<Text text="{oPageWidgetConfigDataModel>WidgetType}"/>
+						<Text text="{oPageWidgetConfigDataModel>ChartType}"/>
+						<Button type="Reject" icon="sap-icon://delete" press="onRemoveWidgetFromPageConfig"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</VBox>
+</core:FragmentDefinition>

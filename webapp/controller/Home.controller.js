@@ -17,11 +17,12 @@
 	 "sap/m/Button",
 	 "mobilefinance/MobileFinance/utils/DynamicWidgetHelper",
 	 "mobilefinance/MobileFinance/utils/CreateDynamicWidgetHelper",
+	 "mobilefinance/MobileFinance/utils/PageConfigurationHelper",
 	 'sap/m/ResponsivePopover',
 	 'sap/ui/unified/ColorPicker',
 	 'sap/ui/unified/library',
 	 'sap/ui/Device'
- ], function (Controller, JSONModel, MessageBox, SelectDialog, StandardListItem, MessageToast, MultiInput, Token, FormElement, Input, Label,Select,Item,Text,Button,DynamicWidgetHelper,CreateDynamicWidgetHelper,ResponsivePopover,ColorPicker,unifiedLibrary,Device) {
+ ], function (Controller, JSONModel, MessageBox, SelectDialog, StandardListItem, MessageToast, MultiInput, Token, FormElement, Input, Label,Select,Item,Text,Button,DynamicWidgetHelper,CreateDynamicWidgetHelper,PageConfigurationHelper,ResponsivePopover,ColorPicker,unifiedLibrary,Device) {
  	"use strict";
 
  	var sSelectedFolderId = "";
@@ -1905,6 +1906,15 @@
 				this.byId("createDynamicWidgetConfigContainer").setVisible(false);
 				// Load the widget list data
 				this.onLoadWidgetListData();
+			}
+			
+			// Initialize page configuration when Page Configuration is selected
+			if (sKey === "pageConfiguration") {
+				// Show page configuration list and hide widget list initially
+				this.byId("pageConfigurationContainer").setVisible(true);
+				this.byId("pageWidgetConfigContainer").setVisible(false);
+				// Load page configuration data
+				this.onLoadPageConfigurationData();
 			}
 
  		},
@@ -9127,6 +9137,59 @@
 
 		onCreateWidgetNameChange: function(oEvent) {
 			return CreateDynamicWidgetHelper.onCreateWidgetNameChange(this, oEvent);
+		},
+
+		// Page Configuration Event Handlers
+		onLoadPageConfigurationData: function() {
+			return PageConfigurationHelper.onLoadPageConfigurationData(this);
+		},
+
+		onPageConfigPress: function(oEvent) {
+			return PageConfigurationHelper.onPageConfigPress(this, oEvent);
+		},
+
+		onBackToPageConfig: function() {
+			return PageConfigurationHelper.onBackToPageConfig(this);
+		},
+
+		onAddPageConfig: function() {
+			return PageConfigurationHelper.onAddPageConfig(this);
+		},
+
+		onUpdatePageConfig: function() {
+			return PageConfigurationHelper.onUpdatePageConfig(this);
+		},
+
+		onDeletePageConfig: function() {
+			return PageConfigurationHelper.onDeletePageConfig(this);
+		},
+
+		onAddWidgetToPageConfig: function() {
+			return PageConfigurationHelper.onAddWidgetToPageConfig(this);
+		},
+
+		onRemoveWidgetFromPageConfig: function(oEvent) {
+			return PageConfigurationHelper.onRemoveWidgetFromPageConfig(this, oEvent);
+		},
+
+		onPageConfigSelectionChange: function(oEvent) {
+			return PageConfigurationHelper.onPageConfigSelectionChange(this, oEvent);
+		},
+
+		onPageWidgetConfigSelectionChange: function(oEvent) {
+			return PageConfigurationHelper.onPageWidgetConfigSelectionChange(this, oEvent);
+		},
+
+		onPageWidgetConfigPress: function(oEvent) {
+			return PageConfigurationHelper.onPageWidgetConfigPress(this, oEvent);
+		},
+
+		onAddPageConfigItem: function() {
+			return PageConfigurationHelper.onAddPageConfigItem(this);
+		},
+
+		onCloseAddNewPageConfigDialog: function() {
+			return PageConfigurationHelper.onCloseAddNewPageConfigDialog(this);
 		},
 
 		onTilePress: function(oEvent) {
