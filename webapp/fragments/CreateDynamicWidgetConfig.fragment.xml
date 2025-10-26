@@ -90,6 +90,13 @@
 												<form:content></form:content>
 											</form:SimpleForm>
 										</VBox>
+										<VBox class="sapUiSmallMargin">
+											<form:SimpleForm id="createHierarchyMappingForm" editable="true" layout="ResponsiveGridLayout" title="Hierarchy Binding" labelSpanXL="3" labelSpanL="3"
+												labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
+												columnsL="1" columnsM="1" singleContainerFullSize="false">
+												<form:content></form:content>
+											</form:SimpleForm>
+										</VBox>
 									</IconTabFilter>
 									<IconTabFilter text="JSON" key="attachments">
 										<Table id="createJsonDataTable" items="{createJsonDataModel>/}" class="sapUiResponsiveMargin">

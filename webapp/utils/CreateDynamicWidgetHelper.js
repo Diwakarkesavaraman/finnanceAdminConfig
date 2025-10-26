@@ -222,6 +222,10 @@ sap.ui.define([
 			var oCreateDataBindingTypeModel = new JSONModel(aCreateDataBindingTypes);
 			that.getView().setModel(oCreateDataBindingTypeModel, "createDataBindingTypeDropdownData");
 
+			var aCreateTimeFrameTypes = await that.getSearchHelpData('Time_frame');
+			var oCreateTimeFrameTypeModel = new JSONModel(aCreateTimeFrameTypes);
+			that.getView().setModel(oCreateTimeFrameTypeModel, "createTimeFrameTypeDropdownData");
+
 			// Initialize metadata and JSON data models
 			var oCreateMetaDataModel = new JSONModel([]);
 			that.getView().setModel(oCreateMetaDataModel, "createMetaDataModel");
@@ -249,8 +253,10 @@ sap.ui.define([
 						oCurrentData.mapping = oWidgetData.Mapping;
 						oCurrentData.filter = oWidgetData.Filter;
 						oCurrentData.wlabelMapping = oWidgetData.WlabelMapping;
-						oCurrentData.tooltip = oWidgetData.WidgetId;
+						oCurrentData.tooltip = oWidgetData.Tooltip;
 						oCurrentData.selectionType = oWidgetData.SelectionType;
+						oCurrentData.timeframe = oWidgetData.Timeframe;
+						oCurrentData.pageId = oWidgetData.PageId;
 						
 						oModel.setData(oCurrentData);
 						
@@ -405,7 +411,10 @@ sap.ui.define([
 				"DataSource": oWidgetData.selectedDataSource,
 				"WidgetId": oWidgetData.widgetId,
 				"InputParameter": oWidgetData.inputParameter,
-				"Mapping": mappingFormData,
+				"Mapping": mappingFormData.dataMapping ? JSON.stringify(mappingFormData.dataMapping) : "",
+				"Timeframe": mappingFormData.timeframe,
+				"Tooltip": oWidgetData.tooltip,
+				// "PageId": mappingFormData.pageId,
 				"WlabelMapping": JSON.stringify(tileMappingData.tileMapping),
 				"SelectionType": tileMappingData.selectionType,
 				"Filter": filterMappingData,
@@ -855,7 +864,10 @@ sap.ui.define([
 			var aFormContent = oForm.getContent();
 
 			var oformValues = {};
+			var oDataMapping = {};
 			var aFields = [];
+			var sTimeframe = "";
+			var sPageId = "";
 
 			// Loop through form content to get Label-Control pairs
 			for (var i = 0; i < aFormContent.length; i++) {
@@ -867,30 +879,57 @@ sap.ui.define([
 					var oNextControl = aFormContent[i + 1]; // Get the next control after label
 
 					if (oNextControl) {
-						// Handle Input controls
-						// if (oNextControl instanceof sap.m.Input) {
-						// 	// formValues[sLabelText] = oNextControl.getValue();
-						// }
-						// Handle Select controls
-						
-						if (oNextControl instanceof sap.m.Select) {
-							aFields.push(oNextControl.getSelectedKey());
-						}
-						// Handle MultiInput controls
-						else if (oNextControl instanceof sap.m.MultiInput) {
+						// Handle MultiInput controls first (before Input check since MultiInput extends Input)
+						if (oNextControl instanceof sap.m.MultiInput) {
 							var aTokens = oNextControl.getTokens();
 							var aTokenValues = aTokens.map(function(oToken) {
 								return oToken.getKey();
 							});
 							aFields.push(...aTokenValues);
 						}
+						// Handle Select controls
+						else if (oNextControl instanceof sap.m.Select) {
+							// Check if it's the Timeframe field
+							if (sLabelText === "Timeframe") {
+								sTimeframe = oNextControl.getSelectedKey();
+							} else {
+								// Other select controls (X field)
+								aFields.push(oNextControl.getSelectedKey());
+							}
+						}
+						// Handle Input controls (but not MultiInput which was already handled)
+						else if (oNextControl instanceof sap.m.Input) {
+							// Check if it's the Page ID field
+							if (sLabelText === "Page ID") {
+								sPageId = oNextControl.getValue();
+							}
+						}
 					}
 				}
 			}
-			oformValues['x'] = aFields[0];
-			oformValues['y'] = aFields.slice(1);
 
-			return JSON.stringify(oformValues);
+			// Also get values by ID as fallback
+			// try {
+			// 	var oTimeframeSelect = that.byId("createTimeframeSelect");
+			// 	if (oTimeframeSelect && !sTimeframe) {
+			// 		sTimeframe = oTimeframeSelect.getSelectedKey();
+			// 	}
+				
+			// 	var oPageIdInput = that.byId("createPageIdInput");
+			// 	if (oPageIdInput && !sPageId) {
+			// 		sPageId = oPageIdInput.getValue();
+			// 	}
+			// } catch (e) {
+			// 	console.log("Could not find timeframe/pageId controls by ID");
+			// }
+
+			oDataMapping['x'] = aFields[0];
+			oDataMapping['y'] = aFields.slice(1);
+			oformValues['dataMapping'] = oDataMapping;
+			oformValues['timeframe'] = sTimeframe;
+			oformValues['pageId'] = sPageId;
+
+			return (oformValues);
 		},
 
 		getCreateFilterMappingFormValues: function (oController) {
@@ -1331,10 +1370,50 @@ sap.ui.define([
 							}
 						});
 
+						//Add two more fields called timeframe and Page id. the timeframe field is Select control with options fetched from await that.getSearchHelpData('time_frame'); and Page id is Input field
+
+						// Timeframe field
+						var oTimeframeLabel = new sap.m.Label({
+							text: "Timeframe",
+							required: false
+						});
+
+						var oTimeframeSelect = new sap.m.Select({
+							// id: "createTimeframeSelect",
+							showSecondaryValues: true,
+							width: "100%",
+							items: {
+								path: "createTimeFrameTypeDropdownData>/",
+								template: new sap.ui.core.ListItem({
+									key: "{createTimeFrameTypeDropdownData>Id}",
+									text: "{createTimeFrameTypeDropdownData>Text}",
+									additionalText: "{createTimeFrameTypeDropdownData>Text}"
+								})
+
+							}
+						});
+
+
+						// Page ID field
+						var oPageIdLabel = new sap.m.Label({
+							text: "Page ID",
+							required: false
+						});
+
+						var oPageIdInput = new sap.m.Input({
+							id: "createPageIdInput",
+							width: "100%",
+							placeholder: "Enter Page ID"
+						});
+
 						oForm.addContent(oXLabel);
 						oForm.addContent(oXSelect);
 						oForm.addContent(oYLabel);
 						oForm.addContent(oYMultiInput);
+						oForm.addContent(oTimeframeLabel);
+						oForm.addContent(oTimeframeSelect);
+						oForm.addContent(oPageIdLabel);
+						oForm.addContent(oPageIdInput);
 
 						//Filter Form
 						debugger;
@@ -1556,6 +1635,16 @@ sap.ui.define([
 							} catch (e) {
 								console.error("Error parsing mapping data:", e);
 							}
+						}
+						
+						// Handle timeframe mapping
+						if (oCurrentData.timeframe && oTimeframeSelect) {
+							oTimeframeSelect.setSelectedKey(oCurrentData.timeframe);
+						}
+						
+						// Handle Page ID mapping  
+						if (oCurrentData.pageId && oPageIdInput) {
+							oPageIdInput.setValue(oCurrentData.pageId);
 						}
 
 						//Handle existing mapping for createFilterMappingForm form 
