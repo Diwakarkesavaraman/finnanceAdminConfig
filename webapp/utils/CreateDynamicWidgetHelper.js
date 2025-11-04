@@ -226,6 +226,10 @@ sap.ui.define([
 			var oCreateTimeFrameTypeModel = new JSONModel(aCreateTimeFrameTypes);
 			that.getView().setModel(oCreateTimeFrameTypeModel, "createTimeFrameTypeDropdownData");
 
+			var aCreatePageTypes = await that.getSearchHelpData('Page_ID');
+			var oCreatePageTypeModel = new JSONModel(aCreatePageTypes);
+			that.getView().setModel(oCreatePageTypeModel, "createPageTypeDropdownData");
+
 			// Initialize metadata and JSON data models
 			var oCreateMetaDataModel = new JSONModel([]);
 			that.getView().setModel(oCreateMetaDataModel, "createMetaDataModel");
@@ -253,10 +257,10 @@ sap.ui.define([
 						oCurrentData.mapping = oWidgetData.Mapping;
 						oCurrentData.filter = oWidgetData.Filter;
 						oCurrentData.wlabelMapping = oWidgetData.WlabelMapping;
-						oCurrentData.tooltip = oWidgetData.Tooltip;
+						oCurrentData.tooltip = oWidgetData.ToolTip;
 						oCurrentData.selectionType = oWidgetData.SelectionType;
-						oCurrentData.timeframe = oWidgetData.Timeframe;
-						oCurrentData.pageId = oWidgetData.PageId;
+						oCurrentData.timeframe = oWidgetData.TimeFrame;
+						oCurrentData.pageId = oWidgetData.ZpageId;
 						
 						oModel.setData(oCurrentData);
 						
@@ -402,7 +406,9 @@ sap.ui.define([
 			//Fetch mapping from createFilterMappingForm
 			var filterMappingData = this.getCreateFilterMappingFormValues(oController);
 			//Fetch mapping from createTileMappingForm
-			var tileMappingData = this.getCreateTileMappingFormValues(oController); 
+			var tileMappingData = this.getCreateTileMappingFormValues(oController);
+			//Fetch mapping from createHierarchyMappingForm
+			var hierarchyFormData = this.getCreateHierarchyFormValues(oController); 
 			
 			var oPayload = {
 				"WidgetType": oWidgetData.selectedWidgetType,
@@ -412,9 +418,9 @@ sap.ui.define([
 				"WidgetId": oWidgetData.widgetId,
 				"InputParameter": oWidgetData.inputParameter,
 				"Mapping": mappingFormData.dataMapping ? JSON.stringify(mappingFormData.dataMapping) : "",
-				"Timeframe": mappingFormData.timeframe,
-				"Tooltip": oWidgetData.tooltip,
-				// "PageId": mappingFormData.pageId,
+				"TimeFrame": mappingFormData.timeframe,
+				"ToolTip": oWidgetData.tooltip,
+				"ZpageId": JSON.stringify(hierarchyFormData.pageId),
 				"WlabelMapping": JSON.stringify(tileMappingData.tileMapping),
 				"SelectionType": tileMappingData.selectionType,
 				"Filter": filterMappingData,
@@ -867,7 +873,6 @@ sap.ui.define([
 			var oDataMapping = {};
 			var aFields = [];
 			var sTimeframe = "";
-			var sPageId = "";
 
 			// Loop through form content to get Label-Control pairs
 			for (var i = 0; i < aFormContent.length; i++) {
@@ -899,37 +904,51 @@ sap.ui.define([
 						}
 						// Handle Input controls (but not MultiInput which was already handled)
 						else if (oNextControl instanceof sap.m.Input) {
-							// Check if it's the Page ID field
-							if (sLabelText === "Page ID") {
-								sPageId = oNextControl.getValue();
-							}
+							// No specific input fields to handle in data mapping form now
 						}
 					}
 				}
 			}
 
-			// Also get values by ID as fallback
-			// try {
-			// 	var oTimeframeSelect = that.byId("createTimeframeSelect");
-			// 	if (oTimeframeSelect && !sTimeframe) {
-			// 		sTimeframe = oTimeframeSelect.getSelectedKey();
-			// 	}
-				
-			// 	var oPageIdInput = that.byId("createPageIdInput");
-			// 	if (oPageIdInput && !sPageId) {
-			// 		sPageId = oPageIdInput.getValue();
-			// 	}
-			// } catch (e) {
-			// 	console.log("Could not find timeframe/pageId controls by ID");
-			// }
 
 			oDataMapping['x'] = aFields[0];
 			oDataMapping['y'] = aFields.slice(1);
 			oformValues['dataMapping'] = oDataMapping;
 			oformValues['timeframe'] = sTimeframe;
-			oformValues['pageId'] = sPageId;
 
 			return (oformValues);
+		},
+
+		getCreateHierarchyFormValues: function (oController) {
+			var that = oController;
+			var oHierarchyForm = that.getView().byId("createHierarchyMappingForm");
+			var aHierarchyFormContent = oHierarchyForm.getContent();
+			var oHierarchyValues = {};
+			var aPageIds = [];
+			
+			// Loop through hierarchy form content to get Page ID tokens
+			for (var j = 0; j < aHierarchyFormContent.length; j++) {
+				var oHierarchyControl = aHierarchyFormContent[j];
+				
+				if (oHierarchyControl instanceof sap.m.Label) {
+					var sHierarchyLabelText = oHierarchyControl.getText();
+					var oNextHierarchyControl = aHierarchyFormContent[j + 1];
+					
+					if (oNextHierarchyControl) {
+						// Handle MultiInput controls for Page ID
+						if (oNextHierarchyControl instanceof sap.m.MultiInput && sHierarchyLabelText === "Page ID") {
+							var aPageIdTokens = oNextHierarchyControl.getTokens();
+							aPageIds = aPageIdTokens.map(function(oToken) {
+								return oToken.getKey();
+							});
+						}
+					}
+				}
+			}
+			
+			oHierarchyValues['pageId'] = aPageIds;
+			
+			return oHierarchyValues;
 		},
 
 		getCreateFilterMappingFormValues: function (oController) {
@@ -1132,7 +1151,8 @@ sap.ui.define([
 					width: "100%",
 					placeholder: "Enter display text for field " + k
 				});
-				
+				// next to display text field create two more input field for unit and color 
+
 				// Add components to form
 				oTileMappingForm.addContent(oFieldLabel);
 				oTileMappingForm.addContent(oFieldSelect);
@@ -1161,7 +1181,8 @@ sap.ui.define([
 			var sDataSource = that.getView().byId("createDataSourceId").getValue();
 			var aFilters = [
 				new Filter("DatasourceName", FilterOperator.EQ, sDataSource),
-				new Filter("InputParameter", FilterOperator.EQ, JSON.stringify(aFilterParams))
+				new Filter("InputParameter", FilterOperator.EQ, JSON.stringify(aFilterParams)),
+				new Filter("SourceType",FilterOperator.EQ, 'BEX_QUERY')
 			];
 
 			finmobview.read("/Query_Output", {
@@ -1394,26 +1415,12 @@ sap.ui.define([
 						});
 
 
-						// Page ID field
-						var oPageIdLabel = new sap.m.Label({
-							text: "Page ID",
-							required: false
-						});
-
-						var oPageIdInput = new sap.m.Input({
-							id: "createPageIdInput",
-							width: "100%",
-							placeholder: "Enter Page ID"
-						});
-
 						oForm.addContent(oXLabel);
 						oForm.addContent(oXSelect);
 						oForm.addContent(oYLabel);
 						oForm.addContent(oYMultiInput);
 						oForm.addContent(oTimeframeLabel);
 						oForm.addContent(oTimeframeSelect);
-						oForm.addContent(oPageIdLabel);
-						oForm.addContent(oPageIdInput);
 
 						//Filter Form
 						debugger;
@@ -1585,6 +1592,67 @@ sap.ui.define([
 						// Create Tile Mapping Form
 						var iNumberOfFields = self.createTileMappingForm(that);
 
+						// Create Hierarchy Mapping Form
+						var oHierarchyForm = that.byId("createHierarchyMappingForm");
+						oHierarchyForm.removeAllContent();
+						
+						// Page ID field
+						var oPageIdLabel = new sap.m.Label({
+							text: "Page ID",
+							required: false
+						});
+
+						var oPageIdMultiInput = new sap.m.MultiInput({
+							// id: "createPageIdInput",
+							width: "100%",
+							placeholder: "Select Page ID(s)",
+							valueHelpRequest: function() {
+								// Create value help dialog for Page ID
+								if (!that._oCreatePageIdValueHelpDialog) {
+									that._oCreatePageIdValueHelpDialog = new sap.m.SelectDialog({
+										title: "Select Page ID",
+										items: {
+											path: "createPageTypeDropdownData>/",
+											template: new sap.m.StandardListItem({
+												title: "{createPageTypeDropdownData>Text}",
+												description: "{createPageTypeDropdownData>Id}"
+											})
+										},
+										confirm: function(oEvent) {
+											var aContexts = oEvent.getParameter("selectedContexts");
+											if (aContexts && aContexts.length) {
+												aContexts.forEach(function(oContext) {
+													var oData = oContext.getObject();
+													var oToken = new sap.m.Token({
+														key: oData.Id,
+														text: oData.Text
+													});
+													oPageIdMultiInput.addToken(oToken);
+												});
+											}
+										},
+										search: function(oEvent) {
+											var sValue = oEvent.getParameter("value");
+											var oFilter = new sap.ui.model.Filter("Text", sap.ui.model.FilterOperator.Contains, sValue);
+											var oBinding = oEvent.getSource().getBinding("items");
+											oBinding.filter([oFilter]);
+										}
+									});
+									that.getView().addDependent(that._oCreatePageIdValueHelpDialog);
+								}
+								
+								// Set the model and open dialog
+								var oPageTypeModel = that.getView().getModel("createPageTypeDropdownData");
+								if (oPageTypeModel && oPageTypeModel.getData()) {
+									that._oCreatePageIdValueHelpDialog.setModel(oPageTypeModel, "createPageTypeDropdownData");
+									that._oCreatePageIdValueHelpDialog.open();
+								}
+							}
+						});
+
+						oHierarchyForm.addContent(oPageIdLabel);
+						oHierarchyForm.addContent(oPageIdMultiInput);
+
 						// Data Binding Form
 
 
@@ -1643,8 +1711,54 @@ sap.ui.define([
 						}
 						
 						// Handle Page ID mapping  
-						if (oCurrentData.pageId && oPageIdInput) {
-							oPageIdInput.setValue(oCurrentData.pageId);
+						debugger;
+						if (oCurrentData.pageId) {
+							// Parse pageId if it's a string (JSON array)
+							var aPageIds = oCurrentData.pageId;
+							if (typeof oCurrentData.pageId === 'string') {
+								try {
+									aPageIds = JSON.parse(oCurrentData.pageId);
+								} catch (e) {
+									console.error("Error parsing pageId:", e);
+									aPageIds = [];
+								}
+							}
+							
+							if (Array.isArray(aPageIds)) {
+								try {
+									if (oPageIdMultiInput && oPageIdMultiInput instanceof sap.m.MultiInput) {
+										// Clear existing tokens
+										oPageIdMultiInput.removeAllTokens();
+										
+										// Create tokens for each page ID in the array
+										aPageIds.forEach(function(sPageId) {
+										if (sPageId) {
+											// Find the corresponding text from createPageTypeDropdownData
+											var oPageTypeModel = that.getView().getModel("createPageTypeDropdownData");
+											var sDisplayText = sPageId; // Default to page ID
+											
+											if (oPageTypeModel && oPageTypeModel.getData()) {
+												var aPageTypeData = oPageTypeModel.getData();
+												var oPageType = aPageTypeData.find(function(oItem) {
+													return oItem.Id === sPageId;
+												});
+												if (oPageType && oPageType.Text) {
+													sDisplayText = oPageType.Text;
+												}
+											}
+											
+											var oToken = new sap.m.Token({
+												key: sPageId,
+												text: sDisplayText
+											});
+											oPageIdMultiInput.addToken(oToken);
+										}
+									});
+									}
+								} catch (e) {
+									console.log("Could not find Page ID control for mapping");
+								}
+							}
 						}
 
 						//Handle existing mapping for createFilterMappingForm form 

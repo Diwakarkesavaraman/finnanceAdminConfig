@@ -5047,10 +5047,10 @@
 
  							const giData = {
  								ParentId: `GI00${GiId}`,
- 								Parent: parent,
- 								Child: child,
+ 								Parent: parent ? parent.replace("&","and") : "",
+ 								Child: child ? child.replace("&","and") : "",
  								Name: id,
- 								Title: title,
+ 								Title: title ? title.replace("&","and") : "",
  								IssuingOrg: issuingOrg,
  								ContactPerson: contactPerson,
  								IssueDate: issueDate,
@@ -9184,14 +9184,6 @@
 			return PageConfigurationHelper.onPageWidgetConfigPress(this, oEvent);
 		},
 
-		onAddPageConfigItem: function() {
-			return PageConfigurationHelper.onAddPageConfigItem(this);
-		},
-
-		onCloseAddNewPageConfigDialog: function() {
-			return PageConfigurationHelper.onCloseAddNewPageConfigDialog(this);
-		},
-
 		onTilePress: function(oEvent) {
 			// var that = oController;
 			var oBindingContext = oEvent.getSource().getBindingContext("oLandingPageDataModel");
@@ -9567,26 +9559,22 @@
  				"ZpageId": pageId,
  				"WidgetId": inpWidgetId,
  			};
- 			var batchChanges = [];
- 			var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
- 			var oDataModel = new sap.ui.model.odata.ODataModel(url);
- 			oDataModel.setUseBatch(true);
+ 			var finmobview = this.getView().getModel("finmobview");
  			var uPath = "/DynamicWidgetSet";
- 			batchChanges.push(oDataModel.createBatchOperation(uPath, "POST", addPageItem));
-
- 			oDataModel.addBatchChangeOperations(batchChanges);
+ 			
  			sap.ui.core.BusyIndicator.show(0);
 
- 			oDataModel.submitBatch(function (oData, oResponse) {
- 				sap.ui.core.BusyIndicator.hide(0);
- 				if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
+ 			finmobview.create(uPath, addPageItem, {
+ 				success: function (oData, oResponse) {
+ 					sap.ui.core.BusyIndicator.hide(0);
  					// that.refreshGISDataAfterAddition(selectedFolderId, selectedFolderTitle);
  					that.navigateToWidgetFragment(pageId);
  					sap.m.MessageBox.success("Item added successfully!");
+ 				},
+ 				error: function (oError) {
+ 					sap.ui.core.BusyIndicator.hide(0);
+ 					sap.m.MessageBox.error("Failed to update data");
  				}
- 			}, function (oError) {
- 				sap.ui.core.BusyIndicator.hide(0);
- 				sap.m.MessageBox.error("Failed to update data");
  			});
 
  			this.AddNewWidgetDialog.close();
@@ -9675,40 +9663,40 @@
  				deletionItems.push(aContexts[i].getObject())
  			};
 
- 			var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
- 			var uPath = "/DynamicWidgetSet";
- 			var oDataModel = new sap.ui.model.odata.ODataModel(url);
- 			oDataModel.setUseBatch(true);
+ 			var finmobview = this.getView().getModel("finmobview");
+ 			
+ 			sap.ui.core.BusyIndicator.show(0);
 
- 			var batchChanges = [];
-
+ 			// Create array of delete promises
+ 			var deletePromises = [];
+ 			
  			for (var i = 0; i < deletionItems.length; i++) {
  				var addRow = deletionItems[i];
  				delete addRow.__metadata;
  				//TODO: Delete by
  				var deletePath = `/DynamicWidgetSet(ZtitleId='${addRow.ZtitleId}',ZpageId='${addRow.ZpageId}',WidgetId='${addRow.WidgetId}')`;
 
- 				batchChanges.push(oDataModel.createBatchOperation(deletePath, "DELETE"));
-
+ 				deletePromises.push(new Promise(function(resolve, reject) {
+ 					finmobview.remove(deletePath, {
+ 						success: function(oData) {
+ 							resolve(oData);
+ 						},
+ 						error: function(oError) {
+ 							reject(oError);
+ 						}
+ 					});
+ 				}));
  			}
 
- 			oDataModel.addBatchChangeOperations(batchChanges);
-
- 			sap.ui.core.BusyIndicator.show(0);
-
- 			oDataModel.submitBatch(
- 				function (oData, oResponse) {
- 					if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
- 						sap.ui.core.BusyIndicator.hide(0);
- 						sap.m.MessageBox.success("Selected items deleted successfully.");
- 						that.navigateToWidgetFragment(addRow.ZpageId);
- 					}
- 				},
- 				function (oError) {
- 					sap.ui.core.BusyIndicator.hide();
- 					sap.m.MessageBox.error("Failed to delete selected items.");
- 				}
- 			);
+ 			// Execute all delete operations
+ 			Promise.all(deletePromises).then(function() {
+ 				sap.ui.core.BusyIndicator.hide(0);
+ 				sap.m.MessageBox.success("Selected items deleted successfully.");
+ 				that.navigateToWidgetFragment(deletionItems[0].ZpageId);
+ 			}).catch(function(oError) {
+ 				sap.ui.core.BusyIndicator.hide();
+ 				sap.m.MessageBox.error("Failed to delete selected items.");
+ 			});
 
  		},
  		
