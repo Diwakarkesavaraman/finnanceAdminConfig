@@ -42,11 +42,23 @@
 							</Select>
 							<Label id="createTooltipLabel" text="Tooltip"/>
 							<Input id="createTooltip" value="{createWidgetValues>/tooltip}" editable="true" />
+							<Label text="System Name"/>
+							<Select id="createSystemName" selectedKey="{createWidgetValues>/systemName}">
+								<core:Item key="DVB" text="DVB"/>
+								<core:Item key="DBC" text="DBC"/>
+							</Select>
+							<Label text="Data Source Type"/>
+							<Select id="createDataSourceType" selectedKey="{createWidgetValues>/dataSourceType}">
+								<core:Item key="BEX_QUERY" text="Bex Query"/>
+								<core:Item key="HANA" text="Hana Views"/>
+							</Select>
 							<Label text="Data Source"/>
 							<Input id="createDataSourceId" value="{createWidgetValues>/selectedDataSource}" liveChange="onCreateDataSourceChange"/>
-							<Button id="createCheckBtn" text="Check" enabled="true" press="onCreateCheckQueryValidity"/>
-							<BusyIndicator id="createBusyIndicator" class="sapUiTinyMarginBottom" visible="false"/>
-							<core:Icon id="createSuccessIcon" src="sap-icon://message-success" visible="false" class="size1" color="#107e3e"/>
+							<HBox justifyContent="SpaceBetween" alignItems="Center" width="100%">
+								<Button id="createCheckBtn" text="Check" enabled="true" press="onCreateCheckQueryValidity"/>
+								<BusyIndicator id="createBusyIndicator" class="sapUiTinyMarginBottom" visible="false"/>
+								<core:Icon id="createSuccessIcon" src="sap-icon://message-success" visible="false" class="size1" color="#107e3e"/>
+							</HBox>
 						</form:content>
 					</form:SimpleForm>
 					</content>

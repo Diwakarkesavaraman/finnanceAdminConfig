@@ -874,7 +874,7 @@ sap.ui.define([
 			var oDataMapping = {};
 			var aFields = [];
 			var sTimeframe = "";
-
+			var bIsTimeDimension = false;
 			// Loop through form content to get Label-Control pairs
 			for (var i = 0; i < aFormContent.length; i++) {
 				var oControl = aFormContent[i];
@@ -903,10 +903,15 @@ sap.ui.define([
 								aFields.push(oNextControl.getSelectedKey());
 							}
 						}
-						// Handle Input controls (but not MultiInput which was already handled)
-						else if (oNextControl instanceof sap.m.Input) {
-							// No specific input fields to handle in data mapping form now
-						}
+					// Handle Input controls (but not MultiInput which was already handled)
+					else if (oNextControl instanceof sap.m.Input) {
+						// No specific input fields to handle in data mapping form now
+					}
+					// Handle CheckBox controls
+					else if (oNextControl instanceof sap.m.CheckBox) {
+						// This is the Time/Period Dimension checkbox
+						bIsTimeDimension = oNextControl.getSelected();
+					}
 					}
 				}
 			}
@@ -916,7 +921,7 @@ sap.ui.define([
 			oDataMapping['y'] = aFields.slice(1);
 			oformValues['dataMapping'] = oDataMapping;
 			oformValues['timeframe'] = sTimeframe;
-
+			oformValues['isTimeDimension'] = bIsTimeDimension;
 			return (oformValues);
 		},
 
@@ -1484,6 +1489,17 @@ sap.ui.define([
 								})
 							}
 						});
+
+					// Checkbox for Time/Period Dimension
+					var oTimeDimensionCheckBox = new sap.m.CheckBox({
+						text: "Is Time/Period Dimension",
+						select: function(oEvent) {
+							var bSelected = oEvent.getParameter("selected");
+							// Toggle Timeframe field visibility
+							oTimeframeLabel.setVisible(bSelected);
+							oTimeframeSelect.setVisible(bSelected);
+						}
+					});
 						
 						// var oXInput = new Input({
 						// 	class: "sapUiSmallMarginEnd",
@@ -1603,11 +1619,12 @@ sap.ui.define([
 						// Timeframe field
 						var oTimeframeLabel = new sap.m.Label({
 							text: "Timeframe",
-							required: false
+							required: false,
+							visible: false
 						});
 
 						var oTimeframeSelect = new sap.m.Select({
-							// id: "createTimeframeSelect",
+							visible: false,
 							showSecondaryValues: true,
 							width: "100%",
 							items: {
@@ -1624,6 +1641,7 @@ sap.ui.define([
 
 						oForm.addContent(oXLabel);
 						oForm.addContent(oXSelect);
+						oForm.addContent(oTimeDimensionCheckBox);
 						oForm.addContent(oYLabel);
 						oForm.addContent(oYMultiInput);
 						oForm.addContent(oTimeframeLabel);
@@ -1806,7 +1824,8 @@ sap.ui.define([
 						// Page ID field
 						var oPageIdLabel = new sap.m.Label({
 							text: "Page ID",
-							required: false
+							required: false,
+							visible: false
 						});
 
 						var oPageIdMultiInput = new sap.m.MultiInput({
@@ -1915,6 +1934,19 @@ sap.ui.define([
 						// Handle timeframe mapping
 						if (oCurrentData.timeframe && oTimeframeSelect) {
 							oTimeframeSelect.setSelectedKey(oCurrentData.timeframe);
+						}
+						
+						// Handle isTimeDimension checkbox
+						if (oTimeDimensionCheckBox) {
+							var bIsTimeDimension = oCurrentData.isTimeDimension || false;
+							oTimeDimensionCheckBox.setSelected(bIsTimeDimension);
+							// Set visibility of Timeframe fields based on checkbox state
+							if (oTimeframeLabel) {
+								oTimeframeLabel.setVisible(bIsTimeDimension);
+							}
+							if (oTimeframeSelect) {
+								oTimeframeSelect.setVisible(bIsTimeDimension);
+							}
 						}
 						
 						// Handle Page ID mapping  
