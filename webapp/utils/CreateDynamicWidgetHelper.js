@@ -1043,31 +1043,102 @@ sap.ui.define([
 				sSelectionType = aFormContent[1].getSelectedKey();
 			}
 			
-			var fieldIndex = 0;
-			
-			// New form structure: Selection Type Label, Selection Type Select, Field Label, Field Select, Text Label, Text Input, Field Label, Field Select, Text Label, Text Input, ...
-			// Skip the first two controls (Selection Type Label and Select) and start from index 2
-			// Each field has 8 controls: Field Label, Field Select, Text Label, Text Input, Unit Label, Unit Input, Color Label, Color Input
-			for (var i = 2; i < aFormContent.length && fieldIndex < iNumberOfFields; i += 8) {
-				var oFieldSelect = aFormContent[i + 1]; // Field select is after field label
-				var oTextInput = aFormContent[i + 3]; // Text input is after text label
-			var oUnitInput = aFormContent[i + 5]; // Unit input is after unit label
-			var oColorInput = aFormContent[i + 7]; // Color input is after color label
-				
-				if (oFieldSelect instanceof sap.m.Select && oTextInput instanceof sap.m.Input) {
+
+		// New form structure: Selection Type Label, Selection Type Select, then VBox containers (one per field)
+		// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix)
+		// Skip the first two controls (Selection Type Label and Select) and start from index 2
+			for (var i = 2; i < aFormContent.length && i < (2 + iNumberOfFields); i++) {
+				var oFieldBox = aFormContent[i]; // Get the VBox for this field
+
+				if (oFieldBox instanceof sap.m.VBox) {
+				var aFieldBoxItems = oFieldBox.getItems();
+				// aFieldBoxItems[0] = Field Label
+				// aFieldBoxItems[1] = Field Select
+				// aFieldBoxItems[2] = HBox1 containing the first 3 fields
+				// aFieldBoxItems[3] = HBox2 containing the second 3 fields
+
+				var oFieldSelect = aFieldBoxItems[1];
+				var oHBox1 = aFieldBoxItems[2];
+				var oHBox2 = aFieldBoxItems[3];
+
+				if (oFieldSelect instanceof sap.m.Select && oHBox1 instanceof sap.m.HBox && oHBox2 instanceof sap.m.HBox) {
 					var sSelectedField = oFieldSelect.getSelectedKey();
-					var sDisplayText = oTextInput.getValue();
-					
+
+					// Get the three VBoxes from HBox1
+					var aHBox1Items = oHBox1.getItems();
+					var oTextVBox = aHBox1Items[0]; // Display Text VBox
+					var oUnitVBox = aHBox1Items[1]; // Unit VBox
+					var oColorVBox = aHBox1Items[2]; // Color VBox
+
+					// Get the three VBoxes from HBox2
+					var aHBox2Items = oHBox2.getItems();
+					var oScaleVBox = aHBox2Items[0]; // Scale VBox
+					var oDecimalsVBox = aHBox2Items[1]; // Decimals VBox
+					var oSuffixVBox = aHBox2Items[2]; // Suffix VBox
+
+					// Extract input values from each VBox (items[1] is the Input control)
+					var sDisplayText = "";
+					var sUnit = "";
+					var sColor = "";
+					var sScale = "";
+					var sDecimals = "";
+					var sSuffix = "";
+
+					if (oTextVBox && oTextVBox instanceof sap.m.VBox) {
+						var oTextInput = oTextVBox.getItems()[1];
+						if (oTextInput instanceof sap.m.Input) {
+							sDisplayText = oTextInput.getValue();
+						}
+					}
+
+					if (oUnitVBox && oUnitVBox instanceof sap.m.VBox) {
+						var oUnitInput = oUnitVBox.getItems()[1];
+						if (oUnitInput instanceof sap.m.Input) {
+							sUnit = oUnitInput.getValue();
+						}
+					}
+
+					if (oColorVBox && oColorVBox instanceof sap.m.VBox) {
+						var oColorInput = oColorVBox.getItems()[1];
+						if (oColorInput instanceof sap.m.Input) {
+							sColor = oColorInput.getValue();
+						}
+					}
+
+					if (oScaleVBox && oScaleVBox instanceof sap.m.VBox) {
+						var oScaleSelect = oScaleVBox.getItems()[1];
+						if (oScaleSelect instanceof sap.m.Select) {
+							sScale = oScaleSelect.getSelectedKey();
+						}
+					}
+
+					if (oDecimalsVBox && oDecimalsVBox instanceof sap.m.VBox) {
+						var oDecimalsSelect = oDecimalsVBox.getItems()[1];
+						if (oDecimalsSelect instanceof sap.m.Select) {
+							sDecimals = oDecimalsSelect.getSelectedKey();
+						}
+					}
+
+					if (oSuffixVBox && oSuffixVBox instanceof sap.m.VBox) {
+						var oSuffixInput = oSuffixVBox.getItems()[1];
+						if (oSuffixInput instanceof sap.m.Input) {
+							sSuffix = oSuffixInput.getValue();
+						}
+					}
+
 					if (sSelectedField) {
 						aTileValues.push({
 							field: sSelectedField,
 							label: sDisplayText || sSelectedField, // Use field name as default if no display text
-					unit: (oUnitInput instanceof sap.m.Input ? oUnitInput.getValue() : "") || "",
-					color: (oColorInput instanceof sap.m.Input ? oColorInput.getValue() : "") || ""
+							unit: sUnit || "",
+							color: sColor || "",
+							scale: sScale || "",
+							decimals: sDecimals || "",
+							suffix: sSuffix || ""
 						});
 					}
 				}
-				fieldIndex++;
+				}
 			}
 
 			// Return new structure with selectionType at top level and tileMapping array
@@ -1146,49 +1217,154 @@ sap.ui.define([
 					}));
 				});
 				
-				// Display Text Label
-				var oTextLabel = new Label({
-					text: "Display Text " + k
+
+				// Create VBox for Display Text (Label + Input stacked vertically)
+				var oTextVBox = new sap.m.VBox({
+					width: "33.33%",
+					items: [
+						new Label({
+							text: "Display Text " + k
+						}),
+						new sap.m.Input({
+							width: "95%",
+							placeholder: "Enter display text for field " + k
+						})
+					]
 				});
-				
-				// Display Text Input
-				var oTextInput = new sap.m.Input({
+
+				// Create VBox for Unit (Label + Input stacked vertically)
+				var oUnitVBox = new sap.m.VBox({
+					width: "33.33%",
+					items: [
+						new Label({
+							text: "Unit " + k
+						}),
+						new sap.m.Input({
+							width: "95%",
+							placeholder: "Enter unit for field " + k
+						})
+					]
+				});
+
+				// add two more fields called scale, decimals and suffix
+
+				// Create VBox for Color (Label + Input stacked vertically)
+				var oColorVBox = new sap.m.VBox({
+					width: "33.33%",
+					items: [
+						new Label({
+							text: "Color " + k
+						}),
+						new sap.m.Input({
+							width: "95%",
+							placeholder: "Enter color for field " + k,
+							type: "Text"
+						})
+					]
+				});
+
+				// Create VBox for Scale (Label + Select stacked vertically)
+				var oScaleSelect = new sap.m.Select({
+					width: "95%",
+					items: [
+						new sap.ui.core.Item({
+							key: "noScaling",
+							text: "No Scaling"
+						}),
+						new sap.ui.core.Item({
+							key: "billion",
+							text: "in Billion (B)"
+						}),
+						new sap.ui.core.Item({
+							key: "million",
+							text: "in Million (M)"
+						}),
+						new sap.ui.core.Item({
+							key: "thousand",
+							text: "in Thousand (K)"
+						})
+					]
+				});
+
+				var oScaleVBox = new sap.m.VBox({
+					width: "33.33%",
+					items: [
+						new Label({
+							text: "Scale " + k
+						}),
+						oScaleSelect
+					]
+				});
+
+				// Create VBox for Decimals (Label + Select stacked vertically)
+				var oDecimalsSelect = new sap.m.Select({
+					width: "95%",
+					items: [
+						new sap.ui.core.Item({
+							key: "d0",
+							text: "0 decimals"
+						}),
+						new sap.ui.core.Item({
+							key: "d1",
+							text: "1 decimals"
+						}),
+						new sap.ui.core.Item({
+							key: "d2",
+							text: "2 decimals"
+						}),
+						new sap.ui.core.Item({
+							key: "d3",
+							text: "3 decimals"
+						})
+					]
+				});
+
+				var oDecimalsVBox = new sap.m.VBox({
+					width: "33.33%",
+					items: [
+						new Label({
+							text: "Decimals " + k
+						}),
+						oDecimalsSelect
+					]
+				});
+
+				// Create VBox for Suffix (Label + Input stacked vertically)
+				var oSuffixVBox = new sap.m.VBox({
+					width: "33.33%",
+					items: [
+						new Label({
+							text: "Suffix " + k
+						}),
+						new sap.m.Input({
+							width: "95%",
+							placeholder: "Enter suffix for field " + k,
+							type: "Text"
+						})
+					]
+				});
+
+				// Create HBox to arrange the first three fields horizontally
+				var oHBoxFields1 = new sap.m.HBox({
 					width: "100%",
-					placeholder: "Enter display text for field " + k
+					items: [oTextVBox, oUnitVBox, oColorVBox]
 				});
-	
-			// Unit Label
-			var oUnitLabel = new Label({
-				text: "Unit " + k
-			});
 
-			// Unit Input
-			var oUnitInput = new sap.m.Input({
-				width: "100%",
-				placeholder: "Enter unit for field " + k
-			});
+				// Create HBox to arrange the second three fields horizontally
+				var oHBoxFields2 = new sap.m.HBox({
+					width: "100%",
+					items: [oScaleVBox, oDecimalsVBox, oSuffixVBox]
+				});
 
-			// Color Label
-			var oColorLabel = new Label({
-				text: "Color " + k
-			});
+				// Wrap everything in a VBox for this field
+				var oFieldBox = new sap.m.VBox({
+					width: "100%",
+					items: [oFieldLabel, oFieldSelect, oHBoxFields1, oHBoxFields2],
+					class: "sapUiSmallMarginBottom"
+				});
 
-			// Color Input
-			var oColorInput = new sap.m.Input({
-				width: "100%",
-				placeholder: "Enter color for field " + k,
-				type: "Text"
-			}); 
-
-				// Add components to form
-				oTileMappingForm.addContent(oFieldLabel);
-				oTileMappingForm.addContent(oFieldSelect);
-				oTileMappingForm.addContent(oTextLabel);
-				oTileMappingForm.addContent(oTextInput);
-				oTileMappingForm.addContent(oUnitLabel);
-				oTileMappingForm.addContent(oUnitInput);
-				oTileMappingForm.addContent(oColorLabel);
-				oTileMappingForm.addContent(oColorInput);
+				// Add the field box to form
+				oTileMappingForm.addContent(oFieldBox);
 			}
 			
 			return iNumberOfFields;
@@ -1935,33 +2111,92 @@ sap.ui.define([
 										// Map each tile mapping entry to the corresponding form fields
 										for (var tileIndex = 0; tileIndex < tileMappingData.length && tileIndex < iNumberOfFields; tileIndex++) {
 											var tileData = tileMappingData[tileIndex];
-											
-											if (tileData.field && tileData.label) {
-												// Calculate the position of controls for this field
-												// New form structure: Selection Type Label, Selection Type Select, Field Label, Field Select, Text Label, Text Input, Field Label, Field Select, Text Label, Text Input, ...
-												// Skip the first two controls (Selection Type Label and Select) and start from index 2
-												// Each field has 8 controls: Field Label, Field Select, Text Label, Text Input, Unit Label, Unit Input, Color Label, Color Input
-												var controlIndex = 2 + (tileIndex * 8); // Start from index 2 to skip selection type label and select
-												var oTileFieldSelect = aTileMappingContent[controlIndex + 1]; // Field select is after field label
-												var oTileTextInput = aTileMappingContent[controlIndex + 3]; // Text input is after text label
-											var oTileUnitInput = aTileMappingContent[controlIndex + 5]; // Unit input is after unit label
-											var oTileColorInput = aTileMappingContent[controlIndex + 7]; // Color input is after color label
-												
-												if (oTileFieldSelect instanceof sap.m.Select && oTileTextInput instanceof sap.m.Input) {
-													// Set the selected field
-													oTileFieldSelect.setSelectedKey(tileData.field);
-													
-													// Set the display text
-													oTileTextInput.setValue(tileData.label);
 
-													// Set the unit if it exists
-													if (oTileUnitInput instanceof sap.m.Input && tileData.unit) {
-														oTileUnitInput.setValue(tileData.unit);
+											if (tileData.field && tileData.label) {
+												// New form structure: Selection Type Label, Selection Type Select, then VBox containers (one per field)
+												// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix)
+												// Skip the first two controls (Selection Type Label and Select) and start from index 2
+												var controlIndex = 2 + tileIndex; // Start from index 2 to skip selection type label and select
+												var oFieldBox = aTileMappingContent[controlIndex]; // Get the VBox for this field
+
+												if (oFieldBox instanceof sap.m.VBox) {
+													var aFieldBoxItems = oFieldBox.getItems();
+													// aFieldBoxItems[0] = Field Label
+													// aFieldBoxItems[1] = Field Select
+													// aFieldBoxItems[2] = HBox1 containing the first 3 fields
+													// aFieldBoxItems[3] = HBox2 containing the second 3 fields
+
+													var oTileFieldSelect = aFieldBoxItems[1];
+													var oHBox1 = aFieldBoxItems[2];
+													var oHBox2 = aFieldBoxItems[3];
+
+													if (oTileFieldSelect instanceof sap.m.Select) {
+														// Set the selected field
+														oTileFieldSelect.setSelectedKey(tileData.field);
 													}
 
-													// Set the color if it exists
-													if (oTileColorInput instanceof sap.m.Input && tileData.color) {
-														oTileColorInput.setValue(tileData.color);
+													// Handle first HBox (Display Text, Unit, Color)
+													if (oHBox1 instanceof sap.m.HBox) {
+														var aHBox1Items = oHBox1.getItems();
+														var oTextVBox = aHBox1Items[0]; // Display Text VBox
+														var oUnitVBox = aHBox1Items[1]; // Unit VBox
+														var oColorVBox = aHBox1Items[2]; // Color VBox
+
+														// Set Display Text
+														if (oTextVBox && oTextVBox instanceof sap.m.VBox) {
+															var oTextInput = oTextVBox.getItems()[1];
+															if (oTextInput instanceof sap.m.Input && tileData.label) {
+																oTextInput.setValue(tileData.label);
+															}
+														}
+
+														// Set Unit
+														if (oUnitVBox && oUnitVBox instanceof sap.m.VBox && tileData.unit) {
+															var oUnitInput = oUnitVBox.getItems()[1];
+															if (oUnitInput instanceof sap.m.Input) {
+																oUnitInput.setValue(tileData.unit);
+															}
+														}
+
+														// Set Color
+														if (oColorVBox && oColorVBox instanceof sap.m.VBox && tileData.color) {
+															var oColorInput = oColorVBox.getItems()[1];
+															if (oColorInput instanceof sap.m.Input) {
+																oColorInput.setValue(tileData.color);
+															}
+														}
+													}
+
+													// Handle second HBox (Scale, Decimals, Suffix)
+													if (oHBox2 instanceof sap.m.HBox) {
+														var aHBox2Items = oHBox2.getItems();
+														var oScaleVBox = aHBox2Items[0]; // Scale VBox
+														var oDecimalsVBox = aHBox2Items[1]; // Decimals VBox
+														var oSuffixVBox = aHBox2Items[2]; // Suffix VBox
+
+														// Set Scale
+														if (oScaleVBox && oScaleVBox instanceof sap.m.VBox && tileData.scale) {
+															var oScaleSelect = oScaleVBox.getItems()[1];
+															if (oScaleSelect instanceof sap.m.Select) {
+																oScaleSelect.setSelectedKey(tileData.scale);
+															}
+														}
+
+														// Set Decimals
+														if (oDecimalsVBox && oDecimalsVBox instanceof sap.m.VBox && tileData.decimals) {
+															var oDecimalsSelect = oDecimalsVBox.getItems()[1];
+															if (oDecimalsSelect instanceof sap.m.Select) {
+																oDecimalsSelect.setSelectedKey(tileData.decimals);
+															}
+														}
+
+														// Set Suffix
+														if (oSuffixVBox && oSuffixVBox instanceof sap.m.VBox && tileData.suffix) {
+															var oSuffixInput = oSuffixVBox.getItems()[1];
+															if (oSuffixInput instanceof sap.m.Input) {
+																oSuffixInput.setValue(tileData.suffix);
+															}
+														}
 													}
 												}
 											}
