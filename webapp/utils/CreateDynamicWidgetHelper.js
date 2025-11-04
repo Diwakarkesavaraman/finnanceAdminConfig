@@ -261,7 +261,7 @@ sap.ui.define([
 						oCurrentData.selectionType = oWidgetData.SelectionType;
 						oCurrentData.timeframe = oWidgetData.TimeFrame;
 						oCurrentData.pageId = oWidgetData.ZpageId;
-						
+						oCurrentData.enableTimeRange = oWidgetData.EnableTimeRange;						
 						oModel.setData(oCurrentData);
 						
 						// Show widget ID fields
@@ -421,6 +421,7 @@ sap.ui.define([
 				"TimeFrame": mappingFormData.timeframe,
 				"ToolTip": oWidgetData.tooltip,
 				"ZpageId": JSON.stringify(hierarchyFormData.pageId),
+				"EnableTimeRange": hierarchyFormData.enableTimeRange || false,
 				"WlabelMapping": JSON.stringify(tileMappingData.tileMapping),
 				"SelectionType": tileMappingData.selectionType,
 				"Filter": filterMappingData,
@@ -931,29 +932,34 @@ sap.ui.define([
 			var aHierarchyFormContent = oHierarchyForm.getContent();
 			var oHierarchyValues = {};
 			var aPageIds = [];
+			var bEnableTimeRange = false;			
+		// Loop through hierarchy form content to get Page ID tokens
+		for (var j = 0; j < aHierarchyFormContent.length; j++) {
+			var oHierarchyControl = aHierarchyFormContent[j];
 			
-			// Loop through hierarchy form content to get Page ID tokens
-			for (var j = 0; j < aHierarchyFormContent.length; j++) {
-				var oHierarchyControl = aHierarchyFormContent[j];
+			// Handle CheckBox controls for Enable Time Range
+			if (oHierarchyControl instanceof sap.m.CheckBox) {
+				bEnableTimeRange = oHierarchyControl.getSelected();
+			}
+			
+			if (oHierarchyControl instanceof sap.m.Label) {
+				var sHierarchyLabelText = oHierarchyControl.getText();
+				var oNextHierarchyControl = aHierarchyFormContent[j + 1];
 				
-				if (oHierarchyControl instanceof sap.m.Label) {
-					var sHierarchyLabelText = oHierarchyControl.getText();
-					var oNextHierarchyControl = aHierarchyFormContent[j + 1];
-					
-					if (oNextHierarchyControl) {
-						// Handle MultiInput controls for Page ID
-						if (oNextHierarchyControl instanceof sap.m.MultiInput && sHierarchyLabelText === "Page ID") {
-							var aPageIdTokens = oNextHierarchyControl.getTokens();
-							aPageIds = aPageIdTokens.map(function(oToken) {
-								return oToken.getKey();
-							});
-						}
+				if (oNextHierarchyControl) {
+					// Handle MultiInput controls for Page ID
+					if (oNextHierarchyControl instanceof sap.m.MultiInput && sHierarchyLabelText === "Page ID") {
+						var aPageIdTokens = oNextHierarchyControl.getTokens();
+						aPageIds = aPageIdTokens.map(function(oToken) {
+							return oToken.getKey();
+						});
 					}
 				}
 			}
+		}
 			
 			oHierarchyValues['pageId'] = aPageIds;
-			
+			oHierarchyValues['enableTimeRange'] = bEnableTimeRange;			
 			return oHierarchyValues;
 		},
 
@@ -1821,11 +1827,18 @@ sap.ui.define([
 						var oHierarchyForm = that.byId("createHierarchyMappingForm");
 						oHierarchyForm.removeAllContent();
 						
+					// Enable Time Range field
+					var oEnableTimeRangeCheckBox = new sap.m.CheckBox({
+						text: "Enable Time Range",
+						selected: false
+					});
+
+					
 						// Page ID field
 						var oPageIdLabel = new sap.m.Label({
 							text: "Page ID",
 							required: false,
-							visible: false
+							visible: true
 						});
 
 						var oPageIdMultiInput = new sap.m.MultiInput({
@@ -1876,6 +1889,7 @@ sap.ui.define([
 							}
 						});
 
+						oHierarchyForm.addContent(oEnableTimeRangeCheckBox);
 						oHierarchyForm.addContent(oPageIdLabel);
 						oHierarchyForm.addContent(oPageIdMultiInput);
 
@@ -1998,6 +2012,12 @@ sap.ui.define([
 									console.log("Could not find Page ID control for mapping");
 								}
 							}
+						}
+						
+						// Handle Enable Time Range checkbox
+						if (oEnableTimeRangeCheckBox) {
+							var bEnableTimeRange = oCurrentData.enableTimeRange || false;
+							oEnableTimeRangeCheckBox.setSelected(bEnableTimeRange);
 						}
 
 						//Handle existing mapping for createFilterMappingForm form 
