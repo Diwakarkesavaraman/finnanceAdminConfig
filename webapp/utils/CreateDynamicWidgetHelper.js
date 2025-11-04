@@ -421,7 +421,7 @@ sap.ui.define([
 				"TimeFrame": mappingFormData.timeframe,
 				"ToolTip": oWidgetData.tooltip,
 				"ZpageId": JSON.stringify(hierarchyFormData.pageId),
-				"EnableTimeRange": hierarchyFormData.enableTimeRange || false,
+				// "EnableTimeRange": hierarchyFormData.enableTimeRange || false,
 				"WlabelMapping": JSON.stringify(tileMappingData.tileMapping),
 				"SelectionType": tileMappingData.selectionType,
 				"Filter": filterMappingData,
@@ -933,7 +933,7 @@ sap.ui.define([
 			var oHierarchyValues = {};
 			var aPageIds = [];
 			var bEnableTimeRange = false;			
-		// Loop through hierarchy form content to get Page ID tokens
+		// Loop through hierarchy form content to get Page ID from table
 		for (var j = 0; j < aHierarchyFormContent.length; j++) {
 			var oHierarchyControl = aHierarchyFormContent[j];
 			
@@ -942,18 +942,14 @@ sap.ui.define([
 				bEnableTimeRange = oHierarchyControl.getSelected();
 			}
 			
-			if (oHierarchyControl instanceof sap.m.Label) {
-				var sHierarchyLabelText = oHierarchyControl.getText();
-				var oNextHierarchyControl = aHierarchyFormContent[j + 1];
-				
-				if (oNextHierarchyControl) {
-					// Handle MultiInput controls for Page ID
-					if (oNextHierarchyControl instanceof sap.m.MultiInput && sHierarchyLabelText === "Page ID") {
-						var aPageIdTokens = oNextHierarchyControl.getTokens();
-						aPageIds = aPageIdTokens.map(function(oToken) {
-							return oToken.getKey();
-						});
-					}
+			// Handle Table controls for Page ID
+			if (oHierarchyControl instanceof sap.m.Table) {
+				var oPageIdTableModel = that.getView().getModel("createPageIdTableModel");
+				if (oPageIdTableModel) {
+					var aTableData = oPageIdTableModel.getData();
+					aPageIds = aTableData.map(function(oItem) {
+						return oItem.Id;
+					});
 				}
 			}
 		}
@@ -1841,57 +1837,154 @@ sap.ui.define([
 							visible: true
 						});
 
-						var oPageIdMultiInput = new sap.m.MultiInput({
-							// id: "createPageIdInput",
-							width: "100%",
-							placeholder: "Select Page ID(s)",
-							valueHelpRequest: function() {
-								// Create value help dialog for Page ID
-								if (!that._oCreatePageIdValueHelpDialog) {
-									that._oCreatePageIdValueHelpDialog = new sap.m.SelectDialog({
-										title: "Select Page ID",
-										items: {
-											path: "createPageTypeDropdownData>/",
-											template: new sap.m.StandardListItem({
-												title: "{createPageTypeDropdownData>Text}",
-												description: "{createPageTypeDropdownData>Id}"
-											})
-										},
-										confirm: function(oEvent) {
-											var aContexts = oEvent.getParameter("selectedContexts");
-											if (aContexts && aContexts.length) {
-												aContexts.forEach(function(oContext) {
-													var oData = oContext.getObject();
-													var oToken = new sap.m.Token({
-														key: oData.Id,
-														text: oData.Text
-													});
-													oPageIdMultiInput.addToken(oToken);
+					// Create a JSON model for Page ID table data
+					var oPageIdTableModel = new sap.ui.model.json.JSONModel([]);
+					that.getView().setModel(oPageIdTableModel, "createPageIdTableModel");
+
+					// Add Page ID button
+					var oAddPageIdButton = new sap.m.Button({
+						text: "Add Page ID",
+						icon: "sap-icon://add",
+						press: function() {
+							// Create value help dialog for Page ID
+							if (!that._oCreatePageIdValueHelpDialog) {
+								that._oCreatePageIdValueHelpDialog = new sap.m.SelectDialog({
+									title: "Select Page ID",
+									multiSelect: true,
+									items: {
+										path: "createPageTypeDropdownData>/",
+										template: new sap.m.StandardListItem({
+											title: "{createPageTypeDropdownData>Text}",
+											description: "{createPageTypeDropdownData>Id}"
+										})
+									},
+									confirm: function(oEvent) {
+										var aSelectedContexts = oEvent.getParameter("selectedContexts");
+										if (aSelectedContexts && aSelectedContexts.length) {
+											var aCurrentData = oPageIdTableModel.getData();
+											aSelectedContexts.forEach(function(oContext) {
+												var oData = oContext.getObject();
+												// Check if already exists
+												var bExists = aCurrentData.some(function(item) {
+													return item.Id === oData.Id;
 												});
-											}
-										},
-										search: function(oEvent) {
-											var sValue = oEvent.getParameter("value");
-											var oFilter = new sap.ui.model.Filter("Text", sap.ui.model.FilterOperator.Contains, sValue);
-											var oBinding = oEvent.getSource().getBinding("items");
-											oBinding.filter([oFilter]);
+												if (!bExists) {
+													aCurrentData.push({
+														Id: oData.Id,
+														Text: oData.Text
+													});
+												}
+											});
+											oPageIdTableModel.setData(aCurrentData);
 										}
-									});
-									that.getView().addDependent(that._oCreatePageIdValueHelpDialog);
-								}
-								
-								// Set the model and open dialog
-								var oPageTypeModel = that.getView().getModel("createPageTypeDropdownData");
-								if (oPageTypeModel && oPageTypeModel.getData()) {
-									that._oCreatePageIdValueHelpDialog.setModel(oPageTypeModel, "createPageTypeDropdownData");
-									that._oCreatePageIdValueHelpDialog.open();
-								}
+									},
+									search: function(oEvent) {
+										var sValue = oEvent.getParameter("value");
+										var oFilter = new sap.ui.model.Filter("Text", sap.ui.model.FilterOperator.Contains, sValue);
+										var oBinding = oEvent.getSource().getBinding("items");
+										oBinding.filter([oFilter]);
+									}
+								});
+								that.getView().addDependent(that._oCreatePageIdValueHelpDialog);
 							}
-						});
+							
+							// Set the model and open dialog
+							var oPageTypeModel = that.getView().getModel("createPageTypeDropdownData");
+							if (oPageTypeModel && oPageTypeModel.getData()) {
+								that._oCreatePageIdValueHelpDialog.setModel(oPageTypeModel, "createPageTypeDropdownData");
+								that._oCreatePageIdValueHelpDialog.open();
+							}
+						}
+					});
+
+					// Page ID Table with drag and drop
+					var oPageIdTable = new sap.m.Table({
+						mode: sap.m.ListMode.Delete,
+						delete: function(oEvent) {
+							var oItem = oEvent.getParameter("listItem");
+							var oContext = oItem.getBindingContext("createPageIdTableModel");
+							var iIndex = oContext.getPath().split("/")[1];
+							var aData = oPageIdTableModel.getData();
+							aData.splice(iIndex, 1);
+							oPageIdTableModel.setData(aData);
+						},
+						columns: [
+							new sap.m.Column({
+								width: "3em",
+								header: new sap.m.Text({ text: "" })
+							}),
+							new sap.m.Column({
+								header: new sap.m.Text({ text: "Page ID" })
+							}),
+							new sap.m.Column({
+								header: new sap.m.Text({ text: "Description" })
+							})
+						],
+						items: {
+							path: "createPageIdTableModel>/",
+							template: new sap.m.ColumnListItem({
+								cells: [
+									new sap.ui.core.Icon({
+										src: "sap-icon://resize-vertical",
+										color: "#0854a0"
+									}),
+									new sap.m.Text({ text: "{createPageIdTableModel>Id}" }),
+									new sap.m.Text({ text: "{createPageIdTableModel>Text}" })
+								]
+							})
+						},
+						dragDropConfig: [
+							new sap.ui.core.dnd.DragInfo({
+								sourceAggregation: "items"
+							}),
+							new sap.ui.core.dnd.DropInfo({
+								targetAggregation: "items",
+								dropPosition: "Between",
+								drop: function(oEvent) {
+									var oDraggedItem = oEvent.getParameter("draggedControl");
+									var oDroppedItem = oEvent.getParameter("droppedControl");
+									var sDropPosition = oEvent.getParameter("dropPosition");
+									
+									var oDraggedContext = oDraggedItem.getBindingContext("createPageIdTableModel");
+									var oDroppedContext = oDroppedItem ? oDroppedItem.getBindingContext("createPageIdTableModel") : null;
+									
+									if (!oDraggedContext) {
+										return;
+									}
+									
+									var iDraggedIndex = parseInt(oDraggedContext.getPath().split("/")[1]);
+									var aData = oPageIdTableModel.getData();
+									var oDraggedData = aData[iDraggedIndex];
+									
+									// Remove from old position
+									aData.splice(iDraggedIndex, 1);
+									
+									// Calculate new position
+									var iNewIndex;
+									if (oDroppedContext) {
+										iNewIndex = parseInt(oDroppedContext.getPath().split("/")[1]);
+										if (iDraggedIndex < iNewIndex) {
+											iNewIndex--;
+										}
+										if (sDropPosition === "After") {
+											iNewIndex++;
+										}
+									} else {
+										iNewIndex = aData.length;
+									}
+									
+									// Insert at new position
+									aData.splice(iNewIndex, 0, oDraggedData);
+									oPageIdTableModel.setData(aData);
+								}
+							})
+						]
+					});
 
 						oHierarchyForm.addContent(oEnableTimeRangeCheckBox);
 						oHierarchyForm.addContent(oPageIdLabel);
-						oHierarchyForm.addContent(oPageIdMultiInput);
+						oHierarchyForm.addContent(oAddPageIdButton);
+						oHierarchyForm.addContent(oPageIdTable);
 
 						// Data Binding Form
 
@@ -1977,14 +2070,15 @@ sap.ui.define([
 								}
 							}
 							
-							if (Array.isArray(aPageIds)) {
-								try {
-									if (oPageIdMultiInput && oPageIdMultiInput instanceof sap.m.MultiInput) {
-										// Clear existing tokens
-										oPageIdMultiInput.removeAllTokens();
-										
-										// Create tokens for each page ID in the array
-										aPageIds.forEach(function(sPageId) {
+						if (Array.isArray(aPageIds)) {
+							try {
+								// Get the Page ID table model
+								var oPageIdTableModel = that.getView().getModel("createPageIdTableModel");
+								if (oPageIdTableModel) {
+									var aTableData = [];
+									
+									// Populate table data for each page ID
+									aPageIds.forEach(function(sPageId) {
 										if (sPageId) {
 											// Find the corresponding text from createPageTypeDropdownData
 											var oPageTypeModel = that.getView().getModel("createPageTypeDropdownData");
@@ -2000,18 +2094,19 @@ sap.ui.define([
 												}
 											}
 											
-											var oToken = new sap.m.Token({
-												key: sPageId,
-												text: sDisplayText
+											aTableData.push({
+												Id: sPageId,
+												Text: sDisplayText
 											});
-											oPageIdMultiInput.addToken(oToken);
 										}
 									});
-									}
-								} catch (e) {
-									console.log("Could not find Page ID control for mapping");
+									
+									oPageIdTableModel.setData(aTableData);
 								}
+							} catch (e) {
+								console.log("Could not populate Page ID table:", e);
 							}
+						}
 						}
 						
 						// Handle Enable Time Range checkbox
