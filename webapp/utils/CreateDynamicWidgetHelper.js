@@ -425,6 +425,7 @@ sap.ui.define([
 				"SelectionType": tileMappingData.selectionType,
 				"Filter": filterMappingData,
 				"Status": "Draft",
+				"SourceType": ""
 			};
 			
 			sap.ui.core.BusyIndicator.show(0);
@@ -1046,10 +1047,12 @@ sap.ui.define([
 			
 			// New form structure: Selection Type Label, Selection Type Select, Field Label, Field Select, Text Label, Text Input, Field Label, Field Select, Text Label, Text Input, ...
 			// Skip the first two controls (Selection Type Label and Select) and start from index 2
-			// Each field has 4 controls: Field Label, Field Select, Text Label, Text Input
-			for (var i = 2; i < aFormContent.length && fieldIndex < iNumberOfFields; i += 4) {
+			// Each field has 8 controls: Field Label, Field Select, Text Label, Text Input, Unit Label, Unit Input, Color Label, Color Input
+			for (var i = 2; i < aFormContent.length && fieldIndex < iNumberOfFields; i += 8) {
 				var oFieldSelect = aFormContent[i + 1]; // Field select is after field label
 				var oTextInput = aFormContent[i + 3]; // Text input is after text label
+			var oUnitInput = aFormContent[i + 5]; // Unit input is after unit label
+			var oColorInput = aFormContent[i + 7]; // Color input is after color label
 				
 				if (oFieldSelect instanceof sap.m.Select && oTextInput instanceof sap.m.Input) {
 					var sSelectedField = oFieldSelect.getSelectedKey();
@@ -1058,7 +1061,9 @@ sap.ui.define([
 					if (sSelectedField) {
 						aTileValues.push({
 							field: sSelectedField,
-							label: sDisplayText || sSelectedField // Use field name as default if no display text
+							label: sDisplayText || sSelectedField, // Use field name as default if no display text
+					unit: (oUnitInput instanceof sap.m.Input ? oUnitInput.getValue() : "") || "",
+					color: (oColorInput instanceof sap.m.Input ? oColorInput.getValue() : "") || ""
 						});
 					}
 				}
@@ -1151,13 +1156,39 @@ sap.ui.define([
 					width: "100%",
 					placeholder: "Enter display text for field " + k
 				});
-				// next to display text field create two more input field for unit and color 
+	
+			// Unit Label
+			var oUnitLabel = new Label({
+				text: "Unit " + k
+			});
+
+			// Unit Input
+			var oUnitInput = new sap.m.Input({
+				width: "100%",
+				placeholder: "Enter unit for field " + k
+			});
+
+			// Color Label
+			var oColorLabel = new Label({
+				text: "Color " + k
+			});
+
+			// Color Input
+			var oColorInput = new sap.m.Input({
+				width: "100%",
+				placeholder: "Enter color for field " + k,
+				type: "Text"
+			}); 
 
 				// Add components to form
 				oTileMappingForm.addContent(oFieldLabel);
 				oTileMappingForm.addContent(oFieldSelect);
 				oTileMappingForm.addContent(oTextLabel);
 				oTileMappingForm.addContent(oTextInput);
+				oTileMappingForm.addContent(oUnitLabel);
+				oTileMappingForm.addContent(oUnitInput);
+				oTileMappingForm.addContent(oColorLabel);
+				oTileMappingForm.addContent(oColorInput);
 			}
 			
 			return iNumberOfFields;
@@ -1909,10 +1940,12 @@ sap.ui.define([
 												// Calculate the position of controls for this field
 												// New form structure: Selection Type Label, Selection Type Select, Field Label, Field Select, Text Label, Text Input, Field Label, Field Select, Text Label, Text Input, ...
 												// Skip the first two controls (Selection Type Label and Select) and start from index 2
-												// Each field has 4 controls: Field Label, Field Select, Text Label, Text Input
-												var controlIndex = 2 + (tileIndex * 4); // Start from index 2 to skip selection type label and select
+												// Each field has 8 controls: Field Label, Field Select, Text Label, Text Input, Unit Label, Unit Input, Color Label, Color Input
+												var controlIndex = 2 + (tileIndex * 8); // Start from index 2 to skip selection type label and select
 												var oTileFieldSelect = aTileMappingContent[controlIndex + 1]; // Field select is after field label
 												var oTileTextInput = aTileMappingContent[controlIndex + 3]; // Text input is after text label
+											var oTileUnitInput = aTileMappingContent[controlIndex + 5]; // Unit input is after unit label
+											var oTileColorInput = aTileMappingContent[controlIndex + 7]; // Color input is after color label
 												
 												if (oTileFieldSelect instanceof sap.m.Select && oTileTextInput instanceof sap.m.Input) {
 													// Set the selected field
@@ -1920,6 +1953,16 @@ sap.ui.define([
 													
 													// Set the display text
 													oTileTextInput.setValue(tileData.label);
+
+													// Set the unit if it exists
+													if (oTileUnitInput instanceof sap.m.Input && tileData.unit) {
+														oTileUnitInput.setValue(tileData.unit);
+													}
+
+													// Set the color if it exists
+													if (oTileColorInput instanceof sap.m.Input && tileData.color) {
+														oTileColorInput.setValue(tileData.color);
+													}
 												}
 											}
 										}
