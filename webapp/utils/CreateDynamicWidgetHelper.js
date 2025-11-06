@@ -230,6 +230,17 @@ sap.ui.define([
 			var oCreatePageTypeModel = new JSONModel(aCreatePageTypes);
 			that.getView().setModel(oCreatePageTypeModel, "createPageTypeDropdownData");
 
+			var aCreateSystemTypes = await that.getSearchHelpData('System_Name');
+			var oCreateSystemTypeModel = new JSONModel(aCreateSystemTypes);
+			that.getView().setModel(oCreateSystemTypeModel, "createSystemTypeDropdownData");
+
+			var aCreateDefaultPeriod = await that.getSearchHelpData('OPE_PERIOD');
+
+			var aCreateDefaultHeirarchy = await that.getSearchHelpData('DEFAULT_HIER');
+
+			
+
+
 			// Initialize metadata and JSON data models
 			var oCreateMetaDataModel = new JSONModel([]);
 			that.getView().setModel(oCreateMetaDataModel, "createMetaDataModel");
@@ -261,7 +272,8 @@ sap.ui.define([
 						oCurrentData.selectionType = oWidgetData.SelectionType;
 						oCurrentData.timeframe = oWidgetData.TimeFrame;
 						oCurrentData.pageId = oWidgetData.ZpageId;
-						oCurrentData.enableTimeRange = oWidgetData.EnableTimeRange;						
+						oCurrentData.enableTimeRange = oWidgetData.EnableTimeRange;	
+						oCurrentData.dataSourceType = oWidgetData.SourceType;					
 						oModel.setData(oCurrentData);
 						
 						// Show widget ID fields
@@ -426,7 +438,10 @@ sap.ui.define([
 				"SelectionType": tileMappingData.selectionType,
 				"Filter": filterMappingData,
 				"Status": "Draft",
-				"SourceType": ""
+				"SourceType": oWidgetData.dataSourceType || "",
+				// "Istimedim":,
+				// "TimeRange":
+				"SystemName":oWidgetData.systemName || ""
 			};
 			
 			sap.ui.core.BusyIndicator.show(0);
@@ -1393,10 +1408,11 @@ sap.ui.define([
 			}
 
 			var sDataSource = that.getView().byId("createDataSourceId").getValue();
+			var sSourceType = that.getView().byId("createDataSourceType").getSelectedKey();
 			var aFilters = [
 				new Filter("DatasourceName", FilterOperator.EQ, sDataSource),
 				new Filter("InputParameter", FilterOperator.EQ, JSON.stringify(aFilterParams)),
-				new Filter("SourceType",FilterOperator.EQ, 'BEX_QUERY')
+				new Filter("SourceType",FilterOperator.EQ, sSourceType)
 			];
 
 			finmobview.read("/Query_Output", {

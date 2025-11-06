@@ -1,0 +1,119 @@
+Index,ParentId,Parent,Child,RequestUri,Method
+1,GI001,cop/GI/Finance/,Controller,ShareKGISet,POST
+2,GI002,cop/GI/Finance/Controller/,Planning and Performance Management,ShareKGISet,POST
+3,GI003,cop/GI/Finance/Controller/Planning and Performance Management/,Programming & Budgetary System (Cancelled),ShareKGISet,POST
+4,GI004,cop/GI/Finance/Controller/Planning and Performance Management/,Operating Plan Instructions (Cancelled),ShareKGISet,POST
+5,GI005,cop/GI/Finance/Controller/Planning and Performance Management/,General Accountability Report Instruction (Cancelled),ShareKGISet,POST
+6,GI006,cop/GI/Finance/Controller/,CPCCD,ShareKGISet,POST
+7,GI007,cop/GI/Finance/Controller/CPCCD/,Capital Program and Budget,ShareKGISet,POST
+8,GI008,cop/GI/Finance/Controller/CPCCD/,BI-50 R&D PROGRAM AND BUDGET,ShareKGISet,POST
+9,GI009,cop/GI/Finance/Controller/CPCCD/,DEPLOYMENT OF PROVEN TECHNOLOGIES (BI-51),ShareKGISet,POST
+10,GI0010,cop/GI/Finance/Controller/CPCCD/,Exploration Program and Budget (Cancelled),ShareKGISet,POST
+11,GI0011,cop/GI/Finance/Controller/CPCCD/,DEVELOPMENT DRILLING PROGRAM AND BUDGET,ShareKGISet,POST
+12,GI0012,cop/GI/Finance/Controller/CPCCD/,Corporate Social Responsibility and Inftrastructure & Capacity Building- Programs and Budgets,ShareKGISet,POST
+13,GI0013,cop/GI/Finance/Controller/CPCCD/,Leases- Project Type Prefix 15,ShareKGISet,POST
+14,GI0014,cop/GI/Finance/Controller/CPCCD/,HOME OWNERSHIP & COMMUNITY DEVELOPMENT PROGRAM &,ShareKGISet,POST
+15,GI0015,cop/GI/Finance/,Treasury,ShareKGISet,POST
+16,GI0016,cop/GI/Finance/Treasury/,Treasurer,ShareKGISet,POST
+17,GI0017,cop/GI/Finance/Treasury/Treasurer/,Rentals,ShareKGISet,POST
+18,GI0018,cop/GI/Finance/Treasury/Treasurer/Rentals/,Leases,ShareKGISet,POST
+19,GI0019,cop/GI/Finance/Treasury/Treasurer/Rentals/Leases/,Charters,ShareKGISet,POST
+20,GI0020,cop/GI/Finance/Controller/CPCCD/,EXPENDITURE REQUESTS,ShareKGISet,POST
+21,GI0021,cop/GI/Finance/Controller/CPCCD/,"Budget Item, Expenditure Request and Job Order Numbering System",ShareKGISet,POST
+22,GI0022,cop/GI/Finance/Controller/CPCCD/,Project Change Requests And Cost Overrun Approval Request,ShareKGISet,POST
+23,GI0023,cop/GI/Finance/Controller/CPCCD/,Instructions For Preparing A Project Change Request And Cost Overrun Approval Request,ShareKGISet,POST
+24,GI0024,cop/GI/Finance/Controller/CPCCD/,MISCELLANEOUS PROJECTS & PURCHASES MASTER,ShareKGISet,POST
+25,GI0025,cop/GI/Finance/Controller/CPCCD/,POST PROJECT APPRAISALS,ShareKGISet,POST
+26,GI0026,cop/GI/Finance/Controller/,Group Governance & Policy Dept,ShareKGISet,POST
+27,GI0027,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Approval and Corporate Signature Authority,ShareKGISet,POST
+28,GI0028,cop/GI/Finance/Treasury/Treasurer/,"Company Exchange Rates And Forecasts, And The Reporting Of Foreign Currency Liabilities",ShareKGISet,POST
+29,GI0029,cop/GI/Finance/Treasury/,Treasury Services Dept,ShareKGISet,POST
+30,GI0030,cop/GI/Finance/Treasury/Treasury Services Dept/,Custodianship of Company Funds (Cancelled),ShareKGISet,POST
+31,GI0031,cop/GI/Finance/Treasury/Treasury Services Dept/,Corporate Purchasing Credit Card,ShareKGISet,POST
+32,GI0032,cop/GI/Finance/Treasury/Treasury Services Dept/,American Express Executive Corporate Credit Card,ShareKGISet,POST
+33,GI0033,cop/GI/Finance/Treasury/Treasury Services Dept/,"Bank Accounts, Banking Business Partners and Compliance",ShareKGISet,POST
+34,GI0034,cop/GI/Finance/Treasury/,Treasury Advisory Department,ShareKGISet,POST
+35,GI0035,cop/GI/Finance/Treasury/Treasury Advisory Department/,Corporate and Wholly-Owned Subsidiaries’ Financial Advisory Engagements  ,ShareKGISet,POST
+36,GI0036,cop/GI/Finance/Treasury/Treasury Services Dept/,Payment Authentication (Cancelled),ShareKGISet,POST
+37,GI0037,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Controller’s General and Accounting Instructions Maintained By GG&PD,ShareKGISet,POST
+38,GI0038,cop/GI/Finance/Controller/Group Governance & Policy Dept/,General Instruction Manual Index - Active,ShareKGISet,POST
+39,GI0039,cop/GI/Finance/Controller/Group Governance & Policy Dept/,GENERAL INSTRUCTION MANUAL INDEX – CANCELLED SINCE 2000,ShareKGISet,POST
+40,GI0040,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Administration of Self-Directed Groups (SDG) Banking Requirements,ShareKGISet,POST
+41,GI0041,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Emergency Event Cost,ShareKGISet,POST
+42,GI0042,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Capital Assets Structures and System Elements,ShareKGISet,POST
+43,GI0043,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Capital Assets Subclasses (Cancelled),ShareKGISet,POST
+44,GI0044,cop/GI/Finance/Controller/Group Governance & Policy Dept/,"Capital Assets Classes, Subclasses and Depreciation Elements",ShareKGISet,POST
+45,GI0045,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Capital Assets Record Creation and Tag Numbering,ShareKGISet,POST
+46,GI0046,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Classification of Costs – Turnover Stage of Capital Facilities,ShareKGISet,POST
+47,GI0047,cop/GI/Finance/Controller/Group Governance & Policy Dept/Classification of Costs – Turnover Stage of Capital Facilities/,Projects,ShareKGISet,POST
+48,GI0048,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Accounting for Computer Software Related Projects,ShareKGISet,POST
+49,GI0049,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Capital Assets - Service Lives and Depreciation,ShareKGISet,POST
+50,GI0050,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Drilling Equipment - Service Lives and Depreciation,ShareKGISet,POST
+51,GI0051,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Engineering Work Order Authorization for Preliminary Engineering Preparation - Saudi Aramco Form SA 6891,ShareKGISet,POST
+52,GI0052,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Joint Venture Development – Financial Controls,ShareKGISet,POST
+53,GI0053,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Joint Ventrue Development - Pre-formation Cost Sharing,ShareKGISet,POST
+54,GI0054,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Agreements - Functional Review Guidelines,ShareKGISet,POST
+55,GI0055,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Financial Advisory Services (Non-Banking),ShareKGISet,POST
+56,GI0056,cop/GI/Finance/Controller/Group Governance & Policy Dept/,WHOLLY OWNED ENTITY FORMATION,ShareKGISet,POST
+57,GI0057,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Affiliate Board Material - Controller's Report,ShareKGISet,POST
+58,GI0058,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Identification and Accounting for Impairments of Cash Generating Units (CGUs),ShareKGISet,POST
+59,GI0059,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Identifying and Accounting for Environmental Liabilities and Provisions,ShareKGISet,POST
+60,GI0060,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Identifying and Accounting for Decommissioning Provisions,ShareKGISet,POST
+61,GI0061,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Accounting Reports – Controller’s Organization,ShareKGISet,POST
+62,GI0062,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Cash Deposit by Community Services Facilities,ShareKGISet,POST
+63,GI0063,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Physical Inventory Cycle Of Capital Assets,ShareKGISet,POST
+64,GI0064,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Travel Advance and Expense Settlement Using eTravel,ShareKGISet,POST
+65,GI0065,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Expense Reports Form SA-165,ShareKGISet,POST
+66,GI0066,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Miscellaneous Payments,ShareKGISet,POST
+67,GI0067,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Settlement of Third Party Liabilities Incurred While Using Company Vehicles,ShareKGISet,POST
+68,GI0068,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Accounting Basic Code System,ShareKGISet,POST
+69,GI0069,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Operating Expense and Organization Codes- Clearance Accounts (cancelled),ShareKGISet,POST
+70,GI0070,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Well Accounting,ShareKGISet,POST
+71,GI0071,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Vehicle Usage and Cargo Services Charges to User Accounts (Cancelled),ShareKGISet,POST
+72,GI0072,cop/GI/Finance/Controller/Group Governance & Policy Dept/,"SURVEYING SERVICES ACTIVITY CHARGE TO SAUDI ARAMCO ORGANIZATIONS, CAPITAL (Cancelled)",ShareKGISet,POST
+73,GI0073,cop/GI/Finance/Controller/Group Governance & Policy Dept/,"Inspection Sercive Charges to Saudi Aramco Organizations, Capital Projects and Third Parties (Cancelled)",ShareKGISet,POST
+74,GI0074,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Pona Sample Charges to Offtakers (Cancelled),ShareKGISet,POST
+75,GI0075,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Exploration Costs,ShareKGISet,POST
+76,GI0076,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Operating Segment and Business Unit Hierarchy,ShareKGISet,POST
+77,GI0077,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Transfer Pricing for Product Transfers & Sevices ,ShareKGISet,POST
+78,GI0078,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Support Cost Charge-Out and Allocation,ShareKGISet,POST
+79,GI0079,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Identification of Embedded Derivatives,ShareKGISet,POST
+80,GI0080,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Corporate Accrual Policies ,ShareKGISet,POST
+81,GI0081,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Procedures for Domestic Sales of Hydrocarbon Products,ShareKGISet,POST
+82,GI0082,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Material Balancing of Hydrocarbon Liquids,ShareKGISet,POST
+83,GI0083,cop/GI/Finance/Controller/Group Governance & Policy Dept/,MATERIAL BALANCING OF HYDROCARBON GASES,ShareKGISet,POST
+84,GI0084,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Own-Use Diesel Fuel,ShareKGISet,POST
+85,GI0085,cop/GI/Finance/Controller/Group Governance & Policy Dept/,"Withholding Tax, Retention, Payments and Reports to DZIT (Cancelled)",ShareKGISet,POST
+86,GI0086,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Value Added Tax (VAT) Process,ShareKGISet,POST
+87,GI0087,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Controllable Cost Review And Approval,ShareKGISet,POST
+88,GI0088,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Payroll General Procedures,ShareKGISet,POST
+89,GI0089,cop/GI/Finance/Controller/,Directory of Payroll Related Questions (cancelled),ShareKGISet,POST
+90,GI0090,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Labor Costing and Analysis,ShareKGISet,POST
+91,GI0091,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Area Payroll Representatives - Duties and Responsibilities (Cancelled),ShareKGISet,POST
+92,GI0092,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Responsibility for Expenses of Visitors and Employees on Assignment,ShareKGISet,POST
+93,GI0093,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Policies and Procedures for Saudi Aramco Appointees Remuneration and Expenses,ShareKGISet,POST
+94,GI0094,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Internal Controls Over Financial Reporting (ICFR) Assessment,ShareKGISet,POST
+95,GI0095,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Full Costing,ShareKGISet,POST
+96,GI0096,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Tihama Power invoice Verification and monthly accrual Process - Stage I & 2 (Cancelled),ShareKGISet,POST
+97,GI0097,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Financial Systems Segregation of Duties (SoD),ShareKGISet,POST
+98,GI0098,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Period End Costing and Financial Reporting Activity,ShareKGISet,POST
+99,GI0099,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Recoveries to Capital Expenditure,ShareKGISet,POST
+100,GI00100,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Dividend Distributions,ShareKGISet,POST
+101,GI00101,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Share Based Payments,ShareKGISet,POST
+102,GI00102,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Subsidiary & Affiliate Cash Calls,ShareKGISet,POST
+103,GI00103,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Provision of Services and Sale of Materials to External Parties,ShareKGISet,POST
+104,GI00104,cop/GI/Finance/Controller/Group Governance & Policy Dept/,KAUST Funding Controls,ShareKGISet,POST
+105,GI00105,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Miscellaneous Sales-Processes and Procedures ,ShareKGISet,POST
+106,GI00106,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Defined Benefits Plans-Annual Computation of the Obligation and Expense,ShareKGISet,POST
+107,GI00107,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Financial Guarantees & Letters of Credit,ShareKGISet,POST
+108,GI00108,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Financial Information Confidentiality,ShareKGISet,POST
+109,GI00109,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Project Development Expenditures - Project Type Code 40,ShareKGISet,POST
+110,GI00110,cop/GI/Finance/Controller/Group Governance & Policy Dept/,ACCOUNTING FOR LEASES WHERE SAUDI ARAMCO IS THE LESSEE,ShareKGISet,POST
+111,GI00111,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Accounting for The Saudi Riyal Thrift Plan (Idikhar),ShareKGISet,POST
+112,GI00112,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Accounting for Transactions with Aramco Oil Pipeline Company (AOPC),ShareKGISet,POST
+113,GI00113,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Post Transaction Assessments,ShareKGISet,POST
+114,GI00114,cop/GI/Finance/Controller/Group Governance & Policy Dept/,Public Service Projects-Governance and Control (Cancelled),ShareKGISet,POST
+115,GI00115,cop/GI/Finance/,Investor Relations,ShareKGISet,POST
+116,GI00116,cop/GI/Finance/Investor Relations/,Earnings Call,ShareKGISet,POST
+117,GI00117,cop/GI/Finance/Investor Relations/,Investor-Related Website Content Management,ShareKGISet,POST
+118,GI00118,cop/GI/Finance/Controller/CPCCD/,MAINTAIN POTENTIAL MASTER APPROPRIATIONS,ShareKGISet,POST

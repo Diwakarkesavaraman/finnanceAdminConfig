@@ -50,7 +50,7 @@
 							<Label text="Data Source Type"/>
 							<Select id="createDataSourceType" selectedKey="{createWidgetValues>/dataSourceType}">
 								<core:Item key="BEX_QUERY" text="Bex Query"/>
-								<core:Item key="HANA" text="Hana Views"/>
+								<core:Item key="CDS_VIEW" text="Hana Views"/>
 							</Select>
 							<Label text="Data Source"/>
 							<Input id="createDataSourceId" value="{createWidgetValues>/selectedDataSource}" liveChange="onCreateDataSourceChange"/>
@@ -89,14 +89,14 @@
 											</form:SimpleForm>
 										</VBox>
 										<VBox class="sapUiSmallMargin">
-											<form:SimpleForm id="createTileMappingForm" editable="true" layout="ResponsiveGridLayout" title="Data Binding" labelSpanXL="3" labelSpanL="3"
+											<form:SimpleForm id="createDataMappingForm" editable="true" layout="ResponsiveGridLayout" title="Chart Binding" labelSpanXL="3" labelSpanL="3"
 												labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
 												columnsL="1" columnsM="1" singleContainerFullSize="false">
 												<form:content></form:content>
 											</form:SimpleForm>
 										</VBox>
 										<VBox class="sapUiSmallMargin">
-											<form:SimpleForm id="createDataMappingForm" editable="true" layout="ResponsiveGridLayout" title="Chart Binding" labelSpanXL="3" labelSpanL="3"
+											<form:SimpleForm id="createTileMappingForm" editable="true" layout="ResponsiveGridLayout" title="Data Binding" labelSpanXL="3" labelSpanL="3"
 												labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
 												columnsL="1" columnsM="1" singleContainerFullSize="false">
 												<form:content></form:content>

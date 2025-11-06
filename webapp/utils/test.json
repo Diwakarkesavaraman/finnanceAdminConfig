@@ -1,0 +1,2986 @@
+[
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI001",
+      "Parent": "cop/GI/Finance/",
+      "Child": "Controller"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI002",
+      "Parent": "cop/GI/Finance/Controller/",
+      "Child": "Planning and Performance Management"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI003",
+      "Parent": "cop/GI/Finance/Controller/Planning and Performance Management/",
+      "Child": "Programming & Budgetary System (Cancelled)",
+      "Name": "0020_000.pdf",
+      "Title": "Programming & Budgetary System (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Abdullatif, Abdulrahman M.",
+      "IssueDate": "44437.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Planning%20and%20Performance%20Management/0020_000.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI004",
+      "Parent": "cop/GI/Finance/Controller/Planning and Performance Management/",
+      "Child": "Operating Plan Instructions (Cancelled)",
+      "Name": "0020_004.pdf",
+      "Title": "Operating Plan Instructions (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Abdullatif, Abdulrahman M.",
+      "IssueDate": "44437.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Planning%20and%20Performance%20Management/0020_004.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI005",
+      "Parent": "cop/GI/Finance/Controller/Planning and Performance Management/",
+      "Child": "General Accountability Report Instruction (Cancelled)",
+      "Name": "0020_008.pdf",
+      "Title": "General Accountability Report Instruction (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Abdullatif, Abdulrahman M.",
+      "IssueDate": "44437.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Planning%20and%20Performance%20Management/0020_008.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI006",
+      "Parent": "cop/GI/Finance/Controller/",
+      "Child": "CPCCD"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI007",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "Capital Program and Budget",
+      "Name": "0020_031.pdf",
+      "Title": "Capital Program and Budget",
+      "IssuingOrg": "",
+      "ContactPerson": "Hashim, Hassan A",
+      "IssueDate": "44948.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_031.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI008",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "BI-50 R&D PROGRAM AND BUDGET",
+      "Name": "0020_050.pdf",
+      "Title": "BI-50 R&D PROGRAM AND BUDGET",
+      "IssuingOrg": "",
+      "ContactPerson": "Alarifi, Mohammed S",
+      "IssueDate": "45237",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_050.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI009",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "DEPLOYMENT OF PROVEN TECHNOLOGIES (BI-51)",
+      "Name": "0020_051.pdf",
+      "Title": "DEPLOYMENT OF PROVEN TECHNOLOGIES (BI-51)",
+      "IssuingOrg": "",
+      "ContactPerson": "Blake, Christopher",
+      "IssueDate": "45596",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_051.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0010",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "Exploration Program and Budget (Cancelled)",
+      "Name": "0020_081.pdf",
+      "Title": "Exploration Program and Budget (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Blake, Christopher",
+      "IssueDate": "44318.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_081.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0011",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "DEVELOPMENT DRILLING PROGRAM AND BUDGET",
+      "Name": "0020_101.pdf",
+      "Title": "DEVELOPMENT DRILLING PROGRAM AND BUDGET",
+      "IssuingOrg": "",
+      "ContactPerson": "Faraj, Haithem H",
+      "IssueDate": "40330.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_101.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0012",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "Corporate Social Responsibility and Inftrastructure & Capacity Building- Programs and Budgets",
+      "Name": "0020_110.pdf",
+      "Title": "Corporate Social Responsibility and Inftrastructure & Capacity Building- Programs and Budgets",
+      "IssuingOrg": "",
+      "ContactPerson": "Blake, Christopher",
+      "IssueDate": "45258",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_110.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0013",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "Leases- Project Type Prefix 15",
+      "Name": "0020_150.pdf",
+      "Title": "Leases- Project Type Prefix 15",
+      "IssuingOrg": "",
+      "ContactPerson": "Faraj, Haithem H",
+      "IssueDate": "43660.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_150.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0014",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "HOME OWNERSHIP & COMMUNITY DEVELOPMENT PROGRAM &",
+      "Name": "0020_151.pdf",
+      "Title": "HOME OWNERSHIP & COMMUNITY DEVELOPMENT PROGRAM &",
+      "IssuingOrg": "",
+      "ContactPerson": "Blake, Christopher",
+      "IssueDate": "45258",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_151.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0015",
+      "Parent": "cop/GI/Finance/",
+      "Child": "Treasury"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0016",
+      "Parent": "cop/GI/Finance/Treasury/",
+      "Child": "Treasurer"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0017",
+      "Parent": "cop/GI/Finance/Treasury/Treasurer/",
+      "Child": "Rentals"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0018",
+      "Parent": "cop/GI/Finance/Treasury/Treasurer/Rentals/",
+      "Child": "Leases"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0019",
+      "Parent": "cop/GI/Finance/Treasury/Treasurer/Rentals/Leases/",
+      "Child": "Charters",
+      "Name": "0020_161.pdf",
+      "Title": "Rentals/Leases/Charters",
+      "IssuingOrg": "",
+      "ContactPerson": "Turner, Mark D",
+      "IssueDate": "29351.08333",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Treasury/Treasurer/0020_161.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0020",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "EXPENDITURE REQUESTS",
+      "Name": "0020_500.pdf",
+      "Title": "EXPENDITURE REQUESTS",
+      "IssuingOrg": "",
+      "ContactPerson": "Blake, Christopher",
+      "IssueDate": "45258",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_500.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0021",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "Budget Item, Expenditure Request and Job Order Numbering System",
+      "Name": "0020_510.pdf",
+      "Title": "Budget Item, Expenditure Request and Job Order Numbering System",
+      "IssuingOrg": "",
+      "ContactPerson": "Blake, Christopher",
+      "IssueDate": "45258",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_510.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0022",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "Project Change Requests And Cost Overrun Approval Request",
+      "Name": "0020_520.pdf",
+      "Title": "Project Change Requests And Cost Overrun Approval Request",
+      "IssuingOrg": "",
+      "ContactPerson": "Naim, Mohammed S",
+      "IssueDate": "45699",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_520.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0023",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "Instructions For Preparing A Project Change Request And Cost Overrun Approval Request",
+      "Name": "0020_520-1.pdf",
+      "Title": "Instructions For Preparing A Project Change Request And Cost Overrun Approval Request",
+      "IssuingOrg": "",
+      "ContactPerson": "Naim, Mohammed S",
+      "IssueDate": "45699",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_520-1.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0024",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "MISCELLANEOUS PROJECTS & PURCHASES MASTER",
+      "Name": "0020_620.pdf",
+      "Title": "MISCELLANEOUS PROJECTS & PURCHASES MASTER",
+      "IssuingOrg": "",
+      "ContactPerson": "Alsaud, Abdullah A",
+      "IssueDate": "45593",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_620.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0025",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "POST PROJECT APPRAISALS",
+      "Name": "0020_700.pdf",
+      "Title": "POST PROJECT APPRAISALS",
+      "IssuingOrg": "",
+      "ContactPerson": "Kaleemi, Salman",
+      "IssueDate": "44725.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_700.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0026",
+      "Parent": "cop/GI/Finance/Controller/",
+      "Child": "Group Governance & Policy Dept"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0027",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Approval and Corporate Signature Authority",
+      "Name": "0021_201.pdf",
+      "Title": "Approval and Corporate Signature Authority",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "43503.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0021_201.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0028",
+      "Parent": "cop/GI/Finance/Treasury/Treasurer/",
+      "Child": "Company Exchange Rates And Forecasts, And The Reporting Of Foreign Currency Liabilities",
+      "Name": "0050_005.pdf",
+      "Title": "Company Exchange Rates And Forecasts, And The Reporting Of Foreign Currency Liabilities",
+      "IssuingOrg": "",
+      "ContactPerson": "Adzemovic, Radi",
+      "IssueDate": "42072.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Treasury/Treasurer/0050_005.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0029",
+      "Parent": "cop/GI/Finance/Treasury/",
+      "Child": "Treasury Services Dept"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0030",
+      "Parent": "cop/GI/Finance/Treasury/Treasury Services Dept/",
+      "Child": "Custodianship of Company Funds (Cancelled)",
+      "Name": "0053_006.pdf",
+      "Title": "Custodianship of Company Funds (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Gabba, Sami E",
+      "IssueDate": "44501.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Treasury/Treasury%20Services%20Dept/0053_006.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0031",
+      "Parent": "cop/GI/Finance/Treasury/Treasury Services Dept/",
+      "Child": "Corporate Purchasing Credit Card",
+      "Name": "0053_007.pdf",
+      "Title": "Corporate Purchasing Credit Card",
+      "IssuingOrg": "",
+      "ContactPerson": "Ramadhan, Tahany J",
+      "IssueDate": "44286.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Treasury/Treasury%20Services%20Dept/0053_007.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0032",
+      "Parent": "cop/GI/Finance/Treasury/Treasury Services Dept/",
+      "Child": "American Express Executive Corporate Credit Card",
+      "Name": "0053_008.pdf",
+      "Title": "American Express Executive Corporate Credit Card",
+      "IssuingOrg": "",
+      "ContactPerson": "Qahtani, Hassan A (Treasury)",
+      "IssueDate": "45720",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Treasury/Treasury%20Services%20Dept/0053_008.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0033",
+      "Parent": "cop/GI/Finance/Treasury/Treasury Services Dept/",
+      "Child": "Bank Accounts, Banking Business Partners and Compliance",
+      "Name": "0053_009.pdf",
+      "Title": "Bank Accounts, Banking Business Partners and Compliance",
+      "IssuingOrg": "",
+      "ContactPerson": "Copp, Nicolas M",
+      "IssueDate": "43591.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Treasury/Treasury%20Services%20Dept/0053_009.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0034",
+      "Parent": "cop/GI/Finance/Treasury/",
+      "Child": "Treasury Advisory Department"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0035",
+      "Parent": "cop/GI/Finance/Treasury/Treasury Advisory Department/",
+      "Child": "Corporate and Wholly-Owned Subsidiaries’ Financial Advisory Engagements  ",
+      "Name": "0057_001.pdf",
+      "Title": "Corporate and Wholly-Owned Subsidiaries’ Financial Advisory Engagements  ",
+      "IssuingOrg": "",
+      "ContactPerson": "Jad, Sudki S",
+      "IssueDate": "44061.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Treasury/Treasury%20Advisory%20Department/0057_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0036",
+      "Parent": "cop/GI/Finance/Treasury/Treasury Services Dept/",
+      "Child": "Payment Authentication (Cancelled)",
+      "Name": "0059_002.pdf",
+      "Title": "Payment Authentication (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Gabba, Sami E",
+      "IssueDate": "44501.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Treasury/Treasury%20Services%20Dept/0059_002.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0037",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Controller’s General and Accounting Instructions Maintained By GG&PD",
+      "Name": "0200_000.pdf",
+      "Title": "Controller’s General and Accounting Instructions Maintained By GG&PD",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45795",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0200_000.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0038",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "General Instruction Manual Index - Active",
+      "Name": "0200_001.pdf",
+      "Title": "General Instruction Manual Index - Active",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45694",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0200_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0039",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "GENERAL INSTRUCTION MANUAL INDEX – CANCELLED SINCE 2000",
+      "Name": "0200_002.pdf",
+      "Title": "GENERAL INSTRUCTION MANUAL INDEX – CANCELLED SINCE 2000",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45694",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0200_002.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0040",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Administration of Self-Directed Groups (SDG) Banking Requirements",
+      "Name": "0200_005.pdf",
+      "Title": "Administration of Self-Directed Groups (SDG) Banking Requirements",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "43667.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0200_005.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0041",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Emergency Event Cost",
+      "Name": "0202_300.pdf",
+      "Title": "Emergency Event Cost",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44066.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0202_300.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0042",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Capital Assets Structures and System Elements",
+      "Name": "0202_301.pdf",
+      "Title": "Capital Assets Structures and System Elements",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45720",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0202_301.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0043",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Capital Assets Subclasses (Cancelled)",
+      "Name": "0202_303.pdf",
+      "Title": "Capital Assets Subclasses (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45720",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0202_303.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0044",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Capital Assets Classes, Subclasses and Depreciation Elements",
+      "Name": "0202_304.pdf",
+      "Title": "Capital Assets Classes, Subclasses and Depreciation Elements",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45720",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0202_304.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0045",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Capital Assets Record Creation and Tag Numbering",
+      "Name": "0202_305.pdf",
+      "Title": "Capital Assets Record Creation and Tag Numbering",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45559",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0202_305.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0046",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Classification of Costs – Turnover Stage of Capital Facilities"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0047",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/Classification of Costs – Turnover Stage of Capital Facilities/",
+      "Child": "Projects",
+      "Name": "0202_309.pdf",
+      "Title": "Classification of Costs – Turnover Stage of Capital Facilities/Projects",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45446",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0202_309.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0048",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Accounting for Computer Software Related Projects",
+      "Name": "0202_320.pdf",
+      "Title": "Accounting for Computer Software Related Projects",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "45062.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0202_320.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0049",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Capital Assets - Service Lives and Depreciation",
+      "Name": "0202_330.pdf",
+      "Title": "Capital Assets - Service Lives and Depreciation",
+      "IssuingOrg": "",
+      "ContactPerson": "Wilson, Joseph K",
+      "IssueDate": "",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0202_330.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0050",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Drilling Equipment - Service Lives and Depreciation",
+      "Name": "0202_331.pdf",
+      "Title": "Drilling Equipment - Service Lives and Depreciation",
+      "IssuingOrg": "",
+      "ContactPerson": "Wilson, Joseph K",
+      "IssueDate": "",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0202_331.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0051",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Engineering Work Order Authorization for Preliminary Engineering Preparation - Saudi Aramco Form SA 6891",
+      "Name": "0202_451.pdf",
+      "Title": "Engineering Work Order Authorization for Preliminary Engineering Preparation - Saudi Aramco Form SA 6891",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45704",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0202_451.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0052",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Joint Venture Development – Financial Controls",
+      "Name": "0203_001.pdf",
+      "Title": "Joint Venture Development – Financial Controls",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44186.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0203_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0053",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Joint Ventrue Development - Pre-formation Cost Sharing",
+      "Name": "0203_002.pdf",
+      "Title": "Joint Ventrue Development - Pre-formation Cost Sharing",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44186.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0203_002.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0054",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Agreements - Functional Review Guidelines",
+      "Name": "0203_003.pdf",
+      "Title": "Agreements - Functional Review Guidelines",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44592.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0203_003.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0055",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Financial Advisory Services (Non-Banking)",
+      "Name": "0203_004.pdf",
+      "Title": "Financial Advisory Services (Non-Banking)",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "43536.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0203_004.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0056",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "WHOLLY OWNED ENTITY FORMATION",
+      "Name": "0203_005.pdf",
+      "Title": "WHOLLY OWNED ENTITY FORMATION",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44532.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0203_005.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0057",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Affiliate Board Material - Controller's Report",
+      "Name": "0203_006.pdf",
+      "Title": "Affiliate Board Material - Controller's Report",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44189.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0203_006.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0058",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Identification and Accounting for Impairments of Cash Generating Units (CGUs)",
+      "Name": "0204_001.pdf",
+      "Title": "Identification and Accounting for Impairments of Cash Generating Units (CGUs)",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "43594.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0204_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0059",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Identifying and Accounting for Environmental Liabilities and Provisions",
+      "Name": "0204_002.pdf",
+      "Title": "Identifying and Accounting for Environmental Liabilities and Provisions",
+      "IssuingOrg": "",
+      "ContactPerson": "Khan, Naumaan A",
+      "IssueDate": "43039.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0204_002.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0060",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Identifying and Accounting for Decommissioning Provisions",
+      "Name": "0204_003.pdf",
+      "Title": "Identifying and Accounting for Decommissioning Provisions",
+      "IssuingOrg": "",
+      "ContactPerson": "Khan, Naumaan A",
+      "IssueDate": "43242.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0204_003.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0061",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Accounting Reports – Controller’s Organization",
+      "Name": "0207_001.pdf",
+      "Title": "Accounting Reports – Controller’s Organization",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45795",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0207_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0062",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Cash Deposit by Community Services Facilities",
+      "Name": "0207_056.pdf",
+      "Title": "Cash Deposit by Community Services Facilities",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45559",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0207_056.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0063",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Physical Inventory Cycle Of Capital Assets",
+      "Name": "0207_060.pdf",
+      "Title": "Physical Inventory Cycle Of Capital Assets",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45480",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0207_060.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0064",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Travel Advance and Expense Settlement Using eTravel",
+      "Name": "0211_050.pdf",
+      "Title": "Travel Advance and Expense Settlement Using eTravel",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44532.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0211_050.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0065",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Expense Reports Form SA-165",
+      "Name": "0211_060.pdf",
+      "Title": "Expense Reports Form SA-165",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44532.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0211_060.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0066",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Miscellaneous Payments",
+      "Name": "0211_070.pdf",
+      "Title": "Miscellaneous Payments",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45704",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0211_070.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0067",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Settlement of Third Party Liabilities Incurred While Using Company Vehicles",
+      "Name": "0211_071.pdf",
+      "Title": "Settlement of Third Party Liabilities Incurred While Using Company Vehicles",
+      "IssuingOrg": "",
+      "ContactPerson": "Rahbeeni, Mohammed N",
+      "IssueDate": "43053.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0211_071.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0068",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Accounting Basic Code System",
+      "Name": "0216_600.pdf",
+      "Title": "Accounting Basic Code System",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45483",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0216_600.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0069",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Operating Expense and Organization Codes- Clearance Accounts (cancelled)",
+      "Name": "0216_604-600.pdf",
+      "Title": "Operating Expense and Organization Codes- Clearance Accounts (cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0216_604-600.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0070",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Well Accounting",
+      "Name": "0216_608.pdf",
+      "Title": "Well Accounting",
+      "IssuingOrg": "",
+      "ContactPerson": "Khan, Naumaan A",
+      "IssueDate": "43178.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0216_608.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0071",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Vehicle Usage and Cargo Services Charges to User Accounts (Cancelled)",
+      "Name": "0216_611.pdf",
+      "Title": "Vehicle Usage and Cargo Services Charges to User Accounts (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44273.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0216_611.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0072",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "SURVEYING SERVICES ACTIVITY CHARGE TO SAUDI ARAMCO ORGANIZATIONS, CAPITAL (Cancelled)",
+      "Name": "0216_617.pdf",
+      "Title": "SURVEYING SERVICES ACTIVITY CHARGE TO SAUDI ARAMCO ORGANIZATIONS, CAPITAL (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44273.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0216_617.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0073",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Inspection Sercive Charges to Saudi Aramco Organizations, Capital Projects and Third Parties (Cancelled)",
+      "Name": "0216_618.pdf",
+      "Title": "Inspection Sercive Charges to Saudi Aramco Organizations, Capital Projects and Third Parties (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Rahbeeni, Mohammed N",
+      "IssueDate": "44273.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0216_618.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0074",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Pona Sample Charges to Offtakers (Cancelled)",
+      "Name": "0216_771.pdf",
+      "Title": "Pona Sample Charges to Offtakers (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Rahbeeni, Mohammed N",
+      "IssueDate": "42662.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0216_771.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0075",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Exploration Costs",
+      "Name": "0216_815.pdf",
+      "Title": "Exploration Costs",
+      "IssuingOrg": "",
+      "ContactPerson": "Khan, Naumaan A",
+      "IssueDate": "43039.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0216_815.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0076",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Operating Segment and Business Unit Hierarchy",
+      "Name": "0220_001.pdf",
+      "Title": "Operating Segment and Business Unit Hierarchy",
+      "IssuingOrg": "",
+      "ContactPerson": "Chakraborty, Dibyo",
+      "IssueDate": "43235.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0220_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0077",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Transfer Pricing for Product Transfers & Sevices ",
+      "Name": "0220_002.pdf",
+      "Title": "Transfer Pricing for Product Transfers & Sevices ",
+      "IssuingOrg": "",
+      "ContactPerson": "Meer, Ahmed",
+      "IssueDate": "45358",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0220_002.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0078",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Support Cost Charge-Out and Allocation",
+      "Name": "0220_003.pdf",
+      "Title": "Support Cost Charge-Out and Allocation",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "43951.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0220_003.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0079",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Identification of Embedded Derivatives",
+      "Name": "0230_010.pdf",
+      "Title": "Identification of Embedded Derivatives",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45595",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0230_010.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0080",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Corporate Accrual Policies ",
+      "Name": "0230_035.pdf",
+      "Title": "Corporate Accrual Policies ",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45410",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0230_035.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0081",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Procedures for Domestic Sales of Hydrocarbon Products",
+      "Name": "0241_014.pdf",
+      "Title": "Procedures for Domestic Sales of Hydrocarbon Products",
+      "IssuingOrg": "",
+      "ContactPerson": "Dulaijan, Othman S",
+      "IssueDate": "43146.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0241_014.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0082",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Material Balancing of Hydrocarbon Liquids",
+      "Name": "0241_021.pdf",
+      "Title": "Material Balancing of Hydrocarbon Liquids",
+      "IssuingOrg": "",
+      "ContactPerson": "Rahbeeni, Mohammed N",
+      "IssueDate": "42646.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0241_021.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0083",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "MATERIAL BALANCING OF HYDROCARBON GASES",
+      "Name": "0241_022.pdf",
+      "Title": "MATERIAL BALANCING OF HYDROCARBON GASES",
+      "IssuingOrg": "",
+      "ContactPerson": "Thomson, Simon S",
+      "IssueDate": "43255.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0241_022.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0084",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Own-Use Diesel Fuel",
+      "Name": "0241_023.pdf",
+      "Title": "Own-Use Diesel Fuel",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45489",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0241_023.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0085",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Withholding Tax, Retention, Payments and Reports to DZIT (Cancelled)",
+      "Name": "0242_001.pdf",
+      "Title": "Withholding Tax, Retention, Payments and Reports to DZIT (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44064.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0242_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0086",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Value Added Tax (VAT) Process",
+      "Name": "0242_002.pdf",
+      "Title": "Value Added Tax (VAT) Process",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44546.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0242_002.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0087",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Controllable Cost Review And Approval",
+      "Name": "0250_001.pdf",
+      "Title": "Controllable Cost Review And Approval",
+      "IssuingOrg": "",
+      "ContactPerson": "Almeria, Eliezer F",
+      "IssueDate": "43440.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0250_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0088",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Payroll General Procedures",
+      "Name": "0270_001.pdf",
+      "Title": "Payroll General Procedures",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45839",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0270_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0089",
+      "Parent": "cop/GI/Finance/Controller/",
+      "Child": "Directory of Payroll Related Questions (cancelled)",
+      "Name": "0270_002.pdf",
+      "Title": "Directory of Payroll Related Questions (cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Eisa, Mohammed A",
+      "IssueDate": "44109.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/0270_002.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0090",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Labor Costing and Analysis",
+      "Name": "0270_003.pdf",
+      "Title": "Labor Costing and Analysis",
+      "IssuingOrg": "",
+      "ContactPerson": "Chakraborty, Dibyo",
+      "IssueDate": "43234.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0270_003.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0091",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Area Payroll Representatives - Duties and Responsibilities (Cancelled)",
+      "Name": "0270_004.pdf",
+      "Title": "Area Payroll Representatives - Duties and Responsibilities (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44117.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0270_004.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0092",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Responsibility for Expenses of Visitors and Employees on Assignment",
+      "Name": "0286_020.pdf",
+      "Title": "Responsibility for Expenses of Visitors and Employees on Assignment",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "43545.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0286_020.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0093",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Policies and Procedures for Saudi Aramco Appointees Remuneration and Expenses",
+      "Name": "0286_030.pdf",
+      "Title": "Policies and Procedures for Saudi Aramco Appointees Remuneration and Expenses",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44460.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0286_030.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0094",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Internal Controls Over Financial Reporting (ICFR) Assessment",
+      "Name": "0286_031.pdf",
+      "Title": "Internal Controls Over Financial Reporting (ICFR) Assessment",
+      "IssuingOrg": "",
+      "ContactPerson": "Khan, Muhammad O",
+      "IssueDate": "44705.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0286_031.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0095",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Full Costing",
+      "Name": "0287_001.pdf",
+      "Title": "Full Costing",
+      "IssuingOrg": "",
+      "ContactPerson": "Rahbeeni, Mohammed N",
+      "IssueDate": "",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0287_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0096",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Tihama Power invoice Verification and monthly accrual Process - Stage I & 2 (Cancelled)",
+      "Name": "0287_002.pdf",
+      "Title": "Tihama Power invoice Verification and monthly accrual Process - Stage I & 2 (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44500.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0287_002.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0097",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Financial Systems Segregation of Duties (SoD)",
+      "Name": "0287_003.pdf",
+      "Title": "Financial Systems Segregation of Duties (SoD)",
+      "IssuingOrg": "",
+      "ContactPerson": "Rahbeeni, Mohammed N",
+      "IssueDate": "42934.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0287_003.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0098",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Period End Costing and Financial Reporting Activity",
+      "Name": "0287_004.pdf",
+      "Title": "Period End Costing and Financial Reporting Activity",
+      "IssuingOrg": "",
+      "ContactPerson": "Rahbeeni, Mohammed N",
+      "IssueDate": "42922.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0287_004.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI0099",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Recoveries to Capital Expenditure",
+      "Name": "0287_005.pdf",
+      "Title": "Recoveries to Capital Expenditure",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44074.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0287_005.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00100",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Dividend Distributions",
+      "Name": "0287_006.pdf",
+      "Title": "Dividend Distributions",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45566",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0287_006.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00101",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Share Based Payments",
+      "Name": "0287_007.pdf",
+      "Title": "Share Based Payments",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "45033",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0287_007.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00102",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Subsidiary & Affiliate Cash Calls",
+      "Name": "0288_001.pdf",
+      "Title": "Subsidiary & Affiliate Cash Calls",
+      "IssuingOrg": "",
+      "ContactPerson": "Evers, Mark C",
+      "IssueDate": "43101.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_001.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00103",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Provision of Services and Sale of Materials to External Parties",
+      "Name": "0288_002.pdf",
+      "Title": "Provision of Services and Sale of Materials to External Parties",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44000.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_002.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00104",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "KAUST Funding Controls",
+      "Name": "0288_003.pdf",
+      "Title": "KAUST Funding Controls",
+      "IssuingOrg": "",
+      "ContactPerson": "Rahbeeni, Mohammed N",
+      "IssueDate": "42654.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_003.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00105",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Miscellaneous Sales-Processes and Procedures ",
+      "Name": "0288_004.pdf",
+      "Title": "Miscellaneous Sales-Processes and Procedures ",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44188.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_004.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00106",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Defined Benefits Plans-Annual Computation of the Obligation and Expense",
+      "Name": "0288_005.pdf",
+      "Title": "Defined Benefits Plans-Annual Computation of the Obligation and Expense",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45684",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_005.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00107",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Financial Guarantees & Letters of Credit",
+      "Name": "0288_006.pdf",
+      "Title": "Financial Guarantees & Letters of Credit",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "43720.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_006.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00108",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Financial Information Confidentiality",
+      "Name": "0288_007.pdf",
+      "Title": "Financial Information Confidentiality",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44175.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_007.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00109",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Project Development Expenditures - Project Type Code 40",
+      "Name": "0288_040.pdf",
+      "Title": "Project Development Expenditures - Project Type Code 40",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44235.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_040.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00110",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "ACCOUNTING FOR LEASES WHERE SAUDI ARAMCO IS THE LESSEE",
+      "Name": "0288_041.pdf",
+      "Title": "ACCOUNTING FOR LEASES WHERE SAUDI ARAMCO IS THE LESSEE",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44460.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_041.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00111",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Accounting for The Saudi Riyal Thrift Plan (Idikhar)",
+      "Name": "0288_042.pdf",
+      "Title": "Accounting for The Saudi Riyal Thrift Plan (Idikhar)",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45468",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_042.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00112",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Accounting for Transactions with Aramco Oil Pipeline Company (AOPC)",
+      "Name": "0288_043.pdf",
+      "Title": "Accounting for Transactions with Aramco Oil Pipeline Company (AOPC)",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44741.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0288_043.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00113",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Post Transaction Assessments",
+      "Name": "0290_000.pdf",
+      "Title": "Post Transaction Assessments",
+      "IssuingOrg": "",
+      "ContactPerson": "Amanullah, Muhammad A (Anas)",
+      "IssueDate": "45909",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0290_000.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00114",
+      "Parent": "cop/GI/Finance/Controller/Group Governance & Policy Dept/",
+      "Child": "Public Service Projects-Governance and Control (Cancelled)",
+      "Name": "0886_000.pdf",
+      "Title": "Public Service Projects-Governance and Control (Cancelled)",
+      "IssuingOrg": "",
+      "ContactPerson": "Sarangapani, Rajendran (Raj)",
+      "IssueDate": "44476.04167",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/Group%20Governance%20&%20Policy%20Dept/0886_000.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00115",
+      "Parent": "cop/GI/Finance/",
+      "Child": "Investor Relations"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00116",
+      "Parent": "cop/GI/Finance/Investor Relations/",
+      "Child": "Earnings Call",
+      "Name": "1920_020.pdf",
+      "Title": "Earnings Call",
+      "IssuingOrg": "",
+      "ContactPerson": "",
+      "IssueDate": "",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Investor%20Relations/1920_020.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00117",
+      "Parent": "c",
+      "Child": "I",
+      "Name": "1920_021.pdf",
+      "Title": "Investor-Related Website Content Management",
+      "IssuingOrg": "",
+      "ContactPerson": "",
+      "IssueDate": "",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Investor%20Relations/1920_021.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  },
+  {
+    "requestUri": "ShareKGISet",
+    "method": "POST",
+    "headers": {
+      "Accept-Language": "en-US",
+      "Accept": "application/atom+xml,application/atomsvc+xml,application/xml",
+      "MaxDataServiceVersion": "2.0",
+      "DataServiceVersion": "2.0",
+      "Content-Type": "application/atom+xml"
+    },
+    "data": {
+      "ParentId": "GI00118",
+      "Parent": "cop/GI/Finance/Controller/CPCCD/",
+      "Child": "MAINTAIN POTENTIAL MASTER APPROPRIATIONS",
+      "Name": "0020_720.pdf",
+      "Title": "MAINTAIN POTENTIAL MASTER APPROPRIATIONS",
+      "IssuingOrg": "",
+      "ContactPerson": "Alsaud, Abdullah A",
+      "IssueDate": "45938",
+      "ItemType": "Item",
+      "Path": "https://sharek.aramco.com.sa/cop/GI/Finance/Controller/CPCCD/0020_720.pdf"
+    },
+    "entityTypes": {
+      "ZFI_MOBILE_SRV.ShareKGI": true
+    }
+  }
+]
