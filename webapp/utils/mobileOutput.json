@@ -1,0 +1,35 @@
+{
+    "d": {
+      "results": [
+        {
+          "__metadata": {
+            "id": "https://dbc.cloud.com:443/sap/opu/odata/sap/ZFI_MOBILE_SRV/MobileConfigSet(WidgetId='00505684457C1FE0AEDFBFFDD389EE18',BasePeriod='0000000')",
+            "uri": "https://dbc.cloud.com:443/sap/opu/odata/sap/ZFI_MOBILE_SRV/MobileConfigSet(WidgetId='00505684457C1FE0AEDFBFFDD389EE18',BasePeriod='0000000')",
+            "type": "ZFI_MOBILE_SRV.MobileConfig"
+          },
+          "WidgetId": "00505684457C1FE0AEDFBFFDD389EE18",
+          "BasePeriod": "0000000",
+          "WidgetName": "P2",
+          "WidgetType": "1value",
+          "ChartType": "",
+          "DataSource": "ZES_FMA_OPE_Q002",
+          "InputParameter": "",
+          "Filter": "[]",
+          "Mapping": "{\"x\":\"FISCPER\",\"y\":[\"VALUE001\"]}",
+          "Status": "Draft",
+          "WidgetData": "[{\"X\":\"JAN 2020\",\"Y\":[\"1878374812.1600000\"]},{\"X\":\"FEB 2020\",\"Y\":[\"2324360462.6400000\"]},{\"X\":\"MAR 2020\",\"Y\":[\"2631976892.3700000\"]},{\"X\":\"APR 2020\",\"Y\":[\"2353739187.0800000\"]},{\"X\":\"MAY 2020\",\"Y\":[\"2449550183.9800000\"]},{\"X\":\"JUN 2020\",\"Y\":[\"2481692744.5800000\"]}]",
+          "TileData": "[{\"FIELD\":\"VALUE001\",\"LABEL\":\"Period\",\"VALUE\":14119694282.810}]",
+          "WlabelColour": "",
+          "WlabelText": "",
+          "WlabelMapping": "[{\"field\":\"VALUE001\",\"label\":\"Period\",\"unit\":\"SAR\",\"color\":\"red\",\"scale\":\"billion\",\"decimals\":\"d2\",\"suffix\":\"B\"}]",
+          "ClabelColour": "",
+          "ClabelText": "",
+          "ToolTip": "",
+          "ZpageId": "[]",
+          "Istimedim": true,
+          "TimeRange": true,
+          "SystemName": ""
+        }
+      ]
+    }
+  }

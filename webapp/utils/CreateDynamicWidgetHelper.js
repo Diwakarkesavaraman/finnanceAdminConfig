@@ -272,8 +272,10 @@ sap.ui.define([
 						oCurrentData.selectionType = oWidgetData.SelectionType;
 						oCurrentData.timeframe = oWidgetData.TimeFrame;
 						oCurrentData.pageId = oWidgetData.ZpageId;
-						oCurrentData.enableTimeRange = oWidgetData.EnableTimeRange;	
-						oCurrentData.dataSourceType = oWidgetData.SourceType;					
+						oCurrentData.enableTimeRange = oWidgetData.TimeRange ==='X' ? true : false;	
+						oCurrentData.dataSourceType = oWidgetData.SourceType;
+						oCurrentData.isTimeDimension = oWidgetData.Istimedim === 'X' ? true : false;
+						oCurrentData.systemName = oWidgetData.SystemName;					
 						oModel.setData(oCurrentData);
 						
 						// Show widget ID fields
@@ -356,6 +358,7 @@ sap.ui.define([
 			var self = this;
 			var finmobview = that.getView().getModel("finmobview");
 			var dataSource = that.byId("createDataSourceId").getValue();
+			var dataSourceType = that.byId("createDataSourceType").getSelectedKey();
 			
 			if (!dataSource) {
 				MessageToast.show("Please enter a data source");
@@ -368,7 +371,10 @@ sap.ui.define([
 			oButton.setVisible(false);
 			oBusyIndicator.setVisible(true);
 			
-			var aFilters = [new Filter("Query_Name", FilterOperator.EQ, dataSource)];
+			var aFilters = [
+				new Filter("Query_Name", FilterOperator.EQ, dataSource),
+				new Filter("Source_Type" , FilterOperator.EQ, dataSourceType)
+			];
 			finmobview.read("/QueryValidation", {
 				filters: aFilters,
 				success: function (data) {
@@ -430,7 +436,7 @@ sap.ui.define([
 				"WidgetId": oWidgetData.widgetId,
 				"InputParameter": oWidgetData.inputParameter,
 				"Mapping": mappingFormData.dataMapping ? JSON.stringify(mappingFormData.dataMapping) : "",
-				"TimeFrame": mappingFormData.timeframe,
+				"TimeFrame": hierarchyFormData.timeframe,
 				"ToolTip": oWidgetData.tooltip,
 				"ZpageId": JSON.stringify(hierarchyFormData.pageId),
 				// "EnableTimeRange": hierarchyFormData.enableTimeRange || false,
@@ -439,8 +445,8 @@ sap.ui.define([
 				"Filter": filterMappingData,
 				"Status": "Draft",
 				"SourceType": oWidgetData.dataSourceType || "",
-				// "Istimedim":,
-				// "TimeRange":
+				"Istimedim":mappingFormData.isTimeDimension ? 'X': '' || '',
+				"TimeRange":hierarchyFormData.enableTimeRange ? 'X': '' || '',
 				"SystemName":oWidgetData.systemName || ""
 			};
 			
@@ -907,7 +913,14 @@ sap.ui.define([
 							var aTokenValues = aTokens.map(function(oToken) {
 								return oToken.getKey();
 							});
-							aFields.push(...aTokenValues);
+							// Check if it's the Timeframe field
+							if (sLabelText === "Timeframe") {
+								// Store timeframe as JSON array
+								sTimeframe = aTokenValues.length > 0 ? JSON.stringify(aTokenValues) : "";
+							} else {
+								// Other MultiInput fields
+								aFields.push(...aTokenValues);
+							}
 						}
 						// Handle Select controls
 						else if (oNextControl instanceof sap.m.Select) {
@@ -923,12 +936,13 @@ sap.ui.define([
 					else if (oNextControl instanceof sap.m.Input) {
 						// No specific input fields to handle in data mapping form now
 					}
-					// Handle CheckBox controls
-					else if (oNextControl instanceof sap.m.CheckBox) {
-						// This is the Time/Period Dimension checkbox
-						bIsTimeDimension = oNextControl.getSelected();
+					
+					
 					}
-					}
+				}// Handle CheckBox controls
+				else if (oControl instanceof sap.m.CheckBox) {
+					// This is the Time/Period Dimension checkbox
+					bIsTimeDimension = oControl.getSelected();
 				}
 			}
 
@@ -947,7 +961,9 @@ sap.ui.define([
 			var aHierarchyFormContent = oHierarchyForm.getContent();
 			var oHierarchyValues = {};
 			var aPageIds = [];
-			var bEnableTimeRange = false;			
+		var bEnableTimeRange = false;
+		var sTimeframe = "";
+			
 		// Loop through hierarchy form content to get Page ID from table
 		for (var j = 0; j < aHierarchyFormContent.length; j++) {
 			var oHierarchyControl = aHierarchyFormContent[j];
@@ -965,13 +981,45 @@ sap.ui.define([
 					aPageIds = aTableData.map(function(oItem) {
 						return oItem.Id;
 					});
+			
+			// // Handle Select controls for Timeframe
+			// if (oHierarchyControl instanceof sap.m.Select) {
+			// 	if (oHierarchyControl.getParent() instanceof sap.m.VBox) {
+			// 		// Check if it's the Timeframe select by looking at the previous control
+			// 		var iPrevIndex = j - 1;
+			// 		if (iPrevIndex >= 0 && aHierarchyFormContent[iPrevIndex] instanceof sap.m.Label) {
+			// 			var sLabelText = aHierarchyFormContent[iPrevIndex].getText();
+			// 			if (sLabelText === "Timeframe") {
+			// 				sTimeframe = oHierarchyControl.getSelectedKey();
+			// 			}
+			// 		}
+			// 	}
+			// }
+
+			
 				}
 			}
+		// Handle MultiInput controls for Timeframe
+		if (oHierarchyControl instanceof sap.m.MultiInput) {
+			// Check if it's the Timeframe MultiInput by looking at the previous control
+			var iPrevIndex = j - 1;
+			if (iPrevIndex >= 0 && aHierarchyFormContent[iPrevIndex] instanceof sap.m.Label) {
+				var sLabelText = aHierarchyFormContent[iPrevIndex].getText();
+				if (sLabelText === "Timeframe") {
+					var aTokens = oHierarchyControl.getTokens();
+					var aTimeframeValues = aTokens.map(function(oToken) {
+						return oToken.getKey();
+					});
+					// Store timeframe as JSON array
+					sTimeframe = aTimeframeValues.length > 0 ? JSON.stringify(aTimeframeValues) : "";
+				}
+			}
+		}
 		}
 			
 			oHierarchyValues['pageId'] = aPageIds;
 			oHierarchyValues['enableTimeRange'] = bEnableTimeRange;			
-			return oHierarchyValues;
+			oHierarchyValues['timeframe'] = sTimeframe;			return oHierarchyValues;
 		},
 
 		getCreateFilterMappingFormValues: function (oController) {
@@ -1151,7 +1199,8 @@ sap.ui.define([
 					if (sSelectedField) {
 						aTileValues.push({
 							field: sSelectedField,
-							label: sDisplayText || sSelectedField, // Use field name as default if no display text
+							label: sDisplayText,
+							// label: sDisplayText || sSelectedField, // Use field name as default if no display text
 							unit: sUnit || "",
 							color: sColor || "",
 							scale: sScale || "",
@@ -1634,27 +1683,6 @@ sap.ui.define([
 
 						//Add two more fields called timeframe and Page id. the timeframe field is Select control with options fetched from await that.getSearchHelpData('time_frame'); and Page id is Input field
 
-						// Timeframe field
-						var oTimeframeLabel = new sap.m.Label({
-							text: "Timeframe",
-							required: false,
-							visible: false
-						});
-
-						var oTimeframeSelect = new sap.m.Select({
-							visible: false,
-							showSecondaryValues: true,
-							width: "100%",
-							items: {
-								path: "createTimeFrameTypeDropdownData>/",
-								template: new sap.ui.core.ListItem({
-									key: "{createTimeFrameTypeDropdownData>Id}",
-									text: "{createTimeFrameTypeDropdownData>Text}",
-									additionalText: "{createTimeFrameTypeDropdownData>Text}"
-								})
-
-							}
-						});
 
 
 						oForm.addContent(oXLabel);
@@ -1662,8 +1690,6 @@ sap.ui.define([
 						oForm.addContent(oTimeDimensionCheckBox);
 						oForm.addContent(oYLabel);
 						oForm.addContent(oYMultiInput);
-						oForm.addContent(oTimeframeLabel);
-						oForm.addContent(oTimeframeSelect);
 
 						//Filter Form
 						debugger;
@@ -1839,10 +1865,79 @@ sap.ui.define([
 						var oHierarchyForm = that.byId("createHierarchyMappingForm");
 						oHierarchyForm.removeAllContent();
 						
-					// Enable Time Range field
+// Enable Time Range field
 					var oEnableTimeRangeCheckBox = new sap.m.CheckBox({
 						text: "Enable Time Range",
-						selected: false
+						selected: false,
+						select: function(oEvent) {
+							var bSelected = oEvent.getParameter("selected");
+							// Toggle Timeframe field visibility
+							if (oTimeframeLabel) {
+								oTimeframeLabel.setVisible(bSelected);
+							}
+							if (oTimeframeSelect) {
+								oTimeframeSelect.setVisible(bSelected);
+							}
+						}
+					});
+
+					// Timeframe field (moved from createDataMappingForm)
+					var oTimeframeLabel = new sap.m.Label({
+						text: "Timeframe",
+						required: false,
+						visible: false
+					});
+
+					var oTimeframeSelect = new sap.m.MultiInput({
+						visible: false,
+						width: "100%",
+						valueHelpRequest: function(oEvent) {
+							var oMultiInput = oEvent.getSource();
+							var oModel = that.getView().getModel("createTimeFrameTypeDropdownData");
+							var aData = oModel.getData();
+
+							// Get existing tokens to pre-select in dialog
+							var aExistingTokenKeys = oMultiInput.getTokens().map(function(oToken) {
+								return oToken.getKey();
+							});
+
+							// Create SelectDialog
+							var oSelectDialog = new sap.m.SelectDialog({
+								title: "Select Timeframes",
+								multiSelect: true,
+								items: aData.map(function(oItem) {
+									return new sap.m.StandardListItem({
+										title: oItem.Text,
+										description: oItem.Text,
+										selected: aExistingTokenKeys.indexOf(oItem.Id) !== -1,
+										customData: [new sap.ui.core.CustomData({
+											key: "itemKey",
+											value: oItem.Id
+										})]
+									});
+								}),
+								confirm: function(oConfirmEvent) {
+									// Clear existing tokens
+									oMultiInput.removeAllTokens();
+
+									// Add selected items as tokens
+									var aSelectedItems = oConfirmEvent.getParameter("selectedItems");
+									aSelectedItems.forEach(function(oItem) {
+										var sKey = oItem.getCustomData()[0].getValue();
+										var sText = oItem.getTitle();
+										oMultiInput.addToken(new sap.m.Token({
+											key: sKey,
+											text: sText
+										}));
+									});
+								},
+								cancel: function() {
+									oSelectDialog.destroy();
+								}
+							});
+
+							oSelectDialog.open();
+						}
 					});
 
 					
@@ -1998,7 +2093,8 @@ sap.ui.define([
 					});
 
 						oHierarchyForm.addContent(oEnableTimeRangeCheckBox);
-						oHierarchyForm.addContent(oPageIdLabel);
+						oHierarchyForm.addContent(oTimeframeLabel);
+						oHierarchyForm.addContent(oTimeframeSelect);						oHierarchyForm.addContent(oPageIdLabel);
 						oHierarchyForm.addContent(oAddPageIdButton);
 						oHierarchyForm.addContent(oPageIdTable);
 
@@ -2052,11 +2148,6 @@ sap.ui.define([
 							} catch (e) {
 								console.error("Error parsing mapping data:", e);
 							}
-						}
-						
-						// Handle timeframe mapping
-						if (oCurrentData.timeframe && oTimeframeSelect) {
-							oTimeframeSelect.setSelectedKey(oCurrentData.timeframe);
 						}
 						
 						// Handle isTimeDimension checkbox
@@ -2126,9 +2217,55 @@ sap.ui.define([
 						}
 						
 						// Handle Enable Time Range checkbox
+			
+						
+						// Handle Timeframe restoration and visibility
 						if (oEnableTimeRangeCheckBox) {
 							var bEnableTimeRange = oCurrentData.enableTimeRange || false;
 							oEnableTimeRangeCheckBox.setSelected(bEnableTimeRange);
+							
+							// Restore Timeframe value and set visibility based on checkbox
+							if (oTimeframeSelect && oCurrentData.timeframe) {
+								// Clear any existing tokens first
+								oTimeframeSelect.removeAllTokens();
+
+								// Parse timeframe data (could be JSON array or single value)
+								var aTimeframeValues = [];
+								try {
+									// Try to parse as JSON array
+									aTimeframeValues = JSON.parse(oCurrentData.timeframe);
+									if (!Array.isArray(aTimeframeValues)) {
+										aTimeframeValues = [oCurrentData.timeframe];
+									}
+								} catch (e) {
+									// If not JSON, treat as single value
+									aTimeframeValues = [oCurrentData.timeframe];
+								}
+
+								// Add tokens for each timeframe value
+								var oTimeframeModel = that.getView().getModel("createTimeFrameTypeDropdownData");
+								if (oTimeframeModel && oTimeframeModel.getData()) {
+									var aTimeframeData = oTimeframeModel.getData();
+									aTimeframeValues.forEach(function(sTimeframeId) {
+										// Find the text for this timeframe ID
+										var oTimeframeItem = aTimeframeData.find(function(oItem) {
+											return oItem.Id === sTimeframeId;
+										});
+										if (oTimeframeItem) {
+											oTimeframeSelect.addToken(new sap.m.Token({
+												key: sTimeframeId,
+												text: oTimeframeItem.Text
+											}));
+										}
+									});
+								}
+							}
+							if (oTimeframeLabel) {
+								oTimeframeLabel.setVisible(bEnableTimeRange);
+							}
+							if (oTimeframeSelect) {
+								oTimeframeSelect.setVisible(bEnableTimeRange);
+							}
 						}
 
 						//Handle existing mapping for createFilterMappingForm form 
