@@ -447,7 +447,8 @@ sap.ui.define([
 				"SourceType": oWidgetData.dataSourceType || "",
 				"Istimedim":mappingFormData.isTimeDimension ? 'X': '' || '',
 				"TimeRange":hierarchyFormData.enableTimeRange ? 'X': '' || '',
-				"SystemName":oWidgetData.systemName || ""
+				"SystemName":oWidgetData.systemName || "",
+				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || ""
 			};
 			
 			sap.ui.core.BusyIndicator.show(0);
@@ -895,6 +896,8 @@ sap.ui.define([
 			var oformValues = {};
 			var oDataMapping = {};
 			var aFields = [];
+			var aYMeasures = [];
+			var aYLabels = [];
 			var sTimeframe = "";
 			var bIsTimeDimension = false;
 			// Loop through form content to get Label-Control pairs
@@ -907,8 +910,26 @@ sap.ui.define([
 					var oNextControl = aFormContent[i + 1]; // Get the next control after label
 
 					if (oNextControl) {
+						// Handle VBox container for Measures
+						if (oNextControl instanceof sap.m.VBox && sLabelText === "Select Measures") {
+							var aMeasureRows = oNextControl.getItems();
+							aMeasureRows.forEach(function(oRow) {
+								if (oRow instanceof sap.m.HBox) {
+									var aRowItems = oRow.getItems();
+									// First item is Measure Select, second is Label Input
+									if (aRowItems.length >= 2) {
+										var sMeasure = aRowItems[0] instanceof sap.m.Select ? aRowItems[0].getSelectedKey() : aRowItems[0].getValue();
+										var sLabel = aRowItems[1].getValue();
+										if (sMeasure) {
+											aYMeasures.push(sMeasure);
+											aYLabels.push(sLabel || "");
+										}
+									}
+								}
+							});
+						}
 						// Handle MultiInput controls first (before Input check since MultiInput extends Input)
-						if (oNextControl instanceof sap.m.MultiInput) {
+						else if (oNextControl instanceof sap.m.MultiInput) {
 							var aTokens = oNextControl.getTokens();
 							var aTokenValues = aTokens.map(function(oToken) {
 								return oToken.getKey();
@@ -936,8 +957,8 @@ sap.ui.define([
 					else if (oNextControl instanceof sap.m.Input) {
 						// No specific input fields to handle in data mapping form now
 					}
-					
-					
+
+
 					}
 				}// Handle CheckBox controls
 				else if (oControl instanceof sap.m.CheckBox) {
@@ -948,10 +969,14 @@ sap.ui.define([
 
 
 			oDataMapping['x'] = aFields[0];
-			oDataMapping['y'] = aFields.slice(1);
+			oDataMapping['y'] = aYMeasures.length > 0 ? aYMeasures : aFields.slice(1);
+			if (aYLabels.length > 0) {
+				oDataMapping['yLabel'] = aYLabels;
+			}
 			oformValues['dataMapping'] = oDataMapping;
 			oformValues['timeframe'] = sTimeframe;
 			oformValues['isTimeDimension'] = bIsTimeDimension;
+			oformValues['yLabels'] = aYLabels;
 			return (oformValues);
 		},
 
@@ -1618,68 +1643,93 @@ sap.ui.define([
 							text: "Select Measures"
 						});
 
-						var oYMultiInput = new MultiInput({
-							width: "100%",
-							showValueHelp: true,
-							valueHelpRequest: function(oEvent) {
-								var oSource = oEvent.getSource();
-								var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+						// Create a VBox container for measures
+						var oMeasuresContainer = new sap.m.VBox({
+							width: "100%"
+						});
 
-								if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
-									MessageToast.show("No metadata available. Please fetch query data first.");
-									return;
-								}
+						// Function to add a new measure row
+						var fnAddMeasureRow = function(sMeasureValue, sLabelValue) {
+							var oMetaDataModel = that.getView().getModel("createMetaDataModel");
 
-								// Create value help dialog if it doesn't exist
-								if (!that._oCreateYMetaDataValueHelpDialog) {
-									that._oCreateYMetaDataValueHelpDialog = new SelectDialog({
-										title: "Select Y Axis Fields",
-										multiSelect: true,
-										items: {
-											path: "createMetaDataModel>/",
-											template: new StandardListItem({
-												title: "{createMetaDataModel>SCRTEXT_L}",
-												description: "{createMetaDataModel>FIELDNAME}",
-												type: "Active"
-											})
-										},
-										confirm: function(oEvent) {
-											var aSelectedItems = oEvent.getParameter("selectedItems");
-											if (aSelectedItems && aSelectedItems.length > 0) {
-												// Clear existing tokens
-												oSource.removeAllTokens();
-												
-												// Add selected items as tokens
-												aSelectedItems.forEach(function(oItem) {
-													var sFieldName = oItem.getDescription(); // FIELDNAME is in description
-													var sDisplayText = oItem.getTitle(); // SCRTEXT_L is in title
-													var oToken = new Token({
-														key: sFieldName,
-														text: sDisplayText
-													});
-													oSource.addToken(oToken);
-												});
-											}
-										},
-										cancel: function() {
-											// Dialog closed without selection
-										}
-									});
-									that.getView().addDependent(that._oCreateYMetaDataValueHelpDialog);
-								}
+							var oMeasureHBox = new sap.m.HBox({
+								alignItems: "Center",
+								width: "100%"
+							}).addStyleClass("sapUiSmallMarginBottom");
 
+							// Measure Select Control
+							var oMeasureSelect = new sap.m.Select({
+								width: "100%",
+								forceSelection: false,
+								selectedKey: sMeasureValue || "",
+								layoutData: new sap.m.FlexItemData({
+									growFactor: 1,
+									baseSize: "0%"
+								})
+							}).addStyleClass("sapUiTinyMarginEnd");
+
+							// Populate the Select control with metadata
+							if (oMetaDataModel && oMetaDataModel.getData() && oMetaDataModel.getData().length > 0) {
 								// Filter out the field already selected in X Axis
 								var sSelectedXField = oXSelect.getSelectedKey();
 								var aFilteredData = oMetaDataModel.getData().filter(function(oItem) {
 									return oItem.FIELDNAME !== sSelectedXField;
 								});
-								
-								// Create a filtered model
-								var oFilteredModel = new JSONModel(aFilteredData);
-								that._oCreateYMetaDataValueHelpDialog.setModel(oFilteredModel, "createMetaDataModel");
-								that._oCreateYMetaDataValueHelpDialog.open();
+
+								// Add items to select
+								aFilteredData.forEach(function(oItem) {
+									oMeasureSelect.addItem(new sap.ui.core.Item({
+										key: oItem.FIELDNAME,
+										text: oItem.SCRTEXT_L || oItem.FIELDNAME
+									}));
+								});
+
+								// Set selected key if provided
+								if (sMeasureValue) {
+									oMeasureSelect.setSelectedKey(sMeasureValue);
+								}
 							}
-						});
+
+							// Label Input
+							var oLabelInput = new sap.m.Input({
+								width: "100%",
+								placeholder: "Enter Label",
+								value: sLabelValue || "",
+								layoutData: new sap.m.FlexItemData({
+									growFactor: 1,
+									baseSize: "0%"
+								})
+							}).addStyleClass("sapUiTinyMarginEnd");
+
+							// Delete Button
+							var oDeleteButton = new sap.m.Button({
+								icon: "sap-icon://delete",
+								type: "Reject",
+								press: function() {
+									oMeasuresContainer.removeItem(oMeasureHBox);
+									oMeasureHBox.destroy();
+								}
+							});
+
+							oMeasureHBox.addItem(oMeasureSelect);
+							oMeasureHBox.addItem(oLabelInput);
+							oMeasureHBox.addItem(oDeleteButton);
+
+							oMeasuresContainer.addItem(oMeasureHBox);
+						};
+
+						// Add Button
+						var oAddMeasureButton = new sap.m.Button({
+							text: "Add Measure",
+							icon: "sap-icon://add",
+							type: "Emphasized",
+							press: function() {
+								fnAddMeasureRow("", "");
+							}
+						}).addStyleClass("sapUiSmallMarginTop");
+
+						// Add initial row
+						fnAddMeasureRow("", "");
 
 						//Add two more fields called timeframe and Page id. the timeframe field is Select control with options fetched from await that.getSearchHelpData('time_frame'); and Page id is Input field
 
@@ -1689,7 +1739,8 @@ sap.ui.define([
 						oForm.addContent(oXSelect);
 						oForm.addContent(oTimeDimensionCheckBox);
 						oForm.addContent(oYLabel);
-						oForm.addContent(oYMultiInput);
+						oForm.addContent(oMeasuresContainer);
+						oForm.addContent(oAddMeasureButton);
 
 						//Filter Form
 						debugger;
@@ -2116,33 +2167,24 @@ sap.ui.define([
 									oXSelect.setSelectedKey(mappingData.x);
 								}
 
-								// Set Y-axis selections
-								if (mappingData.y && Array.isArray(mappingData.y) && oYMultiInput) {
-									// Clear existing tokens
-									oYMultiInput.removeAllTokens();
-									
-									// Add each field as a token
+								// Set Y-axis selections (Measures)
+								if (mappingData.y && Array.isArray(mappingData.y) && oMeasuresContainer) {
+									// Clear existing measure rows
+									oMeasuresContainer.removeAllItems();
+
+									// Get yLabel array if exists
+									var aYLabels = mappingData.yLabel || [];
+
+									// Add each measure with its label
 									for (var i = 0; i < mappingData.y.length; i++) {
-										var sField = mappingData.y[i];
-										// Find the corresponding description from metaDataModel
-										var oMetaDataModel = that.getView().getModel("createMetaDataModel");
-										var sDisplayText = sField; // Default to field name
-										
-										if (oMetaDataModel && oMetaDataModel.getData()) {
-											var aMetaData = oMetaDataModel.getData();
-											var oField = aMetaData.find(function(oItem) {
-												return oItem.FIELDNAME === sField;
-											});
-											if (oField && oField.SCRTEXT_L) {
-												sDisplayText = oField.SCRTEXT_L;
-											}
-										}
-										
-										var oToken = new Token({
-											key: sField,
-											text: sDisplayText
-										});
-										oYMultiInput.addToken(oToken);
+										var sMeasure = mappingData.y[i];
+										var sLabel = aYLabels[i] || "";
+										fnAddMeasureRow(sMeasure, sLabel);
+									}
+
+									// If no measures were loaded, add an empty row
+									if (mappingData.y.length === 0) {
+										fnAddMeasureRow("", "");
 									}
 								}
 							} catch (e) {
