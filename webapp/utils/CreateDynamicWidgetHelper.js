@@ -2454,7 +2454,7 @@ sap.ui.define([
 										for (var tileIndex = 0; tileIndex < tileMappingData.length && tileIndex < iNumberOfFields; tileIndex++) {
 											var tileData = tileMappingData[tileIndex];
 
-											if (tileData.field && tileData.label) {
+											if (tileData.field) {
 												// New form structure: Selection Type Label, Selection Type Select, then VBox containers (one per field)
 												// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix)
 												// Skip the first two controls (Selection Type Label and Select) and start from index 2
@@ -2487,8 +2487,8 @@ sap.ui.define([
 														// Set Display Text
 														if (oTextVBox && oTextVBox instanceof sap.m.VBox) {
 															var oTextInput = oTextVBox.getItems()[1];
-															if (oTextInput instanceof sap.m.Input && tileData.label) {
-																oTextInput.setValue(tileData.label);
+															if (oTextInput instanceof sap.m.Input) {
+																oTextInput.setValue(tileData.label || "");
 															}
 														}
 
