@@ -441,7 +441,10 @@ sap.ui.define([
 				"ZpageId": JSON.stringify(hierarchyFormData.pageId),
 				// "EnableTimeRange": hierarchyFormData.enableTimeRange || false,
 				"WlabelMapping": JSON.stringify(tileMappingData.tileMapping),
-				"SelectionType": tileMappingData.selectionType,
+				"SelectionType": JSON.stringify({
+					selectiontype: tileMappingData.selectionType,
+					aggregation: tileMappingData.aggregation || []
+				}),
 				"Filter": filterMappingData,
 				"Status": "Draft",
 				"SourceType": oWidgetData.dataSourceType || "",
@@ -1132,17 +1135,38 @@ sap.ui.define([
 			// Get form content and iterate through it to find field pairs
 			var aFormContent = oForm.getContent();
 			
-			// Get selection type from the second control in the form (first is label, second is select)
-			var sSelectionType = "";
-			if (aFormContent.length > 1 && aFormContent[1] instanceof sap.m.Select) {
-				sSelectionType = aFormContent[1].getSelectedKey();
-			}
-			
+			// Extract aggregation data
+			// Index 0: Aggregation Label, Index 1: Aggregation Dimension Select, Index 2: Is Time Dimension CheckBox
+			var aAggregation = [];
+			if (aFormContent.length > 2) {
+				var oAggDimensionSelect = aFormContent[1];
+				var oIsTimeDimensionCheckBox = aFormContent[2];
 
-		// New form structure: Selection Type Label, Selection Type Select, then VBox containers (one per field)
+				if (oAggDimensionSelect instanceof sap.m.Select && oIsTimeDimensionCheckBox instanceof sap.m.CheckBox) {
+					var sAggDimension = oAggDimensionSelect.getSelectedKey();
+					var bIsTimeDimension = oIsTimeDimensionCheckBox.getSelected();
+
+					if (sAggDimension) {
+						aAggregation.push({
+							aggregationDimension: sAggDimension,
+							isTimeDimension: bIsTimeDimension
+						});
+					}
+				}
+			}
+
+			// Get selection type
+			// Index 3: Selection Type Label, Index 4: Selection Type Select
+			var sSelectionType = "";
+			if (aFormContent.length > 4 && aFormContent[4] instanceof sap.m.Select) {
+				sSelectionType = aFormContent[4].getSelectedKey();
+			}
+
+
+		// New form structure: Aggregation Label, Aggregation Dimension Select, Is Time Dimension CheckBox, Selection Type Label, Selection Type Select, then VBox containers (one per field)
 		// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix)
-		// Skip the first two controls (Selection Type Label and Select) and start from index 2
-			for (var i = 2; i < aFormContent.length && i < (2 + iNumberOfFields); i++) {
+		// Skip the first 5 controls and start from index 5
+			for (var i = 5; i < aFormContent.length && i < (5 + iNumberOfFields); i++) {
 				var oFieldBox = aFormContent[i]; // Get the VBox for this field
 
 				if (oFieldBox instanceof sap.m.VBox) {
@@ -1240,6 +1264,7 @@ sap.ui.define([
 			// Return new structure with selectionType at top level and tileMapping array
 			var oTileMappingResult = {
 				selectionType: sSelectionType,
+				aggregation: aAggregation,
 				tileMapping: aTileValues
 			};
 
@@ -1266,11 +1291,43 @@ sap.ui.define([
 				iNumberOfFields = 3;
 			}
 
+			// Add Aggregation section
+			var oAggregationDimensionLabel = new Label({
+				text: "Aggregation Dimension"
+			});
+
+			// Aggregation Dimension Select
+			var oAggDimensionSelect = new sap.m.Select({
+				width: "100%"
+			});
+
+			// Populate with metadata
+			var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+			if (oMetaDataModel && oMetaDataModel.getData()) {
+				var aMetaData = oMetaDataModel.getData();
+				aMetaData.forEach(function(item) {
+					oAggDimensionSelect.addItem(new sap.ui.core.Item({
+						key: item.FIELDNAME,
+						text: item.SCRTEXT_L || item.FIELDNAME
+					}));
+				});
+			}
+
+			// Is Time Dimension CheckBox
+			var oIsTimeDimensionCheckBox = new sap.m.CheckBox({
+				text: "Is Time Dimension",
+				selected: false
+			});
+
+			oTileMappingForm.addContent(oAggregationDimensionLabel);
+			oTileMappingForm.addContent(oAggDimensionSelect);
+			oTileMappingForm.addContent(oIsTimeDimensionCheckBox);
+
 			// Add Selection Type Label and Select
 			var oSelectionTypeLabel = new Label({
 				text: "Selection Type"
 			});
-			
+
 			var oFieldTileMappingTypeSelect = new sap.m.Select({
 				width: "100%",
 				showSecondaryValues: true
@@ -1285,10 +1342,10 @@ sap.ui.define([
 					additionalText: item.Id
 				}));
 			});
-			
+
 			oTileMappingForm.addContent(oSelectionTypeLabel);
 			oTileMappingForm.addContent(oFieldTileMappingTypeSelect);
-			
+
 			// Create dynamic fields based on widget type
 			for (var k = 1; k <= iNumberOfFields; k++) {
 				// Field Select Label
@@ -2439,11 +2496,50 @@ sap.ui.define([
 								var oTileMappingForm = that.byId("createTileMappingForm");
 								var aTileMappingContent = oTileMappingForm.getContent();
 								
-								// Set selection type from oCurrentData.selectionType
-								if (oCurrentData.selectionType && aTileMappingContent.length > 1 && aTileMappingContent[1] instanceof sap.m.Select) {
-									aTileMappingContent[1].setSelectedKey(oCurrentData.selectionType);
+								// Parse SelectionType (it may be a JSON string or a plain string)
+								var selectionTypeData = oCurrentData.selectionType;
+								var sSelectionType = "";
+								var aAggregationData = [];
+
+								try {
+									if (selectionTypeData && typeof selectionTypeData === 'string' && selectionTypeData.startsWith('{')) {
+										// New format: JSON with selectionType and aggregation
+										var oSelectionTypeObj = JSON.parse(selectionTypeData);
+										sSelectionType = oSelectionTypeObj.selectionType || "";
+										aAggregationData = oSelectionTypeObj.aggregation || [];
+									} else {
+										// Old format: plain string
+										sSelectionType = selectionTypeData || "";
+									}
+								} catch (e) {
+									// Fallback to plain string
+									sSelectionType = selectionTypeData || "";
 								}
-								
+
+								// Load aggregation data
+								// Index 1: Aggregation Dimension Select, Index 2: Is Time Dimension CheckBox
+								if (aAggregationData.length > 0 && aTileMappingContent.length > 2) {
+									var oAggDimensionSelect = aTileMappingContent[1];
+									var oIsTimeDimensionCheckBox = aTileMappingContent[2];
+
+									// Load first aggregation entry only (since we have single controls)
+									var oFirstAgg = aAggregationData[0];
+									if (oFirstAgg) {
+										if (oAggDimensionSelect instanceof sap.m.Select && oFirstAgg.aggregationDimension) {
+											oAggDimensionSelect.setSelectedKey(oFirstAgg.aggregationDimension);
+										}
+										if (oIsTimeDimensionCheckBox instanceof sap.m.CheckBox) {
+											oIsTimeDimensionCheckBox.setSelected(oFirstAgg.isTimeDimension || false);
+										}
+									}
+								}
+
+								// Set selection type from parsed data
+								// Index 4: Selection Type Select
+								if (sSelectionType && aTileMappingContent.length > 4 && aTileMappingContent[4] instanceof sap.m.Select) {
+									aTileMappingContent[4].setSelectedKey(sSelectionType);
+								}
+
 								// Handle tile mapping data from oCurrentData.wlabelMapping
 								if (oCurrentData.wlabelMapping) {
 									var tileMappingData = JSON.parse(oCurrentData.wlabelMapping);
@@ -2455,10 +2551,10 @@ sap.ui.define([
 											var tileData = tileMappingData[tileIndex];
 
 											if (tileData.field) {
-												// New form structure: Selection Type Label, Selection Type Select, then VBox containers (one per field)
+												// New form structure: Selection Type Label, Selection Type Select, Aggregation Label, Aggregation Dimension Select, Is Time Dimension CheckBox, then VBox containers (one per field)
 												// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix)
-												// Skip the first two controls (Selection Type Label and Select) and start from index 2
-												var controlIndex = 2 + tileIndex; // Start from index 2 to skip selection type label and select
+												// Skip the first 5 controls and start from index 5
+												var controlIndex = 5 + tileIndex; // Start from index 5 to skip selection type and aggregation controls
 												var oFieldBox = aTileMappingContent[controlIndex]; // Get the VBox for this field
 
 												if (oFieldBox instanceof sap.m.VBox) {
