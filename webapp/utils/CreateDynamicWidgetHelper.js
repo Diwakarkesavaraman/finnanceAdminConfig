@@ -1163,10 +1163,10 @@ sap.ui.define([
 			}
 
 
-		// New form structure: Aggregation Label, Aggregation Dimension Select, Is Time Dimension CheckBox, Selection Type Label, Selection Type Select, then VBox containers (one per field)
-		// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix)
-		// Skip the first 5 controls and start from index 5
-			for (var i = 5; i < aFormContent.length && i < (5 + iNumberOfFields); i++) {
+		// New form structure: Aggregation Label, Aggregation Dimension Select, Is Time Dimension CheckBox, then VBox containers (one per field)
+		// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix), HBox3 (with 1 VBox for Selection Type)
+		// Skip the first 3 controls and start from index 3
+			for (var i = 3; i < aFormContent.length && i < (3 + iNumberOfFields); i++) {
 				var oFieldBox = aFormContent[i]; // Get the VBox for this field
 
 				if (oFieldBox instanceof sap.m.VBox) {
@@ -1175,12 +1175,14 @@ sap.ui.define([
 				// aFieldBoxItems[1] = Field Select
 				// aFieldBoxItems[2] = HBox1 containing the first 3 fields
 				// aFieldBoxItems[3] = HBox2 containing the second 3 fields
+				// aFieldBoxItems[4] = HBox3 containing selection type
 
 				var oFieldSelect = aFieldBoxItems[1];
 				var oHBox1 = aFieldBoxItems[2];
 				var oHBox2 = aFieldBoxItems[3];
+				var oHBox3 = aFieldBoxItems[4];
 
-				if (oFieldSelect instanceof sap.m.Select && oHBox1 instanceof sap.m.HBox && oHBox2 instanceof sap.m.HBox) {
+				if (oFieldSelect instanceof sap.m.Select && oHBox1 instanceof sap.m.HBox && oHBox2 instanceof sap.m.HBox && oHBox3 instanceof sap.m.HBox) {
 					var sSelectedField = oFieldSelect.getSelectedKey();
 
 					// Get the three VBoxes from HBox1
@@ -1245,6 +1247,20 @@ sap.ui.define([
 						}
 					}
 
+					// Get Selection Type from HBox3
+					var sSelectionType = "";
+					if (oHBox3 instanceof sap.m.HBox) {
+						var aHBox3Items = oHBox3.getItems();
+						var oSelectionTypeVBox = aHBox3Items[0]; // Selection Type VBox
+
+						if (oSelectionTypeVBox && oSelectionTypeVBox instanceof sap.m.VBox) {
+							var oSelectionTypeSelect = oSelectionTypeVBox.getItems()[1];
+							if (oSelectionTypeSelect instanceof sap.m.Select) {
+								sSelectionType = oSelectionTypeSelect.getSelectedKey();
+							}
+						}
+					}
+
 					if (sSelectedField) {
 						aTileValues.push({
 							field: sSelectedField,
@@ -1254,7 +1270,8 @@ sap.ui.define([
 							color: sColor || "",
 							scale: sScale || "",
 							decimals: sDecimals || "",
-							suffix: sSuffix || ""
+							suffix: sSuffix || "",
+							selectiontype: sSelectionType || ""
 						});
 					}
 				}
@@ -1322,29 +1339,6 @@ sap.ui.define([
 			oTileMappingForm.addContent(oAggregationDimensionLabel);
 			oTileMappingForm.addContent(oAggDimensionSelect);
 			oTileMappingForm.addContent(oIsTimeDimensionCheckBox);
-
-			// Add Selection Type Label and Select
-			var oSelectionTypeLabel = new Label({
-				text: "Selection Type"
-			});
-
-			var oFieldTileMappingTypeSelect = new sap.m.Select({
-				width: "100%",
-				showSecondaryValues: true
-			});
-
-			var oTitleBindingModel = that.getView().getModel("createDataBindingTypeDropdownData");
-			var aTileBindingData = oTitleBindingModel.getData();
-			aTileBindingData.forEach(function(item) {
-				oFieldTileMappingTypeSelect.addItem(new sap.ui.core.ListItem({
-					key: item.Id,
-					text: item.Text,
-					additionalText: item.Id
-				}));
-			});
-
-			oTileMappingForm.addContent(oSelectionTypeLabel);
-			oTileMappingForm.addContent(oFieldTileMappingTypeSelect);
 
 			// Create dynamic fields based on widget type
 			for (var k = 1; k <= iNumberOfFields; k++) {
@@ -1497,6 +1491,32 @@ sap.ui.define([
 					]
 				});
 
+				// Create VBox for Selection Type (Label + Select stacked vertically)
+				var oSelectionTypeSelect = new sap.m.Select({
+					width: "95%"
+				});
+
+				// Populate selection type items
+				var oTitleBindingModel = that.getView().getModel("createDataBindingTypeDropdownData");
+				var aTileBindingData = oTitleBindingModel.getData();
+				aTileBindingData.forEach(function(item) {
+					oSelectionTypeSelect.addItem(new sap.ui.core.ListItem({
+						key: item.Id,
+						text: item.Text,
+						additionalText: item.Id
+					}));
+				});
+
+				var oSelectionTypeVBox = new sap.m.VBox({
+					width: "33.33%",
+					items: [
+						new Label({
+							text: "Selection Type " + k
+						}),
+						oSelectionTypeSelect
+					]
+				});
+
 				// Create HBox to arrange the first three fields horizontally
 				var oHBoxFields1 = new sap.m.HBox({
 					width: "100%",
@@ -1509,10 +1529,16 @@ sap.ui.define([
 					items: [oScaleVBox, oDecimalsVBox, oSuffixVBox]
 				});
 
+				// Create HBox to arrange selection type field
+				var oHBoxFields3 = new sap.m.HBox({
+					width: "100%",
+					items: [oSelectionTypeVBox]
+				});
+
 				// Wrap everything in a VBox for this field
 				var oFieldBox = new sap.m.VBox({
 					width: "100%",
-					items: [oFieldLabel, oFieldSelect, oHBoxFields1, oHBoxFields2],
+					items: [oFieldLabel, oFieldSelect, oHBoxFields1, oHBoxFields2, oHBoxFields3],
 					class: "sapUiSmallMarginBottom"
 				});
 
@@ -2534,11 +2560,8 @@ sap.ui.define([
 									}
 								}
 
-								// Set selection type from parsed data
-								// Index 4: Selection Type Select
-								if (sSelectionType && aTileMappingContent.length > 4 && aTileMappingContent[4] instanceof sap.m.Select) {
-									aTileMappingContent[4].setSelectedKey(sSelectionType);
-								}
+								// Selection type is now per-field, not global
+								// It will be loaded below in the field loop
 
 								// Handle tile mapping data from oCurrentData.wlabelMapping
 								if (oCurrentData.wlabelMapping) {
@@ -2551,22 +2574,24 @@ sap.ui.define([
 											var tileData = tileMappingData[tileIndex];
 
 											if (tileData.field) {
-												// New form structure: Selection Type Label, Selection Type Select, Aggregation Label, Aggregation Dimension Select, Is Time Dimension CheckBox, then VBox containers (one per field)
-												// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix)
-												// Skip the first 5 controls and start from index 5
-												var controlIndex = 5 + tileIndex; // Start from index 5 to skip selection type and aggregation controls
+												// New form structure: Aggregation Label, Aggregation Dimension Select, Is Time Dimension CheckBox, then VBox containers (one per field)
+												// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix), HBox3 (with Selection Type VBox)
+												// Skip the first 3 controls and start from index 3
+												var controlIndex = 3 + tileIndex; // Start from index 3 to skip aggregation controls
 												var oFieldBox = aTileMappingContent[controlIndex]; // Get the VBox for this field
 
 												if (oFieldBox instanceof sap.m.VBox) {
 													var aFieldBoxItems = oFieldBox.getItems();
 													// aFieldBoxItems[0] = Field Label
 													// aFieldBoxItems[1] = Field Select
-													// aFieldBoxItems[2] = HBox1 containing the first 3 fields
-													// aFieldBoxItems[3] = HBox2 containing the second 3 fields
+													// aFieldBoxItems[2] = HBox1 containing the first 3 fields (Display Text, Unit, Color)
+													// aFieldBoxItems[3] = HBox2 containing the second 3 fields (Scale, Decimals, Suffix)
+													// aFieldBoxItems[4] = HBox3 containing Selection Type
 
 													var oTileFieldSelect = aFieldBoxItems[1];
 													var oHBox1 = aFieldBoxItems[2];
 													var oHBox2 = aFieldBoxItems[3];
+													var oHBox3 = aFieldBoxItems[4];
 
 													if (oTileFieldSelect instanceof sap.m.Select) {
 														// Set the selected field
@@ -2633,6 +2658,20 @@ sap.ui.define([
 															var oSuffixInput = oSuffixVBox.getItems()[1];
 															if (oSuffixInput instanceof sap.m.Input) {
 																oSuffixInput.setValue(tileData.suffix);
+															}
+														}
+													}
+
+													// Handle third HBox (Selection Type)
+													if (oHBox3 instanceof sap.m.HBox && tileData.selectiontype) {
+														var aHBox3Items = oHBox3.getItems();
+														var oSelectionTypeVBox = aHBox3Items[0]; // Selection Type VBox
+
+														// Set Selection Type
+														if (oSelectionTypeVBox && oSelectionTypeVBox instanceof sap.m.VBox) {
+															var oSelectionTypeSelect = oSelectionTypeVBox.getItems()[1];
+															if (oSelectionTypeSelect instanceof sap.m.Select) {
+																oSelectionTypeSelect.setSelectedKey(tileData.selectiontype);
 															}
 														}
 													}
