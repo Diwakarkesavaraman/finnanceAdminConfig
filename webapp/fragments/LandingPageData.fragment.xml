@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
 	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt"
-	xmlns:codeeditor="sap.ui.codeeditor" beforeShow="onBeforeShow">
+	xmlns:codeeditor="sap.ui.codeeditor" xmlns:dnd="sap.ui.core.dnd" beforeShow="onBeforeShow">
 	<ScrollContainer id="admincontrolupdlandingdata" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
 		<Panel height="100%" class="admgisreppanelcls">
 			<content>
@@ -142,6 +142,9 @@
 					</HBox>
 					<Table id="widgetTable" alternateRowColors="false" items="{ path: 'oWidgetDataModel>/' }" growing="true"
 						class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
+						<dragDropConfig>
+							<dnd:DragInfo sourceAggregation="items" />
+						</dragDropConfig>
 						<columns>
 							<Column width="9rem">
 								<header>
@@ -205,6 +208,47 @@
 							</ColumnListItem>
 						</items>
 					</Table>
+
+					<!-- Grid Container with Drag and Drop -->
+					<VBox class="sapUiSmallMarginTop">
+						<Title text="Widget Grid View (16x8)" class="sapUiSmallMarginBottom"/>
+						<f:GridContainer id="widgetGridContainer" items="{oWidgetDataModel>/}" snapToRow="true">
+							<f:dragDropConfig>
+								<dnd:DragInfo sourceAggregation="items" />
+								<dnd:DropInfo targetAggregation="items" dropPosition="Between" dropLayout="Horizontal" drop="handleDropToGrid"/>
+							</f:dragDropConfig>
+							<f:layout>
+								<f:GridContainerSettings rowSize="5rem" columnSize="5rem" gap="0.5rem" />
+							</f:layout>
+							<f:layoutXL>
+								<f:GridContainerSettings columns="8" rowSize="5rem" columnSize="5rem" gap="0.5rem" />
+							</f:layoutXL>
+							<f:layoutL>
+								<f:GridContainerSettings columns="8" rowSize="5rem" columnSize="5rem" gap="0.5rem" />
+							</f:layoutL>
+							<f:layoutM>
+								<f:GridContainerSettings columns="6" rowSize="5rem" columnSize="5rem" gap="0.5rem" />
+							</f:layoutM>
+							<f:layoutS>
+								<f:GridContainerSettings columns="4" rowSize="5rem" columnSize="5rem" gap="0.5rem" />
+							</f:layoutS>
+							<f:layoutXS>
+								<f:GridContainerSettings columns="2" rowSize="5rem" columnSize="5rem" gap="0.5rem" />
+							</f:layoutXS>
+							<f:items>
+								<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
+									header="{oWidgetDataModel>WidgetName}" subheader="{oWidgetDataModel>WidgetId}" press="onWidgetTilePress">
+									<layoutData>
+										<f:GridContainerItemLayoutData rows="4" columns="2" />
+									</layoutData>
+									<TileContent>
+										<NumericContent value="{oWidgetDataModel>ZtitleName}" valueColor="Good" icon="sap-icon://custom-view"/>
+									</TileContent>
+								</GenericTile>
+							</f:items>
+						</f:GridContainer>
+					</VBox>
+
 				</VBox>
 				<VBox id="dynamicWidgetConfigContainer" visible="false">
 					<HBox class="tblhdrcls">

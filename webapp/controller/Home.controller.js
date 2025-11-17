@@ -1939,6 +1939,62 @@
 
  		},
 
+ 		handleDropToGrid: function(oEvent) {
+ 			// Get the dragged control and dropped control
+ 			var oDraggedControl = oEvent.getParameter("draggedControl");
+ 			var oDroppedControl = oEvent.getParameter("droppedControl");
+ 			var sDropPosition = oEvent.getParameter("dropPosition");
+
+ 			// Get the binding contexts
+ 			var oDraggedContext = oDraggedControl.getBindingContext("oWidgetDataModel");
+ 			var oDroppedContext = oDroppedControl ? oDroppedControl.getBindingContext("oWidgetDataModel") : null;
+
+ 			if (!oDraggedContext) {
+ 				return;
+ 			}
+
+ 			// Get the model and data
+ 			var oModel = this.getView().getModel("oWidgetDataModel");
+ 			var aData = oModel.getData();
+
+ 			// Extract the path to determine source and target indices
+ 			var sDraggedPath = oDraggedContext.getPath();
+ 			var iDraggedIndex = parseInt(sDraggedPath.substring(sDraggedPath.lastIndexOf("/") + 1));
+
+ 			// Get the dragged item
+ 			var oDraggedItem = aData[iDraggedIndex];
+
+ 			// Remove from source position
+ 			aData.splice(iDraggedIndex, 1);
+
+ 			// Determine target index
+ 			var iTargetIndex;
+ 			if (oDroppedContext) {
+ 				var sDroppedPath = oDroppedContext.getPath();
+ 				iTargetIndex = parseInt(sDroppedPath.substring(sDroppedPath.lastIndexOf("/") + 1));
+
+ 				// Adjust target index based on drop position
+ 				if (sDropPosition === "After") {
+ 					iTargetIndex++;
+ 				}
+
+ 				// Adjust if dragged from before target
+ 				if (iDraggedIndex < iTargetIndex) {
+ 					iTargetIndex--;
+ 				}
+ 			} else {
+ 				// Drop at the end if no target
+ 				iTargetIndex = aData.length;
+ 			}
+
+ 			// Insert at target position
+ 			aData.splice(iTargetIndex, 0, oDraggedItem);
+
+ 			// Update the model
+ 			oModel.setData(aData);
+ 			oModel.refresh();
+ 		},
+
  		onAttachButtonClick: function (oEvent) {
  			debugger;
  			var that = this;
