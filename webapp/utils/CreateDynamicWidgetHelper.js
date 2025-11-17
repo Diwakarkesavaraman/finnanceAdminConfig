@@ -441,10 +441,13 @@ sap.ui.define([
 				"ZpageId": JSON.stringify(hierarchyFormData.pageId),
 				// "EnableTimeRange": hierarchyFormData.enableTimeRange || false,
 				"WlabelMapping": JSON.stringify(tileMappingData.tileMapping),
-				"SelectionType": JSON.stringify({
-					selectiontype: tileMappingData.selectionType,
-					aggregation: tileMappingData.aggregation || []
-				}),
+				// "SelectionType": JSON.stringify({
+				// 	selectiontype: tileMappingData.selectionType,
+				// 	aggregation: tileMappingData.aggregation || null
+				// }),
+				"SelectionType": JSON.stringify(
+					tileMappingData.aggregation || null
+				),
 				"Filter": filterMappingData,
 				"Status": "Draft",
 				"SourceType": oWidgetData.dataSourceType || "",
@@ -1137,7 +1140,7 @@ sap.ui.define([
 			
 			// Extract aggregation data
 			// Index 0: Aggregation Label, Index 1: Aggregation Dimension Select, Index 2: Is Time Dimension CheckBox
-			var aAggregation = [];
+			var oAggregation = null;
 			if (aFormContent.length > 2) {
 				var oAggDimensionSelect = aFormContent[1];
 				var oIsTimeDimensionCheckBox = aFormContent[2];
@@ -1147,10 +1150,10 @@ sap.ui.define([
 					var bIsTimeDimension = oIsTimeDimensionCheckBox.getSelected();
 
 					if (sAggDimension) {
-						aAggregation.push({
+						oAggregation = {
 							aggregationDimension: sAggDimension,
 							isTimeDimension: bIsTimeDimension
-						});
+						};
 					}
 				}
 			}
@@ -1281,7 +1284,7 @@ sap.ui.define([
 			// Return new structure with selectionType at top level and tileMapping array
 			var oTileMappingResult = {
 				selectionType: sSelectionType,
-				aggregation: aAggregation,
+				aggregation: oAggregation,
 				tileMapping: aTileValues
 			};
 
@@ -2525,14 +2528,15 @@ sap.ui.define([
 								// Parse SelectionType (it may be a JSON string or a plain string)
 								var selectionTypeData = oCurrentData.selectionType;
 								var sSelectionType = "";
-								var aAggregationData = [];
+								var oAggregationData = null;
 
 								try {
 									if (selectionTypeData && typeof selectionTypeData === 'string' && selectionTypeData.startsWith('{')) {
 										// New format: JSON with selectionType and aggregation
 										var oSelectionTypeObj = JSON.parse(selectionTypeData);
-										sSelectionType = oSelectionTypeObj.selectionType || "";
-										aAggregationData = oSelectionTypeObj.aggregation || [];
+										// sSelectionType = oSelectionTypeObj.selectionType || "";
+										// oAggregationData = oSelectionTypeObj.aggregation || null;
+										oAggregationData = oSelectionTypeObj || null;
 									} else {
 										// Old format: plain string
 										sSelectionType = selectionTypeData || "";
@@ -2544,19 +2548,16 @@ sap.ui.define([
 
 								// Load aggregation data
 								// Index 1: Aggregation Dimension Select, Index 2: Is Time Dimension CheckBox
-								if (aAggregationData.length > 0 && aTileMappingContent.length > 2) {
+								if (oAggregationData && aTileMappingContent.length > 2) {
 									var oAggDimensionSelect = aTileMappingContent[1];
 									var oIsTimeDimensionCheckBox = aTileMappingContent[2];
 
-									// Load first aggregation entry only (since we have single controls)
-									var oFirstAgg = aAggregationData[0];
-									if (oFirstAgg) {
-										if (oAggDimensionSelect instanceof sap.m.Select && oFirstAgg.aggregationDimension) {
-											oAggDimensionSelect.setSelectedKey(oFirstAgg.aggregationDimension);
-										}
-										if (oIsTimeDimensionCheckBox instanceof sap.m.CheckBox) {
-											oIsTimeDimensionCheckBox.setSelected(oFirstAgg.isTimeDimension || false);
-										}
+									// Load aggregation data (single object)
+									if (oAggDimensionSelect instanceof sap.m.Select && oAggregationData.aggregationDimension) {
+										oAggDimensionSelect.setSelectedKey(oAggregationData.aggregationDimension);
+									}
+									if (oIsTimeDimensionCheckBox instanceof sap.m.CheckBox) {
+										oIsTimeDimensionCheckBox.setSelected(oAggregationData.isTimeDimension || false);
 									}
 								}
 
