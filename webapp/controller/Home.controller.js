@@ -9545,7 +9545,7 @@
  			var pageId =this.getView().getModel("oPageDetailsModel").getData().ZpageId;
  			
  			
- 			var inpWidgetId = sap.ui.getCore().byId("widgetIDInput").getValue();
+ 			var inpWidgetId = sap.ui.getCore().byId("widgetIDInput").getSelectedKey();
  			// var inpRoles= sap.ui.getCore().byId("rolesInput").getValue();
  			// var inpVisibility = sap.ui.getCore().byId("visibilityCheckBox").getSelected();
  			

@@ -3,15 +3,14 @@
 	<Dialog title="Add New Widget" width="500em">
 		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
 			<Label text="Widget ID"></Label>
-            <ComboBox id="widgetIDInput" 
-                      selectedKey="{aDataSourceDropdownData>Id}" 
+            <ComboBox id="widgetIDInput"
                       items="{aDataSourceDropdownData>/}"
                       filterSecondaryValues="true"
                       showSecondaryValues="true"
                       required="true"
                       placeholder="Select Widget ID...">
-                <core:ListItem key="{aDataSourceDropdownData>Id}" 
-                              text="{aDataSourceDropdownData>Id}" 
+                <core:ListItem key="{aDataSourceDropdownData>Id}"
+                              text="{aDataSourceDropdownData>Text}"
                               additionalText="{aDataSourceDropdownData>Id}"/>
             </ComboBox>
             <Label text="Roles"></Label>
