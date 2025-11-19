@@ -1776,6 +1776,8 @@ sap.ui.define([
 								}
 							}
 
+							// add the controls here
+
 							// Label Input
 							var oLabelInput = new sap.m.Input({
 								width: "100%",

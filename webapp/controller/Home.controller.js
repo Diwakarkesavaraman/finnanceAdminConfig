@@ -1995,6 +1995,43 @@
  			oModel.refresh();
  		},
 
+ 		onToggleRevealGrid: function(oEvent) {
+ 			var bSelected = oEvent.getParameter("selected");
+ 			var oGridContainer = this.byId("widgetGridContainer");
+
+ 			if (oGridContainer) {
+ 				// Toggle the CSS class to show/hide grid lines
+ 				if (bSelected) {
+ 					oGridContainer.addStyleClass("sapUiRespGridOverflowHidden");
+ 					// Add custom CSS to show 4x8 grid background
+ 					var oDomRef = oGridContainer.getDomRef();
+ 					if (oDomRef) {
+ 						// 4 rows x 8 columns grid
+ 						// Each cell is 5rem x 5rem with 0.5rem gap
+ 						// Column width: (100% / 8) per column
+ 						// Row height: 5rem per row, 4 rows total = 20rem + gaps
+ 						var columnWidth = "12.5%"; // 100% / 8 columns
+ 						var rowHeight = "calc(5rem + 0.5rem)"; // row + gap
+
+ 						oDomRef.style.background =
+ 							"repeating-linear-gradient(0deg, transparent, transparent calc(" + rowHeight + " - 1px), #4a90e2 calc(" + rowHeight + " - 1px), #4a90e2 " + rowHeight + ")," +
+ 							"repeating-linear-gradient(90deg, transparent, transparent calc(" + columnWidth + " - 1px), #4a90e2 calc(" + columnWidth + " - 1px), #4a90e2 " + columnWidth + ")";
+ 						oDomRef.style.border = "2px solid #4a90e2";
+ 						oDomRef.style.minHeight = "calc(22rem)"; // 4 rows * 5.5rem
+ 					}
+ 				} else {
+ 					oGridContainer.removeStyleClass("sapUiRespGridOverflowHidden");
+ 					// Remove grid background
+ 					var oDomRef = oGridContainer.getDomRef();
+ 					if (oDomRef) {
+ 						oDomRef.style.background = "";
+ 						oDomRef.style.border = "";
+ 						oDomRef.style.minHeight = "";
+ 					}
+ 				}
+ 			}
+ 		},
+
  		onAttachButtonClick: function (oEvent) {
  			debugger;
  			var that = this;

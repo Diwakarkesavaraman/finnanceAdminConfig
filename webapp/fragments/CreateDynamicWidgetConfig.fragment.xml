@@ -37,9 +37,16 @@
 								<core:Item text="{createWidgetTypeDropdownData>Text}" key="{createWidgetTypeDropdownData>Id}"/>
 							</Select>
 							<Label text="Chart Type"/>
-							<Select id="createChartType" items="{path: 'createChartTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedChartType}" change="onCreateChartTypeChange">
-								<core:Item text="{createChartTypeDropdownData>Text}" key="{createChartTypeDropdownData>Id}"/>
+							<Select id="createChartType"  selectedKey="{createWidgetValues>/selectedChartType}" change="onCreateChartTypeChange">
+								<!-- <core:Item text="{createChartTypeDropdownData>Text}" key="{createChartTypeDropdownData>Id}"/> -->
+									<core:Item key="lchart" text="Line Chart"/>
+								<core:Item key="bchart" text="Bar Chart"/>
+								<core:Item key="sbchart" text="Stacked Chart"/>
+								<core:Item key="piechart" text="Pie Chart"/>
+								<core:Item key="doughnutchart" text="Doughnut Chart"/>
+								<core:Item key="multitypechart" text="Multi Type Chart"/>
 							</Select>
+							<!-- items="{path: 'createChartTypeDropdownData>/'}" -->
 							<Label id="createTooltipLabel" text="Tooltip"/>
 							<Input id="createTooltip" value="{createWidgetValues>/tooltip}" editable="true" />
 							<Label text="System Name"/>
