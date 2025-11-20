@@ -920,15 +920,40 @@ sap.ui.define([
 						if (oNextControl instanceof sap.m.VBox && sLabelText === "Select Measures") {
 							var aMeasureRows = oNextControl.getItems();
 							aMeasureRows.forEach(function(oRow) {
-								if (oRow instanceof sap.m.HBox) {
-									var aRowItems = oRow.getItems();
-									// First item is Measure Select, second is Label Input
-									if (aRowItems.length >= 2) {
-										var sMeasure = aRowItems[0] instanceof sap.m.Select ? aRowItems[0].getSelectedKey() : aRowItems[0].getValue();
-										var sLabel = aRowItems[1].getValue();
-										if (sMeasure) {
-											aYMeasures.push(sMeasure);
-											aYLabels.push(sLabel || "");
+								if (oRow instanceof sap.m.VBox) {
+									// Each measure row is now a VBox containing two HBoxes
+									var aHBoxes = oRow.getItems();
+									if (aHBoxes.length >= 2) {
+										var oFirstRowHBox = aHBoxes[0];
+										var oSecondRowHBox = aHBoxes[1];
+
+										if (oFirstRowHBox instanceof sap.m.HBox && oSecondRowHBox instanceof sap.m.HBox) {
+											var aFirstRowItems = oFirstRowHBox.getItems();
+											var aSecondRowItems = oSecondRowHBox.getItems();
+
+											// First row: Measure Select (in VBox), Display Text, Unit, Color
+											var sMeasure = aFirstRowItems[0] instanceof sap.m.VBox ? aFirstRowItems[0].getItems()[1].getSelectedKey() : "";
+											var sDisplayText = aFirstRowItems[1] instanceof sap.m.VBox ? aFirstRowItems[1].getItems()[1].getValue() : "";
+											var sUnit = aFirstRowItems[2] instanceof sap.m.VBox ? aFirstRowItems[2].getItems()[1].getValue() : "";
+											var sColor = aFirstRowItems[3] instanceof sap.m.VBox ? aFirstRowItems[3].getItems()[1].getValue() : "";
+
+											// Second row: Scale, Decimals, Suffix, Delete Button
+											var sScale = aSecondRowItems[0] instanceof sap.m.VBox ? aSecondRowItems[0].getItems()[1].getSelectedKey() : "";
+											var sDecimals = aSecondRowItems[1] instanceof sap.m.VBox ? aSecondRowItems[1].getItems()[1].getSelectedKey() : "";
+											var sSuffix = aSecondRowItems[2] instanceof sap.m.VBox ? aSecondRowItems[2].getItems()[1].getValue() : "";
+
+											if (sMeasure) {
+												aYMeasures.push(sMeasure);
+												// Store all field values as an object
+												aYLabels.push({
+													displayText: sDisplayText || "",
+													unit: sUnit || "",
+													color: sColor || "",
+													scale: sScale || "",
+													decimals: sDecimals || "",
+													suffix: sSuffix || ""
+												});
+											}
 										}
 									}
 								}
@@ -1735,24 +1760,32 @@ sap.ui.define([
 						});
 
 						// Function to add a new measure row
-						var fnAddMeasureRow = function(sMeasureValue, sLabelValue) {
+						var fnAddMeasureRow = function(sMeasureValue, sLabelValue, sUnit, sColor, sScale, sDecimals, sSuffix) {
 							var oMetaDataModel = that.getView().getModel("createMetaDataModel");
 
-							var oMeasureHBox = new sap.m.HBox({
-								alignItems: "Center",
+							// Main VBox container for the entire measure row
+							var oMeasureVBox = new sap.m.VBox({
 								width: "100%"
 							}).addStyleClass("sapUiSmallMarginBottom");
 
+							// First row HBox - Measure Select and first 3 fields
+							var oFirstRowHBox = new sap.m.HBox({
+								alignItems: "Center",
+								width: "100%"
+							}).addStyleClass("sapUiTinyMarginBottom");
+
+							// Second row HBox - remaining fields and delete button
+							var oSecondRowHBox = new sap.m.HBox({
+								alignItems: "Center",
+								width: "100%"
+							});
+
 							// Measure Select Control
 							var oMeasureSelect = new sap.m.Select({
-								width: "100%",
+								width: "95%",
 								forceSelection: false,
-								selectedKey: sMeasureValue || "",
-								layoutData: new sap.m.FlexItemData({
-									growFactor: 1,
-									baseSize: "0%"
-								})
-							}).addStyleClass("sapUiTinyMarginEnd");
+								selectedKey: sMeasureValue || ""
+							});
 
 							// Populate the Select control with metadata
 							if (oMetaDataModel && oMetaDataModel.getData() && oMetaDataModel.getData().length > 0) {
@@ -1776,34 +1809,184 @@ sap.ui.define([
 								}
 							}
 
-							// add the controls here
+							// Create VBox for Measure Select (Label + Select stacked vertically)
+							var oMeasureVBoxControl = new sap.m.VBox({
+								width: "25%",
+								items: [
+									new Label({
+										text: "Measure"
+									}),
+									oMeasureSelect
+								]
+							});
 
-							// Label Input
-							var oLabelInput = new sap.m.Input({
-								width: "100%",
-								placeholder: "Enter Label",
-								value: sLabelValue || "",
-								layoutData: new sap.m.FlexItemData({
-									growFactor: 1,
-									baseSize: "0%"
-								})
-							}).addStyleClass("sapUiTinyMarginEnd");
+							// Create VBox for Display Text (Label + Input stacked vertically)
+							var oTextVBox = new sap.m.VBox({
+								width: "25%",
+								items: [
+									new Label({
+										text: "Display Text"
+									}),
+									new sap.m.Input({
+										width: "95%",
+										placeholder: "Enter display text",
+										value: sLabelValue || ""
+									})
+								]
+							});
 
-							// Delete Button
+							// Create VBox for Unit (Label + Input stacked vertically)
+							var oUnitVBox = new sap.m.VBox({
+								width: "25%",
+								items: [
+									new Label({
+										text: "Unit"
+									}),
+									new sap.m.Input({
+										width: "95%",
+										placeholder: "Enter unit",
+										value: sUnit || ""
+									})
+								]
+							});
+
+							// Create VBox for Color (Label + Input stacked vertically)
+							var oColorVBox = new sap.m.VBox({
+								width: "25%",
+								items: [
+									new Label({
+										text: "Color"
+									}),
+									new sap.m.Input({
+										width: "95%",
+										placeholder: "Enter color",
+										type: "Text",
+										value: sColor || ""
+									})
+								]
+							});
+
+							// Create VBox for Scale (Label + Select stacked vertically)
+							var oScaleSelect = new sap.m.Select({
+								width: "95%",
+								selectedKey: sScale || "noScaling",
+								items: [
+									new sap.ui.core.Item({
+										key: "noScaling",
+										text: "No Scaling"
+									}),
+									new sap.ui.core.Item({
+										key: "billion",
+										text: "in Billion (B)"
+									}),
+									new sap.ui.core.Item({
+										key: "million",
+										text: "in Million (M)"
+									}),
+									new sap.ui.core.Item({
+										key: "thousand",
+										text: "in Thousand (K)"
+									})
+								]
+							});
+
+							var oScaleVBox = new sap.m.VBox({
+								width: "25%",
+								items: [
+									new Label({
+										text: "Scale"
+									}),
+									oScaleSelect
+								]
+							});
+
+							// Create VBox for Decimals (Label + Select stacked vertically)
+							var oDecimalsSelect = new sap.m.Select({
+								width: "95%",
+								selectedKey: sDecimals || "d0",
+								items: [
+									new sap.ui.core.Item({
+										key: "d0",
+										text: "0 decimals"
+									}),
+									new sap.ui.core.Item({
+										key: "d1",
+										text: "1 decimals"
+									}),
+									new sap.ui.core.Item({
+										key: "d2",
+										text: "2 decimals"
+									}),
+									new sap.ui.core.Item({
+										key: "d3",
+										text: "3 decimals"
+									})
+								]
+							});
+
+							var oDecimalsVBox = new sap.m.VBox({
+								width: "25%",
+								items: [
+									new Label({
+										text: "Decimals"
+									}),
+									oDecimalsSelect
+								]
+							});
+
+							// Create VBox for Suffix (Label + Input stacked vertically)
+							var oSuffixVBox = new sap.m.VBox({
+								width: "25%",
+								items: [
+									new Label({
+										text: "Suffix"
+									}),
+									new sap.m.Input({
+										width: "95%",
+										placeholder: "Enter suffix",
+										type: "Text",
+										value: sSuffix || ""
+									})
+								]
+							});
+
+							// Delete Button wrapped in VBox for alignment
 							var oDeleteButton = new sap.m.Button({
 								icon: "sap-icon://delete",
 								type: "Reject",
 								press: function() {
-									oMeasuresContainer.removeItem(oMeasureHBox);
-									oMeasureHBox.destroy();
+									oMeasuresContainer.removeItem(oMeasureVBox);
+									oMeasureVBox.destroy();
 								}
 							});
 
-							oMeasureHBox.addItem(oMeasureSelect);
-							oMeasureHBox.addItem(oLabelInput);
-							oMeasureHBox.addItem(oDeleteButton);
+							var oDeleteVBox = new sap.m.VBox({
+								width: "25%",
+								items: [
+									new Label({
+										text: " " // Empty label for alignment
+									}),
+									oDeleteButton
+								]
+							});
 
-							oMeasuresContainer.addItem(oMeasureHBox);
+							// Add items to first row (Measure Select, Display Text, Unit, Color)
+							oFirstRowHBox.addItem(oMeasureVBoxControl);
+							oFirstRowHBox.addItem(oTextVBox);
+							oFirstRowHBox.addItem(oUnitVBox);
+							oFirstRowHBox.addItem(oColorVBox);
+
+							// Add items to second row (Scale, Decimals, Suffix, Delete Button)
+							oSecondRowHBox.addItem(oScaleVBox);
+							oSecondRowHBox.addItem(oDecimalsVBox);
+							oSecondRowHBox.addItem(oSuffixVBox);
+							oSecondRowHBox.addItem(oDeleteVBox);
+
+							// Add both rows to the main VBox
+							oMeasureVBox.addItem(oFirstRowHBox);
+							oMeasureVBox.addItem(oSecondRowHBox);
+
+							oMeasuresContainer.addItem(oMeasureVBox);
 						};
 
 						// Add Button
@@ -1812,12 +1995,12 @@ sap.ui.define([
 							icon: "sap-icon://add",
 							type: "Emphasized",
 							press: function() {
-								fnAddMeasureRow("", "");
+								fnAddMeasureRow("", "", "", "", "", "", "");
 							}
 						}).addStyleClass("sapUiSmallMarginTop");
 
 						// Add initial row
-						fnAddMeasureRow("", "");
+						fnAddMeasureRow("", "", "", "", "", "", "");
 
 						//Add two more fields called timeframe and Page id. the timeframe field is Select control with options fetched from await that.getSearchHelpData('time_frame'); and Page id is Input field
 
@@ -2263,16 +2446,30 @@ sap.ui.define([
 									// Get yLabel array if exists
 									var aYLabels = mappingData.yLabel || [];
 
-									// Add each measure with its label
+									// Add each measure with its label and additional fields
 									for (var i = 0; i < mappingData.y.length; i++) {
 										var sMeasure = mappingData.y[i];
-										var sLabel = aYLabels[i] || "";
-										fnAddMeasureRow(sMeasure, sLabel);
+										var oLabelData = aYLabels[i] || {};
+
+										// Support both old string format and new object format
+										if (typeof oLabelData === 'string') {
+											fnAddMeasureRow(sMeasure, oLabelData, "", "", "", "", "");
+										} else {
+											fnAddMeasureRow(
+												sMeasure,
+												oLabelData.displayText || "",
+												oLabelData.unit || "",
+												oLabelData.color || "",
+												oLabelData.scale || "",
+												oLabelData.decimals || "",
+												oLabelData.suffix || ""
+											);
+										}
 									}
 
 									// If no measures were loaded, add an empty row
 									if (mappingData.y.length === 0) {
-										fnAddMeasureRow("", "");
+										fnAddMeasureRow("", "", "", "", "", "", "");
 									}
 								}
 							} catch (e) {
