@@ -1257,9 +1257,17 @@ sap.ui.define([
 					}
 
 					if (oColorVBox && oColorVBox instanceof sap.m.VBox) {
-						var oColorInput = oColorVBox.getItems()[1];
-						if (oColorInput instanceof sap.m.Input) {
-							sColor = oColorInput.getValue();
+						var oColorControl = oColorVBox.getItems()[1];
+						// Check if it's an HBox (new structure with color picker and preview)
+						if (oColorControl instanceof sap.m.HBox) {
+							// Get the first item from HBox which is the color input
+							var oColorInput = oColorControl.getItems()[0];
+							if (oColorInput instanceof sap.m.Input) {
+								sColor = oColorInput.getValue();
+							}
+						} else if (oColorControl instanceof sap.m.Input) {
+							// Old structure (backward compatibility)
+							sColor = oColorControl.getValue();
 						}
 					}
 
@@ -1432,20 +1440,175 @@ sap.ui.define([
 
 				// add two more fields called scale, decimals and suffix
 
-				// Create VBox for Color (Label + Input stacked vertically)
-				var oColorVBox = new sap.m.VBox({
+				// Create VBox for Color (Label + Input with color picker)
+				// Use IIFE to create closure for each iteration
+				var oColorVBox = (function() {
+					var oColorInput = new sap.m.Input({
+						width: "95%",
+						placeholder: "Enter hex color (e.g., FF5733)",
+						type: "Text",
+						value: "",
+						showValueHelp: true,
+						valueHelpIconSrc: "sap-icon://palette"
+					});
+
+					// Color preview box
+					var oColorPreview = new sap.m.Input({
+						width: "40px",
+						editable: false,
+						value: "",
+						backgroundDesign: "Transparent"
+					});
+
+					// Update preview background color
+					var fnUpdateColorPreview = function(sColorValue) {
+						if (sColorValue) {
+							// Remove # if present and add it for CSS
+							var sCleanColor = sColorValue.replace("#", "");
+							oColorPreview.$().find("input").css("background-color", "#" + sCleanColor);
+						} else {
+							oColorPreview.$().find("input").css("background-color", "transparent");
+						}
+					};
+
+					// Update preview when color input changes
+					oColorInput.attachChange(function(oEvent) {
+						var sValue = oEvent.getParameter("value");
+						fnUpdateColorPreview(sValue);
+					});
+
+					// Update preview in real-time as user types
+					oColorInput.attachLiveChange(function(oEvent) {
+						var sValue = oEvent.getParameter("value");
+						fnUpdateColorPreview(sValue);
+					});
+
+					// Color picker dialog
+					oColorInput.attachValueHelpRequest(function() {
+						var sOriginalColor = oColorInput.getValue() || "#000000";
+						var sSelectedColor = sOriginalColor;
+
+					// Function to convert RGB to Hex (without # prefix)
+					var fnRgbToHex = function(rgb) {
+						// Handle rgb(r, g, b) format
+						var rgbMatch = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+						if (rgbMatch) {
+							var r = parseInt(rgbMatch[1]);
+							var g = parseInt(rgbMatch[2]);
+							var b = parseInt(rgbMatch[3]);
+							return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
+						}
+						// If already hex, remove # if present
+						if (rgb && rgb.startsWith("#")) {
+							return rgb.substring(1);
+						}
+						return rgb;
+					};
+
+					// Hex code input inside dialog (without # prefix)
+					var oHexInput = new sap.m.Input({
+						value: fnRgbToHex(sOriginalColor),
+						placeholder: "Enter hex code (e.g., FF5733)",
+						width: "100%",
+						liveChange: function(oEvent) {
+							var sHexValue = oEvent.getParameter("value");
+							// Remove # if user enters it
+							sHexValue = sHexValue.replace("#", "");
+							if (sHexValue && sHexValue.match(/^[0-9A-Fa-f]{6}$/)) {
+								sSelectedColor = sHexValue;
+								oColorPicker.setColorString("#" + sHexValue);
+								oDialogPreview.$().find("input").css("background-color", "#" + sHexValue);
+							}
+						}
+					});
+
+					// Color preview in dialog
+					var oDialogPreview = new sap.m.Input({
+						width: "100%",
+						editable: false,
+						value: " ",
+						backgroundDesign: "Transparent"
+					});
+
+					var oColorPicker = new sap.ui.unified.ColorPicker({
+						colorString: sOriginalColor.startsWith("#") ? sOriginalColor : "#" + sOriginalColor,
+						mode: sap.ui.unified.ColorPickerMode.HSL,
+						displayMode: sap.ui.unified.ColorPickerDisplayMode.Default,
+						change: function(oEvent) {
+							var sColorString = oEvent.getParameter("colorString");
+							// Convert RGB to Hex (without #)
+							var sHexColor = fnRgbToHex(sColorString);
+							sSelectedColor = sHexColor;
+							oHexInput.setValue(sHexColor);
+							oDialogPreview.$().find("input").css("background-color", "#" + sHexColor);
+						}
+					});
+
+					var oColorDialog = new sap.m.Dialog({
+						title: "Select Color",
+						content: [
+							new sap.m.VBox({
+								items: [
+									oColorPicker,
+									new sap.m.Label({ text: "Hex Code:" }).addStyleClass("sapUiSmallMarginTop"),
+									oHexInput,
+									new sap.m.Label({ text: "Preview:" }).addStyleClass("sapUiSmallMarginTop"),
+									oDialogPreview
+								]
+							})
+						],
+						beginButton: new sap.m.Button({
+							text: "OK",
+							press: function() {
+								// Apply the selected color
+								oColorInput.setValue(sSelectedColor);
+								fnUpdateColorPreview(sSelectedColor);
+								oColorDialog.close();
+							}
+						}),
+						endButton: new sap.m.Button({
+							text: "Cancel",
+							press: function() {
+								// Restore original color
+								oColorDialog.close();
+							}
+						}),
+						afterOpen: function() {
+							// Set initial preview color after dialog is rendered
+							setTimeout(function() {
+								var sColorForPreview = sOriginalColor.startsWith("#") ? sOriginalColor : "#" + sOriginalColor;
+								oDialogPreview.$().find("input").css("background-color", sColorForPreview);
+							}, 100);
+						},
+						afterClose: function() {
+							oColorDialog.destroy();
+						}
+					});
+
+					oColorDialog.open();
+				});
+
+				// HBox for color input and preview
+				var oColorHBox = new sap.m.HBox({
+					width: "100%",
+					alignItems: "Center",
+					items: [
+						oColorInput,
+						oColorPreview
+					]
+				});
+
+				// Return the VBox
+				return new sap.m.VBox({
 					width: "33.33%",
 					items: [
 						new Label({
 							text: "Color " + k
 						}),
-						new sap.m.Input({
-							width: "95%",
-							placeholder: "Enter color for field " + k,
-							type: "Text"
-						})
+						oColorHBox
 					]
 				});
+			})(); // Immediately invoke the function
 
 				// Create VBox for Scale (Label + Select stacked vertically)
 				var oScaleSelect = new sap.m.Select({
@@ -3005,9 +3168,29 @@ sap.ui.define([
 
 														// Set Color
 														if (oColorVBox && oColorVBox instanceof sap.m.VBox && tileData.color) {
-															var oColorInput = oColorVBox.getItems()[1];
-															if (oColorInput instanceof sap.m.Input) {
-																oColorInput.setValue(tileData.color);
+															var oColorControl = oColorVBox.getItems()[1];
+															// Check if it's an HBox (new structure with color picker and preview)
+															if (oColorControl instanceof sap.m.HBox) {
+																// Get the first item from HBox which is the color input
+																var oColorInput = oColorControl.getItems()[0];
+																var oColorPreview = oColorControl.getItems()[1];
+
+																if (oColorInput instanceof sap.m.Input) {
+																	oColorInput.setValue(tileData.color);
+
+																	// Update the preview - use immediate function to capture variables
+																	(function(input, preview, color) {
+																		setTimeout(function() {
+																			if (preview && preview.$() && preview.$().find("input").length > 0) {
+																				var sCleanColor = color.replace("#", "");
+																				preview.$().find("input").css("background-color", "#" + sCleanColor);
+																			}
+																		}, 500);
+																	})(oColorInput, oColorPreview, tileData.color);
+																}
+															} else if (oColorControl instanceof sap.m.Input) {
+																// Old structure (backward compatibility)
+																oColorControl.setValue(tileData.color);
 															}
 														}
 													}
