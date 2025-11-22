@@ -1820,19 +1820,35 @@ sap.ui.define([
 								]
 							});
 
+							// Get the selected measure's text for default Display Text value
+							var sDefaultDisplayText = sLabelValue || "";
+							if (!sDefaultDisplayText && oMeasureSelect.getSelectedItem()) {
+								sDefaultDisplayText = oMeasureSelect.getSelectedItem().getText();
+							}
+
 							// Create VBox for Display Text (Label + Input stacked vertically)
+							var oDisplayTextInput = new sap.m.Input({
+								width: "95%",
+								placeholder: "Enter display text",
+								value: sDefaultDisplayText
+							});
+
 							var oTextVBox = new sap.m.VBox({
 								width: "25%",
 								items: [
 									new Label({
 										text: "Display Text"
 									}),
-									new sap.m.Input({
-										width: "95%",
-										placeholder: "Enter display text",
-										value: sLabelValue || ""
-									})
+									oDisplayTextInput
 								]
+							});
+
+							// Update Display Text when measure selection changes
+							oMeasureSelect.attachChange(function(oEvent) {
+								var oSelectedItem = oEvent.getParameter("selectedItem");
+								if (oSelectedItem && !oDisplayTextInput.getValue()) {
+									oDisplayTextInput.setValue(oSelectedItem.getText());
+								}
 							});
 
 							// Create VBox for Unit (Label + Input stacked vertically)
