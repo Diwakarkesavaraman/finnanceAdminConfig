@@ -1442,12 +1442,18 @@ sap.ui.define([
 
 				// Create VBox for Color (Label + Input with color picker)
 				// Use IIFE to create closure for each iteration
-				var oColorVBox = (function() {
+				var oColorVBox = (function(iFieldIndex) {
+					// Default color palette for auto-assignment
+					var aDefaultColors = ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"];
+
+					// Auto-assign color from palette based on field index
+					var sDefaultColor = aDefaultColors[(iFieldIndex - 1) % aDefaultColors.length];
+
 					var oColorInput = new sap.m.Input({
 						width: "95%",
 						placeholder: "Enter hex color (e.g., FF5733)",
 						type: "Text",
-						value: "",
+						value: sDefaultColor,
 						showValueHelp: true,
 						valueHelpIconSrc: "sap-icon://palette"
 					});
@@ -1470,6 +1476,13 @@ sap.ui.define([
 							oColorPreview.$().find("input").css("background-color", "transparent");
 						}
 					};
+
+					// Set initial color preview
+					if (sDefaultColor) {
+						setTimeout(function() {
+							fnUpdateColorPreview(sDefaultColor);
+						}, 100);
+					}
 
 					// Update preview when color input changes
 					oColorInput.attachChange(function(oEvent) {
@@ -1608,7 +1621,7 @@ sap.ui.define([
 						oColorHBox
 					]
 				});
-			})(); // Immediately invoke the function
+			})(k); // Immediately invoke the function with field index
 
 				// Create VBox for Scale (Label + Select stacked vertically)
 				var oScaleSelect = new sap.m.Select({
@@ -1933,6 +1946,15 @@ sap.ui.define([
 
 						// Function to add a new measure row
 						var fnAddMeasureRow = function(sMeasureValue, sLabelValue, sUnit, sColor, sScale, sDecimals, sSuffix) {
+							// Default color palette for auto-assignment
+							var aDefaultColors = ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"];
+
+							// Auto-assign color from palette if empty
+							if (!sColor || sColor === "") {
+								var iCurrentRowCount = oMeasuresContainer.getItems().length;
+								sColor = aDefaultColors[iCurrentRowCount % aDefaultColors.length];
+							}
+
 							var oMetaDataModel = that.getView().getModel("createMetaDataModel");
 
 							// Main VBox container for the entire measure row
@@ -2783,6 +2805,9 @@ sap.ui.define([
 									oXSelect.setSelectedKey(mappingData.x);
 								}
 
+								// Default color palette for auto-assignment
+								var aDefaultColors = ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"];
+
 								// Set Y-axis selections (Measures)
 								if (mappingData.y && Array.isArray(mappingData.y) && oMeasuresContainer) {
 									// Clear existing measure rows
@@ -2796,15 +2821,23 @@ sap.ui.define([
 										var sMeasure = mappingData.y[i];
 										var oLabelData = aYLabels[i] || {};
 
+										// Auto-assign color from palette if empty
+										var sColor = "";
+										if (typeof oLabelData === 'object' && oLabelData.color && oLabelData.color !== "") {
+											sColor = oLabelData.color;
+										} else {
+											sColor = aDefaultColors[i % aDefaultColors.length];
+										}
+
 										// Support both old string format and new object format
 										if (typeof oLabelData === 'string') {
-											fnAddMeasureRow(sMeasure, oLabelData, "", "", "", "", "");
+											fnAddMeasureRow(sMeasure, oLabelData, "", sColor, "", "", "");
 										} else {
 											fnAddMeasureRow(
 												sMeasure,
 												oLabelData.displayText || "",
 												oLabelData.unit || "",
-												oLabelData.color || "",
+												sColor,
 												oLabelData.scale || "",
 												oLabelData.decimals || "",
 												oLabelData.suffix || ""
@@ -3108,15 +3141,23 @@ sap.ui.define([
 								// Selection type is now per-field, not global
 								// It will be loaded below in the field loop
 
+								// Default color palette for auto-assignment
+								var aDefaultColors = ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"];
+
 								// Handle tile mapping data from oCurrentData.wlabelMapping
 								if (oCurrentData.wlabelMapping) {
 									var tileMappingData = JSON.parse(oCurrentData.wlabelMapping);
-									
+
 									// Check if tile mapping data exists and has entries
 									if (tileMappingData && Array.isArray(tileMappingData) && tileMappingData.length > 0) {
 										// Map each tile mapping entry to the corresponding form fields
 										for (var tileIndex = 0; tileIndex < tileMappingData.length && tileIndex < iNumberOfFields; tileIndex++) {
 											var tileData = tileMappingData[tileIndex];
+
+											// Auto-assign color from palette if empty
+											if (!tileData.color || tileData.color === "") {
+												tileData.color = aDefaultColors[tileIndex % aDefaultColors.length];
+											}
 
 											if (tileData.field) {
 												// New form structure: Aggregation Label, Aggregation Dimension Select, Is Time Dimension CheckBox, then VBox containers (one per field)
