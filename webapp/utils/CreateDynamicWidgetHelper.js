@@ -20,6 +20,9 @@ sap.ui.define([
 	"use strict";
 
 	return {
+		// Default color palette for auto-assignment
+		DEFAULT_COLORS: ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"],
+
 		onLoadWidgetListData: async function (oController) {
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
@@ -1520,6 +1523,7 @@ sap.ui.define([
 
 		createTileMappingForm: function (oController) {
 			var that = oController;
+			var self = this;
 			
 			// Tile Mapping Form - Dynamic based on Widget Type
 			var oTileMappingForm = that.byId("createTileMappingForm");
@@ -1629,7 +1633,7 @@ sap.ui.define([
 				// Use IIFE to create closure for each iteration
 				var oColorVBox = (function(iFieldIndex) {
 					// Default color palette for auto-assignment
-					var aDefaultColors = ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"];
+					var aDefaultColors = self.DEFAULT_COLORS;
 
 					// Auto-assign color from palette based on field index
 					var sDefaultColor = aDefaultColors[(iFieldIndex - 1) % aDefaultColors.length];
@@ -2132,7 +2136,7 @@ sap.ui.define([
 						// Function to add a new measure row
 						var fnAddMeasureRow = function(sMeasureValue, sLabelValue, sUnit, sColor, sScale, sDecimals, sSuffix) {
 							// Default color palette for auto-assignment
-							var aDefaultColors = ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"];
+							var aDefaultColors = self.DEFAULT_COLORS;
 
 							// Auto-assign color from palette if empty
 							if (!sColor || sColor === "") {
@@ -3010,7 +3014,7 @@ sap.ui.define([
 								}
 
 								// Default color palette for auto-assignment
-								var aDefaultColors = ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"];
+								var aDefaultColors = self.DEFAULT_COLORS;
 
 								// Set Y-axis selections (Measures)
 								if (mappingData.y && Array.isArray(mappingData.y) && oMeasuresContainer) {
@@ -3346,7 +3350,7 @@ sap.ui.define([
 								// It will be loaded below in the field loop
 
 								// Default color palette for auto-assignment
-								var aDefaultColors = ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"];
+								var aDefaultColors = self.DEFAULT_COLORS;
 
 								// Handle tile mapping data from oCurrentData.wlabelMapping
 								if (oCurrentData.wlabelMapping) {
