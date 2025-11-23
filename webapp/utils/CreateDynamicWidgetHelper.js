@@ -651,6 +651,35 @@ sap.ui.define([
 			that._oDuplicateWidgetDialog.close();
 		},
 
+		onDuplicateWidgetFromList: function (oController, oEvent) {
+			var that = oController;
+			var oBindingContext = oEvent.getSource().getBindingContext("widgetListModel");
+			var oSelectedWidget = oBindingContext.getObject();
+
+			console.log("Duplicating widget from list:", oSelectedWidget);
+
+			// First, load the widget data into the form
+			this.onLoadCreateDynamicWidgetData(that, oSelectedWidget.Id);
+
+			// Wait for the data to be loaded, then open the duplicate dialog
+			setTimeout(function() {
+				// Load and open the duplicate widget dialog
+				if (!that._oDuplicateWidgetDialog) {
+					that._oDuplicateWidgetDialog = sap.ui.xmlfragment("DuplicateWidgetDialog",
+						"mobilefinance.MobileFinance.fragments.DuplicateWidgetDialog", that);
+					that.getView().addDependent(that._oDuplicateWidgetDialog);
+				}
+
+				that._oDuplicateWidgetDialog.open();
+
+				// Pre-populate with current widget name + " - Copy"
+				var oWidgetData = that.getView().getModel("createWidgetValues").getData();
+				var sNewWidgetName = (oWidgetData.widgetName || oSelectedWidget.Text || "Widget") + " - Copy";
+				sap.ui.core.Fragment.byId("DuplicateWidgetDialog", "duplicateWidgetNameInput").setValue(sNewWidgetName);
+				sap.ui.core.Fragment.byId("DuplicateWidgetDialog", "duplicateWidgetIdInput").setValue("");
+			}.bind(this), 500);
+		},
+
 		onCreateDeleteWidget: function (oController, widgetId) {
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");

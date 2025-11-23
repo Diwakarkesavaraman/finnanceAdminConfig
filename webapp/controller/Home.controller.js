@@ -9190,6 +9190,10 @@
 			return CreateDynamicWidgetHelper.onCancelDuplicateWidget(this, oEvent);
 		},
 
+		onDuplicateWidgetFromList: function(oEvent) {
+			return CreateDynamicWidgetHelper.onDuplicateWidgetFromList(this, oEvent);
+		},
+
 		onCreateDeleteWidget: function(widgetId) {
 			return CreateDynamicWidgetHelper.onCreateDeleteWidget(this, widgetId);
 		},

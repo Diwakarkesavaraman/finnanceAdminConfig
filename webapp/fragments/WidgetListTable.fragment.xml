@@ -29,7 +29,8 @@
 									<Text text="{widgetListModel>Id}"/>
 									<Text text="{widgetListModel>Text}"/>
 									<HBox>
-										<Button text="Delete" type="Reject" press="onDeleteWidgetFromList"/>
+										<Button text="Duplicate Widget" icon="sap-icon://duplicate" press="onDuplicateWidgetFromList"/>
+									<Button text="Delete" type="Reject" press="onDeleteWidgetFromList"/>
 									</HBox>
 								</cells>
 							</ColumnListItem>
