@@ -545,6 +545,112 @@ sap.ui.define([
 			}
 		},
 
+		onDuplicateWidgetPress: function (oController, oEvent) {
+			var that = oController;
+
+			// Load and open the duplicate widget dialog
+			if (!that._oDuplicateWidgetDialog) {
+				that._oDuplicateWidgetDialog = sap.ui.xmlfragment("DuplicateWidgetDialog",
+					"mobilefinance.MobileFinance.fragments.DuplicateWidgetDialog", that);
+				that.getView().addDependent(that._oDuplicateWidgetDialog);
+			}
+
+			that._oDuplicateWidgetDialog.open();
+
+			// Pre-populate with current widget name + " - Copy"
+			var oWidgetData = that.getView().getModel("createWidgetValues").getData();
+			var sNewWidgetName = (oWidgetData.widgetName || "Widget") + " - Copy";
+			sap.ui.core.Fragment.byId("DuplicateWidgetDialog", "duplicateWidgetNameInput").setValue(sNewWidgetName);
+			sap.ui.core.Fragment.byId("DuplicateWidgetDialog", "duplicateWidgetIdInput").setValue("");
+		},
+
+		onConfirmDuplicateWidget: function (oController, oEvent) {
+			var that = oController;
+			var sNewWidgetName = sap.ui.core.Fragment.byId("DuplicateWidgetDialog", "duplicateWidgetNameInput").getValue();
+			// var sNewWidgetId = sap.ui.core.Fragment.byId("DuplicateWidgetDialog", "duplicateWidgetIdInput").getValue();
+
+			// Validate inputs
+			if (!sNewWidgetName ) {
+				MessageBox.error("Please enter both widget name and widget ID");
+				return;
+			}
+
+			// Close the dialog
+			that._oDuplicateWidgetDialog.close();
+
+			// Get current widget data
+			var finmobview = that.getView().getModel("finmobview");
+			var oWidgetData = that.getView().getModel("createWidgetValues").getData();
+			var mappingFormData = this.getCreateMappingFormValues(that);
+			var filterMappingData = this.getCreateFilterMappingFormValues(that);
+			var tileMappingData = this.getCreateTileMappingFormValues(that);
+			var hierarchyFormData = this.getCreateHierarchyFormValues(that);
+
+			// Create payload with new widget name and ID but same data
+			var oPayload = {
+				"WidgetType": oWidgetData.selectedWidgetType,
+				"WidgetName": sNewWidgetName,
+				"ChartType": oWidgetData.selectedChartType,
+				"DataSource": oWidgetData.selectedDataSource,
+				// "WidgetId": sNewWidgetId,
+				"InputParameter": oWidgetData.inputParameter,
+				"Mapping": mappingFormData.dataMapping ? JSON.stringify(mappingFormData.dataMapping) : "",
+				"TimeFrame": hierarchyFormData.timeframe,
+				"ToolTip": oWidgetData.tooltip,
+				"ZpageId": JSON.stringify(hierarchyFormData.pageId),
+				"WlabelMapping": JSON.stringify(tileMappingData.tileMapping),
+				"SelectionType": JSON.stringify(tileMappingData.aggregation || null),
+				"Filter": filterMappingData,
+				"Status": "Draft",
+				"SourceType": oWidgetData.dataSourceType || "",
+				"Istimedim": mappingFormData.isTimeDimension ? 'X' : '',
+				"TimeRange": hierarchyFormData.enableTimeRange ? 'X' : '',
+				"SystemName": oWidgetData.systemName || "",
+				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || ""
+			};
+
+			sap.ui.core.BusyIndicator.show(0);
+
+			// Create new widget
+			finmobview.create("/WidgetConfigurationSet", oPayload, {
+				success: function (oData) {
+					console.log("Successfully duplicated widget:", oPayload);
+					MessageToast.show("Widget duplicated successfully: " + sNewWidgetName);
+					sap.ui.core.BusyIndicator.hide();
+
+					// Update the model with new widget data
+					that.getView().getModel("createWidgetValues").setProperty("/widgetName", sNewWidgetName);
+					that.getView().getModel("createWidgetValues").setProperty("/widgetId", oData.WidgetId);
+
+					// Update widget ID field
+					that.getView().byId("createWidgetId").setValue(oData.WidgetId);
+					that.getView().byId("createWidgetName").setValue(sNewWidgetName);
+
+					// Refresh widget list
+					this.onLoadWidgetListData(that);
+				}.bind(this),
+				error: function (oError) {
+					console.error("Error duplicating widget:", oPayload, oError);
+					var sErrorMsg = "Error duplicating widget";
+					try {
+						var oErrorResponse = JSON.parse(oError.responseText);
+						if (oErrorResponse && oErrorResponse.error && oErrorResponse.error.message && oErrorResponse.error.message.value) {
+							sErrorMsg = oErrorResponse.error.message.value;
+						}
+					} catch (e) {
+						// Use default error message
+					}
+					MessageBox.error(sErrorMsg);
+					sap.ui.core.BusyIndicator.hide();
+				}
+			});
+		},
+
+		onCancelDuplicateWidget: function (oController, oEvent) {
+			var that = oController;
+			that._oDuplicateWidgetDialog.close();
+		},
+
 		onCreateDeleteWidget: function (oController, widgetId) {
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");

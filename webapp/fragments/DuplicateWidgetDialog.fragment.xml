@@ -1,0 +1,20 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form">
+	<Dialog title="Duplicate Widget" contentWidth="400px">
+		<content>
+			<f:SimpleForm editable="true" layout="ResponsiveGridLayout">
+				<f:content>
+					<Label text="New Widget Name" required="true"/>
+					<Input id="duplicateWidgetNameInput" value="" placeholder="Enter new widget name..." required="true"/>
+					<Label text="New Widget ID" required="true"/>
+					<Input id="duplicateWidgetIdInput" value="" placeholder="Enter new widget ID..." required="true"/>
+				</f:content>
+			</f:SimpleForm>
+		</content>
+		<beginButton>
+			<Button text="OK" type="Emphasized" press="onConfirmDuplicateWidget"/>
+		</beginButton>
+		<endButton>
+			<Button text="Cancel" press="onCancelDuplicateWidget"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

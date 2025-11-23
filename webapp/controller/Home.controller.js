@@ -9178,6 +9178,18 @@
 			return CreateDynamicWidgetHelper.onCreateSavePress(this, oEvent);
 		},
 
+		onDuplicateWidgetPress: function(oEvent) {
+			return CreateDynamicWidgetHelper.onDuplicateWidgetPress(this, oEvent);
+		},
+
+		onConfirmDuplicateWidget: function(oEvent) {
+			return CreateDynamicWidgetHelper.onConfirmDuplicateWidget(this, oEvent);
+		},
+
+		onCancelDuplicateWidget: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCancelDuplicateWidget(this, oEvent);
+		},
+
 		onCreateDeleteWidget: function(widgetId) {
 			return CreateDynamicWidgetHelper.onCreateDeleteWidget(this, widgetId);
 		},

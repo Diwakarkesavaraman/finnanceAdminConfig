@@ -12,6 +12,7 @@
 			</HBox>
 			<HBox>
 				<!-- <Button id="editBtn" text="Edit" enabled="false" press="onCreateEditPress"/> -->
+				<Button id="duplicateWidgetBtn" text="Duplicate Widget" icon="sap-icon://duplicate" visible="true" press="onDuplicateWidgetPress"/>
 				<Button id="saveBtn" text="Save" type="Emphasized" visible="true" press="onCreateSavePress"/>
 				<!-- <Button id="submitBtn" text="Submit" visible="false" press="onCreateCancelPress"/> -->
 				<!-- <Button id="deleteBtn" type="Reject" text="Delete" visible="true" press="onCreateDeleteWidget"/> -->
