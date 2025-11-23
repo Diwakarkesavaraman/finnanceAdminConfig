@@ -322,19 +322,57 @@ sap.ui.define([
 			// Update chart preview when widget type changes
 			var oWidgetValues = that.getView().getModel("createWidgetValues");
 			var selectedWidgetType = oWidgetValues.getData().selectedWidgetType;
+			var sSelectedChartType = oWidgetValues.getData().selectedChartType;
 
-			if (selectedWidgetType) {
+			if (sSelectedChartType) {
 				// Refresh the chart preview with the new widget type
-				this._showChartPreview(oController, selectedWidgetType);
+				this._showChartPreview(oController, sSelectedChartType);
+			}
 
-				// Update form visibility based on chart type
-				var oForm = that.byId("createDataMappingForm");
-				if (oForm) {
-					var bShouldHideForm = (selectedWidgetType === "o3value" || selectedWidgetType === "o1value");
-					// Get the parent VBox and hide it instead of just the form
-					var oParent = oForm.getParent();
-					if (oParent && oParent.setVisible) {
-						oParent.setVisible(!bShouldHideForm);
+			// Update form visibility based on widget type
+			var oChartBindingForm = that.byId("createDataMappingForm");
+			var oDataBindingForm = that.byId("createTileMappingForm");
+
+			if (selectedWidgetType === "o3value" || selectedWidgetType === "o1value") {
+				// Show Data Binding, hide Chart Binding
+				if (oChartBindingForm) {
+					var oChartParent = oChartBindingForm.getParent();
+					if (oChartParent && oChartParent.setVisible) {
+						oChartParent.setVisible(false);
+					}
+				}
+				if (oDataBindingForm) {
+					var oDataParent = oDataBindingForm.getParent();
+					if (oDataParent && oDataParent.setVisible) {
+						oDataParent.setVisible(true);
+					}
+				}
+			} else if (selectedWidgetType === "ochrt") {
+				// Show Chart Binding, hide Data Binding
+				if (oChartBindingForm) {
+					var oChartParent = oChartBindingForm.getParent();
+					if (oChartParent && oChartParent.setVisible) {
+						oChartParent.setVisible(true);
+					}
+				}
+				if (oDataBindingForm) {
+					var oDataParent = oDataBindingForm.getParent();
+					if (oDataParent && oDataParent.setVisible) {
+						oDataParent.setVisible(false);
+					}
+				}
+			} else {
+				// Show both forms for other widget types
+				if (oChartBindingForm) {
+					var oChartParent = oChartBindingForm.getParent();
+					if (oChartParent && oChartParent.setVisible) {
+						oChartParent.setVisible(true);
+					}
+				}
+				if (oDataBindingForm) {
+					var oDataParent = oDataBindingForm.getParent();
+					if (oDataParent && oDataParent.setVisible) {
+						oDataParent.setVisible(true);
 					}
 				}
 			}
@@ -343,17 +381,6 @@ sap.ui.define([
 		onCreateChartTypeChange: function (oController, oEvent) {
 			var sSelectedChartType = oEvent.getParameter("selectedItem").getKey();
 			this._showChartPreview(oController, sSelectedChartType);
-
-			// Hide the data mapping form for o3value and o1value chart types
-			var oForm = oController.byId("createDataMappingForm");
-			if (oForm) {
-				var bShouldHideForm = (sSelectedChartType === "o3value" || sSelectedChartType === "o1value");
-				// Get the parent VBox and hide it instead of just the form
-				var oParent = oForm.getParent();
-				if (oParent && oParent.setVisible) {
-					oParent.setVisible(!bShouldHideForm);
-				}
-			}
 		},
 
 		onCreateWidgetNameChange: function (oController, oEvent) {
@@ -2403,14 +2430,21 @@ sap.ui.define([
 						oForm.addContent(oMeasuresContainer);
 						oForm.addContent(oAddMeasureButton);
 
-						// Hide the form's parent VBox if chart type is o3value or o1value
+						// Hide/show the form's parent VBox based on widget type
 						var oWidgetValues = that.getView().getModel("createWidgetValues");
 						if (oWidgetValues) {
 							var selectedWidgetType = oWidgetValues.getData().selectedWidgetType;
-							if (selectedWidgetType === "o3value" || selectedWidgetType === "o1value") {
-								var oParent = oForm.getParent();
-								if (oParent && oParent.setVisible) {
+							var oParent = oForm.getParent();
+
+							if (oParent && oParent.setVisible) {
+								// Show Chart Binding only for 'ochrt' widget type
+								// Hide for 'o3value', 'o1value', show for others
+								if (selectedWidgetType === "o3value" || selectedWidgetType === "o1value") {
 									oParent.setVisible(false);
+								} else if (selectedWidgetType === "ochrt") {
+									oParent.setVisible(true);
+								} else {
+									oParent.setVisible(true); // Show for other widget types
 								}
 							}
 						}
