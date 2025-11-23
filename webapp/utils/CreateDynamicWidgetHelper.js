@@ -1746,11 +1746,49 @@ sap.ui.define([
 						}
 					});
 
+					// Create color palette tiles using Input controls styled as color swatches
+					var aColorTiles = self.DEFAULT_COLORS.map(function(sColor) {
+						var oColorBox = new sap.m.Input({
+							width: "40px",
+							height: "40px",
+							editable: false,
+							value: "",
+							backgroundDesign: "Transparent",
+							customData: [
+								new sap.ui.core.CustomData({
+									key: "color",
+									value: sColor
+								})
+							]
+						});
+
+						// Add press event using attachBrowserEvent
+						oColorBox.attachBrowserEvent("click", function() {
+							sSelectedColor = sColor;
+							oColorPicker.setColorString("#" + sColor);
+							oHexInput.setValue(sColor);
+							oDialogPreview.$().find("input").css("background-color", "#" + sColor);
+						});
+
+						return oColorBox;
+					});
+
+					// Create FlexBox for color palette
+					var oColorPalette = new sap.m.FlexBox({
+						width: "380px",
+						wrap: "Wrap",
+						items: aColorTiles,
+						justifyContent: "Start"
+					});
+
 					var oColorDialog = new sap.m.Dialog({
 						title: "Select Color",
 						content: [
 							new sap.m.VBox({
 								items: [
+									new sap.m.Label({ text: "Quick Colors:" }),
+									oColorPalette,
+									new sap.m.Label({ text: "Custom Color Picker:" }).addStyleClass("sapUiSmallMarginTop"),
 									oColorPicker,
 									new sap.m.Label({ text: "Hex Code:" }).addStyleClass("sapUiSmallMarginTop"),
 									oHexInput,
@@ -1780,6 +1818,17 @@ sap.ui.define([
 							setTimeout(function() {
 								var sColorForPreview = sOriginalColor.startsWith("#") ? sOriginalColor : "#" + sOriginalColor;
 								oDialogPreview.$().find("input").css("background-color", sColorForPreview);
+
+								// Style color palette tiles with their respective colors
+								aColorTiles.forEach(function(oTile) {
+									var sColor = oTile.data("color");
+									oTile.$().find("input").css({
+										"background-color": "#" + sColor,
+										"border": "2px solid #ccc",
+										"border-radius": "4px",
+										"cursor": "pointer"
+									});
+								});
 							}, 100);
 						},
 						afterClose: function() {
@@ -2358,11 +2407,50 @@ sap.ui.define([
 									}
 								});
 
+								// Create color palette tiles using Input controls styled as color swatches
+								var aColorTiles = self.DEFAULT_COLORS.map(function(sColor) {
+									var oColorBox = new sap.m.Input({
+										width: "40px",
+										height: "40px",
+										editable: false,
+										value: "",
+										backgroundDesign: "Transparent",
+										customData: [
+											new sap.ui.core.CustomData({
+												key: "color",
+												value: sColor
+											})
+										]
+									});
+
+									// Add press event using attachBrowserEvent
+									oColorBox.attachBrowserEvent("click", function() {
+										sSelectedColor = sColor;
+										oColorPicker.setColorString("#" + sColor);
+										oHexInput.setValue(sColor);
+										oDialogPreview.$().find("input").css("background-color", "#" + sColor);
+									});
+
+									return oColorBox;
+								});
+
+								// Create FlexBox for color palette
+								var oColorPalette = new sap.m.FlexBox({
+									width: "380px",
+									wrap: "Wrap",
+									items: aColorTiles,
+									justifyContent: "Start",
+									renderType: "Bare"
+								});
+
 								var oColorDialog = new sap.m.Dialog({
 									title: "Select Color",
 									content: [
 										new sap.m.VBox({
 											items: [
+												new sap.m.Label({ text: "Quick Colors:" }),
+												oColorPalette,
+												new sap.m.Label({ text: "Custom Color Picker:" }).addStyleClass("sapUiSmallMarginTop"),
 												oColorPicker,
 												new sap.m.Label({ text: "Hex Code:" }).addStyleClass("sapUiSmallMarginTop"),
 												oHexInput,
@@ -2392,6 +2480,17 @@ sap.ui.define([
 										setTimeout(function() {
 											var sColorForPreview = sOriginalColor.startsWith("#") ? sOriginalColor : "#" + sOriginalColor;
 											oDialogPreview.$().find("input").css("background-color", sColorForPreview);
+
+											// Style color palette tiles with their respective colors
+											aColorTiles.forEach(function(oTile) {
+												var sColor = oTile.data("color");
+												oTile.$().find("input").css({
+													"background-color": "#" + sColor,
+													"border": "2px solid #ccc",
+													"border-radius": "4px",
+													"cursor": "pointer"
+												});
+											});
 										}, 100);
 									},
 									afterClose: function() {
