@@ -308,6 +308,7 @@ sap.ui.define([
 		},
 
 		onCreateWidgetTypeChange: function (oController, oEvent) {
+			debugger;
 			console.log("Create Widget Type Changed");
 			var that = oController;
 			
@@ -320,17 +321,39 @@ sap.ui.define([
 
 			// Update chart preview when widget type changes
 			var oWidgetValues = that.getView().getModel("createWidgetValues");
-			var sSelectedChartType = oWidgetValues.getData().selectedChartType;
-			
-			if (sSelectedChartType) {
+			var selectedWidgetType = oWidgetValues.getData().selectedWidgetType;
+
+			if (selectedWidgetType) {
 				// Refresh the chart preview with the new widget type
-				this._showChartPreview(oController, sSelectedChartType);
+				this._showChartPreview(oController, selectedWidgetType);
+
+				// Update form visibility based on chart type
+				var oForm = that.byId("createDataMappingForm");
+				if (oForm) {
+					var bShouldHideForm = (selectedWidgetType === "o3value" || selectedWidgetType === "o1value");
+					// Get the parent VBox and hide it instead of just the form
+					var oParent = oForm.getParent();
+					if (oParent && oParent.setVisible) {
+						oParent.setVisible(!bShouldHideForm);
+					}
+				}
 			}
 		},
 
 		onCreateChartTypeChange: function (oController, oEvent) {
 			var sSelectedChartType = oEvent.getParameter("selectedItem").getKey();
 			this._showChartPreview(oController, sSelectedChartType);
+
+			// Hide the data mapping form for o3value and o1value chart types
+			var oForm = oController.byId("createDataMappingForm");
+			if (oForm) {
+				var bShouldHideForm = (sSelectedChartType === "o3value" || sSelectedChartType === "o1value");
+				// Get the parent VBox and hide it instead of just the form
+				var oParent = oForm.getParent();
+				if (oParent && oParent.setVisible) {
+					oParent.setVisible(!bShouldHideForm);
+				}
+			}
 		},
 
 		onCreateWidgetNameChange: function (oController, oEvent) {
@@ -2379,6 +2402,18 @@ sap.ui.define([
 						oForm.addContent(oYLabel);
 						oForm.addContent(oMeasuresContainer);
 						oForm.addContent(oAddMeasureButton);
+
+						// Hide the form's parent VBox if chart type is o3value or o1value
+						var oWidgetValues = that.getView().getModel("createWidgetValues");
+						if (oWidgetValues) {
+							var selectedWidgetType = oWidgetValues.getData().selectedWidgetType;
+							if (selectedWidgetType === "o3value" || selectedWidgetType === "o1value") {
+								var oParent = oForm.getParent();
+								if (oParent && oParent.setVisible) {
+									oParent.setVisible(false);
+								}
+							}
+						}
 
 						//Filter Form
 						debugger;
