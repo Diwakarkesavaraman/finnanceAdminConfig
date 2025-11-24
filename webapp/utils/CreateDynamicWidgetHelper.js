@@ -22,7 +22,8 @@ sap.ui.define([
 	return {
 		// Default color palette for auto-assignment
 		DEFAULT_COLORS: ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"],
-
+// [84BD00, 00843D, 0033A0, 00A3E0, 26A8AB, 643278, FFC846, F05F41, 007AA8, 638E35, 4CA977, 4C70BC
+// ];
 		onLoadWidgetListData: async function (oController) {
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
@@ -160,6 +161,33 @@ sap.ui.define([
 					}
 				}.bind(this)
 			});
+		},
+
+		onSearchWidget: function (oController, oEvent) {
+			var that = oController;
+			var sQuery = oEvent.getParameter("query") || oEvent.getParameter("newValue") || "";
+
+			// Get the table and its binding
+			var oTable = that.byId("widgetListTable");
+			var oBinding = oTable.getBinding("items");
+
+			// Create filters array
+			var aFilters = [];
+
+			if (sQuery && sQuery.length > 0) {
+				// Create filters for Widget ID and Widget Name
+				var oFilterId = new sap.ui.model.Filter("Id", sap.ui.model.FilterOperator.Contains, sQuery);
+				var oFilterName = new sap.ui.model.Filter("Text", sap.ui.model.FilterOperator.Contains, sQuery);
+
+				// Combine filters with OR logic
+				aFilters.push(new sap.ui.model.Filter({
+					filters: [oFilterId, oFilterName],
+					and: false
+				}));
+			}
+
+			// Apply the filters
+			oBinding.filter(aFilters);
 		},
 
 		onBackToWidgetList: function (oController, oEvent) {

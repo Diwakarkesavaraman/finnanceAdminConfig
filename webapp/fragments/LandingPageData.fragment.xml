@@ -146,27 +146,27 @@
 							<dnd:DragInfo sourceAggregation="items" />
 						</dragDropConfig>
 						<columns>
-							<Column width="9rem">
+							<Column width="5rem">
 								<header>
 									<Text text="Tile ID" class="whiteLabel"/>
 								</header>
 							</Column>
-							<Column>
+							<Column width="5rem">
 								<header>
 									<Text text="Page ID" class="whiteLabel"/>
 								</header>
 							</Column>
-							<Column width="7rem">
+							<Column width="5rem">
 								<header>
 									<Text text="Widget ID" class="whiteLabel"/>
 								</header>
 							</Column>
-							<Column width="7rem">
+							<Column width="12rem">
 								<header>
 									<Text text="Widget Name" class="whiteLabel"/>
 								</header>
 							</Column>
-							<Column>
+							<Column width="5rem">
 								<header>
 									<Text text="Roles" class="whiteLabel"/>
 								</header>
@@ -210,7 +210,7 @@
 					</Table>
 
 					<!-- Grid Container with Drag and Drop -->
-					<VBox class="sapUiSmallMarginTop">
+					<!-- <VBox class="sapUiSmallMarginTop">
 						<HBox justifyContent="SpaceBetween" alignItems="Center" class="sapUiSmallMarginBottom">
 							<Title text="Widget Grid View (4x8)"/>
 							<CheckBox text="Reveal Grid" select="onToggleRevealGrid"/>
@@ -226,24 +226,7 @@
 			<f:layoutXS>
 				<f:GridContainerSettings rowSize="70px" columnSize="70px" gap="8px" />
 			</f:layoutXS>
-							<!-- <f:layout>
-								<f:GridContainerSettings rowSize="5rem" columnSize="5rem" gap="0.5rem" />
-							</f:layout>
-							<f:layoutXL>
-								<f:GridContainerSettings columns="8" rowSize="5rem" columnSize="5rem" gap="0.5rem" />
-							</f:layoutXL>
-							<f:layoutL>
-								<f:GridContainerSettings columns="8" rowSize="5rem" columnSize="5rem" gap="0.5rem" />
-							</f:layoutL>
-							<f:layoutM>
-								<f:GridContainerSettings columns="6" rowSize="5rem" columnSize="5rem" gap="0.5rem" />
-							</f:layoutM>
-							<f:layoutS>
-								<f:GridContainerSettings columns="4" rowSize="5rem" columnSize="5rem" gap="0.5rem" />
-							</f:layoutS>
-							<f:layoutXS>
-								<f:GridContainerSettings columns="2" rowSize="5rem" columnSize="5rem" gap="0.5rem" />
-							</f:layoutXS> -->
+							
 							<f:items>
 								<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout"
 									header="{oWidgetDataModel>WidgetName}" subheader="{oWidgetDataModel>WidgetId}" press="onWidgetTilePress">
@@ -256,7 +239,7 @@
 								</GenericTile>
 							</f:items>
 						</f:GridContainer>
-					</VBox>
+					</VBox> -->
 
 				</VBox>
 				<VBox id="dynamicWidgetConfigContainer" visible="false">

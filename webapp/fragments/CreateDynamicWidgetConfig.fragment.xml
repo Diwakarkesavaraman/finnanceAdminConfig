@@ -38,14 +38,14 @@
 								<core:Item text="{createWidgetTypeDropdownData>Text}" key="{createWidgetTypeDropdownData>Id}"/>
 							</Select>
 							<Label text="Chart Type" visible="{= ${createWidgetValues>/selectedWidgetType} === '3value' || ${createWidgetValues>/selectedWidgetType} === '1value' || ${createWidgetValues>/selectedWidgetType} === 'ochrt’ }"/>
-							<Select id="createChartType"  selectedKey="{createWidgetValues>/selectedChartType}" change="onCreateChartTypeChange" visible="{= ${createWidgetValues>/selectedWidgetType} === '3value' || ${createWidgetValues>/selectedWidgetType} === '1value' || ${createWidgetValues>/selectedWidgetType} === 'ochrt' }">
-								<!-- <core:Item text="{createChartTypeDropdownData>Text}" key="{createChartTypeDropdownData>Id}"/> -->
-									<core:Item key="lchart" text="Line Chart"/>
+							<Select id="createChartType" items="{path: 'createChartTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedChartType}" change="onCreateChartTypeChange" visible="{= ${createWidgetValues>/selectedWidgetType} === '3value' || ${createWidgetValues>/selectedWidgetType} === '1value' || ${createWidgetValues>/selectedWidgetType} === 'ochrt' }">
+								<core:Item text="{createChartTypeDropdownData>Text}" key="{createChartTypeDropdownData>Id}"/>
+									<!-- <core:Item key="lchart" text="Line Chart"/>
 								<core:Item key="bchart" text="Bar Chart"/>
 								<core:Item key="sbchart" text="Stacked Chart"/>
 								<core:Item key="piechart" text="Pie Chart"/>
 								<core:Item key="doughnutchart" text="Doughnut Chart"/>
-								<core:Item key="multitypechart" text="Multi Type Chart"/>
+								<core:Item key="multitypechart" text="Multi Type Chart"/> -->
 							</Select>
 							<!-- items="{path: 'createChartTypeDropdownData>/'}" -->
 							<Label id="createTooltipLabel" text="Tooltip"/>

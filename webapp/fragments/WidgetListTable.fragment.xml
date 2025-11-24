@@ -6,8 +6,9 @@
 			<Text text="Widget Configuration List"/>
 			<Button id="addNewWidgetBtn" text="Add New Widget" type="Emphasized" press="onAddNewWidget"/>
 		</HBox>
-		
+
 				<VBox class="sapUiSmallMargin">
+					<!-- <SearchField id="widgetSearchField" width="100%" placeholder="Search by Widget ID or Name" search="onSearchWidget" class="sapUiSmallMarginBottom"/> -->
 					<BusyIndicator id="widgetListBusyIndicator" visible="false" />
 					<!-- <Table id="widgetListTable" items="{widgetListModel>/}" class="sapUiResponsiveMargin"> -->
 					<Table id="widgetListTable" alternateRowColors="false" items="{widgetListModel>/}"  growing="true"
