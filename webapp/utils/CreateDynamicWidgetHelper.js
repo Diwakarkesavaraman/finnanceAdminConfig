@@ -189,7 +189,9 @@ sap.ui.define([
 				selectedChartType: "",
 				selectedDataSource: "",
 				inputParameter: "",
-				mapping: ""
+				mapping: "",
+					systemName: "",
+					dataSourceType: "",
 			});
 			that.getView().setModel(oCreateWidgetValuesModel, "createWidgetValues");
 

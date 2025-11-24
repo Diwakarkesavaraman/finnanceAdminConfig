@@ -51,9 +51,10 @@
 							<Label id="createTooltipLabel" text="Tooltip"/>
 							<Input id="createTooltip" value="{createWidgetValues>/tooltip}" editable="true" />
 							<Label text="System Name"/>
-							<Select id="createSystemName" selectedKey="{createWidgetValues>/systemName}">
-								<core:Item key="DVB" text="DVB"/>
-								<core:Item key="DBC" text="DBC"/>
+							<Select id="createSystemName" items="{path: 'createSystemTypeDropdownData>/'}" selectedKey="{createWidgetValues>/systemName}">
+							<core:Item text="{createSystemTypeDropdownData>Text}" key="{createSystemTypeDropdownData>Id}"/>
+								<!-- <core:Item key="DVB" text="DVB"/>
+								<core:Item key="DBC" text="DBC"/> -->
 							</Select>
 							<Label text="Data Source Type"/>
 							<Select id="createDataSourceType" selectedKey="{createWidgetValues>/dataSourceType}">
