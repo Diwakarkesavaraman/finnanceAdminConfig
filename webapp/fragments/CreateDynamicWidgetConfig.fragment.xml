@@ -37,8 +37,8 @@
 							<Select id="createWidgetType" items="{path: 'createWidgetTypeDropdownData>/'}" selectedKey="{createWidgetValues>/selectedWidgetType}" change="onCreateWidgetTypeChange">
 								<core:Item text="{createWidgetTypeDropdownData>Text}" key="{createWidgetTypeDropdownData>Id}"/>
 							</Select>
-							<Label text="Chart Type"/>
-							<Select id="createChartType"  selectedKey="{createWidgetValues>/selectedChartType}" change="onCreateChartTypeChange">
+							<Label text="Chart Type" visible="{= ${createWidgetValues>/selectedWidgetType} === '3value' || ${createWidgetValues>/selectedWidgetType} === '1value' || ${createWidgetValues>/selectedWidgetType} === 'ochrt’ }"/>
+							<Select id="createChartType"  selectedKey="{createWidgetValues>/selectedChartType}" change="onCreateChartTypeChange" visible="{= ${createWidgetValues>/selectedWidgetType} === '3value' || ${createWidgetValues>/selectedWidgetType} === '1value' || ${createWidgetValues>/selectedWidgetType} === 'ochrt' }">
 								<!-- <core:Item text="{createChartTypeDropdownData>Text}" key="{createChartTypeDropdownData>Id}"/> -->
 									<core:Item key="lchart" text="Line Chart"/>
 								<core:Item key="bchart" text="Bar Chart"/>
@@ -84,7 +84,7 @@
 								<form:content></form:content>
 							</form:SimpleForm>
 						</VBox>
-						<VBox class="sapUiSmallMargin">
+						<VBox class="sapUiSmallMargin" width="75%">
 							<BusyIndicator id="createTabBarBusyIndicator" visible="true" />
 							<IconTabBar visible = "false" id="createIconTabBarInlineMode" headerMode="Inline" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
 								<items>
@@ -137,19 +137,7 @@
 			<VBox width="40%" class="sapUiSmallMarginBegin">
 				<Panel headerText="Mobile Preview" class="sapUiMediumMargin">
 					<content>
-						<VBox id="mobilePreviewContainer" class="sapUiMediumMargin" alignItems="Center">
-							<VBox width="500px" height="750px" class="sapUiContentPadding mobilePhoneFrame" justifyContent="Center" alignItems="Center">
-								<VBox width="100%" height="100%" class="sapUiContentPadding mobileScreen" justifyContent="Center" alignItems="Center">
-									<VBox id="defaultPreviewContent" justifyContent="Center" alignItems="Center">
-										<Text text="Mobile Preview Area" class="sapUiMediumText"/>
-										<Text text="Widget will appear here" class="sapUiSmallText"/>
-									</VBox>
-									<VBox id="chartPreviewContainer" visible="false" width="100%" height="100%" justifyContent="Center" alignItems="Center">
-										<!-- Chart will be dynamically inserted here -->
-									</VBox>
-								</VBox>
-							</VBox>
-						</VBox>
+						
 					</content>
 				</Panel>
 			</VBox>
