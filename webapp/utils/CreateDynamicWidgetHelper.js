@@ -239,6 +239,40 @@ sap.ui.define([
 			var oCreateSystemTypeModel = new JSONModel(aCreateSystemTypes);
 			that.getView().setModel(oCreateSystemTypeModel, "createSystemTypeDropdownData");
 
+			// Set default system name if available
+			if (aCreateSystemTypes && aCreateSystemTypes.length > 0) {
+				var oWidgetValues = that.getView().getModel("createWidgetValues");
+				var currentSystemName = oWidgetValues.getProperty("/systemName");
+				if (!currentSystemName || currentSystemName === "") {
+					oWidgetValues.setProperty("/systemName", aCreateSystemTypes[0].Id);
+				}
+			}
+			
+			// Set default chart type if available
+			if (aCreateChartTypes && aCreateChartTypes.length > 0) {
+				var oWidgetValues = that.getView().getModel("createWidgetValues");
+				var currentChartType = oWidgetValues.getProperty("/selectedChartType");
+				if (!currentChartType || currentChartType === "") {
+					oWidgetValues.setProperty("/selectedChartType", aCreateChartTypes[0].Id);
+				}
+			}
+
+			// Set default chart type if available
+			if (aCreateWidgetTypes && aCreateWidgetTypes.length > 0) {
+				var oWidgetValues = that.getView().getModel("createWidgetValues");
+				var currentWidgetType = oWidgetValues.getProperty("/selectedWidgetType");
+				if (!currentWidgetType || currentWidgetType === "") {
+					oWidgetValues.setProperty("/selectedWidgetType", aCreateWidgetTypes[0].Id);
+				}
+			}
+
+			// Set default data source type
+			var oWidgetValuesModel = that.getView().getModel("createWidgetValues");
+			var currentDataSourceType = oWidgetValuesModel.getProperty("/dataSourceType");
+			if (!currentDataSourceType || currentDataSourceType === "") {
+				oWidgetValuesModel.setProperty("/dataSourceType", "BEX_QUERY");
+			}
+
 			var aCreateDefaultPeriod = await that.getSearchHelpData('OPE_PERIOD');
 
 			var aCreateDefaultHeirarchy = await that.getSearchHelpData('DEFAULT_HIER');
@@ -405,6 +439,24 @@ sap.ui.define([
 				// Refresh the chart preview with the new widget name
 				this._showChartPreview(oController, sSelectedChartType);
 			}
+		},
+
+		onCreateSystemNameChange: function (oController, oEvent) {
+			var that = oController;
+			var sSelectedSystemName = oEvent.getParameter("selectedItem").getKey();
+
+			// Update the model with the selected system name
+			var oWidgetValues = that.getView().getModel("createWidgetValues");
+			oWidgetValues.setProperty("/systemName", sSelectedSystemName);
+		},
+
+		onCreateDataSourceTypeChange: function (oController, oEvent) {
+			var that = oController;
+			var sSelectedDataSourceType = oEvent.getParameter("selectedItem").getKey();
+
+			// Update the model with the selected data source type
+			var oWidgetValues = that.getView().getModel("createWidgetValues");
+			oWidgetValues.setProperty("/dataSourceType", sSelectedDataSourceType);
 		},
 
 		onCreateCheckQueryValidity: function (oController, oEvent) {
