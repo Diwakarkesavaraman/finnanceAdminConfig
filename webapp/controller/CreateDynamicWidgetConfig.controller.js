@@ -629,6 +629,8 @@ sap.ui.define([
 			}
 		},
 
+
+		
 		getSearchHelpData: function (filterBy) {
 			return new Promise((resolve, reject) => {
 				var finmobview = this.getView().getModel("finmobview");

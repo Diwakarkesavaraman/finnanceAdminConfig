@@ -589,7 +589,8 @@ sap.ui.define([
 				"Istimedim":mappingFormData.isTimeDimension ? 'X': '' || '',
 				"TimeRange":hierarchyFormData.enableTimeRange ? 'X': '' || '',
 				"SystemName":oWidgetData.systemName || "",
-				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || ""
+				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || "",
+				// "PeriodRange"
 			};
 			
 			sap.ui.core.BusyIndicator.show(0);
