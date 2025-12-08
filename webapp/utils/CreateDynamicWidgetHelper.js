@@ -339,9 +339,10 @@ sap.ui.define([
 						oCurrentData.selectionType = oWidgetData.SelectionType;
 						oCurrentData.timeframe = oWidgetData.TimeFrame;
 						oCurrentData.pageId = oWidgetData.ZpageId;
-						oCurrentData.enableTimeRange = oWidgetData.TimeRange ==='X' ? true : false;	
+						oCurrentData.enableTimeRange = oWidgetData.TimeRange ==='X' ? true : false;
 						oCurrentData.dataSourceType = oWidgetData.SourceType;
 						oCurrentData.isTimeDimension = oWidgetData.Istimedim === 'X' ? true : false;
+						oCurrentData.periodRange = oWidgetData.PeriodRange || '';
 						oCurrentData.systemName = oWidgetData.SystemName;					
 						oModel.setData(oCurrentData);
 						
@@ -590,7 +591,7 @@ sap.ui.define([
 				"TimeRange":hierarchyFormData.enableTimeRange ? 'X': '' || '',
 				"SystemName":oWidgetData.systemName || "",
 				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || "",
-				// "PeriodRange"
+				"PeriodRange": mappingFormData.periodRange || ""
 			};
 			
 			sap.ui.core.BusyIndicator.show(0);
@@ -692,7 +693,8 @@ sap.ui.define([
 				"Istimedim": mappingFormData.isTimeDimension ? 'X' : '',
 				"TimeRange": hierarchyFormData.enableTimeRange ? 'X' : '',
 				"SystemName": oWidgetData.systemName || "",
-				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || ""
+				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || "",
+				"PeriodRange": mappingFormData.periodRange || ""
 			};
 
 			sap.ui.core.BusyIndicator.show(0);
@@ -1177,6 +1179,7 @@ sap.ui.define([
 			var aYLabels = [];
 			var sTimeframe = "";
 			var bIsTimeDimension = false;
+			var sPeriodRange = "";
 			// Loop through form content to get Label-Control pairs
 			for (var i = 0; i < aFormContent.length; i++) {
 				var oControl = aFormContent[i];
@@ -1266,7 +1269,10 @@ sap.ui.define([
 						}
 					// Handle Input controls (but not MultiInput which was already handled)
 					else if (oNextControl instanceof sap.m.Input) {
-						// No specific input fields to handle in data mapping form now
+						// Check if it's the Period Range field
+						if (sLabelText === "Period Range") {
+							sPeriodRange = oNextControl.getValue();
+						}
 					}
 
 
@@ -1287,6 +1293,7 @@ sap.ui.define([
 			oformValues['dataMapping'] = oDataMapping;
 			oformValues['timeframe'] = sTimeframe;
 			oformValues['isTimeDimension'] = bIsTimeDimension;
+			oformValues['periodRange'] = sPeriodRange;
 			oformValues['yLabels'] = aYLabels;
 			return (oformValues);
 		},
@@ -2199,14 +2206,30 @@ sap.ui.define([
 							}
 						});
 
+					// Period Range field (Label and Input)
+					var oPeriodRangeLabel = new sap.m.Label({
+						text: "Period Range",
+						required: false,
+						visible: false
+					});
+
+					var oPeriodRangeInput = new sap.m.Input({
+						visible: false,
+						width: "100%",
+						placeholder: "Enter period range (e.g., 1-12)",
+						type: "Text"
+					});
+
 					// Checkbox for Time/Period Dimension
 					var oTimeDimensionCheckBox = new sap.m.CheckBox({
 						text: "Is Time/Period Dimension",
 						select: function(oEvent) {
 							var bSelected = oEvent.getParameter("selected");
-							// Toggle Timeframe field visibility
+							// Toggle Timeframe and Period Range field visibility
 							oTimeframeLabel.setVisible(bSelected);
 							oTimeframeSelect.setVisible(bSelected);
+							oPeriodRangeLabel.setVisible(bSelected);
+							oPeriodRangeInput.setVisible(bSelected);
 						}
 					});
 						
@@ -2747,6 +2770,8 @@ sap.ui.define([
 						oForm.addContent(oXLabel);
 						oForm.addContent(oXSelect);
 						oForm.addContent(oTimeDimensionCheckBox);
+						oForm.addContent(oPeriodRangeLabel);
+						oForm.addContent(oPeriodRangeInput);
 						oForm.addContent(oYLabel);
 						oForm.addContent(oMeasuresContainer);
 						oForm.addContent(oAddMeasureButton);
@@ -3249,12 +3274,22 @@ sap.ui.define([
 						if (oTimeDimensionCheckBox) {
 							var bIsTimeDimension = oCurrentData.isTimeDimension || false;
 							oTimeDimensionCheckBox.setSelected(bIsTimeDimension);
-							// Set visibility of Timeframe fields based on checkbox state
+							// Set visibility of Timeframe and Period Range fields based on checkbox state
 							if (oTimeframeLabel) {
 								oTimeframeLabel.setVisible(bIsTimeDimension);
 							}
 							if (oTimeframeSelect) {
 								oTimeframeSelect.setVisible(bIsTimeDimension);
+							}
+							if (oPeriodRangeLabel) {
+								oPeriodRangeLabel.setVisible(bIsTimeDimension);
+							}
+							if (oPeriodRangeInput) {
+								oPeriodRangeInput.setVisible(bIsTimeDimension);
+								// Restore Period Range value
+								if (oCurrentData.periodRange) {
+									oPeriodRangeInput.setValue(oCurrentData.periodRange);
+								}
 							}
 						}
 						
