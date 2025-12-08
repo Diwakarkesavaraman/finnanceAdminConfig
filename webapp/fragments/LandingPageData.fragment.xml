@@ -82,6 +82,10 @@
 					</HBox>
 					<Table id="pageTable" alternateRowColors="false" items="{ path: 'oPageDataModel>/' }" growing="true" class="blueBackground surveytablecls"
 						mode="MultiSelect" selectionChange="onSelectionChange">
+						<dragDropConfig>
+							<dnd:DragInfo sourceAggregation="items" />
+							<dnd:DropInfo targetAggregation="items" dropPosition="Between" dropLayout="Vertical" drop="onPageDrop"/>
+						</dragDropConfig>
 						<columns>
 							<Column width="9rem">
 								<header>
@@ -144,6 +148,7 @@
 						class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
 						<dragDropConfig>
 							<dnd:DragInfo sourceAggregation="items" />
+							<dnd:DropInfo targetAggregation="items" dropPosition="Between" dropLayout="Vertical" drop="onWidgetDrop"/>
 						</dragDropConfig>
 						<columns>
 							<Column width="5rem">

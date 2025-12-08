@@ -9583,7 +9583,68 @@
 
 
 		},
-		
+
+		onPageDrop: function(oEvent) {
+			var oDraggedItem = oEvent.getParameter("draggedControl");
+			var oDroppedItem = oEvent.getParameter("droppedControl");
+			var sDropPosition = oEvent.getParameter("dropPosition");
+
+			var oModel = this.getView().getModel("oPageDataModel");
+			var aData = oModel.getData();
+
+			// If aData is not an array, it might be wrapped in an object
+			if (!Array.isArray(aData)) {
+				sap.m.MessageToast.show("Unable to reorder: Invalid data structure");
+				return;
+			}
+
+			// Get the binding contexts
+			var oDraggedContext = oDraggedItem.getBindingContext("oPageDataModel");
+			var oDroppedContext = oDroppedItem.getBindingContext("oPageDataModel");
+
+			if (!oDraggedContext || !oDroppedContext) {
+				return;
+			}
+
+			// Get the indices from the binding path
+			var sDraggedPath = oDraggedContext.getPath();
+			var sDroppedPath = oDroppedContext.getPath();
+
+			var iDraggedIndex = parseInt(sDraggedPath.substring(sDraggedPath.lastIndexOf("/") + 1));
+			var iDroppedIndex = parseInt(sDroppedPath.substring(sDroppedPath.lastIndexOf("/") + 1));
+
+			// Clone the dragged item data to avoid reference issues
+			var oDraggedItemData = JSON.parse(JSON.stringify(aData[iDraggedIndex]));
+
+			// Remove from old position
+			aData.splice(iDraggedIndex, 1);
+
+			// Calculate new index
+			var iNewIndex = iDroppedIndex;
+			if (iDraggedIndex < iDroppedIndex) {
+				iNewIndex = iDroppedIndex - 1;
+			}
+
+			if (sDropPosition === "After") {
+				iNewIndex++;
+			}
+
+			// Insert at new position
+			aData.splice(iNewIndex, 0, oDraggedItemData);
+
+			// Update sequence numbers for all items
+			aData.forEach(function(oItem, iIndex) {
+				oItem.SequenceNumber = (iIndex + 1).toString();
+			});
+
+			// Update the model with the reordered data - force a full refresh
+			oModel.setData([]);
+			oModel.setData(aData);
+			oModel.refresh(true);
+
+			sap.m.MessageToast.show("Page order updated. Click 'Update' to save changes.");
+		},
+
 		navigateToWidgetFragment: function (pageId) {
 			var that = this;
 			var oWidgetDataModel = new JSONModel();
@@ -9814,8 +9875,8 @@
 			debugger;
 			var oBindingContext = oEvent.getSource().getBindingContext("oWidgetDataModel");
 			var oRowData = oBindingContext.getObject();
-		
-	  
+
+
 			// console.log("Row pressed - Row contents:", oRowData);
 
 			// this.getView().byId("widgetConfig").setVisible(true);
@@ -9830,11 +9891,11 @@
 			// 	this
 			// );
 
-			// var params = {};	
-	  
+			// var params = {};
+
 			// // Pass parameters to fragment
 			// oFragment.data("params", params);
-	  
+
 			// this.byId("dynamicWidgetConfig").removeAllContent();
 			// this.byId("dynamicWidgetConfig").addContent(oFragment);
 
@@ -9844,7 +9905,68 @@
 
 			// }
 			// this.oFragment.open();
- 		},
+		},
+
+		onWidgetDrop: function(oEvent) {
+			var oDraggedItem = oEvent.getParameter("draggedControl");
+			var oDroppedItem = oEvent.getParameter("droppedControl");
+			var sDropPosition = oEvent.getParameter("dropPosition");
+
+			var oModel = this.getView().getModel("oWidgetDataModel");
+			var aData = oModel.getData();
+
+			// If aData is not an array, it might be wrapped in an object
+			if (!Array.isArray(aData)) {
+				sap.m.MessageToast.show("Unable to reorder: Invalid data structure");
+				return;
+			}
+
+			// Get the binding contexts
+			var oDraggedContext = oDraggedItem.getBindingContext("oWidgetDataModel");
+			var oDroppedContext = oDroppedItem.getBindingContext("oWidgetDataModel");
+
+			if (!oDraggedContext || !oDroppedContext) {
+				return;
+			}
+
+			// Get the indices from the binding path
+			var sDraggedPath = oDraggedContext.getPath();
+			var sDroppedPath = oDroppedContext.getPath();
+
+			var iDraggedIndex = parseInt(sDraggedPath.substring(sDraggedPath.lastIndexOf("/") + 1));
+			var iDroppedIndex = parseInt(sDroppedPath.substring(sDroppedPath.lastIndexOf("/") + 1));
+
+			// Clone the dragged item data to avoid reference issues
+			var oDraggedItemData = JSON.parse(JSON.stringify(aData[iDraggedIndex]));
+
+			// Remove from old position
+			aData.splice(iDraggedIndex, 1);
+
+			// Calculate new index
+			var iNewIndex = iDroppedIndex;
+			if (iDraggedIndex < iDroppedIndex) {
+				iNewIndex = iDroppedIndex - 1;
+			}
+
+			if (sDropPosition === "After") {
+				iNewIndex++;
+			}
+
+			// Insert at new position
+			aData.splice(iNewIndex, 0, oDraggedItemData);
+
+			// Update sequence numbers for all items
+			aData.forEach(function(oItem, iIndex) {
+				oItem.SequenceNumber = (iIndex + 1).toString();
+			});
+
+			// Update the model with the reordered data - force a full refresh
+			oModel.setData([]);
+			oModel.setData(aData);
+			oModel.refresh(true);
+
+			sap.m.MessageToast.show("Widget order updated. Click 'Update' to save changes.");
+		},
 
 		
 		closeAddWidgetDialog: function() {
