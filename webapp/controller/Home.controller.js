@@ -7503,6 +7503,196 @@
  				}
  			});
  		},
+
+ 		// ===========================
+ 		// Category Config CRUD Operations
+ 		// ===========================
+
+ 		onCalendarTabSelect: function (oEvent) {
+ 			var sKey = oEvent.getParameter("key");
+ 			if (sKey === "category") {
+ 				this.onLoadCategoryData();
+ 			} else if (sKey === "calendar") {
+ 				this.onLoadCalendarData();
+ 			}
+ 		},
+
+ 		onLoadCategoryData: function () {
+ 			var that = this;
+ 			var finmobview = this.getView().getModel("finmobview");
+
+ 			var oCategoryModel = new JSONModel();
+ 			sap.ui.core.BusyIndicator.show(0);
+
+ 			finmobview.read("/CalenderCategorySet", {
+ 				success: function (data) {
+ 					oCategoryModel.setData(data.results);
+ 					that.getView().setModel(oCategoryModel, "oCategoryModel");
+ 					sap.ui.core.BusyIndicator.hide();
+ 				},
+ 				error: function (oError) {
+ 					sap.ui.core.BusyIndicator.hide();
+ 					MessageBox.error("Failed to load category data.");
+ 				}
+ 			});
+ 		},
+
+ 		onAddNewCategoryItem: function () {
+ 			var that = this;
+ 			var oTable = this.getView().byId("tabCategory");
+ 			var oCategoryModel = this.getView().getModel("oCategoryModel");
+ 			var aCategoryData = oCategoryModel.getData();
+
+ 			// Generate new Category ID
+ 			var newCatId = "C001";
+ 			if (aCategoryData.length > 0) {
+ 				var lastCatId = aCategoryData[aCategoryData.length - 1].CatId;
+ 				var catIdNum = parseInt(lastCatId.replace("C", ""), 10);
+ 				var newCatIdNum = catIdNum + 1;
+ 				var numericLength = lastCatId.length - 1;
+ 				newCatId = "C" + newCatIdNum.toString().padStart(numericLength, "0");
+ 			}
+
+ 			// Add new empty row
+ 			var newCategory = {
+ 				CatId: newCatId,
+ 				Category: ""
+ 			};
+
+ 			aCategoryData.push(newCategory);
+ 			oCategoryModel.setData(aCategoryData);
+ 			oCategoryModel.refresh(true);
+
+ 			MessageToast.show("New category row added. Please enter category name and click Update.");
+ 		},
+
+ 		onUpdateCategoryDets: function () {
+ 			var that = this;
+ 			var oModel = this.getView().getModel("finmobview");
+ 			var aData = this.getView().getModel("oCategoryModel").getData();
+
+ 			// Validate data
+ 			for (var i = 0; i < aData.length; i++) {
+ 				if (!aData[i].Category || aData[i].Category.trim() === "") {
+ 					MessageBox.error("Category name cannot be empty for Category ID: " + aData[i].CatId);
+ 					return;
+ 				}
+ 			}
+
+ 			sap.ui.core.BusyIndicator.show(0);
+
+ 			var aUpdatePromises = aData.map(function (oItem) {
+ 				return new Promise(function (resolve, reject) {
+ 					var sPath = "/CalenderCategorySet('" + oItem.CatId + "')";
+
+ 					// Clean payload
+ 					var oPayload = {
+ 						CatId: oItem.CatId,
+ 						Category: oItem.Category
+ 					};
+
+ 					oModel.update(sPath, oPayload, {
+ 						success: function () {
+ 							resolve();
+ 						},
+ 						error: function (oError) {
+ 							// If update fails, try create (for new items)
+ 							oModel.create("/CalenderCategorySet", oPayload, {
+ 								success: function () {
+ 									resolve();
+ 								},
+ 								error: function () {
+ 									reject();
+ 								}
+ 							});
+ 						}
+ 					});
+ 				});
+ 			});
+
+ 			Promise.allSettled(aUpdatePromises).then(function (results) {
+ 				sap.ui.core.BusyIndicator.hide();
+
+ 				var bHasError = results.some(result => result.status === "rejected");
+
+ 				if (bHasError) {
+ 					MessageBox.error("Some categories failed to update.");
+ 				} else {
+ 					MessageBox.success("Categories updated successfully!");
+ 					that.onLoadCategoryData(); // Reload data
+ 					that.onLoadCalendarData(); // Reload calendar to update category names
+ 				}
+ 			});
+ 		},
+
+ 		onDeleteCategoryItems: function () {
+ 			var that = this;
+ 			var oTable = this.getView().byId("tabCategory");
+ 			var aContexts = oTable.getSelectedContexts();
+
+ 			if (aContexts.length === 0) {
+ 				MessageBox.warning("Please select at least one category to delete.");
+ 				return;
+ 			}
+
+ 			MessageBox.show(
+ 				"Are you sure you want to delete the selected categories?", {
+ 					icon: MessageBox.Icon.QUESTION,
+ 					title: "Confirmation",
+ 					actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+ 					onClose: function (oAction) {
+ 						if (oAction === "YES") {
+ 							that.onDeleteCategoryItemsConfirmed(aContexts);
+ 						}
+ 					}
+ 				}
+ 			);
+ 		},
+
+ 		onDeleteCategoryItemsConfirmed: function (aContexts) {
+ 			var that = this;
+ 			var oModel = this.getView().getModel("finmobview");
+ 			var deletionItems = [];
+
+ 			for (var i = 0; i < aContexts.length; i++) {
+ 				deletionItems.push(aContexts[i].getObject());
+ 			}
+
+ 			sap.ui.core.BusyIndicator.show(0);
+
+ 			var aDeletePromises = deletionItems.map(function (oItem) {
+ 				return new Promise(function (resolve, reject) {
+ 					var sPath = "/CalenderCategorySet('" + oItem.CatId + "')";
+
+ 					oModel.remove(sPath, {
+ 						success: function () {
+ 							resolve();
+ 						},
+ 						error: function () {
+ 							reject();
+ 						}
+ 					});
+ 				});
+ 			});
+
+ 			Promise.allSettled(aDeletePromises).then(function (results) {
+ 				sap.ui.core.BusyIndicator.hide();
+
+ 				var bHasError = results.some(result => result.status === "rejected");
+
+ 				if (bHasError) {
+ 					MessageBox.error("Some categories failed to delete.");
+ 				} else {
+ 					MessageBox.success("Selected categories deleted successfully.");
+ 					that.onLoadCategoryData(); // Reload category data
+ 					that.onLoadCalendarData(); // Reload calendar data
+ 				}
+
+ 				var oTable = that.getView().byId("tabCategory");
+ 				oTable.removeSelections(true);
+ 			});
+ 		},
+
  		// onUpdateLandingDets: function () {
  		// 	var oModel = this.getView().getModel("finmobview");
  		// 	var aData = this.getView().getModel("oLandingPageDataModel").getData();
