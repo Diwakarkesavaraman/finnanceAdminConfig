@@ -1686,12 +1686,15 @@ sap.ui.define([
 			oTileMappingForm.addContent(oIsTimeDimensionCheckBox);
 
 			// Create dynamic fields based on widget type
+			// Store references to selection type controls for cross-field logic
+			var aSelectionTypeControls = [];
+
 			for (var k = 1; k <= iNumberOfFields; k++) {
 				// Field Select Label
 				var oFieldLabel = new Label({
 					text: "Select Field " + k
 				});
-				
+
 				// Field Select Control
 				var oFieldSelect = new sap.m.Select({
 					width: "100%",
@@ -2069,6 +2072,12 @@ sap.ui.define([
 					}));
 				});
 
+				// Store reference to this selection type control with its index
+				aSelectionTypeControls.push({
+					index: k,
+					control: oSelectionTypeSelect
+				});
+
 				var oSelectionTypeVBox = new sap.m.VBox({
 					width: "33.33%",
 					items: [
@@ -2107,7 +2116,38 @@ sap.ui.define([
 				// Add the field box to form
 				oTileMappingForm.addContent(oFieldBox);
 			}
-			
+
+			// Add change handlers after all controls are created
+			// Logic: When column 3 (k=3) is set to VARIANCE:
+			// - Column 2 (k=2) should mirror column 1 (k=1)
+			// - Any change in column 1 (k=1) should sync to column 2 (k=2)
+			if (aSelectionTypeControls.length >= 3) {
+				var oColumn1Control = aSelectionTypeControls[0].control; // k=1
+				var oColumn2Control = aSelectionTypeControls[1].control; // k=2
+				var oColumn3Control = aSelectionTypeControls[2].control; // k=3
+
+				// Handler for column 3 changes
+				oColumn3Control.attachChange(function(oEvent) {
+					var sColumn3Value = oEvent.getSource().getSelectedKey();
+					if (sColumn3Value === "VARIANCE") {
+						// Sync column 2 with column 1
+						var sColumn1Value = oColumn1Control.getSelectedKey();
+						oColumn2Control.setSelectedKey(sColumn1Value);
+					}
+				});
+
+				// Handler for column 1 changes
+				oColumn1Control.attachChange(function(oEvent) {
+					// Check if column 3 is set to VARIANCE
+					var sColumn3Value = oColumn3Control.getSelectedKey();
+					if (sColumn3Value === "VARIANCE") {
+						// Sync column 2 with column 1
+						var sColumn1Value = oEvent.getSource().getSelectedKey();
+						oColumn2Control.setSelectedKey(sColumn1Value);
+					}
+				});
+			}
+
 			return iNumberOfFields;
 		},
 

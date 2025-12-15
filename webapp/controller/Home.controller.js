@@ -690,15 +690,44 @@
  			var oCalendarModel = new JSONModel();
  			sap.ui.core.BusyIndicator.show(0);
 
- 			finmobview.read("/ZFI_FMA_EVENT_CALSet", {
- 				success: function (data) {
- 					oCalendarModel.setData(data.results);
- 					that.getView().setModel(oCalendarModel, "oCalendarModel");
- 					sap.ui.core.BusyIndicator.hide();
+ 			// First, load the category data to create a lookup map
+ 			finmobview.read("/CalenderCategorySet", {
+ 				success: function (categoryData) {
+ 					// Create a lookup map for category ID to category name
+ 					var oCategoryMap = {};
+ 					categoryData.results.forEach(function (category) {
+ 						oCategoryMap[category.CatId] = category.Category;
+ 					});
+
+ 					// Store the category map in a model for use in formatters
+ 					var oCategoryMapModel = new JSONModel(oCategoryMap);
+ 					that.getView().setModel(oCategoryMapModel, "oCategoryMapModel");
+
+ 					// Now load the calendar data
+ 					finmobview.read("/ZFI_FMA_EVENT_CALSet", {
+ 						success: function (data) {
+ 							// Enhance calendar data with category names
+ 							data.results.forEach(function (item) {
+ 								if (item.Zcategory && oCategoryMap[item.Zcategory]) {
+ 									item.ZcategoryName = oCategoryMap[item.Zcategory];
+ 								} else {
+ 									item.ZcategoryName = item.Zcategory; // Fallback to ID if name not found
+ 								}
+ 							});
+
+ 							oCalendarModel.setData(data.results);
+ 							that.getView().setModel(oCalendarModel, "oCalendarModel");
+ 							sap.ui.core.BusyIndicator.hide();
+ 						},
+ 						error: function (oError) {
+ 							sap.ui.core.BusyIndicator.hide();
+ 							MessageBox.error("Failed to load calendar data.");
+ 						}
+ 					});
  				},
  				error: function (oError) {
  					sap.ui.core.BusyIndicator.hide();
- 					MessageBox.error("Failed to load calendar data.");
+ 					MessageBox.error("Failed to load category data.");
  				}
  			});
  		},
@@ -6750,6 +6779,7 @@
  			for (var i = 0; i < deletionItems.length; i++) {
  				var addRow = deletionItems[i];
  				delete addRow.__metadata;
+ 				delete addRow.ZcategoryName; // Remove display-only field
 
  				var deletePath = `/ZFI_FMA_EVENT_CALSet(ZcalId='${addRow.ZcalId}')`;
 
@@ -7445,7 +7475,11 @@
  				return new Promise(function (resolve, reject) {
  					var sPath = "/ZFI_FMA_EVENT_CALSet('" + oItem.ZcalId + "')";
 
- 					oModel.update(sPath, oItem, {
+ 					// Create a clean payload without the ZcategoryName property (display-only field)
+ 					var oPayload = Object.assign({}, oItem);
+ 					delete oPayload.ZcategoryName; // Remove display-only field before sending to backend
+
+ 					oModel.update(sPath, oPayload, {
  						success: function () {
  							resolve(); // Resolve on successful update
  						},

@@ -42,11 +42,11 @@
 								<Text text="Short Description" class="whiteLabel"></Text>
 							</header>
 						</Column>
-						<!--<Column>-->
-						<!--	<header>-->
-						<!--		<Text text="Detailed Description" class="whiteLabel"></Text>-->
-						<!--	</header>-->
-						<!--</Column>-->
+						<Column>
+							<header>
+								<Text text="Detailed Description" class="whiteLabel"></Text>
+							</header>
+						</Column>
 						<!--<Column>-->
 						<!--	<header>-->
 						<!--		<Text text="Event" class="whiteLabel"></Text>-->
@@ -73,10 +73,10 @@
 								<DatePicker id="inpcalenddate"
 									value="{path:'oCalendarModel>Zenddate', type:'sap.ui.model.type.Date', formatOptions: { UTC: true, style: 'medium', strictParsing: true }}"
 									placeholder="mm/dd/yyyy" change="onLoadFilterData" class="customDatePicker" required="true"></DatePicker>
-								<Input value="{oCalendarModel>Zcategory}"></Input>
+								<Input value="{oCalendarModel>ZcategoryName}" editable="false"></Input>
 								<Input value="{oCalendarModel>Zevent}"></Input>
 								<Input value="{oCalendarModel>Zshortdesp}"></Input>
-								<!--<Input value="{oCalendarModel>Zdetaildesp}"></Input>-->
+								<Input value="{oCalendarModel>Zdetaildesp}"></Input>
 								<!--<Input value="{oCalendarModel>Zevent}"></Input>-->
 								<Input id="colorcode" value="{path: 'oCalendarModel>Zcolor', formatter: '.formatter.formatColor'}" showValueHelp="true" valueHelpRequest="onColorValueHelp" placeholder="Select Color"></Input>
 								<!--<HBox id="iconSelectionBox" justifyContent="Start">-->
