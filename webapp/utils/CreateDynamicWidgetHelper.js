@@ -21,9 +21,22 @@ sap.ui.define([
 
 	return {
 		// Default color palette for auto-assignment
-		DEFAULT_COLORS: ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"],
-// [84BD00, 00843D, 0033A0, 00A3E0, 26A8AB, 643278, FFC846, F05F41, 007AA8, 638E35, 4CA977, 4C70BC
-// ];
+		// DEFAULT_COLORS: ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"],
+		DEFAULT_COLORS:[
+			'84BD00',
+			'00843D',
+			'0033A0',
+			'00A3E0',
+			'26A8AB',
+			'643278',
+			'FFC846',
+			'F05F41',
+			'007AA8',
+			'638E35',
+			'4CA977',
+			'4C70BC'
+		  ],
+
 		onLoadWidgetListData: async function (oController) {
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
@@ -448,6 +461,11 @@ sap.ui.define([
 
 		onCreateChartTypeChange: function (oController, oEvent) {
 			var sSelectedChartType = oEvent.getParameter("selectedItem").getKey();
+
+			// Update the model with the selected chart type
+			var oWidgetValues = oController.getView().getModel("createWidgetValues");
+			oWidgetValues.setProperty("/selectedChartType", sSelectedChartType);
+
 			this._showChartPreview(oController, sSelectedChartType);
 		},
 

@@ -9634,7 +9634,7 @@
 
 			// Update sequence numbers for all items
 			aData.forEach(function(oItem, iIndex) {
-				oItem.SequenceNumber = (iIndex + 1).toString();
+				oItem.SequenceNo = iIndex + 1;
 			});
 
 			// Update the model with the reordered data - force a full refresh
@@ -9957,7 +9957,7 @@
 
 			// Update sequence numbers for all items
 			aData.forEach(function(oItem, iIndex) {
-				oItem.SequenceNumber = (iIndex + 1).toString();
+				oItem.SequenceNo = iIndex + 1;
 			});
 
 			// Update the model with the reordered data - force a full refresh
@@ -10381,3 +10381,4 @@ _handleValueHelpClose: function(oEvent) {
 
  	});
  });
+
