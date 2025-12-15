@@ -1603,7 +1603,7 @@ sap.ui.define([
 					}
 
 					if (sSelectedField) {
-						aTileValues.push({
+						var oTileValue = {
 							field: sSelectedField,
 							label: sDisplayText,
 							// label: sDisplayText || sSelectedField, // Use field name as default if no display text
@@ -1612,8 +1612,11 @@ sap.ui.define([
 							scale: sScale || "",
 							decimals: sDecimals || "",
 							suffix: sSuffix || "",
-							selectiontype: sSelectionType || ""
-						});
+							selectiontype: sSelectionType || "",
+							variance: sSelectionType === "VARIANCE" ? "X" : ""
+						};
+
+						aTileValues.push(oTileValue);
 					}
 				}
 				}
