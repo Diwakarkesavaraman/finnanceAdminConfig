@@ -105,12 +105,18 @@
 												<Text text="Category Name" class="whiteLabel"></Text>
 											</header>
 										</Column>
+										<Column>
+											<header>
+												<Text text="Color" class="whiteLabel"></Text>
+											</header>
+										</Column>
 									</columns>
 									<items>
 										<ColumnListItem vAlign="Middle">
 											<cells>
 												<Input value="{oCategoryModel>CatId}" editable="false"></Input>
 												<Input value="{oCategoryModel>Category}"></Input>
+												<Input value= "{oCategoryModel>Color}"></Input>
 											</cells>
 										</ColumnListItem>
 									</items>

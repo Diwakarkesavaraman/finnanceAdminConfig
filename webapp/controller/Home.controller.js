@@ -7567,6 +7567,7 @@
  		},
 
  		onUpdateCategoryDets: function () {
+			debugger;
  			var that = this;
  			var oModel = this.getView().getModel("finmobview");
  			var aData = this.getView().getModel("oCategoryModel").getData();
@@ -7588,7 +7589,8 @@
  					// Clean payload
  					var oPayload = {
  						CatId: oItem.CatId,
- 						Category: oItem.Category
+ 						Category: oItem.Category,
+						Color: oItem.Color
  					};
 
  					oModel.update(sPath, oPayload, {
