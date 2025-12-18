@@ -116,7 +116,7 @@
 											<cells>
 												<Input value="{oCategoryModel>CatId}" editable="false"></Input>
 												<Input value="{oCategoryModel>Category}"></Input>
-												<Input value= "{oCategoryModel>Color}"></Input>
+												<Input id="categoryColorCode" value="{path: 'oCategoryModel>Color', formatter: '.formatter.formatColor'}" showValueHelp="true" valueHelpRequest="onCategoryColorValueHelp" placeholder="Select Color"></Input>
 											</cells>
 										</ColumnListItem>
 									</items>

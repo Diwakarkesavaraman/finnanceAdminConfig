@@ -749,6 +749,7 @@
 		onColorValueHelp: function(oEvent) {
 			this._oInputField = oEvent.getSource();
 			this._oRowContext = this._oInputField.getBindingContext("oCalendarModel");
+			this._isCategoryColorPicker = false; // Flag to indicate this is for calendar
 
 			if (!this._oColorPickerDialog) {
 				this._oColorPickerDialog = sap.ui.xmlfragment(
@@ -789,25 +790,81 @@
 		},
 
 		onColorPickerOK: function() {
-			if (this._selectedColor && this._oInputField && this._oRowContext) {
-				var sPath = this._oRowContext.getPath();
-				var oModel = this._oRowContext.getModel();
-				
-				// Remove # from color code before saving
-				var sColorCode = this._selectedColor.replace("#", "");
-				
-				// Update the model with the selected color (without #)
-				oModel.setProperty(sPath + "/Zcolor", sColorCode);
-				
-				// Update the input field value (without #)
-				this._oInputField.setValue(sColorCode);
+			// Remove # from color code before saving
+			var sColorCode = this._selectedColor ? this._selectedColor.replace("#", "") : "";
+
+			// Check if this is for category or calendar
+			if (this._isCategoryColorPicker) {
+				// Handle category color picker
+				if (sColorCode && this._oCategoryInputField && this._oCategoryRowContext) {
+					var sPath = this._oCategoryRowContext.getPath();
+					var oModel = this._oCategoryRowContext.getModel();
+
+					// Update the model with the selected color (without #)
+					oModel.setProperty(sPath + "/Color", sColorCode);
+
+					// Update the input field value (without #)
+					this._oCategoryInputField.setValue(sColorCode);
+				}
+			} else {
+				// Handle calendar color picker
+				if (sColorCode && this._oInputField && this._oRowContext) {
+					var sPath = this._oRowContext.getPath();
+					var oModel = this._oRowContext.getModel();
+
+					// Update the model with the selected color (without #)
+					oModel.setProperty(sPath + "/Zcolor", sColorCode);
+
+					// Update the input field value (without #)
+					this._oInputField.setValue(sColorCode);
+				}
 			}
+
 			this._oColorPickerDialog.close();
 		},
 
 		onColorPickerCancel: function() {
 			this._selectedColor = null;
 			this._oColorPickerDialog.close();
+		},
+
+		// Category Color Value Help
+		onCategoryColorValueHelp: function(oEvent) {
+			this._oCategoryInputField = oEvent.getSource();
+			this._oCategoryRowContext = this._oCategoryInputField.getBindingContext("oCategoryModel");
+			this._isCategoryColorPicker = true; // Flag to differentiate between calendar and category color pickers
+
+			if (!this._oColorPickerDialog) {
+				this._oColorPickerDialog = sap.ui.xmlfragment(
+					"mobilefinance.MobileFinance.fragments.ColorPickerDialog",
+					this
+				);
+				this.getView().addDependent(this._oColorPickerDialog);
+			}
+
+			// Set current color if available
+			if (this._oCategoryRowContext) {
+				var sCurrentColor = this._oCategoryRowContext.getProperty("Color");
+				if (sCurrentColor) {
+					// Add # if not present for color picker
+					var sColorForPicker = sCurrentColor.startsWith("#") ? sCurrentColor : "#" + sCurrentColor;
+
+					// Find the color picker control in the dialog
+					var aContent = this._oColorPickerDialog.getContent();
+					if (aContent && aContent.length > 0) {
+						var oVBox = aContent[0];
+						var aVBoxItems = oVBox.getItems();
+						if (aVBoxItems && aVBoxItems.length > 0) {
+							var oColorPicker = aVBoxItems[0];
+							if (oColorPicker && oColorPicker.setColorString) {
+								oColorPicker.setColorString(sColorForPicker);
+							}
+						}
+					}
+				}
+			}
+
+			this._oColorPickerDialog.open();
 		},
 
  		onColorValueHelpSearch: function (oEvent) {
@@ -7556,7 +7613,8 @@
  			// Add new empty row
  			var newCategory = {
  				CatId: newCatId,
- 				Category: ""
+ 				Category: "",
+ 				Color: ""
  			};
 
  			aCategoryData.push(newCategory);
@@ -7567,7 +7625,6 @@
  		},
 
  		onUpdateCategoryDets: function () {
-			debugger;
  			var that = this;
  			var oModel = this.getView().getModel("finmobview");
  			var aData = this.getView().getModel("oCategoryModel").getData();
