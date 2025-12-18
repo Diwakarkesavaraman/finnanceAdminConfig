@@ -703,6 +703,15 @@
  					var oCategoryMapModel = new JSONModel(oCategoryMap);
  					that.getView().setModel(oCategoryMapModel, "oCategoryMapModel");
 
+ 					// Store the category list for the Select control with empty option at the beginning
+ 					var aCategoryListWithEmpty = [
+ 						{ CatId: "", Category: "(None)" }
+ 					].concat(categoryData.results.sort(function(a, b) {
+ 						return a.Category.localeCompare(b.Category);
+ 					}));
+ 					var oCategoryListModel = new JSONModel(aCategoryListWithEmpty);
+ 					that.getView().setModel(oCategoryListModel, "oCategoryListModel");
+
  					// Now load the calendar data
  					finmobview.read("/ZFI_FMA_EVENT_CALSet", {
  						success: function (data) {
@@ -730,6 +739,37 @@
  					MessageBox.error("Failed to load category data.");
  				}
  			});
+ 		},
+
+ 		onCalendarCategoryChange: function (oEvent) {
+ 			var oSelect = oEvent.getSource();
+ 			var sSelectedKey = oSelect.getSelectedKey();
+ 			var oContext = oSelect.getBindingContext("oCalendarModel");
+
+ 			if (oContext) {
+ 				var sPath = oContext.getPath();
+ 				var oModel = oContext.getModel();
+
+ 				// Handle empty selection (None)
+ 				if (!sSelectedKey || sSelectedKey === "") {
+ 					oModel.setProperty(sPath + "/Zcategory", "");
+ 					oModel.setProperty(sPath + "/ZcategoryName", "");
+ 				} else {
+ 					// Update the Zcategory field with the selected category ID
+ 					oModel.setProperty(sPath + "/Zcategory", sSelectedKey);
+
+ 					// Update the ZcategoryName field with the selected category name
+ 					var oCategoryListModel = this.getView().getModel("oCategoryListModel");
+ 					var aCategoryList = oCategoryListModel.getData();
+ 					var oSelectedCategory = aCategoryList.find(function (cat) {
+ 						return cat.CatId === sSelectedKey;
+ 					});
+
+ 					if (oSelectedCategory) {
+ 						oModel.setProperty(sPath + "/ZcategoryName", oSelectedCategory.Category);
+ 					}
+ 				}
+ 			}
  		},
 
  		// onColorValueHelp: function (oEvent) {
@@ -826,6 +866,27 @@
 		onColorPickerCancel: function() {
 			this._selectedColor = null;
 			this._oColorPickerDialog.close();
+		},
+
+		// Category Color Change (manual input)
+		onCategoryColorChange: function(oEvent) {
+			var oInput = oEvent.getSource();
+			var sValue = oEvent.getParameter("value");
+			var oContext = oInput.getBindingContext("oCategoryModel");
+
+			if (oContext) {
+				var sPath = oContext.getPath();
+				var oModel = oContext.getModel();
+
+				// Remove # if user typed it
+				var sColorCode = sValue.replace("#", "").trim();
+
+				// Update the model with the color code
+				oModel.setProperty(sPath + "/Color", sColorCode);
+
+				// Update the input field to show clean value (without #)
+				oInput.setValue(sColorCode);
+			}
 		},
 
 		// Category Color Value Help
@@ -7585,6 +7646,16 @@
  				success: function (data) {
  					oCategoryModel.setData(data.results);
  					that.getView().setModel(oCategoryModel, "oCategoryModel");
+
+ 					// Update the category list model for the Select control in calendar tab with empty option
+ 					var aCategoryListWithEmpty = [
+ 						{ CatId: "", Category: "(None)" }
+ 					].concat(data.results.sort(function(a, b) {
+ 						return a.Category.localeCompare(b.Category);
+ 					}));
+ 					var oCategoryListModel = new JSONModel(aCategoryListWithEmpty);
+ 					that.getView().setModel(oCategoryListModel, "oCategoryListModel");
+
  					sap.ui.core.BusyIndicator.hide();
  				},
  				error: function (oError) {

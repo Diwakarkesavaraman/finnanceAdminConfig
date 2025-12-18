@@ -67,7 +67,9 @@
 												<DatePicker id="inpcalenddate"
 													value="{path:'oCalendarModel>Zenddate', type:'sap.ui.model.type.Date', formatOptions: { UTC: true, style: 'medium', strictParsing: true }}"
 													placeholder="mm/dd/yyyy" change="onLoadFilterData" class="customDatePicker" required="true"></DatePicker>
-												<Input value="{oCalendarModel>ZcategoryName}" editable="false"></Input>
+												<Select selectedKey="{oCalendarModel>Zcategory}" change="onCalendarCategoryChange" forceSelection="false" width="100%" items="{path: 'oCategoryListModel>/'}">
+													<core:Item key="{oCategoryListModel>CatId}" text="{oCategoryListModel>Category}"/>
+												</Select>
 												<Input value="{oCalendarModel>Zevent}"></Input>
 												<Input value="{oCalendarModel>Zshortdesp}"></Input>
 												<Input value="{oCalendarModel>Zdetaildesp}"></Input>
@@ -116,7 +118,7 @@
 											<cells>
 												<Input value="{oCategoryModel>CatId}" editable="false"></Input>
 												<Input value="{oCategoryModel>Category}"></Input>
-												<Input id="categoryColorCode" value="{path: 'oCategoryModel>Color', formatter: '.formatter.formatColor'}" showValueHelp="true" valueHelpRequest="onCategoryColorValueHelp" placeholder="Select Color"></Input>
+												<Input id="categoryColorCode" value="{oCategoryModel>Color}" change="onCategoryColorChange" showValueHelp="true" valueHelpRequest="onCategoryColorValueHelp" placeholder="Select Color"></Input>
 											</cells>
 										</ColumnListItem>
 									</items>
