@@ -61,43 +61,18 @@ sap.ui.define([
 
 			console.log("Selected page:", oSelectedPage);
 
-			// Hide page configuration and show widget config (stay in same page)
-			that.byId("pageConfigurationContainer").setVisible(false);
-			that.byId("widgetConfig").setVisible(true);
-			that.byId("pageText").setText(oSelectedPage.ZpageName);
+			// Navigate to WidgetListTable fragment (same as Dynamic Widget Config)
+			that.byId("pageContainer").to(that.getView().createId("dynamicWidgetConfig"));
 
-			// Load widget data for the selected page from DynamicWidgetSet
-			var oWidgetDataModel = new JSONModel();
-			var finmobview = that.getView().getModel("finmobview");
-			var aFilters = [new Filter("ZpageId", FilterOperator.EQ, oSelectedPage.ZpageId)];
+			// Show widget list and hide create config initially
+			that.byId("widgetListContainer").setVisible(true);
+			that.byId("createDynamicWidgetConfigContainer").setVisible(false);
 
-			sap.ui.core.BusyIndicator.show(0);
-
-			finmobview.read("/DynamicWidgetSet", {
-				filters: aFilters,
-				success: function (data) {
-					console.log("Widget data loaded for page:", data);
-					oWidgetDataModel.setData(data.results);
-					that.getView().setModel(oWidgetDataModel, "oWidgetDataModel");
-					sap.ui.core.BusyIndicator.hide();
-				},
-				error: function (oError) {
-					sap.ui.core.BusyIndicator.hide();
-					var responseText = oError.responseText;
-					var msg = "Error loading widget data";
-					if (responseText && responseText.indexOf("{") > -1) {
-						try {
-							var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
-							if (errorDetails.length > 0) {
-								msg = errorDetails.map(err => err.message).join("\n");
-							}
-						} catch (e) {
-							msg = responseText;
-						}
-					}
-					MessageBox.error(msg);
-				}
-			});
+			// Load widget list data with filters for the selected page
+			var CreateDynamicWidgetHelper = sap.ui.require("mobilefinance/MobileFinance/utils/CreateDynamicWidgetHelper");
+			if (CreateDynamicWidgetHelper) {
+				CreateDynamicWidgetHelper.onLoadWidgetListData(that);
+			}
 		},
 
 		onBackToPageConfig: function (oController) {

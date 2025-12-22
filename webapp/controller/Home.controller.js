@@ -150,7 +150,7 @@
  					// // Create a JSON model with local data
  					// var oAuthModel = new sap.ui.model.json.JSONModel(oLocalData);
  					// that.getView().setModel(oAuthModel, "authModel");
- 					// that.updateTabVisibility();
+ 					that.updateTabVisibility();
 
  					sap.ui.core.BusyIndicator.hide(0);
 
@@ -177,6 +177,7 @@
  		},
 
  		updateTabVisibility: function () {
+			debugger;
  			var that = this;
  			var oAuthModel = this.getView().getModel("oAuthDataModel");
 
