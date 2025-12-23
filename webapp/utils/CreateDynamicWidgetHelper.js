@@ -3122,6 +3122,7 @@ sap.ui.define([
 						text: "Add Page ID",
 						icon: "sap-icon://add",
 						press: function() {
+							debugger;
 							// Create value help dialog for Page ID
 							if (!that._oCreatePageIdValueHelpDialog) {
 								that._oCreatePageIdValueHelpDialog = new sap.m.SelectDialog({
@@ -3173,6 +3174,7 @@ sap.ui.define([
 						}
 					});
 
+					
 					// Page ID Table with drag and drop
 					var oPageIdTable = new sap.m.Table({
 						mode: sap.m.ListMode.Delete,

@@ -17,6 +17,10 @@
 				</HBox>
 				<Table id="tabLandingConfig" alternateRowColors="false" items="{ path: 'oLandingPageDataModel>/' }" growing="true"
 					class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
+					<dragDropConfig>
+						<dnd:DragInfo sourceAggregation="items" />
+						<dnd:DropInfo targetAggregation="items" dropPosition="Between" dropLayout="Vertical" drop="onTileDrop"/>
+					</dragDropConfig>
 					<columns>
 						<Column width="9rem">
 							<header>

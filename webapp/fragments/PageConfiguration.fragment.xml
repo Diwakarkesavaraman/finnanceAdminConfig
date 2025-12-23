@@ -19,6 +19,11 @@
 							<Text text="Page Title" class="whiteLabel"/>
 						</header>
 					</Column>
+					<Column width="9rem">
+						<header>
+							<Text text="Tab Name" class="whiteLabel"/>
+						</header>
+					</Column>
 					<Column>
 						<header>
 							<Text text="Roles" class="whiteLabel"/>
@@ -34,6 +39,7 @@
 					<ColumnListItem vAlign="Middle" type="Navigation" press="onPageConfigPress">
 						<cells>
 							<Input value="{oPageConfigDataModel>ZpageName}"/>
+							<Input value="{oPageConfigDataModel>ZtabName}"/>
 							<Input value="{oPageConfigDataModel>Zrole}"/>
 							<CheckBox text="" selected="{oPageConfigDataModel>Zvisibility}"/>
 						</cells>

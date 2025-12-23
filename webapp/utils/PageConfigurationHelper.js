@@ -9,6 +9,7 @@ sap.ui.define([
 
 	return {
 		onLoadPageConfigurationData: async function (oController) {
+			debugger;
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
 
@@ -63,7 +64,7 @@ sap.ui.define([
 
 			// Hide page configuration and show widget config (stay in same page)
 			that.byId("pageConfigurationContainer").setVisible(false);
-			that.byId("widgetConfig").setVisible(true);
+			that.byId("pageWidgetDetailConfig").setVisible(true);
 			that.byId("pageText").setText(oSelectedPage.ZpageName);
 
 			// Load widget data for the selected page from DynamicWidgetSet
@@ -409,7 +410,7 @@ sap.ui.define([
 
 			// Hide widget detail panel and show page widget list
 			that.byId("pageWidgetDetailConfig").setVisible(false);
-			that.byId("pageWidgetConfigContainer").setVisible(true);
+			that.byId("pageConfigurationContainer").setVisible(true);
 		},
 
 		onDeleteWidget: function (oController) {

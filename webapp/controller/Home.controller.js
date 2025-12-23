@@ -9612,6 +9612,10 @@
 			return PageConfigurationHelper.onPageConfigPress(this, oEvent);
 		},
 
+		onBackToPageWidgetConfig: function(oEvent){
+			return PageConfigurationHelper.onBackToPageWidgetConfig(this, oEvent);
+		},
+
 		onBackToPageConfig: function() {
 			return PageConfigurationHelper.onBackToPageConfig(this);
 		},
@@ -9895,6 +9899,70 @@
  			this.AddNewPageDialog.close();
 
 		},
+
+		// Add this function to Home.controller.js after the onAddPageItem function (around line 9897)
+
+onTileDrop: function(oEvent) {
+	var oDraggedItem = oEvent.getParameter("draggedControl");
+	var oDroppedItem = oEvent.getParameter("droppedControl");
+	var sDropPosition = oEvent.getParameter("dropPosition");
+
+	var oModel = this.getView().getModel("oLandingPageDataModel");
+	var aData = oModel.getData();
+
+	// If aData is not an array, it might be wrapped in an object
+	if (!Array.isArray(aData)) {
+		sap.m.MessageToast.show("Unable to reorder: Invalid data structure");
+		return;
+	}
+
+	// Get the binding contexts
+	var oDraggedContext = oDraggedItem.getBindingContext("oLandingPageDataModel");
+	var oDroppedContext = oDroppedItem.getBindingContext("oLandingPageDataModel");
+
+	if (!oDraggedContext || !oDroppedContext) {
+		return;
+	}
+
+	// Get the indices from the binding path
+	var sDraggedPath = oDraggedContext.getPath();
+	var sDroppedPath = oDroppedContext.getPath();
+
+	var iDraggedIndex = parseInt(sDraggedPath.substring(sDraggedPath.lastIndexOf("/") + 1));
+	var iDroppedIndex = parseInt(sDroppedPath.substring(sDroppedPath.lastIndexOf("/") + 1));
+
+	// Clone the dragged item data to avoid reference issues
+	var oDraggedItemData = JSON.parse(JSON.stringify(aData[iDraggedIndex]));
+
+	// Remove from old position
+	aData.splice(iDraggedIndex, 1);
+
+	// Calculate new index
+	var iNewIndex = iDroppedIndex;
+	if (iDraggedIndex < iDroppedIndex) {
+		iNewIndex = iDroppedIndex - 1;
+	}
+
+	if (sDropPosition === "After") {
+		iNewIndex++;
+	}
+
+	// Insert at new position
+	aData.splice(iNewIndex, 0, oDraggedItemData);
+
+	// Update sequence numbers for all items
+	aData.forEach(function(oItem, iIndex) {
+		oItem.SequenceNo = iIndex + 1;
+	});
+
+	// Update the model with the reordered data - force a full refresh
+	oModel.setData([]);
+	oModel.setData(aData);
+	oModel.refresh(true);
+
+	sap.m.MessageToast.show("Tile order updated. Click 'Update' to save changes.");
+},
+
 		
 		onPagePress: function(oEvent) {
 			
