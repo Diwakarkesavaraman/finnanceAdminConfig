@@ -53,6 +53,12 @@
 								<Text text="Visibility" class="whiteLabel"></Text>
 							</header>
 						</Column>
+						<Column width="5rem">
+							<header>
+								<Text text="Default" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						
 					</columns>
 					<items>
 						<ColumnListItem vAlign="Middle">
@@ -80,6 +86,7 @@
 								<!--</MultiInput>-->
 								<Input value="{oSharePriceTabModel>Zroles}"></Input>
 								<CheckBox text="" selected="{oSharePriceTabModel>Zvisibility}"/>
+								<CheckBox text="" selected="{oSharePriceTabModel>Isdefault}"/>
 								<!--<Input id="roleid" mode="MultiSelect" value="oVisiblityModel>ZroleList" showValueHelp="true"-->
 								<!--	valueHelpRequest="onRoleValueHelp" placeholder="Select Color"></Input>-->
 							</cells>

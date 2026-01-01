@@ -609,7 +609,8 @@ sap.ui.define([
 				"TimeRange":hierarchyFormData.enableTimeRange ? 'X': '' || '',
 				"SystemName":oWidgetData.systemName || "",
 				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || "",
-				"PeriodRange": mappingFormData.periodRange || ""
+				"PeriodRange": mappingFormData.periodRange || "",
+				"tableMapping": 
 			};
 			
 			sap.ui.core.BusyIndicator.show(0);
@@ -3121,7 +3122,7 @@ sap.ui.define([
 					var oAddPageIdButton = new sap.m.Button({
 						text: "Add Page ID",
 						icon: "sap-icon://add",
-						press: function() {
+						press: async function() {
 							debugger;
 							// Create value help dialog for Page ID
 							if (!that._oCreatePageIdValueHelpDialog) {
@@ -3132,7 +3133,8 @@ sap.ui.define([
 										path: "createPageTypeDropdownData>/",
 										template: new sap.m.StandardListItem({
 											title: "{createPageTypeDropdownData>Text}",
-											description: "{createPageTypeDropdownData>Id}"
+											description: "{createPageTypeDropdownData>Id}",
+											info: "{createPageTypeDropdownData>ZtabName}"
 										})
 									},
 									confirm: function(oEvent) {
@@ -3148,11 +3150,13 @@ sap.ui.define([
 												if (!bExists) {
 													aCurrentData.push({
 														Id: oData.Id,
-														Text: oData.Text
+														Text: oData.Text,
+														ZtabName: oData.ZtabName
 													});
 												}
 											});
 											oPageIdTableModel.setData(aCurrentData);
+											oPageIdTableModel.refresh(true);
 										}
 									},
 									search: function(oEvent) {
@@ -3164,12 +3168,35 @@ sap.ui.define([
 								});
 								that.getView().addDependent(that._oCreatePageIdValueHelpDialog);
 							}
-							
-							// Set the model and open dialog
-							var oPageTypeModel = that.getView().getModel("createPageTypeDropdownData");
-							if (oPageTypeModel && oPageTypeModel.getData()) {
+
+							// Fetch data from DynamicPageSet endpoint
+							var finmobview = that.getView().getModel("finmobview");
+							try {
+								var aPageData = await new Promise((resolve, reject) => {
+									finmobview.read("/DynamicPageSet", {
+										success: function(data) {
+											// Transform data: map ZpageName to Text, ZpageId to Id, and include ZtabName
+											var aTransformedData = data.results.map(function(item) {
+												return {
+													Text: item.ZpageName,
+													Id: item.ZpageId,
+													ZtabName: item.ZtabName
+												};
+											});
+											resolve(aTransformedData);
+										},
+										error: function(oError) {
+											reject(oError);
+										}
+									});
+								});
+
+								// Set the model and open dialog
+								var oPageTypeModel = new JSONModel(aPageData);
 								that._oCreatePageIdValueHelpDialog.setModel(oPageTypeModel, "createPageTypeDropdownData");
 								that._oCreatePageIdValueHelpDialog.open();
+							} catch (error) {
+								MessageBox.error("Failed to fetch page data: " + error.message);
 							}
 						}
 					});
@@ -3185,6 +3212,7 @@ sap.ui.define([
 							var aData = oPageIdTableModel.getData();
 							aData.splice(iIndex, 1);
 							oPageIdTableModel.setData(aData);
+							oPageIdTableModel.refresh(true);
 						},
 						columns: [
 							new sap.m.Column({
@@ -3196,6 +3224,9 @@ sap.ui.define([
 							}),
 							new sap.m.Column({
 								header: new sap.m.Text({ text: "Description" })
+							}),
+							new sap.m.Column({
+								header: new sap.m.Text({ text: "Tab Name" })
 							})
 						],
 						items: {
@@ -3207,7 +3238,8 @@ sap.ui.define([
 										color: "#0854a0"
 									}),
 									new sap.m.Text({ text: "{createPageIdTableModel>Id}" }),
-									new sap.m.Text({ text: "{createPageIdTableModel>Text}" })
+									new sap.m.Text({ text: "{createPageIdTableModel>Text}" }),
+									new sap.m.Text({ text: "{createPageIdTableModel>ZtabName}" })
 								]
 							})
 						},
@@ -3254,6 +3286,7 @@ sap.ui.define([
 									// Insert at new position
 									aData.splice(iNewIndex, 0, oDraggedData);
 									oPageIdTableModel.setData(aData);
+									oPageIdTableModel.refresh(true);
 								}
 							})
 						]
@@ -3261,7 +3294,8 @@ sap.ui.define([
 
 						oHierarchyForm.addContent(oEnableTimeRangeCheckBox);
 						oHierarchyForm.addContent(oTimeframeLabel);
-						oHierarchyForm.addContent(oTimeframeSelect);						oHierarchyForm.addContent(oPageIdLabel);
+						oHierarchyForm.addContent(oTimeframeSelect);
+						oHierarchyForm.addContent(oPageIdLabel);
 						oHierarchyForm.addContent(oAddPageIdButton);
 						oHierarchyForm.addContent(oPageIdTable);
 
@@ -3380,28 +3414,36 @@ sap.ui.define([
 									// Populate table data for each page ID
 									aPageIds.forEach(function(sPageId) {
 										if (sPageId) {
-											// Find the corresponding text from createPageTypeDropdownData
+											// Find the corresponding text and ZtabName from createPageTypeDropdownData
 											var oPageTypeModel = that.getView().getModel("createPageTypeDropdownData");
 											var sDisplayText = sPageId; // Default to page ID
-											
+											var sZtabName = ""; // Default ZtabName
+
 											if (oPageTypeModel && oPageTypeModel.getData()) {
 												var aPageTypeData = oPageTypeModel.getData();
 												var oPageType = aPageTypeData.find(function(oItem) {
 													return oItem.Id === sPageId;
 												});
-												if (oPageType && oPageType.Text) {
-													sDisplayText = oPageType.Text;
+												if (oPageType) {
+													if (oPageType.Text) {
+														sDisplayText = oPageType.Text;
+													}
+													if (oPageType.ZtabName) {
+														sZtabName = oPageType.ZtabName;
+													}
 												}
 											}
-											
+
 											aTableData.push({
 												Id: sPageId,
-												Text: sDisplayText
+												Text: sDisplayText,
+												ZtabName: sZtabName
 											});
 										}
 									});
-									
+
 									oPageIdTableModel.setData(aTableData);
+									oPageIdTableModel.refresh(true);
 								}
 							} catch (e) {
 								console.log("Could not populate Page ID table:", e);
