@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
 	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
 	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt"
-	xmlns:codeeditor="sap.ui.codeeditor">
+	xmlns:codeeditor="sap.ui.codeeditor" xmlns:dnd="sap.ui.core.dnd">
 	<Panel height="100%" class="admgisreppanelcls">
 			<content>
 	<VBox id="createDynamicWidgetConfigContainer" visible="false">

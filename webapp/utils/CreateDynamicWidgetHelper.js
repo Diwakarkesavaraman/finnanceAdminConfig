@@ -357,6 +357,7 @@ sap.ui.define([
 						oCurrentData.isTimeDimension = oWidgetData.Istimedim === 'X' ? true : false;
 						oCurrentData.periodRange = oWidgetData.PeriodRange || '';
 						oCurrentData.systemName = oWidgetData.SystemName;					
+					oCurrentData.tableMapping = oWidgetData.TableMapping || "";
 						oModel.setData(oCurrentData);
 						
 						// Show widget ID fields
@@ -413,6 +414,7 @@ sap.ui.define([
 			// Update form visibility based on widget type
 			var oChartBindingForm = that.byId("createDataMappingForm");
 			var oDataBindingForm = that.byId("createTileMappingForm");
+		var oTableMappingForm = that.byId("createTableMappingForm");
 
 			if (selectedWidgetType === "o3value" || selectedWidgetType === "o1value") {
 				// Show Data Binding, hide Chart Binding
@@ -427,9 +429,15 @@ sap.ui.define([
 					if (oDataParent && oDataParent.setVisible) {
 						oDataParent.setVisible(true);
 					}
+			if (oTableMappingForm) {
+				var oTableParent = oTableMappingForm.getParent();
+				if (oTableParent && oTableParent.setVisible) {
+					oTableParent.setVisible(false);
+				}
+			}
 				}
 			} else if (selectedWidgetType === "ochrt") {
-				// Show Chart Binding, hide Data Binding
+				// Show Chart Binding, hide Data Binding and Table Mapping
 				if (oChartBindingForm) {
 					var oChartParent = oChartBindingForm.getParent();
 					if (oChartParent && oChartParent.setVisible) {
@@ -442,8 +450,14 @@ sap.ui.define([
 						oDataParent.setVisible(false);
 					}
 				}
+			if (oTableMappingForm) {
+				var oTableParent = oTableMappingForm.getParent();
+				if (oTableParent && oTableParent.setVisible) {
+					oTableParent.setVisible(false);
+				}
+			}
 			} else {
-				// Show both forms for other widget types
+				// Show all forms for other widget types
 				if (oChartBindingForm) {
 					var oChartParent = oChartBindingForm.getParent();
 					if (oChartParent && oChartParent.setVisible) {
@@ -581,6 +595,8 @@ sap.ui.define([
 			var tileMappingData = this.getCreateTileMappingFormValues(oController);
 			//Fetch mapping from createHierarchyMappingForm
 			var hierarchyFormData = this.getCreateHierarchyFormValues(oController); 
+		//Fetch mapping from createTableMappingForm
+		var tableMappingData = this.getCreateTableMappingFormValues(oController);
 			
 			var oPayload = {
 				"WidgetType": oWidgetData.selectedWidgetType,
@@ -610,7 +626,7 @@ sap.ui.define([
 				"SystemName":oWidgetData.systemName || "",
 				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || "",
 				"PeriodRange": mappingFormData.periodRange || "",
-				"tableMapping": 
+				"TableMapping": tableMappingData || ""
 			};
 			
 			sap.ui.core.BusyIndicator.show(0);
@@ -691,6 +707,7 @@ sap.ui.define([
 			var filterMappingData = this.getCreateFilterMappingFormValues(that);
 			var tileMappingData = this.getCreateTileMappingFormValues(that);
 			var hierarchyFormData = this.getCreateHierarchyFormValues(that);
+		var tableMappingData = this.getCreateTableMappingFormValues(that);
 
 			// Create payload with new widget name and ID but same data
 			var oPayload = {
@@ -713,7 +730,8 @@ sap.ui.define([
 				"TimeRange": hierarchyFormData.enableTimeRange ? 'X' : '',
 				"SystemName": oWidgetData.systemName || "",
 				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || "",
-				"PeriodRange": mappingFormData.periodRange || ""
+				"PeriodRange": mappingFormData.periodRange || "",
+				"TableMapping": tableMappingData || ""
 			};
 
 			sap.ui.core.BusyIndicator.show(0);
@@ -1181,6 +1199,288 @@ sap.ui.define([
 				oForm.insertContent(oMultiInputBox, iButtonIndex + 1);
 			}
 		},
+
+	
+	createTableMappingForm: function (oController) {
+		var that = oController;
+		var self = this;
+	
+		// Table Mapping Form - For table/hierarchy widgets
+		var oTableMappingForm = that.byId("createTableMappingForm");
+		oTableMappingForm.removeAllContent();
+	
+		// Get metadata model
+		var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+		if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
+			return;
+		}
+	
+		// Initialize table columns model
+		var oTableColumnsModel = new sap.ui.model.json.JSONModel([]);
+		that.getView().setModel(oTableColumnsModel, "createTableColumnsModel");
+	
+		// Add Columns label and button
+		var oAddColumnsLabel = new sap.m.Label({
+			text: "Add Columns"
+		});
+	
+		var oAddColumnButton = new sap.m.Button({
+			text: "Add Column",
+			icon: "sap-icon://add",
+			type: "Emphasized",
+			press: function() {
+				self.addTableColumn(that);
+			}
+		}).addStyleClass("sapUiSmallMarginTop");
+
+		oTableMappingForm.addContent(oAddColumnsLabel);
+		oTableMappingForm.addContent(new sap.m.Label({ text: "" }));
+
+		// Create container for column rows
+		var oColumnsContainer = new sap.m.VBox({
+			width: "100%"
+		});
+
+		oTableMappingForm.addContent(new sap.m.Label({ text: "" }));
+		oTableMappingForm.addContent(oColumnsContainer);
+
+		oTableMappingForm.addContent(new sap.m.Label({ text: "" }));
+		oTableMappingForm.addContent(oAddColumnButton);
+	
+		// Store reference for later use
+		that._oTableColumnsContainer = oColumnsContainer;
+	},
+	
+	addTableColumn: function(oController, oColumnData) {
+		var that = oController;
+		var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+	
+		if (!that._oTableColumnsContainer) {
+			return;
+		}
+	
+		// Create a VBox for the entire column row
+		var oColumnRow = new sap.m.VBox({
+			width: "100%"
+		}).addStyleClass("sapUiSmallMarginBottom");
+	
+		// First row - Select Measures, Display Text, and Unit
+		var oFirstRow = new sap.m.HBox({
+			alignItems: "Center",
+			width: "100%"
+		}).addStyleClass("sapUiTinyMarginBottom");
+
+		// Second row - Scale, Decimals, Suffix, and Delete button
+		var oSecondRow = new sap.m.HBox({
+			alignItems: "Center",
+			width: "100%"
+		});
+	
+		// Select Measures dropdown
+		var oSelectMeasure = new sap.m.Select({
+			width: "95%",
+			forceSelection: false,
+			selectedKey: oColumnData && oColumnData.selectMeasure ? oColumnData.selectMeasure : ""
+		});
+	
+		// Populate with metadata
+		if (oMetaDataModel && oMetaDataModel.getData()) {
+			var aMetaData = oMetaDataModel.getData();
+			aMetaData.forEach(function(item) {
+				oSelectMeasure.addItem(new sap.ui.core.Item({
+					key: item.FIELDNAME,
+					text: item.SCRTEXT_L || item.FIELDNAME
+				}));
+			});
+		}
+	
+		var oSelectMeasureVBox = new sap.m.VBox({
+			width: "33.33%",
+			items: [
+				new sap.m.Label({ text: "Select Measures" }),
+				oSelectMeasure
+			]
+		});
+
+		// Display Text input
+		var oDisplayTextInput = new sap.m.Input({
+			width: "95%",
+			placeholder: "Display Text",
+			value: oColumnData && oColumnData.displayText ? oColumnData.displayText : ""
+		});
+
+		var oDisplayTextVBox = new sap.m.VBox({
+			width: "33.33%",
+			items: [
+				new sap.m.Label({ text: "Display Text" }),
+				oDisplayTextInput
+			]
+		});
+
+		// Unit input
+		var oUnitInput = new sap.m.Input({
+			width: "95%",
+			placeholder: "Unit",
+			value: oColumnData && oColumnData.unit ? oColumnData.unit : ""
+		});
+
+		var oUnitVBox = new sap.m.VBox({
+			width: "33.33%",
+			items: [
+				new sap.m.Label({ text: "Unit" }),
+				oUnitInput
+			]
+		});
+	
+		// Scale input
+		var oScaleSelect = new sap.m.Select({
+			width: "95%",
+			selectedKey: oColumnData && oColumnData.scale ? oColumnData.scale : "noScaling",
+			items: [
+				new sap.ui.core.Item({
+					key: "noScaling",
+					text: "No Scaling"
+				}),
+				new sap.ui.core.Item({
+					key: "billion",
+					text: "in Billion (B)"
+				}),
+				new sap.ui.core.Item({
+					key: "million",
+					text: "in Million (M)"
+				}),
+				new sap.ui.core.Item({
+					key: "thousand",
+					text: "in Thousand (K)"
+				})
+			]
+		});
+
+		var oScaleVBox = new sap.m.VBox({
+			width: "25%",
+			items: [
+				new sap.m.Label({ text: "Scale" }),
+				oScaleSelect
+			]
+		});
+
+		// Decimals input
+		var oDecimalsSelect = new sap.m.Select({
+			width: "95%",
+			selectedKey: oColumnData && oColumnData.decimals ? oColumnData.decimals : "d0",
+			items: [
+				new sap.ui.core.Item({
+					key: "d0",
+					text: "0 decimals"
+				}),
+				new sap.ui.core.Item({
+					key: "d1",
+					text: "1 decimals"
+				}),
+				new sap.ui.core.Item({
+					key: "d2",
+					text: "2 decimals"
+				}),
+				new sap.ui.core.Item({
+					key: "d3",
+					text: "3 decimals"
+				})
+			]
+		});
+
+		var oDecimalsVBox = new sap.m.VBox({
+			width: "25%",
+			items: [
+				new sap.m.Label({ text: "Decimals" }),
+				oDecimalsSelect
+			]
+		});
+	
+		// Suffix input
+		var oSuffixInput = new sap.m.Input({
+			width: "95%",
+			placeholder: "Suffix",
+			value: oColumnData && oColumnData.suffix ? oColumnData.suffix : ""
+		});
+	
+		var oSuffixVBox = new sap.m.VBox({
+			width: "25%",
+			items: [
+				new sap.m.Label({ text: "Suffix" }),
+				oSuffixInput
+			]
+		});
+	
+		// Delete button
+		var oDeleteButton = new sap.m.Button({
+			icon: "sap-icon://delete",
+			type: "Reject",
+			width: "25%",
+			press: function() {
+				that._oTableColumnsContainer.removeItem(oColumnRow);
+			}
+		});
+	
+		var oDeleteVBox = new sap.m.VBox({
+			width: "25%",
+			items: [
+				new sap.m.Label({ text: " " }),
+				oDeleteButton
+			]
+		});
+	
+		// Add controls to rows
+		oFirstRow.addItem(oSelectMeasureVBox);
+		oFirstRow.addItem(oDisplayTextVBox);
+		oFirstRow.addItem(oUnitVBox);
+
+		oSecondRow.addItem(oScaleVBox);
+		oSecondRow.addItem(oDecimalsVBox);
+		oSecondRow.addItem(oSuffixVBox);
+		oSecondRow.addItem(oDeleteVBox);
+	
+		// Add rows to column container
+		oColumnRow.addItem(oFirstRow);
+		oColumnRow.addItem(oSecondRow);
+	
+		// Add column row to container
+		that._oTableColumnsContainer.addItem(oColumnRow);
+	},
+	
+	getCreateTableMappingFormValues: function (oController) {
+		var that = oController;
+	
+		if (!that._oTableColumnsContainer) {
+			return JSON.stringify([]);
+		}
+	
+		var aColumns = [];
+		var aColumnRows = that._oTableColumnsContainer.getItems();
+	
+		aColumnRows.forEach(function(oColumnRow) {
+			var aRows = oColumnRow.getItems();
+			if (aRows.length >= 3) {
+				var oFirstRow = aRows[0];
+				var oSecondRow = aRows[1];
+				var oThirdRow = aRows[2];
+	
+				var oColumn = {
+					selectMeasure: oFirstRow.getItems()[0].getItems()[1].getSelectedKey(),
+					measure: oFirstRow.getItems()[1].getItems()[1].getValue(),
+					displayText: oSecondRow.getItems()[0].getItems()[1].getValue(),
+					unit: oSecondRow.getItems()[1].getItems()[1].getValue(),
+					scale: oThirdRow.getItems()[0].getItems()[1].getValue(),
+					decimals: oThirdRow.getItems()[1].getItems()[1].getValue(),
+					suffix: oThirdRow.getItems()[2].getItems()[1].getValue()
+				};
+	
+				aColumns.push(oColumn);
+			}
+		});
+	
+		return JSON.stringify(aColumns);
+	},
+
 
 		getCreateMappingFormValues: function (oController) {
 			debugger;
@@ -3027,6 +3327,9 @@ sap.ui.define([
 						// Create Tile Mapping Form
 						var iNumberOfFields = self.createTileMappingForm(that);
 
+
+						// Create Table Mapping Form
+						self.createTableMappingForm(that);
 						// Create Hierarchy Mapping Form
 						var oHierarchyForm = that.byId("createHierarchyMappingForm");
 						oHierarchyForm.removeAllContent();
@@ -3447,6 +3750,20 @@ sap.ui.define([
 								}
 							} catch (e) {
 								console.log("Could not populate Page ID table:", e);
+							}
+						}
+
+						// Populate Table Mapping columns if available
+						if (oCurrentData.tableMapping) {
+							try {
+								var aTableColumns = JSON.parse(oCurrentData.tableMapping);
+								if (Array.isArray(aTableColumns) && aTableColumns.length > 0) {
+									aTableColumns.forEach(function(oColumnData) {
+										self.addTableColumn(that, oColumnData);
+									});
+								}
+							} catch (e) {
+								console.log("Could not populate table columns:", e);
 							}
 						}
 						}
@@ -3875,6 +4192,12 @@ sap.ui.define([
 			if (oMappingForm) {
 				oMappingForm.removeAllContent();
 			}
+
+		var oTableMappingForm = that.byId("createTableMappingForm");
+		if (oTableMappingForm) {
+			oTableMappingForm.removeAllContent();
+			that._oTableColumnsContainer = null;
+		}
 			
 			// Hide success indicators
 			that.byId("createSuccessIcon").setVisible(false);
