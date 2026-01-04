@@ -1276,13 +1276,28 @@ sap.ui.define([
 			width: "100%"
 		});
 	
+		// Display Text input (declared first so it can be referenced in Select change handler)
+		var oDisplayTextInput = new sap.m.Input({
+			width: "95%",
+			placeholder: "Display Text",
+			value: oColumnData && oColumnData.displayText ? oColumnData.displayText : ""
+		});
+
 		// Select Measures dropdown
 		var oSelectMeasure = new sap.m.Select({
 			width: "95%",
 			forceSelection: false,
-			selectedKey: oColumnData && oColumnData.selectMeasure ? oColumnData.selectMeasure : ""
+			selectedKey: oColumnData && oColumnData.selectMeasure ? oColumnData.selectMeasure : "",
+			change: function(oEvent) {
+				var oSelectedItem = oEvent.getParameter("selectedItem");
+				if (oSelectedItem) {
+					var sDisplayText = oSelectedItem.getText();
+					// Auto-fill Display Text with selected column text
+					oDisplayTextInput.setValue(sDisplayText);
+				}
+			}
 		});
-	
+
 		// Populate with metadata
 		if (oMetaDataModel && oMetaDataModel.getData()) {
 			var aMetaData = oMetaDataModel.getData();
@@ -1292,21 +1307,22 @@ sap.ui.define([
 					text: item.SCRTEXT_L || item.FIELDNAME
 				}));
 			});
+
+			// Set initial Display Text value if column data exists and display text is empty
+			if (oColumnData && oColumnData.selectMeasure && !oColumnData.displayText) {
+				var oSelectedItem = oSelectMeasure.getSelectedItem();
+				if (oSelectedItem) {
+					oDisplayTextInput.setValue(oSelectedItem.getText());
+				}
+			}
 		}
-	
+
 		var oSelectMeasureVBox = new sap.m.VBox({
 			width: "33.33%",
 			items: [
-				new sap.m.Label({ text: "Select Measures" }),
+				new sap.m.Label({ text: "Select Columns" }),
 				oSelectMeasure
 			]
-		});
-
-		// Display Text input
-		var oDisplayTextInput = new sap.m.Input({
-			width: "95%",
-			placeholder: "Display Text",
-			value: oColumnData && oColumnData.displayText ? oColumnData.displayText : ""
 		});
 
 		var oDisplayTextVBox = new sap.m.VBox({
@@ -1459,21 +1475,19 @@ sap.ui.define([
 	
 		aColumnRows.forEach(function(oColumnRow) {
 			var aRows = oColumnRow.getItems();
-			if (aRows.length >= 3) {
+			if (aRows.length >= 2) {
 				var oFirstRow = aRows[0];
 				var oSecondRow = aRows[1];
-				var oThirdRow = aRows[2];
-	
+
 				var oColumn = {
-					selectMeasure: oFirstRow.getItems()[0].getItems()[1].getSelectedKey(),
-					measure: oFirstRow.getItems()[1].getItems()[1].getValue(),
-					displayText: oSecondRow.getItems()[0].getItems()[1].getValue(),
-					unit: oSecondRow.getItems()[1].getItems()[1].getValue(),
-					scale: oThirdRow.getItems()[0].getItems()[1].getValue(),
-					decimals: oThirdRow.getItems()[1].getItems()[1].getValue(),
-					suffix: oThirdRow.getItems()[2].getItems()[1].getValue()
+					column: oFirstRow.getItems()[0].getItems()[1].getSelectedKey(),
+					displayText: oFirstRow.getItems()[1].getItems()[1].getValue(),
+					unit: oFirstRow.getItems()[2].getItems()[1].getValue(),
+					scale: oSecondRow.getItems()[0].getItems()[1].getSelectedKey(),
+					decimals: oSecondRow.getItems()[1].getItems()[1].getSelectedKey(),
+					suffix: oSecondRow.getItems()[2].getItems()[1].getValue()
 				};
-	
+
 				aColumns.push(oColumn);
 			}
 		});
