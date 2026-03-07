@@ -627,9 +627,21 @@ sap.ui.define([
 				oBusyIndicator.setVisible(true);
 				oTabBar.setVisible(false);
 			}
+			this.fixDataMappingFormLayout();
 		},
 
+fixDataMappingFormLayout: function () {
+    var that = this;
+    var oForm = that.byId("createDataMappingForm");
+    var aFormContent = oForm.getContent();
 
+    aFormContent.forEach(function (oControl) {
+        oControl.setLayoutData(new sap.ui.layout.GridData({
+            span: "XL12 L12 M12 S12",
+            linebreak: true
+        }));
+    });
+},
 		
 		getSearchHelpData: function (filterBy) {
 			return new Promise((resolve, reject) => {

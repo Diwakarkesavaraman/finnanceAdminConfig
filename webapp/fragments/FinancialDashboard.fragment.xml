@@ -7,7 +7,7 @@
 				<items>
 					<IconTabFilter text="Financial Dashboard Tab Config" key="FinCalTab" class="admncntrlstxtcls">
 						<!--<core:Fragment fragmentName="norm.fragment.AdminControlsUpdateStorageYard" type="XML"/>-->
-							<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.FinancialCalTab" type="XML"/>
+							<core:Fragment fragmentName="mobilefinance.MobileFinance.fragments.FinancialDashboardItemTab" type="XML"/>
 						<!--<Text text="test2"/>-->
 					</IconTabFilter>
 					<IconTabFilter text="Financial Dashboard Item Config" key="FinCalItem" class="admncntrlstxtcls">

@@ -37,6 +37,13 @@
 				</Table>
 					<ToolbarSpacer height="1rem"/>
 				<HBox class="tblhdrcls">
+ <Button 
+        id="btnBackToParent" 
+        icon="sap-icon://nav-back" 
+        type="Transparent"
+        press="onBackToParent"
+        visible="false"
+        tooltip="Back to Parent Folder"/>
 					<Text id = "tableTitle" text="GIS Report Details"/>
 					<HBox>
 						<Button type="Reject" icon="sap-icon://delete" text="Delete Folder" press="onDeleteShareKItems"/>
@@ -47,7 +54,7 @@
 						<ToolbarSpacer width="0.5rem"/>
 						<Button type="Emphasized" icon="sap-icon://add" text="Add Folder" press="onAddShareKFolder"/>
 						<ToolbarSpacer width="0.5rem"/>
-						<Button type="Accept" icon="sap-icon://upload" text="Upload File from ShareK" press="onuploadreport"/>
+						<Button id="btnUploadShareK" type="Accept" icon="sap-icon://upload" text="Upload File from ShareK" press="onuploadreport" visible="true"/>
 						<ToolbarSpacer width="0.5rem"/>
 						<!--<Button type="Accept" icon="sap-icon://add" text="Add Item" press="onAddReportDetail"/>-->
 						<!--<ToolbarSpacer width="0.5rem"/>-->
@@ -64,7 +71,7 @@
 								<Text text="Report Name" class="whiteLabel"></Text>
 							</header>
 						</Column>
-						<Column width="12rem">
+						<Column width="3rem">
 							<header>
 								<Text text="Type" class="whiteLabel"></Text>
 							</header>

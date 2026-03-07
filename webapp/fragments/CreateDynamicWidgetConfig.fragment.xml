@@ -13,6 +13,7 @@
 			<HBox>
 				<!-- <Button id="editBtn" text="Edit" enabled="false" press="onCreateEditPress"/> -->
 				<Button id="duplicateWidgetBtn" text="Duplicate Widget" icon="sap-icon://duplicate" visible="true" press="onDuplicateWidgetPress"/>
+				<ToolbarSpacer width="0.5rem"/>
 				<Button id="saveBtn" text="Save" type="Emphasized" visible="true" press="onCreateSavePress"/>
 				<!-- <Button id="submitBtn" text="Submit" visible="false" press="onCreateCancelPress"/> -->
 				<!-- <Button id="deleteBtn" type="Reject" text="Delete" visible="true" press="onCreateDeleteWidget"/> -->
@@ -22,7 +23,7 @@
 		<!-- Main Content Area with Form on Left and Mobile Preview on Right -->
 		<HBox class="sapUiSmallMargin" height="100%">
 			<!-- Left Side - Configuration Forms -->
-			<VBox width="60%" class="sapUiSmallMarginEnd">
+			<VBox width="100%" class="sapUiSmallMarginEnd">
 				<Panel headerText="Widget Details" class="sapUiMediumMargin">
 					<content>
 						<form:SimpleForm id="createWidgetSimpleForm" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3"
@@ -85,47 +86,141 @@
 								<form:content></form:content>
 							</form:SimpleForm>
 						</VBox>
-						<VBox class="sapUiSmallMargin" width="75%">
+						<VBox class="sapUiSmallMargin" width="100%">
 							<BusyIndicator id="createTabBarBusyIndicator" visible="true" />
 							<IconTabBar visible = "false" id="createIconTabBarInlineMode" headerMode="Inline" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding">
 								<items>
+									<!--<IconTabFilter text="MetaData" key="info">-->
+									<!--	<VBox class="sapUiSmallMargin">-->
+									<!--		<form:SimpleForm id="createFilterMappingForm" editable="true" layout="ResponsiveGridLayout" title="Filters" labelSpanXL="4" labelSpanL="4"-->
+									<!--			labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1"-->
+									<!--			columnsL="1" columnsM="1" singleContainerFullSize="true">-->
+									<!--			<form:content></form:content>-->
+									<!--		</form:SimpleForm>-->
+									<!--	</VBox>-->
+									<!--	<VBox class="sapUiSmallMargin">-->
+									<!--		<form:SimpleForm id="createDataMappingForm" editable="true" layout="ResponsiveGridLayout" title="Chart Binding" labelSpanXL="3" labelSpanL="3"-->
+									<!--			labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"-->
+									<!--			columnsL="1" columnsM="1" singleContainerFullSize="false">-->
+									<!--			<form:content></form:content>-->
+									<!--		</form:SimpleForm>-->
+									<!--	</VBox>-->
+									<!--	<VBox class="sapUiSmallMargin">-->
+									<!--		<form:SimpleForm id="createTileMappingForm" editable="true" layout="ResponsiveGridLayout" title="Data Binding" labelSpanXL="3" labelSpanL="3"-->
+									<!--			labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"-->
+									<!--			columnsL="1" columnsM="1" singleContainerFullSize="false">-->
+									<!--			<form:content></form:content>-->
+									<!--		</form:SimpleForm>-->
+									<!--	</VBox>-->
+									<!--	<VBox class="sapUiSmallMargin">-->
+									<!--		<form:SimpleForm id="createTableMappingForm" editable="true" layout="ResponsiveGridLayout" title="Table / Heirarchy Binding" labelSpanXL="3" labelSpanL="3"-->
+									<!--			labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"-->
+									<!--			columnsL="1" columnsM="1" singleContainerFullSize="false">-->
+									<!--			<form:content></form:content>-->
+									<!--		</form:SimpleForm>-->
+									<!--	</VBox>-->
+									<!--	<VBox class="sapUiSmallMargin">-->
+									<!--		<form:SimpleForm id="createHierarchyMappingForm" editable="true" layout="ResponsiveGridLayout" title="Drilldown Binding" labelSpanXL="3" labelSpanL="3"-->
+									<!--			labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"-->
+									<!--			columnsL="1" columnsM="1" singleContainerFullSize="false">-->
+									<!--			<form:content></form:content>-->
+									<!--		</form:SimpleForm>-->
+									<!--	</VBox>-->
+									<!--</IconTabFilter>-->
 									<IconTabFilter text="MetaData" key="info">
-										<VBox class="sapUiSmallMargin">
-											<form:SimpleForm id="createFilterMappingForm" editable="true" layout="ResponsiveGridLayout" title="Filters" labelSpanXL="4" labelSpanL="4"
-												labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1"
-												columnsL="1" columnsM="1" singleContainerFullSize="true">
-												<form:content></form:content>
-											</form:SimpleForm>
-										</VBox>
-										<VBox class="sapUiSmallMargin">
-											<form:SimpleForm id="createDataMappingForm" editable="true" layout="ResponsiveGridLayout" title="Chart Binding" labelSpanXL="3" labelSpanL="3"
-												labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
-												columnsL="1" columnsM="1" singleContainerFullSize="false">
-												<form:content></form:content>
-											</form:SimpleForm>
-										</VBox>
-										<VBox class="sapUiSmallMargin">
-											<form:SimpleForm id="createTileMappingForm" editable="true" layout="ResponsiveGridLayout" title="Data Binding" labelSpanXL="3" labelSpanL="3"
-												labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
-												columnsL="1" columnsM="1" singleContainerFullSize="false">
-												<form:content></form:content>
-											</form:SimpleForm>
-										</VBox>
-										<VBox class="sapUiSmallMargin">
-											<form:SimpleForm id="createTableMappingForm" editable="true" layout="ResponsiveGridLayout" title="Table / Heirarchy Binding" labelSpanXL="3" labelSpanL="3"
-												labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
-												columnsL="1" columnsM="1" singleContainerFullSize="false">
-												<form:content></form:content>
-											</form:SimpleForm>
-										</VBox>
-										<VBox class="sapUiSmallMargin">
-											<form:SimpleForm id="createHierarchyMappingForm" editable="true" layout="ResponsiveGridLayout" title="Drilldown Binding" labelSpanXL="3" labelSpanL="3"
-												labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" columnsXL="1"
-												columnsL="1" columnsM="1" singleContainerFullSize="false">
-												<form:content></form:content>
-											</form:SimpleForm>
-										</VBox>
-									</IconTabFilter>
+    <ScrollContainer height="100%" width="100%" vertical="true" horizontal="false">
+        <VBox class="sapUiSmallMargin" width="100%">
+            <form:SimpleForm 
+                id="createFilterMappingForm" 
+                editable="true" 
+                layout="ResponsiveGridLayout" 
+                title="Filters" 
+                labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" 
+                adjustLabelSpan="false" 
+                emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" 
+                columnsXL="1" columnsL="1" columnsM="1" 
+                singleContainerFullSize="true">
+                <form:content></form:content>
+            </form:SimpleForm>
+        </VBox>
+
+        <VBox class="sapUiSmallMargin" width="100%">
+            <!--<form:SimpleForm -->
+            <!--    id="createDataMappingForm" -->
+            <!--    editable="true" -->
+            <!--    layout="ResponsiveGridLayout" -->
+            <!--    title="Chart Binding" -->
+            <!--    labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" -->
+            <!--    adjustLabelSpan="false" -->
+            <!--    emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" -->
+            <!--    columnsXL="1" columnsL="1" columnsM="1" -->
+            <!--    singleContainerFullSize="true">-->
+            <!--    <form:content></form:content>-->
+            <!--</form:SimpleForm>-->
+            <form:SimpleForm 
+    id="createDataMappingForm" 
+    editable="true" 
+    layout="ResponsiveGridLayout" 
+    title="Chart Binding" 
+    labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12" 
+    adjustLabelSpan="false" 
+    emptySpanXL="1" emptySpanL="1" emptySpanM="0" emptySpanS="0" 
+    columnsXL="1" columnsL="1" columnsM="1" 
+    singleContainerFullSize="true"
+    width="100%">
+    <form:content></form:content>
+</form:SimpleForm>
+        </VBox>
+
+        <VBox class="sapUiSmallMargin" width="100%">
+            <form:SimpleForm 
+                id="createTileMappingForm" 
+                editable="true" 
+                layout="ResponsiveGridLayout" 
+                title="Data Binding" 
+                labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" 
+                adjustLabelSpan="false" 
+                emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" 
+                columnsXL="1" columnsL="1" columnsM="1" 
+                singleContainerFullSize="true">
+                <form:content></form:content>
+            </form:SimpleForm>
+<!--            <Panel id="createTileMappingForm" headerText="Data Binding" width="100%" class="sapUiSmallMarginBottom">-->
+<!--    <content></content>-->
+<!--</Panel>-->
+        </VBox>
+
+        <VBox class="sapUiSmallMargin" width="100%">
+            <form:SimpleForm 
+                id="createTableMappingForm" 
+                editable="true" 
+                layout="ResponsiveGridLayout" 
+                title="Table / Heirarchy Binding" 
+                labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" 
+                adjustLabelSpan="false" 
+                emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" 
+                columnsXL="1" columnsL="1" columnsM="1" 
+                singleContainerFullSize="true">
+                <form:content></form:content>
+            </form:SimpleForm>
+        </VBox>
+
+        <VBox class="sapUiSmallMargin" width="100%">
+            <form:SimpleForm 
+                id="createHierarchyMappingForm" 
+                editable="true" 
+                layout="ResponsiveGridLayout" 
+                title="Drilldown Binding" 
+                labelSpanXL="4" labelSpanL="4" labelSpanM="4" labelSpanS="12" 
+                adjustLabelSpan="false" 
+                emptySpanXL="4" emptySpanL="4" emptySpanM="4" emptySpanS="0" 
+                columnsXL="1" columnsL="1" columnsM="1" 
+                singleContainerFullSize="true">
+                <form:content></form:content>
+            </form:SimpleForm>
+        </VBox>
+    </ScrollContainer>
+</IconTabFilter>
 									<IconTabFilter text="JSON" key="attachments">
 										<Table id="createJsonDataTable" items="{createJsonDataModel>/}" class="sapUiResponsiveMargin">
 											<columns></columns>
@@ -142,13 +237,13 @@
 			</VBox>
 			
 			<!-- Right Side - Mobile Preview -->
-			<VBox width="40%" class="sapUiSmallMarginBegin">
-				<Panel headerText="Mobile Preview" class="sapUiMediumMargin">
-					<content>
+			<!--<VBox width="40%" class="sapUiSmallMarginBegin">-->
+			<!--	<Panel headerText="Mobile Preview" class="sapUiMediumMargin">-->
+			<!--		<content>-->
 						
-					</content>
-				</Panel>
-			</VBox>
+			<!--		</content>-->
+			<!--	</Panel>-->
+			<!--</VBox>-->
 		</HBox>
 	</VBox>
 	</content>

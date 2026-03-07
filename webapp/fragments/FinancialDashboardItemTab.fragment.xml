@@ -17,11 +17,11 @@
 				<Table id="tabfincalTab" alternateRowColors="false" items="{ path: 'oFincalTabModel>/', sorter: {path: 'ZkpiId', descending: false}}"
 					growing="true" class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
 					<columns>
-						<Column width="7rem">
-							<header>
-								<Text text="Tab ID" class="whiteLabel"></Text>
-							</header>
-						</Column>
+						<!--<Column width="7rem">-->
+						<!--	<header>-->
+						<!--		<Text text="Tab ID" class="whiteLabel"></Text>-->
+						<!--	</header>-->
+						<!--</Column>-->
 						<Column width="15rem">
 							<header>
 								<Text text="Category" class="whiteLabel"></Text>
@@ -32,7 +32,7 @@
 						<!--		<Text text="KPI Title" class="whiteLabel"></Text>-->
 						<!--	</header>-->
 						<!--</Column>-->
-						<Column width="22rem">
+						<Column>
 							<header>
 								<Text text="Roles" class="whiteLabel"></Text>
 							</header>
@@ -47,7 +47,7 @@
 						<ColumnListItem vAlign="Middle">
 							<cells>
 								<!--<Input value="{oVisiblityModel>ZkpiId}"></Input>-->
-								<Text text="{oFincalTabModel>ZkpiId}"></Text>
+								<!--<Text text="{oFincalTabModel>ZkpiId}"></Text>-->
 								<!--<Input value="{oVisiblityModel>Zcategory}"></Input>-->
 								<!--<Text text="{oMarketWatchTabModel>Zcategory}"></Text>-->
 								<Input value="{oFincalTabModel>Zcategory}"></Input>

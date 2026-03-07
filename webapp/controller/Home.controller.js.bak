@@ -6,29 +6,28 @@
  	"sap/m/StandardListItem",
  	'sap/m/MessageToast',
  	"sap/m/MultiInput",
- 	"sap/m/Token",
- 	"sap/ui/layout/form/FormElement",
- 	"sap/m/Input",
- 	"sap/m/Label",
- 	"sap/m/Select",
- 	"sap/ui/core/Item",
- 	"sap/m/Text",
- 	"sap/m/Button",
- 	"mobilefinance/MobileFinance/utils/DynamicWidgetHelper",
- 	"mobilefinance/MobileFinance/utils/CreateDynamicWidgetHelper",
- 	"mobilefinance/MobileFinance/utils/PageConfigurationHelper",
- 	'sap/m/ResponsivePopover',
- 	'sap/ui/unified/ColorPicker',
- 	'sap/ui/unified/library',
- 	'sap/ui/Device'
- ], function (Controller, JSONModel, MessageBox, SelectDialog, StandardListItem, MessageToast, MultiInput, Token, FormElement, Input,
- 	Label, Select, Item, Text, Button, DynamicWidgetHelper, CreateDynamicWidgetHelper, PageConfigurationHelper, ResponsivePopover,
- 	ColorPicker, unifiedLibrary, Device) {
+ 	"sap/m/Token", 
+	"sap/ui/layout/form/FormElement",
+	"sap/m/Input",
+	"sap/m/Label",
+
+	"sap/m/Select",
+    "sap/ui/core/Item", 
+    "sap/m/Text",
+	 "sap/m/Button",
+	 "mobilefinance/MobileFinance/utils/DynamicWidgetHelper",
+	 "mobilefinance/MobileFinance/utils/CreateDynamicWidgetHelper",
+	 "mobilefinance/MobileFinance/utils/PageConfigurationHelper",
+	 'sap/m/ResponsivePopover',
+	 'sap/ui/unified/ColorPicker',
+	 'sap/ui/unified/library',
+	 'sap/ui/Device'
+ ], function (Controller, JSONModel, MessageBox, SelectDialog, StandardListItem, MessageToast, MultiInput, Token, FormElement, Input, Label,Select,Item,Text,Button,DynamicWidgetHelper,CreateDynamicWidgetHelper,PageConfigurationHelper,ResponsivePopover,ColorPicker,unifiedLibrary,Device) {
  	"use strict";
 
  	var sSelectedFolderId = "";
  	var sSelectedFolderTitle = "";
- 	var ColorPickerMode = unifiedLibrary.ColorPickerMode;
+	 var ColorPickerMode = unifiedLibrary.ColorPickerMode;
 
  	return Controller.extend("mobilefinance.MobileFinance.controller.Home", {
  		formatter: {
@@ -68,14 +67,13 @@
  			this.onLoadReportSubTab();
  			this.onLoadReportData();
  			this.onLoadSharePriceTab();
- 			this.onLoadAffiliateTab();
+			this.onLoadAffiliateTab();
  			this.onLoadShareKGISReportsData();
- 			this.onLoadDyanmicWidgetData('');
- 			this.onLoadCreateDynamicWidgetData('');
- 			this.onLoadChatbotSelectionData();
- 			this.onLoadSurveyTab();
- 			this.onLoadNotificationTab();
-
+			this.onLoadDyanmicWidgetData('');
+			this.onLoadCreateDynamicWidgetData('');
+		this.onLoadChatbotSelectionData();
+		
+		
  			var oColorModel = new sap.ui.model.json.JSONModel({
  				colors: [{
  						Value: "Purple",
@@ -93,25 +91,27 @@
  					// Add more colors as needed
  				]
  			});
- 			var oInputParamModel = new sap.ui.model.json.JSONModel({
- 				selectOptionRange: [{
- 					Value: "BT",
- 					Description: "Less then or equal to"
- 				}, {
- 					Value: "EQ",
- 					Description: "EQ"
- 				}, ],
- 				selectOptionInclude: [{
- 					Value: "I",
- 					Description: "Include"
- 				}, {
- 					Value: "E",
- 					Description: "Exclude"
- 				}, ]
- 			})
+			var oInputParamModel = new sap.ui.model.json.JSONModel({
+				selectOptionRange: [{
+					Value: "BT",
+					Description: "Less then or equal to"
+				}, {
+					Value: "EQ",
+					Description: "EQ"
+				},],
+				selectOptionInclude:[
+					{
+						Value: "I",
+						Description: "Include"
+					}, {
+						Value: "E",
+						Description: "Exclude"
+					},
+				]
+			})
  			this.getView().setModel(oColorModel, "colorModel");
- 			this.getView().setModel(oInputParamModel, "inputParamModel");
- 			debugger;
+			this.getView().setModel(oInputParamModel, "inputParamModel");
+			 debugger;
  			this.oModel = this.getView().getModel();
  			var oViewModel = new JSONModel({
  				showNewTable: false, // Initially, table 2 is hidden
@@ -119,9 +119,6 @@
  			});
  			this.getView().setModel(oViewModel, "oViewModel");
  			// var oShareKGISReportModel = new JSONModel();
- 			// this.getView().setModel(oViewModel, "viewModel");
- 			// Initialize navigation stack
- 			this._navigationStack = [];
  		},
 
  		onPressTest: function () {
@@ -181,7 +178,7 @@
  		},
 
  		updateTabVisibility: function () {
- 			debugger;
+			debugger;
  			var that = this;
  			var oAuthModel = this.getView().getModel("oAuthDataModel");
 
@@ -301,9 +298,9 @@
  					// testModel.setData(items);
  					var levelIdData = [];
  					for (var i = 0; i < data.results.length; i++) {
- 						// if (data.results[i].ZlevelId === 'L01' || data.results[i].ZlevelId === 'L04') {
- 						levelIdData.push(data.results[i])
- 							// }
+ 						if (data.results[i].ZlevelId === 'L01' || data.results[i].ZlevelId === 'L04') {
+ 							levelIdData.push(data.results[i])
+ 						}
  					}
 
  					console.log(levelIdData)
@@ -433,81 +430,36 @@
  			});
  		},
 
- 		// onLoadShareKGISReportsData: function () {
- 		// 	var that = this;
- 		// 	var finmobview = this.getView().getModel("finmobview");
- 		// 	var oShareKGISReportModel = new JSONModel();
-
- 		// 	sap.ui.core.BusyIndicator.show(0);
- 		// 	var aFilters = [new sap.ui.model.Filter("Parent", sap.ui.model.FilterOperator.EQ, 'cop/GI/Finance/')];
-
- 		// 	finmobview.read("/ShareKGISet", {
- 		// 		filters: aFilters,
- 		// 		success: function (data) {
- 		// 			console.log(data);
-
- 		// 			var aFolderData = data.results || [];
-
- 		// 			// // Sort data by ZgisTitle to keep similar titles together
- 		// 			// aFolderData.sort((a, b) => a.ZgisFolderTitle.localeCompare(b.ZgisFolderTitle));
-
- 		// 			// // Remove duplicate entries (if OData returns duplicates)
- 		// 			// var uniqueData = [];
- 		// 			// var seenIds = new Set();
- 		// 			// aFolderData.forEach(item => {
- 		// 			// 	if (!seenIds.has(item.ZgisFolderId)) {
- 		// 			// 		seenIds.add(item.ZgisFolderId);
- 		// 			// 		uniqueData.push(item);
- 		// 			// 	}
- 		// 			// });
-
- 		// 			oShareKGISReportModel.setData(aFolderData);
- 		// 			that.getView().setModel(oShareKGISReportModel, "oShareKGISReportModel");
-
- 		// 			sap.ui.core.BusyIndicator.hide(0);
- 		// 		},
- 		// 		error: function (oError) {
- 		// 			sap.ui.core.BusyIndicator.hide(0);
- 		// 			var responseText = oError.responseText;
- 		// 			var msg = "Error fetching data";
-
- 		// 			if (responseText.indexOf("{") > -1) {
- 		// 				try {
- 		// 					var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
- 		// 					if (errorDetails.length > 0) {
- 		// 						msg = errorDetails.map(err => err.message).join("\n");
- 		// 					}
- 		// 				} catch (e) {
- 		// 					msg = responseText;
- 		// 				}
- 		// 			}
-
- 		// 			MessageBox.error(msg);
- 		// 		}
- 		// 	});
- 		// },
  		onLoadShareKGISReportsData: function () {
  			var that = this;
  			var finmobview = this.getView().getModel("finmobview");
  			var oShareKGISReportModel = new JSONModel();
- 			sap.ui.core.BusyIndicator.show(0);
 
+ 			sap.ui.core.BusyIndicator.show(0);
  			var aFilters = [new sap.ui.model.Filter("Parent", sap.ui.model.FilterOperator.EQ, 'cop/GI/Finance/')];
 
  			finmobview.read("/ShareKGISet", {
  				filters: aFilters,
  				success: function (data) {
  					console.log(data);
+
  					var aFolderData = data.results || [];
+
+ 					// // Sort data by ZgisTitle to keep similar titles together
+ 					// aFolderData.sort((a, b) => a.ZgisFolderTitle.localeCompare(b.ZgisFolderTitle));
+
+ 					// // Remove duplicate entries (if OData returns duplicates)
+ 					// var uniqueData = [];
+ 					// var seenIds = new Set();
+ 					// aFolderData.forEach(item => {
+ 					// 	if (!seenIds.has(item.ZgisFolderId)) {
+ 					// 		seenIds.add(item.ZgisFolderId);
+ 					// 		uniqueData.push(item);
+ 					// 	}
+ 					// });
+
  					oShareKGISReportModel.setData(aFolderData);
  					that.getView().setModel(oShareKGISReportModel, "oShareKGISReportModel");
-
- 					// Reset navigation when loading root
- 					that._navigationStack = [];
- 					that._updateBackButtonVisibility();
-
- 					var oTitleText = that.getView().byId("tableTitle");
- 					oTitleText.setText("GIS Report Details");
 
  					sap.ui.core.BusyIndicator.hide(0);
  				},
@@ -515,6 +467,7 @@
  					sap.ui.core.BusyIndicator.hide(0);
  					var responseText = oError.responseText;
  					var msg = "Error fetching data";
+
  					if (responseText.indexOf("{") > -1) {
  						try {
  							var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
@@ -525,193 +478,71 @@
  							msg = responseText;
  						}
  					}
+
  					MessageBox.error(msg);
  				}
  			});
  		},
 
- 		// onShareKRowSelect: function (oEvent) {
- 		// 	debugger;
- 		// 	console.log("Row clicked");
-
- 		// 	var that = this;
- 		// 	var oSelectedItem = oEvent.getParameter("listItem");
- 		// 	var oContext = oSelectedItem.getBindingContext("oShareKGISReportModel");
- 		// 	var oShareKGISReportModel = new JSONModel();
-
- 		// 	var sChild = oContext.getProperty("Child"); // Get Folder ID
- 		// 	var sParent = oContext.getProperty("Parent"); // Get Folder Title
- 		// 	var sPath = oContext.getProperty("Path"); // Get Folder ID
- 		// 	var sName = oContext.getProperty("Name"); // Get Folder Title
-
- 		// 	var oTitleText = this.getView().byId("tableTitle");
- 		// 	oTitleText.setText("GIS Report Details - " + sChild);
-
- 		// 	var finmobview = this.getView().getModel("finmobview");
- 		// 	// var oSelectedGISReportModel = new sap.ui.model.json.JSONModel();
-
- 		// 	// Show Busy Indicator
- 		// 	sap.ui.core.BusyIndicator.show(0);
-
- 		// 	var aFilters = [new sap.ui.model.Filter("Parent", sap.ui.model.FilterOperator.EQ, sParent + sChild + '/')];
- 		// 	debugger;
- 		// 	// Fetch all data from OData
- 		// 	finmobview.read("/ShareKGISet", {
- 		// 		filters: aFilters,
- 		// 		success: function (oData) {
-
- 		// 			console.log(oData);
-
- 		// 			var aFolderData = oData.results || [];
-
- 		// 			// // Sort data by ZgisTitle to keep similar titles together
- 		// 			// aFolderData.sort((a, b) => a.ZgisFolderTitle.localeCompare(b.ZgisFolderTitle));
-
- 		// 			// // Remove duplicate entries (if OData returns duplicates)
- 		// 			// var uniqueData = [];
- 		// 			// var seenIds = new Set();
- 		// 			// aFolderData.forEach(item => {
- 		// 			// 	if (!seenIds.has(item.ZgisFolderId)) {
- 		// 			// 		seenIds.add(item.ZgisFolderId);
- 		// 			// 		uniqueData.push(item);
- 		// 			// 	}
- 		// 			// });
-
- 		// 			oShareKGISReportModel.setData(aFolderData);
- 		// 			that.getView().setModel(oShareKGISReportModel, "oShareKGISReportModel");
-
- 		// 			sap.ui.core.BusyIndicator.hide(0);
-
- 		// 		},
- 		// 		error: function (oError) {
- 		// 			sap.ui.core.BusyIndicator.hide(0);
- 		// 			console.error("Error fetching GIS data: ", oError);
- 		// 			sap.m.MessageBox.error("Failed to load GIS Report details.");
- 		// 		}
- 		// 	});
- 		// },
  		onShareKRowSelect: function (oEvent) {
  			debugger;
  			console.log("Row clicked");
+
  			var that = this;
  			var oSelectedItem = oEvent.getParameter("listItem");
  			var oContext = oSelectedItem.getBindingContext("oShareKGISReportModel");
  			var oShareKGISReportModel = new JSONModel();
- 			var sChild = oContext.getProperty("Child");
- 			var sParent = oContext.getProperty("Parent");
- 			var sPath = oContext.getProperty("Path");
- 			var sName = oContext.getProperty("Name");
 
- 			// Check if it's a file (has Path property) or folder
- 			if (sPath) {
- 				// It's a file - handle file click (open/download)
- 				console.log("File clicked:", sName);
- 				// Add your file handling logic here
- 				return;
- 			}
+ 			var sChild = oContext.getProperty("Child"); // Get Folder ID
+ 			var sParent = oContext.getProperty("Parent"); // Get Folder Title
+ 			var sPath = oContext.getProperty("Path"); // Get Folder ID
+ 			var sName = oContext.getProperty("Name"); // Get Folder Title
 
- 			// It's a folder - navigate into it
  			var oTitleText = this.getView().byId("tableTitle");
  			oTitleText.setText("GIS Report Details - " + sChild);
- 			var finmobview = this.getView().getModel("finmobview");
 
- 			// Save current navigation state before navigating
- 			this._navigationStack.push({
- 				parent: sParent,
- 				title: this.getView().byId("tableTitle").getText().replace("GIS Report Details - ", "")
- 			});
+ 			var finmobview = this.getView().getModel("finmobview");
+ 			// var oSelectedGISReportModel = new sap.ui.model.json.JSONModel();
 
  			// Show Busy Indicator
  			sap.ui.core.BusyIndicator.show(0);
 
- 			var sNewParent = sParent + sChild + '/';
- 			var aFilters = [new sap.ui.model.Filter("Parent", sap.ui.model.FilterOperator.EQ, sNewParent)];
-
+ 			var aFilters = [new sap.ui.model.Filter("Parent", sap.ui.model.FilterOperator.EQ, sParent + sChild + '/')];
  			debugger;
  			// Fetch all data from OData
  			finmobview.read("/ShareKGISet", {
  				filters: aFilters,
  				success: function (oData) {
+
  					console.log(oData);
+
  					var aFolderData = oData.results || [];
+
+ 					// // Sort data by ZgisTitle to keep similar titles together
+ 					// aFolderData.sort((a, b) => a.ZgisFolderTitle.localeCompare(b.ZgisFolderTitle));
+
+ 					// // Remove duplicate entries (if OData returns duplicates)
+ 					// var uniqueData = [];
+ 					// var seenIds = new Set();
+ 					// aFolderData.forEach(item => {
+ 					// 	if (!seenIds.has(item.ZgisFolderId)) {
+ 					// 		seenIds.add(item.ZgisFolderId);
+ 					// 		uniqueData.push(item);
+ 					// 	}
+ 					// });
+
  					oShareKGISReportModel.setData(aFolderData);
  					that.getView().setModel(oShareKGISReportModel, "oShareKGISReportModel");
 
- 					// Update back button visibility
- 					that._updateBackButtonVisibility();
-
  					sap.ui.core.BusyIndicator.hide(0);
+
  				},
  				error: function (oError) {
  					sap.ui.core.BusyIndicator.hide(0);
  					console.error("Error fetching GIS data: ", oError);
  					sap.m.MessageBox.error("Failed to load GIS Report details.");
-
- 					// Remove from stack on error
- 					that._navigationStack.pop();
- 					that._updateBackButtonVisibility();
  				}
  			});
- 		},
- 		onBackToParent: function () {
- 			if (this._navigationStack.length === 0) {
- 				return;
- 			}
-
- 			var that = this;
- 			var oPreviousState = this._navigationStack.pop();
- 			var finmobview = this.getView().getModel("finmobview");
- 			var oShareKGISReportModel = new JSONModel();
-
- 			sap.ui.core.BusyIndicator.show(0);
-
- 			var aFilters = [new sap.ui.model.Filter("Parent", sap.ui.model.FilterOperator.EQ, oPreviousState.parent)];
-
- 			finmobview.read("/ShareKGISet", {
- 				filters: aFilters,
- 				success: function (oData) {
- 					console.log(oData);
- 					var aFolderData = oData.results || [];
- 					oShareKGISReportModel.setData(aFolderData);
- 					that.getView().setModel(oShareKGISReportModel, "oShareKGISReportModel");
-
- 					// Update title
- 					var oTitleText = that.getView().byId("tableTitle");
- 					if (that._navigationStack.length > 0) {
- 						var sTitle = that._navigationStack[that._navigationStack.length - 1].title;
- 						oTitleText.setText("GIS Report Details - " + sTitle);
- 					} else {
- 						oTitleText.setText("GIS Report Details");
- 					}
-
- 					// Update back button visibility
- 					that._updateBackButtonVisibility();
-
- 					sap.ui.core.BusyIndicator.hide(0);
- 				},
- 				error: function (oError) {
- 					sap.ui.core.BusyIndicator.hide(0);
- 					console.error("Error fetching GIS data: ", oError);
- 					sap.m.MessageBox.error("Failed to load parent folder.");
-
- 					// Restore navigation state on error
- 					that._navigationStack.push(oPreviousState);
- 					that._updateBackButtonVisibility();
- 				}
- 			});
- 		},
- 		_updateBackButtonVisibility: function () {
- 			var oBackButton = this.getView().byId("btnBackToParent");
- 			var oUploadButton = this.getView().byId("btnUploadShareK");
-
- 			if (oBackButton) {
- 				oBackButton.setVisible(this._navigationStack.length > 0);
- 			}
-
- 			// Show upload button only at root level (when navigation stack is empty)
- 			if (oUploadButton) {
- 				oUploadButton.setVisible(this._navigationStack.length === 0);
- 			}
  		},
 
  		onRowSelect: function (oEvent) {
@@ -875,10 +706,9 @@
  					that.getView().setModel(oCategoryMapModel, "oCategoryMapModel");
 
  					// Store the category list for the Select control with empty option at the beginning
- 					var aCategoryListWithEmpty = [{
- 						CatId: "",
- 						Category: "(None)"
- 					}].concat(categoryData.results.sort(function (a, b) {
+ 					var aCategoryListWithEmpty = [
+ 						{ CatId: "", Category: "(None)" }
+ 					].concat(categoryData.results.sort(function(a, b) {
  						return a.Category.localeCompare(b.Category);
  					}));
  					var oCategoryListModel = new JSONModel(aCategoryListWithEmpty);
@@ -958,147 +788,147 @@
 
  		// 	this.ColorValueHelpDialog.open();
  		// },
- 		onColorValueHelp: function (oEvent) {
- 			this._oInputField = oEvent.getSource();
- 			this._oRowContext = this._oInputField.getBindingContext("oCalendarModel");
- 			this._isCategoryColorPicker = false; // Flag to indicate this is for calendar
+		onColorValueHelp: function(oEvent) {
+			this._oInputField = oEvent.getSource();
+			this._oRowContext = this._oInputField.getBindingContext("oCalendarModel");
+			this._isCategoryColorPicker = false; // Flag to indicate this is for calendar
 
- 			if (!this._oColorPickerDialog) {
- 				this._oColorPickerDialog = sap.ui.xmlfragment(
- 					"mobilefinance.MobileFinance.fragments.ColorPickerDialog",
- 					this
- 				);
- 				this.getView().addDependent(this._oColorPickerDialog);
- 			}
+			if (!this._oColorPickerDialog) {
+				this._oColorPickerDialog = sap.ui.xmlfragment(
+					"mobilefinance.MobileFinance.fragments.ColorPickerDialog",
+					this
+				);
+				this.getView().addDependent(this._oColorPickerDialog);
+			}
 
- 			// Set current color if available
- 			if (this._oRowContext) {
- 				var sCurrentColor = this._oRowContext.getProperty("Zcolor");
- 				if (sCurrentColor) {
- 					// Add # if not present for color picker
- 					var sColorForPicker = sCurrentColor.startsWith("#") ? sCurrentColor : "#" + sCurrentColor;
+			// Set current color if available
+			if (this._oRowContext) {
+				var sCurrentColor = this._oRowContext.getProperty("Zcolor");
+				if (sCurrentColor) {
+					// Add # if not present for color picker
+					var sColorForPicker = sCurrentColor.startsWith("#") ? sCurrentColor : "#" + sCurrentColor;
+					
+					// Find the color picker control in the dialog
+					var aContent = this._oColorPickerDialog.getContent();
+					if (aContent && aContent.length > 0) {
+						var oVBox = aContent[0];
+						var aVBoxItems = oVBox.getItems();
+						if (aVBoxItems && aVBoxItems.length > 0) {
+							var oColorPicker = aVBoxItems[0];
+							if (oColorPicker && oColorPicker.setColorString) {
+								oColorPicker.setColorString(sColorForPicker);
+							}
+						}
+					}
+				}
+			}
 
- 					// Find the color picker control in the dialog
- 					var aContent = this._oColorPickerDialog.getContent();
- 					if (aContent && aContent.length > 0) {
- 						var oVBox = aContent[0];
- 						var aVBoxItems = oVBox.getItems();
- 						if (aVBoxItems && aVBoxItems.length > 0) {
- 							var oColorPicker = aVBoxItems[0];
- 							if (oColorPicker && oColorPicker.setColorString) {
- 								oColorPicker.setColorString(sColorForPicker);
- 							}
- 						}
- 					}
- 				}
- 			}
+			this._oColorPickerDialog.open();
+		},
 
- 			this._oColorPickerDialog.open();
- 		},
+		onColorPickerChange: function(oEvent) {
+			var sColor = oEvent.getParameter("hex");
+			this._selectedColor = sColor;
+		},
 
- 		onColorPickerChange: function (oEvent) {
- 			var sColor = oEvent.getParameter("hex");
- 			this._selectedColor = sColor;
- 		},
+		onColorPickerOK: function() {
+			// Remove # from color code before saving
+			var sColorCode = this._selectedColor ? this._selectedColor.replace("#", "") : "";
 
- 		onColorPickerOK: function () {
- 			// Remove # from color code before saving
- 			var sColorCode = this._selectedColor ? this._selectedColor.replace("#", "") : "";
+			// Check if this is for category or calendar
+			if (this._isCategoryColorPicker) {
+				// Handle category color picker
+				if (sColorCode && this._oCategoryInputField && this._oCategoryRowContext) {
+					var sPath = this._oCategoryRowContext.getPath();
+					var oModel = this._oCategoryRowContext.getModel();
 
- 			// Check if this is for category or calendar
- 			if (this._isCategoryColorPicker) {
- 				// Handle category color picker
- 				if (sColorCode && this._oCategoryInputField && this._oCategoryRowContext) {
- 					var sPath = this._oCategoryRowContext.getPath();
- 					var oModel = this._oCategoryRowContext.getModel();
+					// Update the model with the selected color (without #)
+					oModel.setProperty(sPath + "/Color", sColorCode);
 
- 					// Update the model with the selected color (without #)
- 					oModel.setProperty(sPath + "/Color", sColorCode);
+					// Update the input field value (without #)
+					this._oCategoryInputField.setValue(sColorCode);
+				}
+			} else {
+				// Handle calendar color picker
+				if (sColorCode && this._oInputField && this._oRowContext) {
+					var sPath = this._oRowContext.getPath();
+					var oModel = this._oRowContext.getModel();
 
- 					// Update the input field value (without #)
- 					this._oCategoryInputField.setValue(sColorCode);
- 				}
- 			} else {
- 				// Handle calendar color picker
- 				if (sColorCode && this._oInputField && this._oRowContext) {
- 					var sPath = this._oRowContext.getPath();
- 					var oModel = this._oRowContext.getModel();
+					// Update the model with the selected color (without #)
+					oModel.setProperty(sPath + "/Zcolor", sColorCode);
 
- 					// Update the model with the selected color (without #)
- 					oModel.setProperty(sPath + "/Zcolor", sColorCode);
+					// Update the input field value (without #)
+					this._oInputField.setValue(sColorCode);
+				}
+			}
 
- 					// Update the input field value (without #)
- 					this._oInputField.setValue(sColorCode);
- 				}
- 			}
+			this._oColorPickerDialog.close();
+		},
 
- 			this._oColorPickerDialog.close();
- 		},
+		onColorPickerCancel: function() {
+			this._selectedColor = null;
+			this._oColorPickerDialog.close();
+		},
 
- 		onColorPickerCancel: function () {
- 			this._selectedColor = null;
- 			this._oColorPickerDialog.close();
- 		},
+		// Category Color Change (manual input)
+		onCategoryColorChange: function(oEvent) {
+			var oInput = oEvent.getSource();
+			var sValue = oEvent.getParameter("value");
+			var oContext = oInput.getBindingContext("oCategoryModel");
 
- 		// Category Color Change (manual input)
- 		onCategoryColorChange: function (oEvent) {
- 			var oInput = oEvent.getSource();
- 			var sValue = oEvent.getParameter("value");
- 			var oContext = oInput.getBindingContext("oCategoryModel");
+			if (oContext) {
+				var sPath = oContext.getPath();
+				var oModel = oContext.getModel();
 
- 			if (oContext) {
- 				var sPath = oContext.getPath();
- 				var oModel = oContext.getModel();
+				// Remove # if user typed it
+				var sColorCode = sValue.replace("#", "").trim();
 
- 				// Remove # if user typed it
- 				var sColorCode = sValue.replace("#", "").trim();
+				// Update the model with the color code
+				oModel.setProperty(sPath + "/Color", sColorCode);
 
- 				// Update the model with the color code
- 				oModel.setProperty(sPath + "/Color", sColorCode);
+				// Update the input field to show clean value (without #)
+				oInput.setValue(sColorCode);
+			}
+		},
 
- 				// Update the input field to show clean value (without #)
- 				oInput.setValue(sColorCode);
- 			}
- 		},
+		// Category Color Value Help
+		onCategoryColorValueHelp: function(oEvent) {
+			this._oCategoryInputField = oEvent.getSource();
+			this._oCategoryRowContext = this._oCategoryInputField.getBindingContext("oCategoryModel");
+			this._isCategoryColorPicker = true; // Flag to differentiate between calendar and category color pickers
 
- 		// Category Color Value Help
- 		onCategoryColorValueHelp: function (oEvent) {
- 			this._oCategoryInputField = oEvent.getSource();
- 			this._oCategoryRowContext = this._oCategoryInputField.getBindingContext("oCategoryModel");
- 			this._isCategoryColorPicker = true; // Flag to differentiate between calendar and category color pickers
+			if (!this._oColorPickerDialog) {
+				this._oColorPickerDialog = sap.ui.xmlfragment(
+					"mobilefinance.MobileFinance.fragments.ColorPickerDialog",
+					this
+				);
+				this.getView().addDependent(this._oColorPickerDialog);
+			}
 
- 			if (!this._oColorPickerDialog) {
- 				this._oColorPickerDialog = sap.ui.xmlfragment(
- 					"mobilefinance.MobileFinance.fragments.ColorPickerDialog",
- 					this
- 				);
- 				this.getView().addDependent(this._oColorPickerDialog);
- 			}
+			// Set current color if available
+			if (this._oCategoryRowContext) {
+				var sCurrentColor = this._oCategoryRowContext.getProperty("Color");
+				if (sCurrentColor) {
+					// Add # if not present for color picker
+					var sColorForPicker = sCurrentColor.startsWith("#") ? sCurrentColor : "#" + sCurrentColor;
 
- 			// Set current color if available
- 			if (this._oCategoryRowContext) {
- 				var sCurrentColor = this._oCategoryRowContext.getProperty("Color");
- 				if (sCurrentColor) {
- 					// Add # if not present for color picker
- 					var sColorForPicker = sCurrentColor.startsWith("#") ? sCurrentColor : "#" + sCurrentColor;
+					// Find the color picker control in the dialog
+					var aContent = this._oColorPickerDialog.getContent();
+					if (aContent && aContent.length > 0) {
+						var oVBox = aContent[0];
+						var aVBoxItems = oVBox.getItems();
+						if (aVBoxItems && aVBoxItems.length > 0) {
+							var oColorPicker = aVBoxItems[0];
+							if (oColorPicker && oColorPicker.setColorString) {
+								oColorPicker.setColorString(sColorForPicker);
+							}
+						}
+					}
+				}
+			}
 
- 					// Find the color picker control in the dialog
- 					var aContent = this._oColorPickerDialog.getContent();
- 					if (aContent && aContent.length > 0) {
- 						var oVBox = aContent[0];
- 						var aVBoxItems = oVBox.getItems();
- 						if (aVBoxItems && aVBoxItems.length > 0) {
- 							var oColorPicker = aVBoxItems[0];
- 							if (oColorPicker && oColorPicker.setColorString) {
- 								oColorPicker.setColorString(sColorForPicker);
- 							}
- 						}
- 					}
- 				}
- 			}
-
- 			this._oColorPickerDialog.open();
- 		},
+			this._oColorPickerDialog.open();
+		},
 
  		onColorValueHelpSearch: function (oEvent) {
  			var sValue = oEvent.getParameter("value");
@@ -2214,27 +2044,27 @@
 
  		onItemSelect: function (oEvent) {
  			var oItem = oEvent.getParameter("item");
- 			var sKey = oItem.getKey();
+			var sKey = oItem.getKey();
 
  			this.byId("pageContainer").to(this.getView().createId(sKey));
 
- 			// Initialize widget list when Dynamic Widget Config is selected
- 			if (sKey === "dynamicWidgetConfig") {
- 				// Show widget list and hide create config initially
- 				this.byId("widgetListContainer").setVisible(true);
- 				this.byId("createDynamicWidgetConfigContainer").setVisible(false);
- 				// Load the widget list data
- 				this.onLoadWidgetListData();
- 			}
-
- 			// Initialize page configuration when Page Configuration is selected
- 			if (sKey === "pageConfiguration") {
- 				// Show page configuration list and hide widget list initially
- 				this.byId("pageConfigurationContainer").setVisible(true);
- 				this.byId("pageWidgetConfigContainer").setVisible(false);
- 				// Load page configuration data
- 				this.onLoadPageConfigurationData();
- 			}
+			// Initialize widget list when Dynamic Widget Config is selected
+			if (sKey === "dynamicWidgetConfig") {
+				// Show widget list and hide create config initially
+				this.byId("widgetListContainer").setVisible(true);
+				this.byId("createDynamicWidgetConfigContainer").setVisible(false);
+				// Load the widget list data
+				this.onLoadWidgetListData();
+			}
+			
+			// Initialize page configuration when Page Configuration is selected
+			if (sKey === "pageConfiguration") {
+				// Show page configuration list and hide widget list initially
+				this.byId("pageConfigurationContainer").setVisible(true);
+				this.byId("pageWidgetConfigContainer").setVisible(false);
+				// Load page configuration data
+				this.onLoadPageConfigurationData();
+			}
 
  		},
 
@@ -2258,7 +2088,7 @@
 
  		},
 
- 		handleDropToGrid: function (oEvent) {
+ 		handleDropToGrid: function(oEvent) {
  			// Get the dragged control and dropped control
  			var oDraggedControl = oEvent.getParameter("draggedControl");
  			var oDroppedControl = oEvent.getParameter("droppedControl");
@@ -2314,7 +2144,7 @@
  			oModel.refresh();
  		},
 
- 		onToggleRevealGrid: function (oEvent) {
+ 		onToggleRevealGrid: function(oEvent) {
  			var bSelected = oEvent.getParameter("selected");
  			var oGridContainer = this.byId("widgetGridContainer");
 
@@ -2333,10 +2163,8 @@
  						var rowHeight = "calc(5rem + 0.5rem)"; // row + gap
 
  						oDomRef.style.background =
- 							"repeating-linear-gradient(0deg, transparent, transparent calc(" + rowHeight + " - 1px), #4a90e2 calc(" + rowHeight +
- 							" - 1px), #4a90e2 " + rowHeight + ")," +
- 							"repeating-linear-gradient(90deg, transparent, transparent calc(" + columnWidth + " - 1px), #4a90e2 calc(" + columnWidth +
- 							" - 1px), #4a90e2 " + columnWidth + ")";
+ 							"repeating-linear-gradient(0deg, transparent, transparent calc(" + rowHeight + " - 1px), #4a90e2 calc(" + rowHeight + " - 1px), #4a90e2 " + rowHeight + ")," +
+ 							"repeating-linear-gradient(90deg, transparent, transparent calc(" + columnWidth + " - 1px), #4a90e2 calc(" + columnWidth + " - 1px), #4a90e2 " + columnWidth + ")";
  						oDomRef.style.border = "2px solid #4a90e2";
  						oDomRef.style.minHeight = "calc(22rem)"; // 4 rows * 5.5rem
  					}
@@ -5323,207 +5151,6 @@
  			// Show busy indicator while the request is being processed
  			sap.ui.core.BusyIndicator.hide(0);
  		},
- 		// onUploadFileattachGI: function () {
- 		// 	debugger;
- 		// 	var that = this;
-
- 		// 	sap.ui.core.BusyIndicator.show(0);
- 		// 	// Get the FileUploader instance from the fragment
- 		// 	var fileUploader = sap.ui.getCore().byId("fileUploader");
-
- 		// 	// Ensure FileUploader is valid
- 		// 	if (!fileUploader) {
- 		// 		sap.m.MessageToast.show("File uploader not found!");
- 		// 		sap.ui.core.BusyIndicator.hide();
- 		// 		return;
- 		// 	}
-
- 		// 	// Retrieve the selected file
- 		// 	var fileInput = fileUploader.getDomRef().querySelector("input[type='file']");
- 		// 	var file = fileInput ? fileInput.files[0] : null;
-
- 		// 	// Validate mandatory fields
- 		// 	if (!file) {
- 		// 		sap.m.MessageToast.show("Please select a file to upload!");
- 		// 		sap.ui.core.BusyIndicator.hide();
- 		// 		return;
- 		// 	}
-
- 		// 	// Validate file type
- 		// 	var fileName = file.name.toLowerCase();
- 		// 	if (!fileName.endsWith('.xlsx') && !fileName.endsWith('.xls')) {
- 		// 		sap.m.MessageToast.show("Please select only Excel files (.xlsx or .xls)!");
- 		// 		sap.ui.core.BusyIndicator.hide();
- 		// 		return;
- 		// 	}
-
- 		// 	// Get CSV output
- 		// 	// const csvOutput = exportToCSV(hierarchy);
- 		// 	// console.log("\n\nCSV Output (first 5 rows):");
- 		// 	// console.log(csvOutput.split('\n').join('\n'));
- 		// 	// console.log("...");
-
- 		// 	var reader = new FileReader();
- 		// 	// Read the file as binary string
- 		// 	reader.readAsBinaryString(file);
- 		// 	reader.onload = function (e) {
- 		// 		try {
- 		// 			var data = e.target.result;
- 		// 			var workbook = XLSX.read(data, {
- 		// 				type: 'binary'
- 		// 			});
-
- 		// 			// Get first sheet name
- 		// 			var firstSheetName = workbook.SheetNames[0];
-
- 		// 			// Get worksheet
- 		// 			var worksheet = workbook.Sheets[firstSheetName];
-
- 		// 			// Convert to JSON
- 		// 			var jsonData = XLSX.utils.sheet_to_json(worksheet, {
- 		// 				header: 1, // Use first row as header
- 		// 				defval: "" // Default value for empty cells
- 		// 			});
-
- 		// 			// Process the data to create proper JSON object
- 		// 			if (jsonData.length > 0) {
- 		// 				var headers = jsonData[0]; // First row contains headers
- 		// 				var processedData = [];
-
- 		// 				// Convert array data to object format
- 		// 				for (var i = 1; i < jsonData.length; i++) {
- 		// 					var row = jsonData[i];
- 		// 					var rowObject = {};
-
- 		// 					for (var j = 0; j < headers.length; j++) {
- 		// 						rowObject[headers[j]] = row[j] || "";
- 		// 					}
-
- 		// 					processedData.push(rowObject);
- 		// 				}
-
- 		// 				// Store the JSON data in a model or variable
- 		// 				that.excelJsonData = processedData;
-
- 		// 				// You can also store it in a model
- 		// 				var oModel = new sap.ui.model.json.JSONModel({
- 		// 					excelData: processedData
- 		// 				});
- 		// 				that.getView().setModel(oModel, "excelModel");
- 		// 				debugger;
- 		// 				console.log("Excel data converted to JSON:", processedData);
-
- 		// 				const parentChildSet = new Set();
-
- 		// 				// Process each path
- 		// 				processedData.forEach(path => {
-
- 		// 					if (path["Item Type"] === 'Item') {
-
- 		// 						const filePath = path.Path + (path.Title != "" ? "/" + path.Title : '');
- 		// 						const parts = filePath.split('/');
-
- 		// 						// Starting from cop/GI/Finance/ as root
- 		// 						const rootIndex = 3; // cop/GI/Finance is at index 0,1,2
-
- 		// 						// Add root to its immediate children
- 		// 						if (parts.length > rootIndex) {
- 		// 							const rootPath = parts.slice(0, rootIndex).join('/') + '/';
- 		// 							const child = parts[rootIndex];
- 		// 							parentChildSet.add(`${rootPath}|${child}`);
- 		// 						}
-
- 		// 						// Add relationships between subsequent levels
- 		// 						for (let i = rootIndex; i < parts.length - 1; i++) {
- 		// 							const parentPath = parts.slice(0, i + 1).join('/') + '/';
- 		// 							const child = parts[i + 1];
- 		// 							if (i === parts.length - 2) {
- 		// 								const giUrl = encodeURI(`https://sharek.aramco.com.sa/${path.Path}/${path.Name}`);
- 		// 								parentChildSet.add(
- 		// 									`${parentPath}|${child}|${path.Name}|${path.Title}|${path["Issuing Org"]}|${path["Contact Person"]}|${path["Issue date"]}|${path["Item Type"]}|${giUrl}`
- 		// 								);
- 		// 							} else {
- 		// 								parentChildSet.add(`${parentPath}|${child}`);
- 		// 							}
- 		// 						}
- 		// 					}
- 		// 				});
-
- 		// 				// Convert to array and sort
- 		// 				var GiId = 1;
- 		// 				var batchChanges = [];
- 		// 				var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
- 		// 				var oDataModel = new sap.ui.model.odata.ODataModel(url);
- 		// 				oDataModel.setUseBatch(true);
- 		// 				var uPath = "/ShareKGISet";
- 		// 				const parentChildArray = Array.from(parentChildSet).map(item => {
- 		// 					const [parent, child, id, title, issuingOrg, contactPerson, issueDate, itemType, fullPath] = item.split('|');
-
- 		// 					const giData = {
- 		// 						ParentId: `GI00${GiId}`,
- 		// 						Parent: parent ? parent.replace("&","and") : "",
- 		// 						Child: child ? child.replace("&","and") : "",
- 		// 						Name: id,
- 		// 						Title: title ? title.replace("&","and") : "",
- 		// 						IssuingOrg: issuingOrg,
- 		// 						ContactPerson: contactPerson,
- 		// 						IssueDate: issueDate,
- 		// 						ItemType: itemType,
- 		// 						Path: fullPath
- 		// 					};
- 		// 					GiId = GiId + 1;
-
- 		// 					batchChanges.push(oDataModel.createBatchOperation(uPath, "POST", giData));
-
- 		// 					return {
- 		// 						parent,
- 		// 						child,
- 		// 						id,
- 		// 						title,
- 		// 						issuingOrg,
- 		// 						contactPerson,
- 		// 						issueDate,
- 		// 						itemType,
- 		// 						fullPath
- 		// 					};
- 		// 				});
-
- 		// 				oDataModel.addBatchChangeOperations(batchChanges);
- 		// 				sap.ui.core.BusyIndicator.show(0);
-
- 		// 				oDataModel.submitBatch(function (oData, oResponse) {
- 		// 					sap.ui.core.BusyIndicator.hide(0);
- 		// 					if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
- 		// 						that.onLoadFinCalTab();
- 		// 						sap.m.MessageBox.success("Financial Dashboard Tab added successfully!");
- 		// 					}
- 		// 				}, function (oError) {
- 		// 					sap.ui.core.BusyIndicator.hide(0);
- 		// 					sap.m.MessageBox.error("Failed to update data");
- 		// 				});
-
- 		// 				// Continue with file upload if needed
- 		// 				// that._uploadFileToServer(file);
-
- 		// 			} else {
- 		// 				sap.m.MessageToast.show("Excel file is empty!");
- 		// 				sap.ui.core.BusyIndicator.hide();
- 		// 			}
-
- 		// 		} catch (error) {
- 		// 			sap.m.MessageBox.error("Error reading Excel file: " + error.message);
- 		// 			sap.ui.core.BusyIndicator.hide();
- 		// 		}
- 		// 	};
-
- 		// 	reader.onerror = function (error) {
- 		// 		sap.m.MessageBox.error("Failed to read file!");
- 		// 		sap.ui.core.BusyIndicator.hide();
- 		// 	};
-
- 		// 	// Show busy indicator while the request is being processed
- 		// 	sap.ui.core.BusyIndicator.hide(0);
- 		// },
  		onUploadFileattachGI: function () {
  			debugger;
  			var that = this;
@@ -5557,6 +5184,12 @@
  				sap.ui.core.BusyIndicator.hide();
  				return;
  			}
+
+ 			// Get CSV output
+ 			// const csvOutput = exportToCSV(hierarchy);
+ 			// console.log("\n\nCSV Output (first 5 rows):");
+ 			// console.log(csvOutput.split('\n').join('\n'));
+ 			// console.log("...");
 
  			var reader = new FileReader();
  			// Read the file as binary string
@@ -5644,28 +5277,31 @@
  							}
  						});
 
- 						// Convert to array and prepare navigation items
+ 						// Convert to array and sort
  						var GiId = 1;
- 						var navItems = [];
-
+ 						var batchChanges = [];
+ 						var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
+ 						var oDataModel = new sap.ui.model.odata.ODataModel(url);
+ 						oDataModel.setUseBatch(true);
+ 						var uPath = "/ShareKGISet";
  						const parentChildArray = Array.from(parentChildSet).map(item => {
  							const [parent, child, id, title, issuingOrg, contactPerson, issueDate, itemType, fullPath] = item.split('|');
 
  							const giData = {
  								ParentId: `GI00${GiId}`,
- 								Parent: parent ? parent.replace(/&/g, "and") : "",
- 								Child: child ? child.replace(/&/g, "and") : "",
- 								Name: id || "",
- 								Title: title ? title.replace(/&/g, "and") : "",
- 								IssuingOrg: issuingOrg || "",
- 								ContactPerson: contactPerson || "",
- 								IssueDate: issueDate || "",
- 								ItemType: itemType || "",
- 								Path: fullPath || ""
+ 								Parent: parent ? parent.replace("&","and") : "",
+ 								Child: child ? child.replace("&","and") : "",
+ 								Name: id,
+ 								Title: title ? title.replace("&","and") : "",
+ 								IssuingOrg: issuingOrg,
+ 								ContactPerson: contactPerson,
+ 								IssueDate: issueDate,
+ 								ItemType: itemType,
+ 								Path: fullPath
  							};
  							GiId = GiId + 1;
 
- 							navItems.push(giData);
+ 							batchChanges.push(oDataModel.createBatchOperation(uPath, "POST", giData));
 
  							return {
  								parent,
@@ -5680,39 +5316,22 @@
  							};
  						});
 
- 						// Create single payload with deep insert
- 						var payload = {
- 							ParentId: "Test", // Unique identifier for the upload
- 							nav_sharekgi: navItems
- 						};
-
- 						// Initialize OData Model
- 						var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
- 						var oDataModel = new sap.ui.model.odata.ODataModel(url);
-
+ 						oDataModel.addBatchChangeOperations(batchChanges);
  						sap.ui.core.BusyIndicator.show(0);
 
- 						// Single POST call with deep insert
- 						oDataModel.create("/sharekgiHeaderSet", payload, {
- 							success: function (oData, oResponse) {
- 								sap.ui.core.BusyIndicator.hide();
- 								that.onCancelUpload();
- 								// that.onLoadFinCalTab();
- 								that.onLoadShareKGISReportsData();
- 								sap.m.MessageBox.success("GIs Files Uploaded successfully!");
- 							},
- 							error: function (oError) {
- 								sap.ui.core.BusyIndicator.hide();
- 								var errorMsg = "Failed to update data";
- 								try {
- 									var errorResponse = JSON.parse(oError.responseText);
- 									errorMsg = errorResponse.error.message.value || errorMsg;
- 								} catch (e) {
- 									// Use default error message
- 								}
- 								sap.m.MessageBox.error(errorMsg);
+ 						oDataModel.submitBatch(function (oData, oResponse) {
+ 							sap.ui.core.BusyIndicator.hide(0);
+ 							if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
+ 								that.onLoadFinCalTab();
+ 								sap.m.MessageBox.success("Financial Dashboard Tab added successfully!");
  							}
+ 						}, function (oError) {
+ 							sap.ui.core.BusyIndicator.hide(0);
+ 							sap.m.MessageBox.error("Failed to update data");
  						});
+
+ 						// Continue with file upload if needed
+ 						// that._uploadFileToServer(file);
 
  					} else {
  						sap.m.MessageToast.show("Excel file is empty!");
@@ -5729,6 +5348,9 @@
  				sap.m.MessageBox.error("Failed to read file!");
  				sap.ui.core.BusyIndicator.hide();
  			};
+
+ 			// Show busy indicator while the request is being processed
+ 			sap.ui.core.BusyIndicator.hide(0);
  		},
  		onUploadFileattachpdf: function () {
  			var that = this;
@@ -5951,332 +5573,86 @@
  		},
 
  		//ShareK Code
- 		// 	onUpdateShareKItem: function (oEvent) {
- 		// 	var that = this;
- 		// 	var finmobview = this.getView().getModel("finmobview");
-
- 		// 	// Get data from oShareKGISReportModel
- 		// 	var oShareKModel = this.getView().getModel("oShareKGISReportModel");
- 		// 	if (!oShareKModel) {
- 		// 		sap.m.MessageToast.show("No ShareK data available to update");
- 		// 		return;
- 		// 	}
-
- 		// 	var aShareKData = oShareKModel.getData();
- 		// 	if (!aShareKData || aShareKData.length === 0) {
- 		// 		sap.m.MessageToast.show("No items to update");
- 		// 		return;
- 		// 	}
-
- 		// 	// Show busy indicator
- 		// 	sap.ui.core.BusyIndicator.show(0);
-
- 		// 	// Counter for tracking completed updates
- 		// 	var iCompletedUpdates = 0;
- 		// 	var iTotalUpdates = aShareKData.length;
- 		// 	var aErrors = [];
-
- 		// 	// Function to handle completion
- 		// 	var handleCompletion = function() {
- 		// 		iCompletedUpdates++;
- 		// 		if (iCompletedUpdates === iTotalUpdates) {
- 		// 			sap.ui.core.BusyIndicator.hide();
- 		// 			if (aErrors.length > 0) {
- 		// 				sap.m.MessageBox.error("Some updates failed: " + aErrors.join(", "));
- 		// 			} else {
- 		// 				sap.m.MessageToast.show("All ShareK items updated successfully");
- 		// 			}
- 		// 		}
- 		// 	};
-
- 		// 	// Loop through items and update each one
- 		// 	aShareKData.forEach(function(oItem, index) {
- 		// 		if (oItem.ParentId) {
- 		// 			var sPath = "/ShareKGISet('" + oItem.ParentId + "')";
-
- 		// 			// Prepare update payload
- 		// 			var oUpdatePayload = {
- 		// 				ParentId: oItem.ParentId,
- 		// 				Child: oItem.Child,
- 		// 				Path: oItem.Path || "",
- 		// 				Parent: oItem.Parent,
- 		// 				Name: oItem.Name,
- 		// 				Title: oItem.Title,
- 		// 				IssuingOrg: oItem.IssuingOrg,
- 		// 				ContactPerson: oItem.ContactPerson,
- 		// 				IssueDate: oItem.IssueDate,
- 		// 				ItemType: oItem.ItemType,
- 		// 			};
-
- 		// 			// Update the item
- 		// 			finmobview.update(sPath, oUpdatePayload, {
- 		// 				success: function(oData) {
- 		// 					console.log("Successfully updated ShareK item:", oItem.ParentId);
- 		// 					handleCompletion();
- 		// 				},
- 		// 				error: function(oError) {
- 		// 					console.error("Error updating ShareK item:", oItem.ParentId, oError);
- 		// 					aErrors.push("Item " + (index + 1) + ": " + oItem.ParentId);
- 		// 					handleCompletion();
- 		// 				}
- 		// 			});
- 		// 		} else {
- 		// 			console.warn("Skipping item without ParentId:", oItem);
- 		// 			handleCompletion();
- 		// 		}
- 		// 	});
- 		// },
  		onUpdateShareKItem: function (oEvent) {
- 			var that = this;
- 			var finmobview = this.getView().getModel("finmobview");
-
- 			// Get data from oShareKGISReportModel
- 			var oShareKModel = this.getView().getModel("oShareKGISReportModel");
- 			if (!oShareKModel) {
- 				sap.m.MessageToast.show("No ShareK data available to update");
- 				return;
- 			}
-
- 			var aShareKData = oShareKModel.getData();
- 			if (!aShareKData || aShareKData.length === 0) {
- 				sap.m.MessageToast.show("No items to update");
- 				return;
- 			}
-
- 			// Get the table to identify which items were actually edited
- 			var oTable = this.getView().byId("tabGISReportDetails");
- 			var aSelectedItems = oTable.getSelectedItems();
-
- 			if (!aSelectedItems || aSelectedItems.length === 0) {
- 				sap.m.MessageToast.show("Please select items to update");
- 				return;
- 			}
-
- 			// Show busy indicator
- 			sap.ui.core.BusyIndicator.show(0);
-
- 			// Collect items that need updating
- 			var aItemsToUpdate = [];
- 			var aFolderRenames = []; // Track folder name changes
-
- 			aSelectedItems.forEach(function (oSelectedItem) {
- 				var oContext = oSelectedItem.getBindingContext("oShareKGISReportModel");
- 				var oItem = oContext.getObject();
-
- 				// Get the current values from the Input controls in the table cells
- 				var aCells = oSelectedItem.getCells();
- 				var sNewChild = aCells[0].getValue(); // Child name from first cell
- 				var sNewPath = aCells[2].getValue(); // Path from third cell
-
- 				// Get original values from the model
- 				var sOriginalChild = oItem.Child;
- 				var sOriginalPath = oItem.Path;
-
- 				console.log("Comparing - Original Child:", sOriginalChild, "New Child:", sNewChild);
- 				console.log("Item Type Check - Path:", sOriginalPath);
-
- 				// Check if this is a folder (Type column shows 'Folder' or Path is empty)
- 				var sType = aCells[1].getText(); // Type from second cell
- 				var isFolder = (sType === 'Folder' || !sOriginalPath || sOriginalPath === "");
-
- 				if (isFolder && sOriginalChild !== sNewChild) {
- 					// Folder name has changed - need cascading update
- 					console.log("Folder rename detected:", sOriginalChild, "->", sNewChild);
- 					aFolderRenames.push({
- 						original: oItem.Parent + sOriginalChild + '/',
- 						updated: oItem.Parent + sNewChild + '/',
- 						originalChild: sOriginalChild,
- 						updatedChild: sNewChild,
- 						parent: oItem.Parent
- 					});
- 				}
-
- 				// Add current item to update list (whether it's a folder or file)
- 				aItemsToUpdate.push({
- 					item: oItem,
- 					newChild: sNewChild,
- 					newPath: sNewPath
- 				});
- 			});
-
- 			console.log("Folder renames detected:", aFolderRenames.length);
-
- 			// If there are folder renames, fetch all affected children
- 			if (aFolderRenames.length > 0) {
- 				that._performCascadingUpdate(finmobview, aItemsToUpdate, aFolderRenames);
- 			} else {
- 				// No folder renames, just update selected items
- 				that._updateSelectedItems(finmobview, aItemsToUpdate);
- 			}
- 		},
-
- 		_performCascadingUpdate: function (finmobview, aItemsToUpdate, aFolderRenames) {
- 			var that = this;
-
- 			console.log("Starting cascading update for", aFolderRenames.length, "folder renames");
-
- 			// Fetch all ShareK items to find children
- 			finmobview.read("/ShareKGISet", {
- 				success: function (oData) {
- 					var aAllItems = oData.results || [];
- 					var aAllUpdates = [];
-
- 					console.log("Total items fetched:", aAllItems.length);
-
- 					// Process each folder rename
- 					aFolderRenames.forEach(function (oRename) {
- 						console.log("Processing rename from", oRename.original, "to", oRename.updated);
-
- 						// Find all items that are children of this renamed folder
- 						aAllItems.forEach(function (oItem) {
- 							if (oItem.Parent && oItem.Parent.startsWith(oRename.original)) {
- 								console.log("Found child item:", oItem.Child, "with parent:", oItem.Parent);
-
- 								// Update Parent path
- 								var sNewParent = oItem.Parent.replace(oRename.original, oRename.updated);
-
- 								// Update Path (ShareK URL) if it exists
- 								var sNewPath = oItem.Path;
- 								if (sNewPath && sNewPath !== "") {
- 									// Replace the folder name in the URL
- 									var sOldUrlPart = 'cop/GI/Finance/' + oRename.originalChild;
- 									var sNewUrlPart = 'cop/GI/Finance/' + oRename.updatedChild;
-
- 									if (sNewPath.includes(sOldUrlPart)) {
- 										sNewPath = sNewPath.replace(sOldUrlPart, sNewUrlPart);
- 										console.log("Updated URL from", oItem.Path, "to", sNewPath);
- 									}
- 								}
-
- 								aAllUpdates.push({
- 									item: oItem,
- 									newChild: oItem.Child,
- 									newPath: sNewPath,
- 									newParent: sNewParent
- 								});
- 							}
- 						});
- 					});
-
- 					console.log("Total child items found:", aAllUpdates.length);
-
- 					// Merge with directly selected items
- 					aItemsToUpdate.forEach(function (oUpdate) {
- 						// Check if this item is already in cascading updates
- 						var bExists = aAllUpdates.some(function (oExisting) {
- 							return oExisting.item.ParentId === oUpdate.item.ParentId;
- 						});
-
- 						if (!bExists) {
- 							aAllUpdates.push(oUpdate);
- 						} else {
- 							// Update the existing entry with new values from selected item
- 							aAllUpdates.forEach(function (oExisting) {
- 								if (oExisting.item.ParentId === oUpdate.item.ParentId) {
- 									oExisting.newChild = oUpdate.newChild;
- 									if (oUpdate.newPath) {
- 										oExisting.newPath = oUpdate.newPath;
- 									}
- 								}
- 							});
- 						}
- 					});
-
- 					console.log("Total items to update:", aAllUpdates.length);
-
- 					// Perform all updates
- 					that._executeUpdates(finmobview, aAllUpdates);
- 				},
- 				error: function (oError) {
- 					sap.ui.core.BusyIndicator.hide();
- 					var msg = "Error fetching all ShareK items for cascading update";
- 					try {
- 						var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
- 						if (errorDetails && errorDetails.length > 0) {
- 							msg = errorDetails.map(err => err.message).join("\n");
- 						}
- 					} catch (e) {
- 						msg = oError.responseText || msg;
- 					}
- 					sap.m.MessageBox.error(msg);
- 				}
- 			});
- 		},
-
- 		_updateSelectedItems: function (finmobview, aItemsToUpdate) {
- 			console.log("Updating only selected items:", aItemsToUpdate.length);
- 			this._executeUpdates(finmobview, aItemsToUpdate);
- 		},
-
- 		_executeUpdates: function (finmobview, aUpdates) {
- 			var that = this;
- 			var iCompletedUpdates = 0;
- 			var iTotalUpdates = aUpdates.length;
- 			var aErrors = [];
-
- 			console.log("Executing", iTotalUpdates, "updates");
-
- 			// Function to handle completion
- 			var handleCompletion = function () {
- 				iCompletedUpdates++;
- 				if (iCompletedUpdates === iTotalUpdates) {
- 					sap.ui.core.BusyIndicator.hide();
- 					if (aErrors.length > 0) {
- 						sap.m.MessageBox.error("Some updates failed: " + aErrors.join(", "));
- 					} else {
- 						sap.m.MessageToast.show(iTotalUpdates + " item(s) updated successfully");
- 						// Reload the current view
- 						that.onLoadShareKGISReportsData();
- 					}
- 				}
- 			};
-
- 			// Loop through items and update each one
- 			aUpdates.forEach(function (oUpdateInfo, index) {
- 				var oItem = oUpdateInfo.item;
-
- 				if (oItem.ParentId) {
- 					var sPath = "/ShareKGISet('" + oItem.ParentId + "')";
-
- 					// Prepare update payload
- 					var oUpdatePayload = {
- 						ParentId: oItem.ParentId,
- 						Child: oUpdateInfo.newChild,
- 						Path: oUpdateInfo.newPath || oItem.Path || "",
- 						Parent: oUpdateInfo.newParent || oItem.Parent,
- 						Name: oItem.Name || "",
- 						Title: oItem.Title || "",
- 						IssuingOrg: oItem.IssuingOrg || "",
- 						ContactPerson: oItem.ContactPerson || "",
- 						IssueDate: oItem.IssueDate || "",
- 						ItemType: oItem.ItemType || ""
- 					};
-
- 					console.log("Updating item", index + 1, "of", iTotalUpdates, ":", oItem.ParentId);
-
- 					// Update the item
- 					finmobview.update(sPath, oUpdatePayload, {
- 						success: function (oData) {
- 							console.log("Successfully updated ShareK item:", oItem.ParentId);
- 							handleCompletion();
- 						},
- 						error: function (oError) {
- 							console.error("Error updating ShareK item:", oItem.ParentId, oError);
- 							aErrors.push("Item " + (index + 1) + ": " + oItem.ParentId);
- 							handleCompletion();
- 						}
- 					});
- 				} else {
- 					console.warn("Skipping item without ParentId:", oItem);
- 					handleCompletion();
- 				}
- 			});
- 		},
+			var that = this;
+			var finmobview = this.getView().getModel("finmobview");
+			
+			// Get data from oShareKGISReportModel
+			var oShareKModel = this.getView().getModel("oShareKGISReportModel");
+			if (!oShareKModel) {
+				sap.m.MessageToast.show("No ShareK data available to update");
+				return;
+			}
+			
+			var aShareKData = oShareKModel.getData();
+			if (!aShareKData || aShareKData.length === 0) {
+				sap.m.MessageToast.show("No items to update");
+				return;
+			}
+			
+			// Show busy indicator
+			sap.ui.core.BusyIndicator.show(0);
+			
+			// Counter for tracking completed updates
+			var iCompletedUpdates = 0;
+			var iTotalUpdates = aShareKData.length;
+			var aErrors = [];
+			
+			// Function to handle completion
+			var handleCompletion = function() {
+				iCompletedUpdates++;
+				if (iCompletedUpdates === iTotalUpdates) {
+					sap.ui.core.BusyIndicator.hide();
+					if (aErrors.length > 0) {
+						sap.m.MessageBox.error("Some updates failed: " + aErrors.join(", "));
+					} else {
+						sap.m.MessageToast.show("All ShareK items updated successfully");
+					}
+				}
+			};
+			
+			// Loop through items and update each one
+			aShareKData.forEach(function(oItem, index) {
+				if (oItem.ParentId) {
+					var sPath = "/ShareKGISet('" + oItem.ParentId + "')";
+					
+					// Prepare update payload
+					var oUpdatePayload = {
+						ParentId: oItem.ParentId,
+						Child: oItem.Child,
+						Path: oItem.Path || "",
+						Parent: oItem.Parent,
+						Name: oItem.Name,
+						Title: oItem.Title,
+						IssuingOrg: oItem.IssuingOrg,
+						ContactPerson: oItem.ContactPerson,
+						IssueDate: oItem.IssueDate,
+						ItemType: oItem.ItemType,
+					};
+					
+					// Update the item
+					finmobview.update(sPath, oUpdatePayload, {
+						success: function(oData) {
+							console.log("Successfully updated ShareK item:", oItem.ParentId);
+							handleCompletion();
+						},
+						error: function(oError) {
+							console.error("Error updating ShareK item:", oItem.ParentId, oError);
+							aErrors.push("Item " + (index + 1) + ": " + oItem.ParentId);
+							handleCompletion();
+						}
+					});
+				} else {
+					console.warn("Skipping item without ParentId:", oItem);
+					handleCompletion();
+				}
+			});
+		},
  		onUpdateShareKFolder: function () {
  			var that = this;
  			debugger;
  			var finmobview = this.getView().getModel("finmobview");
-
+ 		
  			var oDialog = this.updateShareKFolderDialog;
  			// var selectedFolderId = sap.ui.getCore().byId("gisFolderInput").data("ZgisFolderId");
  			var sFoldertitle = sap.ui.core.Fragment.byId("updateShareKFolderDialog", "gisFolderInput").getValue();
@@ -6338,8 +5714,8 @@
  				this._oValueHelpDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.ShareKFolderValueHelp", this);
  				this.getView().addDependent(this._oValueHelpDialog);
  			}
- 			var oJsonModel = new JSONModel(sharekview);
- 			this._oValueHelpDialog.setModel(oJsonModel);
+ 				var oJsonModel = new JSONModel(sharekview);
+ 			this._oValueHelpDialog.setModel(oJsonModel); 
  			this._oValueHelpDialog.open();
  			// Read data from OData Service
  			// finmobview.read("/GisFolderSet", {
@@ -6368,6 +5744,8 @@
  			// Reset input fields
  			sap.ui.getCore().byId("inpgisfolderid").setValue("");
  			sap.ui.getCore().byId("inpgisfolder").setValue("");
+
+ 		
 
  			// OData Service Call to fetch the latest GIS Folder IDs
  			finmobview.read("/GisFolderSet", {
@@ -6553,7 +5931,7 @@
  				console.error("Input control not found or no item selected.");
  			}
  		},
- 		onShareKValueHelpConfirm: function (oEvent) {
+ 			onShareKValueHelpConfirm: function (oEvent) {
  			var oSelectedItem = oEvent.getParameter("selectedItem");
 
  			if (oSelectedItem && this._oInputControl) {
@@ -8272,10 +7650,9 @@
  					that.getView().setModel(oCategoryModel, "oCategoryModel");
 
  					// Update the category list model for the Select control in calendar tab with empty option
- 					var aCategoryListWithEmpty = [{
- 						CatId: "",
- 						Category: "(None)"
- 					}].concat(data.results.sort(function (a, b) {
+ 					var aCategoryListWithEmpty = [
+ 						{ CatId: "", Category: "(None)" }
+ 					].concat(data.results.sort(function(a, b) {
  						return a.Category.localeCompare(b.Category);
  					}));
  					var oCategoryListModel = new JSONModel(aCategoryListWithEmpty);
@@ -8343,7 +7720,7 @@
  					var oPayload = {
  						CatId: oItem.CatId,
  						Category: oItem.Category,
- 						Color: oItem.Color
+						Color: oItem.Color
  					};
 
  					oModel.update(sPath, oPayload, {
@@ -9925,7 +9302,7 @@
 
  			var updatePromises = aData.map(function (oItem) {
  				return new Promise(function (resolve, reject) {
-
+ 				
  					var sPath = "/AffiliateTabControlSet('" + oItem.ZkpiId + "')";
 
  					oModel.update(sPath, oItem, {
@@ -10023,1080 +9400,338 @@
 
  		},
 
- 		//survey Form Functions 
-
- 		onLoadSurveyTab: function () {
- 			var that = this;
- 			var finmobview = this.getView().getModel("finmobview");
-
- 			var oSurveyTabModel = new JSONModel();
- 			sap.ui.core.BusyIndicator.show(0);
- 			finmobview.read("/FormSurveySet", {
- 				success: function (data) {
- 					console.log(data);
- 					oSurveyTabModel.setData(data.results);
- 					that.getView().setModel(oSurveyTabModel, "oSurveyTabModel");
-
- 					// that.getView().setModel(oMarketWatchTabModel, "oMarketWatchTabModel");
- 					sap.ui.core.BusyIndicator.hide(0);
- 				},
- 				error: function (oError) {
- 					sap.ui.core.BusyIndicator.hide(0);
- 					var responseText = oError.responseText;
- 					var msg = "";
- 					if (responseText.indexOf("{") > -1) {
- 						if (responseText !== "") {
- 							var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
- 							for (var i = 0; i < errorDetails.length - 1; i++) {
- 								msg += errorDetails[i].message + "\n";
- 							}
- 						}
- 					} else {
- 						msg = responseText;
- 					}
- 					MessageBox.error(msg);
- 				}
- 			});
- 		},
- 		onAddNewSurveyTab: function (oEvent) {
- 			debugger;
- 			var that = this;
- 			var finmobview = this.getView().getModel("finmobview");
-
- 			if (!this.AddNewSurveyTabDialog) {
- 				this.AddNewSurveyTabDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewSurvey", this);
- 				this.getView().addDependent(this.AddNewSurveyTabDialog);
-
- 			}
- 			sap.ui.getCore().byId("inpnsurid").setValue("");
- 			sap.ui.getCore().byId("inpnsurname").setValue("");
- 			sap.ui.getCore().byId("inpnsurveyurl").setValue("");
- 			sap.ui.getCore().byId("inpsurstartDate").setValue("");
- 			sap.ui.getCore().byId("inpsurendDate").setValue("");
- 			sap.ui.getCore().byId("inpnsurrole").setValue("");
- 			sap.ui.getCore().byId("inpnsurvis").setSelected(false);
-
- 			// OData Service Call to fetch the latest GIS Folder IDs
- 			finmobview.read("/FormSurveySet", {
- 				success: function (oData) {
- 					var oResults = oData.results;
-
- 					if (oResults.length > 0) {
- 						// Get the latest GIS Folder ID
- 						var latestGisId = oResults[oResults.length - 1].SurveyId;
-
- 						if (latestGisId && latestGisId.startsWith("S")) {
- 							var gisIdNum = parseInt(latestGisId.replace("S", ""), 10);
- 							var newGisIdNum = gisIdNum + 1;
-
- 							// Generate new GIS Folder ID with leading zeros
- 							var numericLength = latestGisId.length - 1;
- 							var newGisId = "S" + newGisIdNum.toString().padStart(numericLength, "0");
-
- 							sap.ui.getCore().byId("inpnsurid").setValue(newGisId);
- 						}
- 					} else {
- 						// No data in OData, start with default ID
- 						sap.ui.getCore().byId("inpnsurid").setValue("S01");
- 					}
- 				},
- 				error: function (oError) {
- 					console.error("Error fetching GIS Folder data:", oError);
- 					sap.ui.getCore().byId("inpnsurid").setValue("S01"); // Fallback default ID
- 				}
- 			});
- 			this.AddNewSurveyTabDialog.open();
- 		},
- 		onAddSurveyTab: function () {
- 			debugger;
- 			var that = this;
- 			var inpnsurid = sap.ui.getCore().byId("inpnsurid").getValue();
- 			var inpnsurname = sap.ui.getCore().byId("inpnsurname").getValue();
- 			var inpnsurveyurl = sap.ui.getCore().byId("inpnsurveyurl").getValue();
- 			var inpsurstartDate = sap.ui.getCore().byId("inpsurstartDate").getDateValue();
- 			var updatedStartDate = new Date(inpsurstartDate);
- 			updatedStartDate.setDate(updatedStartDate.getDate() + 1);
- 			var inpsurendDate = sap.ui.getCore().byId("inpsurendDate").getDateValue();
- 			var updatedEndDate = new Date(inpsurendDate);
- 			updatedEndDate.setDate(updatedEndDate.getDate() + 1);
- 			var inpnsurrole = sap.ui.getCore().byId("inpnsurrole").getValue();
- 			var inpnsurvis = sap.ui.getCore().byId("inpnsurvis").getSelected();
-
- 			if (inpnsurid === '' || inpnsurname === '') {
- 				sap.m.MessageToast.show("Fill all the mandatory Fields!!!");
- 				return;
- 			}
-
- 			var addItem = {
- 				"Visibiliyy": inpnsurvis,
- 				"SurveyId": inpnsurid,
- 				"SurveyName": inpnsurname,
- 				"SurveyUrl": inpnsurveyurl,
- 				"StartDate": updatedStartDate,
- 				"EndDate": updatedEndDate,
- 				"role": inpnsurrole,
-
- 			};
- 			var batchChanges = [];
- 			var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
- 			var oDataModel = new sap.ui.model.odata.ODataModel(url);
- 			oDataModel.setUseBatch(true);
- 			var uPath = "/FormSurveySet";
- 			batchChanges.push(oDataModel.createBatchOperation(uPath, "POST", addItem));
-
- 			oDataModel.addBatchChangeOperations(batchChanges);
- 			sap.ui.core.BusyIndicator.show(0);
-
- 			oDataModel.submitBatch(function (oData, oResponse) {
- 				sap.ui.core.BusyIndicator.hide(0);
- 				if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
- 					that.onLoadSurveyTab();
- 					sap.m.MessageBox.success("Survey added successfully!");
- 				}
- 			}, function (oError) {
- 				sap.ui.core.BusyIndicator.hide(0);
- 				sap.m.MessageBox.error("Failed to update data");
- 			});
-
- 			this.AddNewSurveyTabDialog.close();
- 		},
- 		CloseSurveyTabDialog: function (oEvent) {
- 			if (this.AddNewSurveyTabDialog) {
- 				this.AddNewSurveyTabDialog.close();
- 			}
- 		},
- 		onUpdateSurveyTab: function () {
- 			var oModel = this.getView().getModel("finmobview");
- 			var aData = this.getView().getModel("oSurveyTabModel").getData();
-
- 			sap.ui.core.BusyIndicator.show(0);
-
- 			var updatePromises = aData.map(function (oItem) {
- 				return new Promise(function (resolve, reject) {
-
- 					var sPath = "/FormSurveySet('" + oItem.SurveyId + "')";
-
- 					oModel.update(sPath, oItem, {
- 						success: function () {
- 							resolve(); // Resolve promise on success
- 						},
- 						error: function () {
- 							reject(); // Reject promise on error
- 						}
- 					});
- 				});
- 			});
-
- 			// Wait for all updates to complete
- 			Promise.all(updatePromises)
- 				.then(function () {
- 					MessageBox.success("Data updated successfully!");
- 				})
- 				.catch(function () {
- 					MessageBox.error("Failed to update some data.");
- 				})
- 				.finally(function () {
- 					sap.ui.core.BusyIndicator.hide();
- 				});
- 		},
- 		onDeleteSurveyTabCon: function () {
-
- 			var that = this;
- 			var oTable = this.getView().byId("surveyTab");
-
- 			var aContexts = oTable.getSelectedContexts();
- 			if (aContexts.length) {
- 				sap.m.MessageBox.show(
- 					"Are you sure you want to delete the selected item?", {
- 						icon: sap.m.MessageBox.Icon.QUESTION,
- 						title: "Confirmation",
- 						actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
- 						onClose: function (oAction) {
- 							if (oAction === "YES") {
-
- 								that.onDeleteSurveyTab();
- 							}
- 						}
- 					}
- 				);
- 			}
- 		},
-
- 		onDeleteSurveyTab: function () {
- 			debugger;
- 			var that = this;
- 			var oTable = this.getView().byId("surveyTab");
- 			var aContexts = oTable.getSelectedContexts();
-
- 			var deletionItems = [];
-
- 			for (var i = 0; i < aContexts.length; i++) {
- 				deletionItems.push(aContexts[i].getObject())
- 			};
-
- 			var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
- 			var uPath = "/FormSurveySet";
- 			var oDataModel = new sap.ui.model.odata.ODataModel(url);
- 			oDataModel.setUseBatch(true);
-
- 			var batchChanges = [];
-
- 			for (var i = 0; i < deletionItems.length; i++) {
- 				var addRow = deletionItems[i];
- 				delete addRow.__metadata;
-
- 				var deletePath = `/FormSurveySet(SurveyId='${addRow.SurveyId}')`;
-
- 				batchChanges.push(oDataModel.createBatchOperation(deletePath, "DELETE"));
-
- 			}
-
- 			oDataModel.addBatchChangeOperations(batchChanges);
-
- 			sap.ui.core.BusyIndicator.show(0);
-
- 			oDataModel.submitBatch(
- 				function (oData, oResponse) {
- 					if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
- 						sap.ui.core.BusyIndicator.hide(0);
- 						sap.m.MessageBox.success("Selected items deleted successfully.");
- 						that.onLoadSurveyTab();
- 					}
- 				},
- 				function (oError) {
- 					sap.ui.core.BusyIndicator.hide();
- 					sap.m.MessageBox.error("Failed to delete selected items.");
- 				}
- 			);
-
- 		},
-
- 		//Notification
-
- 		onLoadNotificationTab: function () {
- 			var that = this;
- 			var finmobview = this.getView().getModel("finmobview");
-
- 			var oNotifyTabModel = new JSONModel();
- 			sap.ui.core.BusyIndicator.show(0);
- 			finmobview.read("/NoitificationSet", {
- 				success: function (data) {
- 					console.log(data);
- 					oNotifyTabModel.setData(data.results);
- 					that.getView().setModel(oNotifyTabModel, "oNotifyTabModel");
-
- 					// that.getView().setModel(oMarketWatchTabModel, "oMarketWatchTabModel");
- 					sap.ui.core.BusyIndicator.hide(0);
- 				},
- 				error: function (oError) {
- 					sap.ui.core.BusyIndicator.hide(0);
- 					var responseText = oError.responseText;
- 					var msg = "";
- 					if (responseText.indexOf("{") > -1) {
- 						if (responseText !== "") {
- 							var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
- 							for (var i = 0; i < errorDetails.length - 1; i++) {
- 								msg += errorDetails[i].message + "\n";
- 							}
- 						}
- 					} else {
- 						msg = responseText;
- 					}
- 					MessageBox.error(msg);
- 				}
- 			});
- 		},
- 		onAddNewNotificationTab: function (oEvent) {
- 			debugger;
- 			var that = this;
- 			var finmobview = this.getView().getModel("finmobview");
-
- 			if (!this.AddNewNotificationTabDialog) {
- 				this.AddNewNotificationTabDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewNotificationTab", this);
- 				this.getView().addDependent(this.AddNewNotificationTabDialog);
-
- 			}
- 			sap.ui.getCore().byId("inpnotid").setValue("");
- 			sap.ui.getCore().byId("inpnotname").setValue("");
- 			sap.ui.getCore().byId("inpnotdes").setValue("");
- 			sap.ui.getCore().byId("inpnotnav").setValue("");
- 			sap.ui.getCore().byId("lnpexternal").setValue("");
- 			sap.ui.getCore().byId("inpexpiryDate").setValue("");
- 			sap.ui.getCore().byId("lnpisexternal").setSelected(false);
- 			sap.ui.getCore().byId("inpnotvis").setSelected(false);
-
- 			// OData Service Call to fetch the latest GIS Folder IDs
- 			finmobview.read("/NoitificationSet", {
- 				success: function (oData) {
- 					var oResults = oData.results;
-
- 					if (oResults.length > 0) {
- 						// Get the latest GIS Folder ID
- 						var latestGisId = oResults[oResults.length - 1].ZnotifyId;
-
- 						if (latestGisId && latestGisId.startsWith("N")) {
- 							var gisIdNum = parseInt(latestGisId.replace("N", ""), 10);
- 							var newGisIdNum = gisIdNum + 1;
-
- 							// Generate new GIS Folder ID with leading zeros
- 							var numericLength = latestGisId.length - 1;
- 							var newGisId = "N" + newGisIdNum.toString().padStart(numericLength, "0");
-
- 							sap.ui.getCore().byId("inpnotid").setValue(newGisId);
- 						}
- 					} else {
- 						// No data in OData, start with default ID
- 						sap.ui.getCore().byId("inpnotid").setValue("N01");
- 					}
- 				},
- 				error: function (oError) {
- 					console.error("Error fetching GIS Folder data:", oError);
- 					sap.ui.getCore().byId("inpnotid").setValue("N01"); // Fallback default ID
- 				}
- 			});
- 			this.AddNewNotificationTabDialog.open();
- 		},
- 		onExternalToggle: function (oEvent) {
-
- 			var bSelected = oEvent.getSource().getSelected();
-
- 			// External URL controls
- 			sap.ui.getCore().byId("lblexternal").setVisible(bSelected);
- 			sap.ui.getCore().byId("lnpexternal").setVisible(bSelected);
-
- 			// Navigation controls
- 			sap.ui.getCore().byId("lblnotnav").setVisible(!bSelected);
- 			sap.ui.getCore().byId("inpnotnav").setVisible(!bSelected);
-
- 		},
- 		// onAddNotificationTab: function () {
- 		// 	debugger;
- 		// 	var that = this;
- 		// 	var inpnotid = sap.ui.getCore().byId("inpnotid").getValue();
- 		// 	var inpnotname = sap.ui.getCore().byId("inpnotname").getValue();
- 		// 	var inpnotdes = sap.ui.getCore().byId("inpnotdes").getValue();
- 		// 	// var inpnotnav = sap.ui.getCore().byId("inpnotnav").getValue(); 
- 		// 	var inpnotnavComboBox = sap.ui.getCore().byId("inpnotnav");
- 		// 	var inpnotnav = inpnotnavComboBox.getSelectedItem() ? inpnotnavComboBox.getSelectedItem().getText() : "";
- 		// 	var inpnotnavID = inpnotnavComboBox.getSelectedItem() ? inpnotnavComboBox.getSelectedItem().getKey() : "";
- 		// 	var inpnotvis = sap.ui.getCore().byId("inpnotvis").getSelected();
-
- 		// 	if (inpnotid === '' || inpnotname === '') {
- 		// 		sap.m.MessageToast.show("Fill all the mandatory Fields!!!");
- 		// 		return;
- 		// 	}
-
- 		// 	var addItem = {
- 		// 		"Zvisibility": inpnotvis,
- 		// 		"ZnotifyId": inpnotid,
- 		// 		"ZnotifyName": inpnotname,
- 		// 		"Zdescription": inpnotdes,
- 		// 		"ZnavigationId": inpnotnavID
- 		// 	};
- 		// 	var batchChanges = [];
- 		// 	var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
- 		// 	var oDataModel = new sap.ui.model.odata.ODataModel(url);
- 		// 	oDataModel.setUseBatch(true);
- 		// 	var uPath = "/NoitificationSet";
- 		// 	batchChanges.push(oDataModel.createBatchOperation(uPath, "POST", addItem));
-
- 		// 	oDataModel.addBatchChangeOperations(batchChanges);
- 		// 	sap.ui.core.BusyIndicator.show(0);
-
- 		// 	oDataModel.submitBatch(function (oData, oResponse) {
- 		// 		sap.ui.core.BusyIndicator.hide(0);
- 		// 		if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
- 		// 			that.onLoadNotificationTab();
- 		// 			sap.m.MessageBox.success("Notification added successfully!");
- 		// 		}
- 		// 	}, function (oError) {
- 		// 		sap.ui.core.BusyIndicator.hide(0);
- 		// 		sap.m.MessageBox.error("Failed to update data");
- 		// 	});
-
- 		// 	this.AddNewNotificationTabDialog.close();
- 		// },
- 		onAddNotificationTab: function () {
-
- 			var that = this;
-
- 			var inpnotid = sap.ui.getCore().byId("inpnotid").getValue();
- 			var inpnotname = sap.ui.getCore().byId("inpnotname").getValue();
- 			var inpnotdes = sap.ui.getCore().byId("inpnotdes").getValue();
- 			var inpexpiryDate = sap.ui.getCore().byId("inpexpiryDate").getDateValue();
- 			var updatedEndDate = new Date(inpexpiryDate);
- 			updatedEndDate.setDate(updatedEndDate.getDate() + 1);
- 			var isExternal = sap.ui.getCore().byId("lnpisexternal").getSelected();
-
- 			var inpnotnavID = "";
- 			var externalURL = "";
-
- 			if (isExternal) {
-
- 				externalURL = sap.ui.getCore().byId("lnpexternal").getValue();
-
- 				if (!externalURL) {
- 					sap.m.MessageToast.show("Enter External URL");
- 					return;
- 				}
-
- 				// inpnotnavID = externalURL; // URL stored in navigationId
-
- 			} else {
-
- 				var inpnotnavComboBox = sap.ui.getCore().byId("inpnotnav");
-
- 				inpnotnavID = inpnotnavComboBox.getSelectedItem() ?
- 					inpnotnavComboBox.getSelectedItem().getKey() : "";
-
- 				if (!inpnotnavID) {
- 					sap.m.MessageToast.show("Select Navigation");
- 					return;
- 				}
- 			}
-
- 			var inpnotvis = sap.ui.getCore().byId("inpnotvis").getSelected();
-
- 			if (inpnotid === '' || inpnotname === '') {
- 				sap.m.MessageToast.show("Fill all the mandatory Fields!!!");
- 				return;
- 			}
-
- 			var addItem = {
- 				"Zvisibility": inpnotvis,
- 				"ZnotifyId": inpnotid,
- 				"ZnotifyName": inpnotname,
- 				"Zdescription": inpnotdes,
- 				"ZnavigationId": inpnotnavID,
- 				"Zisexternal": isExternal,
- 				"ZexpiryDate": updatedEndDate,
- 					"Zexternalurl": externalURL
- 			};
-
- 			var batchChanges = [];
- 			var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
- 			var oDataModel = new sap.ui.model.odata.ODataModel(url);
-
- 			oDataModel.setUseBatch(true);
-
- 			var uPath = "/NoitificationSet";
-
- 			batchChanges.push(
- 				oDataModel.createBatchOperation(uPath, "POST", addItem)
- 			);
-
- 			oDataModel.addBatchChangeOperations(batchChanges);
-
- 			sap.ui.core.BusyIndicator.show(0);
-
- 			oDataModel.submitBatch(function (oData, oResponse) {
-
- 				sap.ui.core.BusyIndicator.hide(0);
-
- 				if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
-
- 					that.onLoadNotificationTab();
-
- 					sap.m.MessageBox.success("Notification added successfully!");
-
- 				}
-
- 			}, function () {
-
- 				sap.ui.core.BusyIndicator.hide(0);
-
- 				sap.m.MessageBox.error("Failed to update data");
-
- 			});
-
- 			this.AddNewNotificationTabDialog.close();
-
- 		},
- 		CloseNotificationTabDialog: function (oEvent) {
- 			if (this.AddNewNotificationTabDialog) {
- 				this.AddNewNotificationTabDialog.close();
- 			}
- 		},
- 		// onUpdateNotificationTab: function () {
- 		// 	var oModel = this.getView().getModel("finmobview");
- 		// 	var aData = this.getView().getModel("oNotifyTabModel").getData();
-
- 		// 	sap.ui.core.BusyIndicator.show(0);
-
- 		// 	var updatePromises = aData.map(function (oItem) {
- 		// 		return new Promise(function (resolve, reject) {
-
- 		// 			var sPath = "/NoitificationSet('" + oItem.ZnotifyId + "')";
-
- 		// 			oModel.update(sPath, oItem, {
- 		// 				success: function () {
- 		// 					resolve(); // Resolve promise on success
- 		// 				},
- 		// 				error: function () {
- 		// 					reject(); // Reject promise on error
- 		// 				}
- 		// 			});
- 		// 		});
- 		// 	});
-
- 		// 	// Wait for all updates to complete
- 		// 	Promise.all(updatePromises)
- 		// 		.then(function () {
- 		// 			MessageBox.success("Data updated successfully!");
- 		// 		})
- 		// 		.catch(function () {
- 		// 			MessageBox.error("Failed to update some data.");
- 		// 		})
- 		// 		.finally(function () {
- 		// 			sap.ui.core.BusyIndicator.hide();
- 		// 		});
- 		// },
- 		onUpdateNotificationTab: function () {
-
- 			var oModel = this.getView().getModel("finmobview");
- 			var aData = this.getView().getModel("oNotifyTabModel").getData();
-
- 			sap.ui.core.BusyIndicator.show(0);
-
- 			var updatePromises = aData.map(function (oItem) {
-
- 				return new Promise(function (resolve, reject) {
-
- 					var sPath = "/NoitificationSet('" + oItem.ZnotifyId + "')";
-
- 					var navigationValue1 = "";
- 					var navigationValue2 = "";
-
- 					if (oItem.Zisexternal) {
-
- 						if (!oItem.Zexternalurl) {
- 							sap.m.MessageToast.show("External URL missing for " + oItem.ZnotifyName);
- 							reject();
- 							return;
- 						}
-
- 						navigationValue1 = oItem.Zexternalurl;
- 						navigationValue2 = "";
-
- 					} else {
-
- 						if (!oItem.ZnavigationId) {
- 							sap.m.MessageToast.show("Navigation missing for " + oItem.ZnotifyName);
- 							reject();
- 							return;
- 						}
-						
-						navigationValue1 = "";
- 						navigationValue2 = oItem.ZnavigationId;
- 					}
- 					
- 					// Expiry Date Conversion
-            var expiryDate = null;
-
-            if (oItem.ZexpiryDate) {
-                expiryDate = new Date(oItem.ZexpiryDate);
-            }
-
- 					var oPayload = {
-
- 						ZnotifyId: oItem.ZnotifyId,
- 						ZnotifyName: oItem.ZnotifyName,
- 						Zdescription: oItem.Zdescription,
-
- 						// Same field used
- 						ZnavigationId: navigationValue2,
- 						Zexternalurl: navigationValue1,
-
- 						Zisexternal: oItem.Zisexternal,
- 						ZexpiryDate: expiryDate,
-
- 						Zvisibility: oItem.Zvisibility
- 					};
-
- 					oModel.update(sPath, oPayload, {
- 						success: function () {
- 							resolve();
- 						},
- 						error: function () {
- 							reject();
- 						}
- 					});
-
- 				});
-
- 			});
-
- 			Promise.all(updatePromises)
-
- 			.then(function () {
- 				sap.m.MessageBox.success("Data updated successfully!");
- 			})
-
- 			.catch(function () {
- 				sap.m.MessageBox.error("Failed to update some data.");
- 			})
-
- 			.finally(function () {
- 				sap.ui.core.BusyIndicator.hide();
- 			});
-
- 		},
- 		onNavigationChange: function (oEvent) {
-
- 			var sKey = oEvent.getParameter("selectedItem").getKey();
-
- 			var oContext = oEvent.getSource()
- 				.getBindingContext("oNotifyTabModel");
-
- 			var oObject = oContext.getObject();
-
- 			if (sKey === "EXTERNAL") {
-
- 				// Clear navigation id to allow URL entry
- 				oObject.ZnavigationId = "";
-
- 			} else {
-
- 				oObject.ZnavigationId = sKey;
-
- 			}
-
- 			oContext.getModel().refresh();
-
- 		},
- 		onExternalUrlChange: function (oEvent) {
-
- 			var sValue = oEvent.getParameter("value");
-
- 			var oContext = oEvent.getSource()
- 				.getBindingContext("oNotifyTabModel");
-
- 			var oObject = oContext.getObject();
-
- 			oObject.ZnavigationId = sValue;
-
- 		},
-
- 		onDeleteNotifyTabCon: function () {
-
- 			var that = this;
- 			var oTable = this.getView().byId("notificationTab");
-
- 			var aContexts = oTable.getSelectedContexts();
- 			if (aContexts.length) {
- 				sap.m.MessageBox.show(
- 					"Are you sure you want to delete the selected item?", {
- 						icon: sap.m.MessageBox.Icon.QUESTION,
- 						title: "Confirmation",
- 						actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
- 						onClose: function (oAction) {
- 							if (oAction === "YES") {
-
- 								that.onDeleteNotifyTab();
- 							}
- 						}
- 					}
- 				);
- 			}
- 		},
-
- 		onDeleteNotifyTab: function () {
- 			debugger;
- 			var that = this;
- 			var oTable = this.getView().byId("notificationTab");
- 			var aContexts = oTable.getSelectedContexts();
-
- 			var deletionItems = [];
-
- 			for (var i = 0; i < aContexts.length; i++) {
- 				deletionItems.push(aContexts[i].getObject())
- 			};
-
- 			var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
- 			var uPath = "/NoitificationSet";
- 			var oDataModel = new sap.ui.model.odata.ODataModel(url);
- 			oDataModel.setUseBatch(true);
-
- 			var batchChanges = [];
-
- 			for (var i = 0; i < deletionItems.length; i++) {
- 				var addRow = deletionItems[i];
- 				delete addRow.__metadata;
-
- 				var deletePath = `/NoitificationSet(ZnotifyId='${addRow.ZnotifyId}')`;
-
- 				batchChanges.push(oDataModel.createBatchOperation(deletePath, "DELETE"));
-
- 			}
-
- 			oDataModel.addBatchChangeOperations(batchChanges);
-
- 			sap.ui.core.BusyIndicator.show(0);
-
- 			oDataModel.submitBatch(
- 				function (oData, oResponse) {
- 					if (oResponse.statusCode === "202" || oResponse.statusCode === 202) {
- 						sap.ui.core.BusyIndicator.hide(0);
- 						sap.m.MessageBox.success("Selected items deleted successfully.");
- 						that.onLoadNotificationTab();
- 					}
- 				},
- 				function (oError) {
- 					sap.ui.core.BusyIndicator.hide();
- 					sap.m.MessageBox.error("Failed to delete selected items.");
- 				}
- 			);
-
- 		},
-
- 		//Common Utility Function
-
- 		getSearchHelpData: function (filterBy) {
- 			return new Promise((resolve, reject) => {
- 				var finmobview = this.getView().getModel("finmobview");
-
- 				var aFilters = [new sap.ui.model.Filter("Filter", sap.ui.model.FilterOperator.EQ, filterBy)];
-
- 				finmobview.read("/WidgetSearchHelpSet", {
- 					filters: aFilters,
- 					success: function (data) {
- 						console.log(data);
-
- 						var response = data.results || [];
- 						resolve(response);
- 					},
- 					error: function (oError) {
- 						sap.ui.core.BusyIndicator.hide(0);
- 						var responseText = oError.responseText;
- 						var msg = "Error fetching data";
-
- 						if (responseText.indexOf("{") > -1) {
- 							try {
- 								var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
- 								if (errorDetails.length > 0) {
- 									msg = errorDetails.map(err => err.message).join("\n");
- 								}
- 							} catch (e) {
- 								msg = responseText;
- 							}
- 						}
- 						MessageBox.error(msg);
- 						reject(oError);
- 					}
- 				});
- 			});
- 		},
-
- 		getQueryParameter: function (datasource) {
- 			return new Promise((resolve, reject) => {
- 				debugger;
-
- 				var finmobview = this.getView().getModel("finmobview");
-
- 				// var dataSourceValue = datasource || 'YES_ARAMCO_PLANS_TEST';
-
- 				var dataSourceValue = datasource || '';
- 				var aFilters = [new sap.ui.model.Filter("DataSource", sap.ui.model.FilterOperator.EQ, dataSourceValue)];
-
- 				finmobview.read("/VariableMetaDataSet", {
- 					filters: aFilters,
- 					success: function (data) {
- 						console.log(data);
-
- 						var response = data.results || [];
- 						resolve(response);
- 					},
- 					error: function (oError) {
- 						sap.ui.core.BusyIndicator.hide(0);
- 						var responseText = oError.responseText;
- 						var msg = "Error fetching data";
-
- 						if (responseText.indexOf("{") > -1) {
- 							try {
- 								var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
- 								if (errorDetails.length > 0) {
- 									msg = errorDetails.map(err => err.message).join("\n");
- 								}
- 							} catch (e) {
- 								msg = responseText;
- 							}
- 						}
- 						MessageBox.error(msg);
- 						reject(oError);
- 					}
- 				});
- 			});
-
- 		},
-
- 		//Dynamic Widget Config Controller
-
- 		onLoadDyanmicWidgetData: async function (widgetId) {
- 			return await DynamicWidgetHelper.onLoadDyanmicWidgetData(this, widgetId);
- 		},
-
- 		onDataSourceChange: function (oEvent) {
- 			return DynamicWidgetHelper.onDataSourceChange(this, oEvent);
- 		},
-
- 		checkQueryValidity: function (oEvent) {
- 			return DynamicWidgetHelper.checkQueryValidity(this, oEvent);
- 		},
-
- 		handleSavePress: function (oEvent) {
- 			return DynamicWidgetHelper.handleSavePress(this, oEvent);
- 		},
-
- 		deleteWidget: function (widgetId) {
- 			return DynamicWidgetHelper.deleteWidget(this, widgetId);
- 		},
-
- 		handleAddPress: function (paramQueryType, oEvent) {
- 			return DynamicWidgetHelper.handleAddPress(this, paramQueryType, oEvent);
- 		},
-
- 		onAddInput: async function (dataSource) {
- 			return await DynamicWidgetHelper.onAddInput(this, dataSource);
- 		},
-
- 		getGroupedFormValues: async function () {
- 			return await DynamicWidgetHelper.getGroupedFormValues(this);
- 		},
-
- 		//Create Dynamic Widget Config Controller
-
- 		onLoadCreateDynamicWidgetData: async function (widgetId) {
- 			return await CreateDynamicWidgetHelper.onLoadCreateDynamicWidgetData(this, widgetId);
- 		},
-
- 		onCreateDataSourceChange: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onCreateDataSourceChange(this, oEvent);
- 		},
-
- 		onCreateCheckQueryValidity: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onCreateCheckQueryValidity(this, oEvent);
- 		},
-
- 		onCreateSavePress: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onCreateSavePress(this, oEvent);
- 		},
-
- 		onDuplicateWidgetPress: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onDuplicateWidgetPress(this, oEvent);
- 		},
-
- 		onConfirmDuplicateWidget: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onConfirmDuplicateWidget(this, oEvent);
- 		},
-
- 		onCancelDuplicateWidget: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onCancelDuplicateWidget(this, oEvent);
- 		},
-
- 		onDuplicateWidgetFromList: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onDuplicateWidgetFromList(this, oEvent);
- 		},
-
- 		onCreateDeleteWidget: function (widgetId) {
- 			return CreateDynamicWidgetHelper.onCreateDeleteWidget(this, widgetId);
- 		},
-
- 		onCreateGetGroupedFormValues: async function () {
- 			return await CreateDynamicWidgetHelper.onCreateGetGroupedFormValues(this);
- 		},
-
- 		onCreateEditPress: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onCreateEditPress(this, oEvent);
- 		},
-
- 		onCreateCancelPress: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onCreateCancelPress(this, oEvent);
- 		},
-
- 		//Widget List Management
-
- 		onLoadWidgetListData: async function () {
- 			return await CreateDynamicWidgetHelper.onLoadWidgetListData(this);
- 		},
-
- 		onWidgetListItemPress: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onWidgetListItemPress(this, oEvent);
- 		},
-
- 		onAddNewWidget: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onAddNewWidget(this, oEvent);
- 		},
-
- 		onEditWidget: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onEditWidget(this, oEvent);
- 		},
-
- 		onDeleteWidgetFromList: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onDeleteWidgetFromList(this, oEvent);
- 		},
-
- 		onBackToWidgetList: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onBackToWidgetList(this, oEvent);
- 		},
-
- 		onCreateWidgetTypeChange: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onCreateWidgetTypeChange(this, oEvent);
- 		},
-
- 		onCreateChartTypeChange: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onCreateChartTypeChange(this, oEvent);
- 		},
-
- 		onCreateWidgetNameChange: function (oEvent) {
- 			return CreateDynamicWidgetHelper.onCreateWidgetNameChange(this, oEvent);
- 		},
-
- 		// Page Configuration Event Handlers
- 		onLoadPageConfigurationData: function () {
- 			return PageConfigurationHelper.onLoadPageConfigurationData(this);
- 		},
-
- 		onPageConfigPress: function (oEvent) {
- 			return PageConfigurationHelper.onPageConfigPress(this, oEvent);
- 		},
-
- 		onBackToPageWidgetConfig: function (oEvent) {
- 			return PageConfigurationHelper.onBackToPageWidgetConfig(this, oEvent);
- 		},
-
- 		onBackToPageConfig: function () {
- 			return PageConfigurationHelper.onBackToPageConfig(this);
- 		},
-
- 		onAddPageConfig: function () {
- 			return PageConfigurationHelper.onAddPageConfig(this);
- 		},
- 		onAddPageConfigItem: function () {
- 			return PageConfigurationHelper.onAddPageConfigItem(this);
- 		},
- 		onCloseAddNewPageConfigDialog: function () {
- 			return PageConfigurationHelper.onCloseAddNewPageConfigDialog(this);
- 		},
-
- 		onUpdatePageConfig: function () {
- 			return PageConfigurationHelper.onUpdatePageConfig(this);
- 		},
-
- 		onDeletePageConfig: function () {
- 			return PageConfigurationHelper.onDeletePageConfig(this);
- 		},
-
- 		onAddWidgetToPageConfig: function () {
- 			return PageConfigurationHelper.onAddWidgetToPageConfig(this);
- 		},
- 		onAddWidgetConfigItem: function () {
- 			return PageConfigurationHelper.onAddWidgetConfigItem(this);
- 		},
- 		closeAddWidgetConfigDialog: function () {
- 			return PageConfigurationHelper.closeAddWidgetConfigDialog(this);
- 		},
- 		onUpdateWidgetToPageConfig: function () {
- 			return PageConfigurationHelper.onUpdateWidgetToPageConfig(this);
- 		},
- 		onDeleteWidgetToPageConfig: function () {
- 			return PageConfigurationHelper.onDeleteWidgetToPageConfig(this);
- 		},
- 		onDeleteWidgetToPageConfigItems: function () {
- 			return PageConfigurationHelper.onDeleteWidgetToPageConfigItems(this);
- 		},
-
- 		onRemoveWidgetFromPageConfig: function (oEvent) {
- 			return PageConfigurationHelper.onRemoveWidgetFromPageConfig(this, oEvent);
- 		},
-
- 		onPageConfigSelectionChange: function (oEvent) {
- 			return PageConfigurationHelper.onPageConfigSelectionChange(this, oEvent);
- 		},
-
- 		onPageWidgetConfigSelectionChange: function (oEvent) {
- 			return PageConfigurationHelper.onPageWidgetConfigSelectionChange(this, oEvent);
- 		},
-
- 		onPageWidgetConfigPress: function (oEvent) {
- 			return PageConfigurationHelper.onPageWidgetConfigPress(this, oEvent);
- 		},
-
- 		onTilePress: function (oEvent) {
- 			// var that = oController;
- 			var oBindingContext = oEvent.getSource().getBindingContext("oLandingPageDataModel");
- 			var oRowData = oBindingContext.getObject();
- 			var oTileDataModel = new JSONModel();
- 			oTileDataModel.setData(oRowData);
+		//Common Utility Function
+
+		getSearchHelpData: function (filterBy) {
+			return new Promise((resolve, reject) => {
+				var finmobview = this.getView().getModel("finmobview");
+
+				var aFilters = [new sap.ui.model.Filter("Filter", sap.ui.model.FilterOperator.EQ, filterBy)];
+
+				finmobview.read("/WidgetSearchHelpSet", {
+					filters: aFilters,
+					success: function (data) {
+						console.log(data);
+
+						var response = data.results || [];
+						resolve(response);
+					},
+					error: function (oError) {
+						sap.ui.core.BusyIndicator.hide(0);
+						var responseText = oError.responseText;
+						var msg = "Error fetching data";
+
+						if (responseText.indexOf("{") > -1) {
+							try {
+								var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
+								if (errorDetails.length > 0) {
+									msg = errorDetails.map(err => err.message).join("\n");
+								}
+							} catch (e) {
+								msg = responseText;
+							}
+						}
+						MessageBox.error(msg);
+						reject(oError);
+					}
+				});
+			});
+		},
+
+		getQueryParameter: function(datasource){
+			return new Promise((resolve, reject) => {
+				debugger;
+
+				var finmobview = this.getView().getModel("finmobview");
+
+				// var dataSourceValue = datasource || 'YES_ARAMCO_PLANS_TEST';
+				
+				var dataSourceValue = datasource || '';
+				var aFilters = [new sap.ui.model.Filter("DataSource", sap.ui.model.FilterOperator.EQ, dataSourceValue)];
+				
+
+				finmobview.read("/VariableMetaDataSet", {
+					filters: aFilters,
+					success: function (data) {
+						console.log(data);
+
+						var response = data.results || [];
+						resolve(response);
+					},
+					error: function (oError) {
+						sap.ui.core.BusyIndicator.hide(0);
+						var responseText = oError.responseText;
+						var msg = "Error fetching data";
+
+						if (responseText.indexOf("{") > -1) {
+							try {
+								var errorDetails = JSON.parse(oError.responseText).error.innererror.errordetails;
+								if (errorDetails.length > 0) {
+									msg = errorDetails.map(err => err.message).join("\n");
+								}
+							} catch (e) {
+								msg = responseText;
+							}
+						}
+						MessageBox.error(msg);
+						reject(oError);
+					}
+				});
+			});
+
+		},
+
+
+		//Dynamic Widget Config Controller
+
+		onLoadDyanmicWidgetData: async function (widgetId) {
+			return await DynamicWidgetHelper.onLoadDyanmicWidgetData(this,widgetId);
+		},
+
+		onDataSourceChange: function(oEvent) {
+			return DynamicWidgetHelper.onDataSourceChange(this, oEvent);
+		},
+
+		checkQueryValidity: function(oEvent) {
+			return DynamicWidgetHelper.checkQueryValidity(this, oEvent);
+		},
+
+		handleSavePress: function(oEvent){
+			return DynamicWidgetHelper.handleSavePress(this, oEvent);
+		},
+
+		deleteWidget: function(widgetId) {
+			return DynamicWidgetHelper.deleteWidget(this, widgetId);
+		},
+		
+		handleAddPress: function(paramQueryType, oEvent) {
+			return DynamicWidgetHelper.handleAddPress(this, paramQueryType, oEvent);
+		},
+		
+		onAddInput: async function (dataSource)  {
+			return await DynamicWidgetHelper.onAddInput(this,dataSource);
+		},
+
+		getGroupedFormValues: async function() {
+			return await DynamicWidgetHelper.getGroupedFormValues(this);
+		},
+
+		//Create Dynamic Widget Config Controller
+
+		onLoadCreateDynamicWidgetData: async function (widgetId) {
+			return await CreateDynamicWidgetHelper.onLoadCreateDynamicWidgetData(this, widgetId);
+		},
+
+		onCreateDataSourceChange: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateDataSourceChange(this, oEvent);
+		},
+
+		onCreateCheckQueryValidity: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateCheckQueryValidity(this, oEvent);
+		},
+
+		onCreateSavePress: function(oEvent){
+			return CreateDynamicWidgetHelper.onCreateSavePress(this, oEvent);
+		},
+
+		onDuplicateWidgetPress: function(oEvent) {
+			return CreateDynamicWidgetHelper.onDuplicateWidgetPress(this, oEvent);
+		},
+
+		onConfirmDuplicateWidget: function(oEvent) {
+			return CreateDynamicWidgetHelper.onConfirmDuplicateWidget(this, oEvent);
+		},
+
+		onCancelDuplicateWidget: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCancelDuplicateWidget(this, oEvent);
+		},
+
+		onDuplicateWidgetFromList: function(oEvent) {
+			return CreateDynamicWidgetHelper.onDuplicateWidgetFromList(this, oEvent);
+		},
+
+		onCreateDeleteWidget: function(widgetId) {
+			return CreateDynamicWidgetHelper.onCreateDeleteWidget(this, widgetId);
+		},
+
+		onCreateGetGroupedFormValues: async function() {
+			return await CreateDynamicWidgetHelper.onCreateGetGroupedFormValues(this);
+		},
+
+		onCreateEditPress: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateEditPress(this, oEvent);
+		},
+
+		onCreateCancelPress: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateCancelPress(this, oEvent);
+		},
+
+		//Widget List Management
+
+		onLoadWidgetListData: async function() {
+			return await CreateDynamicWidgetHelper.onLoadWidgetListData(this);
+		},
+
+		onWidgetListItemPress: function(oEvent) {
+			return CreateDynamicWidgetHelper.onWidgetListItemPress(this, oEvent);
+		},
+
+		onAddNewWidget: function(oEvent) {
+			return CreateDynamicWidgetHelper.onAddNewWidget(this, oEvent);
+		},
+
+		onEditWidget: function(oEvent) {
+			return CreateDynamicWidgetHelper.onEditWidget(this, oEvent);
+		},
+
+		onDeleteWidgetFromList: function(oEvent) {
+			return CreateDynamicWidgetHelper.onDeleteWidgetFromList(this, oEvent);
+		},
+
+		onBackToWidgetList: function(oEvent) {
+			return CreateDynamicWidgetHelper.onBackToWidgetList(this, oEvent);
+		},
+		
+		onCreateWidgetTypeChange: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateWidgetTypeChange(this,oEvent);
+		},
+
+		onCreateChartTypeChange: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateChartTypeChange(this,oEvent);
+		},
+
+		onCreateWidgetNameChange: function(oEvent) {
+			return CreateDynamicWidgetHelper.onCreateWidgetNameChange(this, oEvent);
+		},
+
+		// Page Configuration Event Handlers
+		onLoadPageConfigurationData: function() {
+			return PageConfigurationHelper.onLoadPageConfigurationData(this);
+		},
+
+		onPageConfigPress: function(oEvent) {
+			return PageConfigurationHelper.onPageConfigPress(this, oEvent);
+		},
+
+		onBackToPageWidgetConfig: function(oEvent){
+			return PageConfigurationHelper.onBackToPageWidgetConfig(this, oEvent);
+		},
+
+		onBackToPageConfig: function() {
+			return PageConfigurationHelper.onBackToPageConfig(this);
+		},
+
+		onAddPageConfig: function() {
+			return PageConfigurationHelper.onAddPageConfig(this);
+		},
+
+		onUpdatePageConfig: function() {
+			return PageConfigurationHelper.onUpdatePageConfig(this);
+		},
+
+		onDeletePageConfig: function() {
+			return PageConfigurationHelper.onDeletePageConfig(this);
+		},
+
+		onAddWidgetToPageConfig: function() {
+			return PageConfigurationHelper.onAddWidgetToPageConfig(this);
+		},
+
+		onRemoveWidgetFromPageConfig: function(oEvent) {
+			return PageConfigurationHelper.onRemoveWidgetFromPageConfig(this, oEvent);
+		},
+
+		onPageConfigSelectionChange: function(oEvent) {
+			return PageConfigurationHelper.onPageConfigSelectionChange(this, oEvent);
+		},
+
+		onPageWidgetConfigSelectionChange: function(oEvent) {
+			return PageConfigurationHelper.onPageWidgetConfigSelectionChange(this, oEvent);
+		},
+
+		onPageWidgetConfigPress: function(oEvent) {
+			return PageConfigurationHelper.onPageWidgetConfigPress(this, oEvent);
+		},
+
+		onTilePress: function(oEvent) {
+			// var that = oController;
+			var oBindingContext = oEvent.getSource().getBindingContext("oLandingPageDataModel");
+			var oRowData = oBindingContext.getObject();
+			var oTileDataModel = new JSONModel();
+			oTileDataModel.setData(oRowData);
  			this.getView().setModel(oTileDataModel, "oTileDataModel");
+	  
+			console.log("Row pressed - Row contents:", oRowData);
 
- 			console.log("Row pressed - Row contents:", oRowData);
+			this.getView().byId("pageConfig").setVisible(true);
+			this.getView().byId("tileText").setText(oRowData.Ztitle);
+	  
+			// Navigate to another fragment
+			this.navigateToDetailFragment (oRowData.ZlevelId);
 
- 			this.getView().byId("pageConfig").setVisible(true);
- 			this.getView().byId("tileText").setText(oRowData.Ztitle);
+		},
 
- 			// Navigate to another fragment
- 			this.navigateToDetailFragment(oRowData.ZlevelId);
-
- 		},
-
- 		navigateToDetailFragment: function (levelId) {
- 			var that = this;
- 			var oPageDataModel = new JSONModel();
- 			// oPageDataModel.setData('');
+		navigateToDetailFragment: function (levelId) {
+			var that = this;
+			var oPageDataModel = new JSONModel();
+			// oPageDataModel.setData('');
  			// hat.getView().setModel(oPageDataModel, "oPageDataModel");
- 			var finmobview = this.getView().getModel("finmobview");
- 			var aFilters = [new sap.ui.model.Filter("ZtitleId", sap.ui.model.FilterOperator.EQ, levelId)];
+			 var finmobview = this.getView().getModel("finmobview");
+			var aFilters = [new sap.ui.model.Filter("ZtitleId", sap.ui.model.FilterOperator.EQ,  levelId )];
 
- 			finmobview.read("/DynamicPageSet", {
- 				filters: aFilters,
- 				success: function (data) {
- 					console.log(data);
- 					// oAuthDataModel.setData(data);
- 					// that.getView().setModel(oAuthDataModel, "oAuthDataModel");
- 					oPageDataModel.setData(data.results);
+			finmobview.read("/DynamicPageSet", {
+				filters: aFilters,
+				success: function (data) {
+					console.log(data);
+					// oAuthDataModel.setData(data);
+					// that.getView().setModel(oAuthDataModel, "oAuthDataModel");
+					oPageDataModel.setData(data.results);
  					that.getView().setModel(oPageDataModel, "oPageDataModel");
+				
 
- 					sap.ui.core.BusyIndicator.hide(0);
+					sap.ui.core.BusyIndicator.hide(0);
 
- 				},
- 				error: function (oError) {
+				},
+				error: function (oError) {
 
- 					sap.ui.core.BusyIndicator.hide(0);
- 					var responseText = oError.responseText;
- 					var msg;
- 					if (responseText.indexOf("{") > -1) {
- 						if (responseText != "") {
- 							//	msg += JSON.parse(oError.responseText).error.message.value;
- 							for (var i = 0; i < JSON.parse(oError.responseText).error.innererror.errordetails.length - 1; i++) {
- 								msg += JSON.parse(oError.responseText).error.innererror.errordetails[i].message + "\n";
- 							}
- 						}
- 					} else {
- 						msg = responseText;
- 					}
+					sap.ui.core.BusyIndicator.hide(0);
+					var responseText = oError.responseText;
+					var msg;
+					if (responseText.indexOf("{") > -1) {
+						if (responseText != "") {
+							//	msg += JSON.parse(oError.responseText).error.message.value;
+							for (var i = 0; i < JSON.parse(oError.responseText).error.innererror.errordetails.length - 1; i++) {
+								msg += JSON.parse(oError.responseText).error.innererror.errordetails[i].message + "\n";
+							}
+						}
+					} else {
+						msg = responseText;
+					}
 
- 					MessageBox.error(msg);
- 				}
- 			});
+					MessageBox.error(msg);
+				}
+			});
+		
 
- 		},
 
- 		onAddPage: function () {
- 			debugger;
- 			var that = this;
- 			var finmobview = this.getView().getModel("finmobview");
+		},
 
- 			if (!this.AddNewPageDialog) {
- 				this.AddNewPageDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewPage", this);
- 				this.getView().addDependent(this.AddNewPageDialog);
+		onAddPage: function() {
+			debugger;
+			var that = this;
+			var finmobview = this.getView().getModel("finmobview");
 
- 			}
- 			this.AddNewPageDialog.open();
+			if (!this.AddNewPageDialog) {
+				this.AddNewPageDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewPage", this);
+				this.getView().addDependent(this.AddNewPageDialog);
 
- 		},
+			}
+			this.AddNewPageDialog.open();
 
- 		onUpdatePage: function () {
- 			var oModel = this.getView().getModel("finmobview");
+		},
+		
+		onUpdatePage: function(){
+			var oModel = this.getView().getModel("finmobview");
  			var aData = this.getView().getModel("oPageDataModel").getData();
 
  			sap.ui.core.BusyIndicator.show(0);
@@ -11112,11 +9747,11 @@
  					//     oItem.Zroles = "[" + oItem.Zroles.map(role => "'" + role + "'").join(", ") + "]";
  					//     console.log("Formatted Zroles:", oItem.Zroles);
  					// }
- 					//TODO: Update by
- 					var sPath = "/DynamicPageSet(ZtitleId='" + oItem.ZtitleId + "',ZpageId='" + oItem.ZpageId + "')";
+ 						//TODO: Update by
+ 					 var sPath = "/DynamicPageSet(ZtitleId='"+oItem.ZtitleId+"',ZpageId='" +oItem.ZpageId +"')";
 
  					oModel.update(sPath, oItem, {
- 						// method: "MERGE",
+ 							// method: "MERGE",
  						success: function () {
  							resolve(); // Update succeeded
  						},
@@ -11139,9 +9774,9 @@
  					MessageBox.success("Data updated successfully!");
  				}
  			});
- 		},
-
- 		onDeletePage: function () {
+		},
+		
+		onDeletePage: function () {
 
  			var that = this;
  			var oTable = this.getView().byId("pageTable");
@@ -11214,31 +9849,31 @@
 
  		},
 
- 		closeAddNewPageDialog: function () {
- 			if (this.AddNewPageDialog) {
- 				this.AddNewPageDialog.close();
- 			}
- 		},
-
- 		onAddPageItem: function () {
- 			debugger;
+		closeAddNewPageDialog: function() {
+			if (this.AddNewPageDialog) {
+				this.AddNewPageDialog.close();
+			}
+		},
+		
+		onAddPageItem: function() {
+			debugger;
  			var that = this;
- 			var inpTileTitle = this.getView().getModel("oTileDataModel").getData().ZlevelId;
-
+ 			var inpTileTitle =this.getView().getModel("oTileDataModel").getData().ZlevelId;
+ 			
  			var inpPageTitle = sap.ui.getCore().byId("pageTitleInput").getValue();
- 			var inpRoles = sap.ui.getCore().byId("rolesInput").getValue();
+ 			var inpRoles= sap.ui.getCore().byId("rolesInput").getValue();
  			var inpVisibility = sap.ui.getCore().byId("visibilityCheckBox").getSelected();
-
+ 			
  			if (inpPageTitle === '') {
  				sap.m.MessageToast.show("Fill all the mandatory Fields!!!");
  				return;
  			}
 
  			var addPageItem = {
- 				"ZtitleId": inpTileTitle,
+ 				"ZtitleId":inpTileTitle,
  				"ZpageName": inpPageTitle,
  				"Zvisibility": inpVisibility,
- 				"Zrole": inpRoles,
+ 				"Zrole": inpRoles,	
  			};
  			var batchChanges = [];
  			var url = "/sap/opu/odata/SAP/ZFI_MOBILE_SRV/";
@@ -11264,256 +9899,263 @@
 
  			this.AddNewPageDialog.close();
 
- 		},
+		},
 
- 		// Add this function to Home.controller.js after the onAddPageItem function (around line 9897)
+		// Add this function to Home.controller.js after the onAddPageItem function (around line 9897)
 
- 		onTileDrop: function (oEvent) {
- 			var oDraggedItem = oEvent.getParameter("draggedControl");
- 			var oDroppedItem = oEvent.getParameter("droppedControl");
- 			var sDropPosition = oEvent.getParameter("dropPosition");
+onTileDrop: function(oEvent) {
+	var oDraggedItem = oEvent.getParameter("draggedControl");
+	var oDroppedItem = oEvent.getParameter("droppedControl");
+	var sDropPosition = oEvent.getParameter("dropPosition");
 
- 			var oModel = this.getView().getModel("oLandingPageDataModel");
- 			var aData = oModel.getData();
+	var oModel = this.getView().getModel("oLandingPageDataModel");
+	var aData = oModel.getData();
 
- 			// If aData is not an array, it might be wrapped in an object
- 			if (!Array.isArray(aData)) {
- 				sap.m.MessageToast.show("Unable to reorder: Invalid data structure");
- 				return;
- 			}
+	// If aData is not an array, it might be wrapped in an object
+	if (!Array.isArray(aData)) {
+		sap.m.MessageToast.show("Unable to reorder: Invalid data structure");
+		return;
+	}
 
- 			// Get the binding contexts
- 			var oDraggedContext = oDraggedItem.getBindingContext("oLandingPageDataModel");
- 			var oDroppedContext = oDroppedItem.getBindingContext("oLandingPageDataModel");
+	// Get the binding contexts
+	var oDraggedContext = oDraggedItem.getBindingContext("oLandingPageDataModel");
+	var oDroppedContext = oDroppedItem.getBindingContext("oLandingPageDataModel");
 
- 			if (!oDraggedContext || !oDroppedContext) {
- 				return;
- 			}
+	if (!oDraggedContext || !oDroppedContext) {
+		return;
+	}
 
- 			// Get the indices from the binding path
- 			var sDraggedPath = oDraggedContext.getPath();
- 			var sDroppedPath = oDroppedContext.getPath();
+	// Get the indices from the binding path
+	var sDraggedPath = oDraggedContext.getPath();
+	var sDroppedPath = oDroppedContext.getPath();
 
- 			var iDraggedIndex = parseInt(sDraggedPath.substring(sDraggedPath.lastIndexOf("/") + 1));
- 			var iDroppedIndex = parseInt(sDroppedPath.substring(sDroppedPath.lastIndexOf("/") + 1));
+	var iDraggedIndex = parseInt(sDraggedPath.substring(sDraggedPath.lastIndexOf("/") + 1));
+	var iDroppedIndex = parseInt(sDroppedPath.substring(sDroppedPath.lastIndexOf("/") + 1));
 
- 			// Clone the dragged item data to avoid reference issues
- 			var oDraggedItemData = JSON.parse(JSON.stringify(aData[iDraggedIndex]));
+	// Clone the dragged item data to avoid reference issues
+	var oDraggedItemData = JSON.parse(JSON.stringify(aData[iDraggedIndex]));
 
- 			// Remove from old position
- 			aData.splice(iDraggedIndex, 1);
+	// Remove from old position
+	aData.splice(iDraggedIndex, 1);
 
- 			// Calculate new index
- 			var iNewIndex = iDroppedIndex;
- 			if (iDraggedIndex < iDroppedIndex) {
- 				iNewIndex = iDroppedIndex - 1;
- 			}
+	// Calculate new index
+	var iNewIndex = iDroppedIndex;
+	if (iDraggedIndex < iDroppedIndex) {
+		iNewIndex = iDroppedIndex - 1;
+	}
 
- 			if (sDropPosition === "After") {
- 				iNewIndex++;
- 			}
+	if (sDropPosition === "After") {
+		iNewIndex++;
+	}
 
- 			// Insert at new position
- 			aData.splice(iNewIndex, 0, oDraggedItemData);
+	// Insert at new position
+	aData.splice(iNewIndex, 0, oDraggedItemData);
 
- 			// Update sequence numbers for all items
- 			aData.forEach(function (oItem, iIndex) {
- 				oItem.SequenceNo = iIndex + 1;
- 			});
+	// Update sequence numbers for all items
+	aData.forEach(function(oItem, iIndex) {
+		oItem.SequenceNo = iIndex + 1;
+	});
 
- 			// Update the model with the reordered data - force a full refresh
- 			oModel.setData([]);
- 			oModel.setData(aData);
- 			oModel.refresh(true);
+	// Update the model with the reordered data - force a full refresh
+	oModel.setData([]);
+	oModel.setData(aData);
+	oModel.refresh(true);
 
- 			sap.m.MessageToast.show("Tile order updated. Click 'Update' to save changes.");
- 		},
+	sap.m.MessageToast.show("Tile order updated. Click 'Update' to save changes.");
+},
 
- 		onPagePress: function (oEvent) {
-
- 			// var that = oController;
- 			// debugger;
- 			var oBindingContext = oEvent.getSource().getBindingContext("oPageDataModel");
- 			var oRowData = oBindingContext.getObject();
- 			var oPageDetailsModel = new JSONModel();
- 			oPageDetailsModel.setData(oRowData);
+		
+		onPagePress: function(oEvent) {
+			
+			// var that = oController;
+			// debugger;
+			var oBindingContext = oEvent.getSource().getBindingContext("oPageDataModel");
+			var oRowData = oBindingContext.getObject();
+			var oPageDetailsModel = new JSONModel();
+			oPageDetailsModel.setData(oRowData);
  			this.getView().setModel(oPageDetailsModel, "oPageDetailsModel");
+	  
+			console.log("Row pressed - Row contents:", oRowData);
 
- 			console.log("Row pressed - Row contents:", oRowData);
+			this.getView().byId("widgetConfig").setVisible(true);
+			this.getView().byId("pageText").setText(oRowData.ZpageName);
 
- 			this.getView().byId("widgetConfig").setVisible(true);
- 			this.getView().byId("pageText").setText(oRowData.ZpageName);
+			// Navigate to another fragment
+			this.navigateToWidgetFragment (oRowData.ZpageId);
 
- 			// Navigate to another fragment
- 			this.navigateToWidgetFragment(oRowData.ZpageId);
+			// this.showDynamicWidgetConfig();
+			// var oFragment = sap.ui.xmlfragment(
+			// 	"mobilefinance.MobileFinance.fragments.DynamicWidgetConfig",
+			// 	this
+			// );
 
- 			// this.showDynamicWidgetConfig();
- 			// var oFragment = sap.ui.xmlfragment(
- 			// 	"mobilefinance.MobileFinance.fragments.DynamicWidgetConfig",
- 			// 	this
- 			// );
+			// var params = {};	
+	  
+			// // Pass parameters to fragment
+			// oFragment.data("params", params);
+	  
+			// this.byId("dynamicWidgetConfig").removeAllContent();
+			// this.byId("dynamicWidgetConfig").addContent(oFragment);
 
- 			// var params = {};	
+			// if (!this.oFragment) {
+			// 	// this.openWidgetConfig = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewPage", this);
+			// 	this.getView().addDependent(this.oFragment);
 
- 			// // Pass parameters to fragment
- 			// oFragment.data("params", params);
+			// }
+			// this.oFragment.open();
 
- 			// this.byId("dynamicWidgetConfig").removeAllContent();
- 			// this.byId("dynamicWidgetConfig").addContent(oFragment);
 
- 			// if (!this.oFragment) {
- 			// 	// this.openWidgetConfig = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewPage", this);
- 			// 	this.getView().addDependent(this.oFragment);
 
- 			// }
- 			// this.oFragment.open();
+		},
 
- 		},
+		onPageDrop: function(oEvent) {
+			var oDraggedItem = oEvent.getParameter("draggedControl");
+			var oDroppedItem = oEvent.getParameter("droppedControl");
+			var sDropPosition = oEvent.getParameter("dropPosition");
 
- 		onPageDrop: function (oEvent) {
- 			var oDraggedItem = oEvent.getParameter("draggedControl");
- 			var oDroppedItem = oEvent.getParameter("droppedControl");
- 			var sDropPosition = oEvent.getParameter("dropPosition");
+			var oModel = this.getView().getModel("oPageDataModel");
+			var aData = oModel.getData();
 
- 			var oModel = this.getView().getModel("oPageDataModel");
- 			var aData = oModel.getData();
+			// If aData is not an array, it might be wrapped in an object
+			if (!Array.isArray(aData)) {
+				sap.m.MessageToast.show("Unable to reorder: Invalid data structure");
+				return;
+			}
 
- 			// If aData is not an array, it might be wrapped in an object
- 			if (!Array.isArray(aData)) {
- 				sap.m.MessageToast.show("Unable to reorder: Invalid data structure");
- 				return;
- 			}
+			// Get the binding contexts
+			var oDraggedContext = oDraggedItem.getBindingContext("oPageDataModel");
+			var oDroppedContext = oDroppedItem.getBindingContext("oPageDataModel");
 
- 			// Get the binding contexts
- 			var oDraggedContext = oDraggedItem.getBindingContext("oPageDataModel");
- 			var oDroppedContext = oDroppedItem.getBindingContext("oPageDataModel");
+			if (!oDraggedContext || !oDroppedContext) {
+				return;
+			}
 
- 			if (!oDraggedContext || !oDroppedContext) {
- 				return;
- 			}
+			// Get the indices from the binding path
+			var sDraggedPath = oDraggedContext.getPath();
+			var sDroppedPath = oDroppedContext.getPath();
 
- 			// Get the indices from the binding path
- 			var sDraggedPath = oDraggedContext.getPath();
- 			var sDroppedPath = oDroppedContext.getPath();
+			var iDraggedIndex = parseInt(sDraggedPath.substring(sDraggedPath.lastIndexOf("/") + 1));
+			var iDroppedIndex = parseInt(sDroppedPath.substring(sDroppedPath.lastIndexOf("/") + 1));
 
- 			var iDraggedIndex = parseInt(sDraggedPath.substring(sDraggedPath.lastIndexOf("/") + 1));
- 			var iDroppedIndex = parseInt(sDroppedPath.substring(sDroppedPath.lastIndexOf("/") + 1));
+			// Clone the dragged item data to avoid reference issues
+			var oDraggedItemData = JSON.parse(JSON.stringify(aData[iDraggedIndex]));
 
- 			// Clone the dragged item data to avoid reference issues
- 			var oDraggedItemData = JSON.parse(JSON.stringify(aData[iDraggedIndex]));
+			// Remove from old position
+			aData.splice(iDraggedIndex, 1);
 
- 			// Remove from old position
- 			aData.splice(iDraggedIndex, 1);
+			// Calculate new index
+			var iNewIndex = iDroppedIndex;
+			if (iDraggedIndex < iDroppedIndex) {
+				iNewIndex = iDroppedIndex - 1;
+			}
 
- 			// Calculate new index
- 			var iNewIndex = iDroppedIndex;
- 			if (iDraggedIndex < iDroppedIndex) {
- 				iNewIndex = iDroppedIndex - 1;
- 			}
+			if (sDropPosition === "After") {
+				iNewIndex++;
+			}
 
- 			if (sDropPosition === "After") {
- 				iNewIndex++;
- 			}
+			// Insert at new position
+			aData.splice(iNewIndex, 0, oDraggedItemData);
 
- 			// Insert at new position
- 			aData.splice(iNewIndex, 0, oDraggedItemData);
+			// Update sequence numbers for all items
+			aData.forEach(function(oItem, iIndex) {
+				oItem.SequenceNo = iIndex + 1;
+			});
 
- 			// Update sequence numbers for all items
- 			aData.forEach(function (oItem, iIndex) {
- 				oItem.SequenceNo = iIndex + 1;
- 			});
+			// Update the model with the reordered data - force a full refresh
+			oModel.setData([]);
+			oModel.setData(aData);
+			oModel.refresh(true);
 
- 			// Update the model with the reordered data - force a full refresh
- 			oModel.setData([]);
- 			oModel.setData(aData);
- 			oModel.refresh(true);
+			sap.m.MessageToast.show("Page order updated. Click 'Update' to save changes.");
+		},
 
- 			sap.m.MessageToast.show("Page order updated. Click 'Update' to save changes.");
- 		},
-
- 		navigateToWidgetFragment: function (pageId) {
- 			var that = this;
- 			var oWidgetDataModel = new JSONModel();
- 			// oPageDataModel.setData('');
+		navigateToWidgetFragment: function (pageId) {
+			var that = this;
+			var oWidgetDataModel = new JSONModel();
+			// oPageDataModel.setData('');
  			// hat.getView().setModel(oPageDataModel, "oPageDataModel");
- 			var finmobview = this.getView().getModel("finmobview");
- 			var aFilters = [new sap.ui.model.Filter("ZpageId", sap.ui.model.FilterOperator.EQ, pageId)];
+			 var finmobview = this.getView().getModel("finmobview");
+			var aFilters = [new sap.ui.model.Filter("ZpageId", sap.ui.model.FilterOperator.EQ,  pageId )];
 
- 			finmobview.read("/DynamicWidgetSet", {
- 				filters: aFilters,
- 				success: function (data) {
- 					console.log(data);
- 					// oAuthDataModel.setData(data);
- 					// that.getView().setModel(oAuthDataModel, "oAuthDataModel");
- 					oWidgetDataModel.setData(data.results);
+			finmobview.read("/DynamicWidgetSet", {
+				filters: aFilters,
+				success: function (data) {
+					console.log(data);
+					// oAuthDataModel.setData(data);
+					// that.getView().setModel(oAuthDataModel, "oAuthDataModel");
+					oWidgetDataModel.setData(data.results);
  					that.getView().setModel(oWidgetDataModel, "oWidgetDataModel");
+				
 
- 					sap.ui.core.BusyIndicator.hide(0);
+					sap.ui.core.BusyIndicator.hide(0);
 
- 				},
- 				error: function (oError) {
+				},
+				error: function (oError) {
 
- 					sap.ui.core.BusyIndicator.hide(0);
- 					var responseText = oError.responseText;
- 					var msg;
- 					if (responseText.indexOf("{") > -1) {
- 						if (responseText != "") {
- 							//	msg += JSON.parse(oError.responseText).error.message.value;
- 							for (var i = 0; i < JSON.parse(oError.responseText).error.innererror.errordetails.length - 1; i++) {
- 								msg += JSON.parse(oError.responseText).error.innererror.errordetails[i].message + "\n";
- 							}
- 						}
- 					} else {
- 						msg = responseText;
- 					}
+					sap.ui.core.BusyIndicator.hide(0);
+					var responseText = oError.responseText;
+					var msg;
+					if (responseText.indexOf("{") > -1) {
+						if (responseText != "") {
+							//	msg += JSON.parse(oError.responseText).error.message.value;
+							for (var i = 0; i < JSON.parse(oError.responseText).error.innererror.errordetails.length - 1; i++) {
+								msg += JSON.parse(oError.responseText).error.innererror.errordetails[i].message + "\n";
+							}
+						}
+					} else {
+						msg = responseText;
+					}
 
- 					MessageBox.error(msg);
- 				}
- 			});
+					MessageBox.error(msg);
+				}
+			});
+		
 
- 		},
 
- 		onAddWidget: async function () {
- 			debugger;
+		},
+		
+		onAddWidget: async function() {
+			debugger;
+			var that = this;
+			var finmobview = this.getView().getModel("finmobview");
+			var aDataSourceDropdownData = await this.getSearchHelpData('Widget_ID');
+			var oDataSourceModel = new sap.ui.model.json.JSONModel();
+			oDataSourceModel.setData(aDataSourceDropdownData);
+			that.getView().setModel(oDataSourceModel, "aDataSourceDropdownData");
+
+			if (!this.AddNewWidgetDialog) {
+				this.AddNewWidgetDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewWidget", this);
+				this.getView().addDependent(this.AddNewWidgetDialog);
+
+			}
+			this.AddNewWidgetDialog.open();
+
+		},
+		
+		onAddWidgetItem: function() {
+			debugger;
  			var that = this;
- 			var finmobview = this.getView().getModel("finmobview");
- 			var aDataSourceDropdownData = await this.getSearchHelpData('Widget_ID');
- 			var oDataSourceModel = new sap.ui.model.json.JSONModel();
- 			oDataSourceModel.setData(aDataSourceDropdownData);
- 			that.getView().setModel(oDataSourceModel, "aDataSourceDropdownData");
-
- 			if (!this.AddNewWidgetDialog) {
- 				this.AddNewWidgetDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewWidget", this);
- 				this.getView().addDependent(this.AddNewWidgetDialog);
-
- 			}
- 			this.AddNewWidgetDialog.open();
-
- 		},
-
- 		onAddWidgetItem: function () {
- 			debugger;
- 			var that = this;
- 			var tileId = this.getView().getModel("oTileDataModel").getData().ZlevelId;
- 			var pageId = this.getView().getModel("oPageDetailsModel").getData().ZpageId;
-
+ 			var tileId =this.getView().getModel("oTileDataModel").getData().ZlevelId;
+ 			var pageId =this.getView().getModel("oPageDetailsModel").getData().ZpageId;
+ 			
+ 			
  			var inpWidgetId = sap.ui.getCore().byId("widgetIDInput").getSelectedKey();
  			// var inpRoles= sap.ui.getCore().byId("rolesInput").getValue();
  			// var inpVisibility = sap.ui.getCore().byId("visibilityCheckBox").getSelected();
-
+ 			
  			if (inpWidgetId === '') {
  				sap.m.MessageToast.show("Fill all the mandatory Fields!!!");
  				return;
  			}
 
  			var addPageItem = {
- 				"ZtitleId": tileId,
+ 				"ZtitleId":tileId,
  				"ZpageId": pageId,
  				"WidgetId": inpWidgetId,
  			};
  			var finmobview = this.getView().getModel("finmobview");
  			var uPath = "/DynamicWidgetSet";
-
+ 			
  			sap.ui.core.BusyIndicator.show(0);
 
  			finmobview.create(uPath, addPageItem, {
@@ -11531,10 +10173,10 @@
 
  			this.AddNewWidgetDialog.close();
 
- 		},
-
- 		onUpdateWidget: function () {
- 			var oModel = this.getView().getModel("finmobview");
+		},
+		
+		onUpdateWidget: function(){
+			var oModel = this.getView().getModel("finmobview");
  			var aData = this.getView().getModel("oWidgetDataModel").getData();
 
  			sap.ui.core.BusyIndicator.show(0);
@@ -11550,12 +10192,11 @@
  					//     oItem.Zroles = "[" + oItem.Zroles.map(role => "'" + role + "'").join(", ") + "]";
  					//     console.log("Formatted Zroles:", oItem.Zroles);
  					// }
- 					//TODO: Update by
- 					var sPath = "/DynamicWidgetSet(ZtitleId='" + oItem.ZtitleId + "',ZpageId='" + oItem.ZpageId + "',WidgetId='" + oItem.WidgetId +
- 						"')";
+ 						//TODO: Update by
+ 					 var sPath = "/DynamicWidgetSet(ZtitleId='"+oItem.ZtitleId+"',ZpageId='" +oItem.ZpageId +"',WidgetId='" +oItem.WidgetId +"')";
 
  					oModel.update(sPath, oItem, {
- 						// method: "MERGE",
+ 							// method: "MERGE",
  						success: function () {
  							resolve(); // Update succeeded
  						},
@@ -11578,9 +10219,9 @@
  					MessageBox.success("Data updated successfully!");
  				}
  			});
- 		},
-
- 		onDeleteWidget: function () {
+		},
+		
+		onDeleteWidget: function () {
 
  			var that = this;
  			var oTable = this.getView().byId("widgetTable");
@@ -11617,24 +10258,24 @@
  			};
 
  			var finmobview = this.getView().getModel("finmobview");
-
+ 			
  			sap.ui.core.BusyIndicator.show(0);
 
  			// Create array of delete promises
  			var deletePromises = [];
-
+ 			
  			for (var i = 0; i < deletionItems.length; i++) {
  				var addRow = deletionItems[i];
  				delete addRow.__metadata;
  				//TODO: Delete by
  				var deletePath = `/DynamicWidgetSet(ZtitleId='${addRow.ZtitleId}',ZpageId='${addRow.ZpageId}',WidgetId='${addRow.WidgetId}')`;
 
- 				deletePromises.push(new Promise(function (resolve, reject) {
+ 				deletePromises.push(new Promise(function(resolve, reject) {
  					finmobview.remove(deletePath, {
- 						success: function (oData) {
+ 						success: function(oData) {
  							resolve(oData);
  						},
- 						error: function (oError) {
+ 						error: function(oError) {
  							reject(oError);
  						}
  					});
@@ -11642,655 +10283,660 @@
  			}
 
  			// Execute all delete operations
- 			Promise.all(deletePromises).then(function () {
+ 			Promise.all(deletePromises).then(function() {
  				sap.ui.core.BusyIndicator.hide(0);
  				sap.m.MessageBox.success("Selected items deleted successfully.");
  				that.navigateToWidgetFragment(deletionItems[0].ZpageId);
- 			}).catch(function (oError) {
+ 			}).catch(function(oError) {
  				sap.ui.core.BusyIndicator.hide();
  				sap.m.MessageBox.error("Failed to delete selected items.");
  			});
 
  		},
-
- 		onWidgetPress: function (oEvent) {
- 			// var that = oController;
- 			debugger;
- 			var oBindingContext = oEvent.getSource().getBindingContext("oWidgetDataModel");
- 			var oRowData = oBindingContext.getObject();
-
- 			// console.log("Row pressed - Row contents:", oRowData);
-
- 			// this.getView().byId("widgetConfig").setVisible(true);
- 			// this.getView().byId("pageText").setText(oRowData.ZpageName);
-
- 			// // Navigate to another fragment
- 			// this.navigateToWidgetFragment (oRowData.ZpageId);
- 			// this.getView().byId("dynamicWidgetConfigContainer").setVisible(true);
- 			this.showDynamicWidgetConfig(oRowData.WidgetId);
- 			// var oFragment = sap.ui.xmlfragment(
- 			// 	"mobilefinance.MobileFinance.fragments.DynamicWidgetConfig",
- 			// 	this
- 			// );
-
- 			// var params = {};
-
- 			// // Pass parameters to fragment
- 			// oFragment.data("params", params);
-
- 			// this.byId("dynamicWidgetConfig").removeAllContent();
- 			// this.byId("dynamicWidgetConfig").addContent(oFragment);
-
- 			// if (!this.oFragment) {
- 			// 	// this.openWidgetConfig = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewPage", this);
- 			// 	this.getView().addDependent(this.oFragment);
-
- 			// }
- 			// this.oFragment.open();
- 		},
-
- 		onWidgetDrop: function (oEvent) {
- 			var oDraggedItem = oEvent.getParameter("draggedControl");
- 			var oDroppedItem = oEvent.getParameter("droppedControl");
- 			var sDropPosition = oEvent.getParameter("dropPosition");
-
- 			var oModel = this.getView().getModel("oWidgetDataModel");
- 			var aData = oModel.getData();
-
- 			// If aData is not an array, it might be wrapped in an object
- 			if (!Array.isArray(aData)) {
- 				sap.m.MessageToast.show("Unable to reorder: Invalid data structure");
- 				return;
- 			}
-
- 			// Get the binding contexts
- 			var oDraggedContext = oDraggedItem.getBindingContext("oWidgetDataModel");
- 			var oDroppedContext = oDroppedItem.getBindingContext("oWidgetDataModel");
-
- 			if (!oDraggedContext || !oDroppedContext) {
- 				return;
- 			}
-
- 			// Get the indices from the binding path
- 			var sDraggedPath = oDraggedContext.getPath();
- 			var sDroppedPath = oDroppedContext.getPath();
-
- 			var iDraggedIndex = parseInt(sDraggedPath.substring(sDraggedPath.lastIndexOf("/") + 1));
- 			var iDroppedIndex = parseInt(sDroppedPath.substring(sDroppedPath.lastIndexOf("/") + 1));
-
- 			// Clone the dragged item data to avoid reference issues
- 			var oDraggedItemData = JSON.parse(JSON.stringify(aData[iDraggedIndex]));
-
- 			// Remove from old position
- 			aData.splice(iDraggedIndex, 1);
-
- 			// Calculate new index
- 			var iNewIndex = iDroppedIndex;
- 			if (iDraggedIndex < iDroppedIndex) {
- 				iNewIndex = iDroppedIndex - 1;
- 			}
-
- 			if (sDropPosition === "After") {
- 				iNewIndex++;
- 			}
-
- 			// Insert at new position
- 			aData.splice(iNewIndex, 0, oDraggedItemData);
-
- 			// Update sequence numbers for all items
- 			aData.forEach(function (oItem, iIndex) {
- 				oItem.SequenceNo = iIndex + 1;
- 			});
-
- 			// Update the model with the reordered data - force a full refresh
- 			oModel.setData([]);
- 			oModel.setData(aData);
- 			oModel.refresh(true);
-
- 			sap.m.MessageToast.show("Widget order updated. Click 'Update' to save changes.");
- 		},
-
- 		closeAddWidgetDialog: function () {
- 			if (this.AddNewWidgetDialog) {
- 				this.AddNewWidgetDialog.close();
- 			}
- 		},
-
- 		widgetSearchHelp: async function (oEvent) {
- 			debugger;
- 			var oWidgetListDropdownData = await this.getSearchHelpData('Widget_ID');
- 			var oWidgetListModel = new sap.ui.model.json.JSONModel();
- 			oWidgetListModel.setData(oWidgetListDropdownData);
- 			this.getView().setModel(oWidgetListModel, "oWidgetListDropdownData");
-
- 			this._oCurrentInput = oEvent.getSource();
-
- 			var oView = this.getView();
- 			// this._sInputId = oEvent.getSource().getId();
-
- 			if (!this._pValueHelpDialog) {
- 				this._pValueHelpDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.SearchDialog", this);
- 				this.getView().addDependent(this._pValueHelpDialog);
-
- 			}
- 			this._pValueHelpDialog.open();
-
- 		},
- 		_handleValueHelpSearch: function (oEvent) {
- 			var sValue = oEvent.getParameter("value");
- 			var oFilter = new sap.ui.model.Filter("Text", sap.ui.model.FilterOperator.Contains, sValue);
- 			var oBinding = oEvent.getSource().getBinding("items");
- 			oBinding.filter([oFilter]);
- 		},
-
- 		_handleValueHelpClose: function (oEvent) {
- 			var oSelectedItem = oEvent.getParameter("selectedItem");
- 			if (oSelectedItem && this._oCurrentInput) {
- 				var sSelectedId = oSelectedItem.getDescription();
- 				var sSelectedText = oSelectedItem.getTitle();
-
- 				// Use the stored input reference
- 				this._oCurrentInput.setValue(sSelectedText || sSelectedId);
- 				this._oCurrentInput.data("selectedId", sSelectedId);
- 				this._oCurrentInput.data("selectedText", sSelectedText);
-
- 				// Clear the reference
- 				this._oCurrentInput = null;
- 			}
- 			oEvent.getSource().getBinding("items").filter([]);
- 		},
-
- 		// Legacy function - keeping structure but delegating to helper
- 		_onAddInputLegacy: async function () {
- 			debugger;
- 			var that = this;
- 			var oForm = this.byId("bexQueryParameterForm");
- 			var aQueryParam = await this.getQueryParameter();
- 			aQueryParam.forEach(function (param) {
- 				var oFormComponent = [];
- 				switch (param.Vparsel) {
- 				case 'M':
- 					// var oLabel = new sap.m.Label({
- 					// 	text: param.Vtxt
- 					// });
- 					// var oInput = new sap.m.Input({
- 					// 	// placeholder: "Enter product",
- 					// 	class: "sapUiSmallMarginBottom",
- 					// 	type: "Text",
- 					// 	showValueHelp: true,
- 					// 	valueHelpIconSrc: "sap-icon://arrow-left",
- 					// 	// valueHelpRequest: this.handleValueHelp.bind(this)
- 					// });
- 					// var oAddButton = new  sap.m.Button({
- 					// 	enabled: true,
- 					// 	icon: "sap-icon://add",
- 					// 	press: that.handleAddPress.bind(that,'M')
- 					// });
-
- 					var oLabel = new sap.m.Label({
- 						text: param.Vtxt
- 					});
- 					var oMultiInputBox = new sap.m.VBox({
- 						class: "sapUiMediumMargin",
- 						items: [
- 							new sap.m.HBox({
- 								class: "sapUiSmallMarginBottom",
- 								items: [
- 									new sap.m.Input({
- 										// placeholder: "Enter product",
- 										class: "sapUiSmallMarginBottom",
- 										type: "Text",
- 										showValueHelp: true,
- 										valueHelpIconSrc: "sap-icon://arrow-left",
- 										// valueHelpRequest: this.handleValueHelp.bind(this)
- 									}),
- 									new sap.m.Button({
- 										enabled: true,
- 										icon: "sap-icon://add",
- 										press: that.handleAddPress.bind(that, 'M')
- 									})
- 								]
- 							})
- 						]
- 					});
-
- 					oForm.addContent(oLabel);
- 					oForm.addContent(oMultiInputBox);
- 					// oForm.addContent(oAddButton);
-
- 					break;
- 				case "S":
-
- 					// Label
- 					var oLabel = new sap.m.Label({
- 						text: param.Vtxt
- 					});
- 					var oSelectOptionBox = new sap.m.VBox({
- 						class: "sapUiMediumMargin",
- 						items: [
- 							new sap.m.HBox({
- 								class: "sapUiSmallMarginBottom",
- 								items: [
- 									// Range Select
- 									new sap.m.Select({
- 										forceSelection: false,
- 										items: {
- 											path: "inputParamModel>/selectOptionRange",
- 											template: new sap.ui.core.Item({
- 												key: "{inputParamModel>Value}",
- 												text: "{inputParamModel>Value}"
- 											})
- 										},
- 										// selectedKey: "{inputParamModel>/selectOptionRange}",
- 										icon: "sap-icon://filter",
- 										autoAdjustWidth: true,
- 										// change: function(oEvent) {
- 										// 	// Handle change event directly
- 										// 	var sSelectedKey = oEvent.getSource().getSelectedKey();
- 										// 	// Your logic here
- 										// }
- 									}),
-
- 									new sap.m.Input({
- 										class: "sapUiSmallMarginEnd",
- 										type: "Text",
- 										placeholder: "Enter product",
- 										showValueHelp: true,
- 										valueHelpIconSrc: "sap-icon://arrow-left",
- 										valueHelpRequest: "handleValueHelp"
- 									}),
-
- 									// "to" Text
- 									new sap.m.Text({
- 										text: "to",
- 										class: "sapUiSmallMarginEnd"
- 									}),
-
- 									// Second Input Field
- 									new sap.m.Input({
- 										type: "Text",
- 										placeholder: "Enter product",
- 										showValueHelp: true,
- 										valueHelpIconSrc: "sap-icon://arrow-left",
- 										valueHelpRequest: "handleValueHelp"
- 									}),
- 									new sap.m.Button({
- 										enabled: true,
- 										icon: "sap-icon://add",
- 										press: that.handleAddPress.bind(that, 'S')
- 									})
- 								]
- 							})
-
- 						]
- 					});
-
- 					oForm.addContent(oLabel);
- 					oForm.addContent(oSelectOptionBox);
- 					break;
- 				case "I":
- 					var oLabel = new sap.m.Label({
- 						text: param.Vtxt
- 					});
- 					var oIntervalBox = new sap.m.VBox({
- 						class: "sapUiMediumMargin",
- 						items: [
- 							new sap.m.HBox({
- 								class: "sapUiSmallMarginBottom",
- 								items: [
- 									new sap.m.Input({
- 										// placeholder: "Enter product",
- 										class: "sapUiSmallMarginBottom",
- 										type: "Text",
- 										showValueHelp: true,
- 										valueHelpIconSrc: "sap-icon://arrow-left",
- 										// valueHelpRequest: this.handleValueHelp.bind(this)
- 									}),
- 									// "to" Text
- 									new sap.m.Text({
- 										text: "to",
- 										class: "sapUiSmallMarginEnd"
- 									}),
-
- 									// Second Input Field
- 									new sap.m.Input({
- 										type: "Text",
- 										placeholder: "Enter product",
- 										showValueHelp: true,
- 										valueHelpIconSrc: "sap-icon://arrow-left",
- 										valueHelpRequest: "handleValueHelp"
- 									}),
-
- 								]
- 							})
-
- 						]
- 					})
-
- 					oForm.addContent(oLabel);
- 					oForm.addContent(oIntervalBox);
-
- 					break;
- 				case "P":
- 					var oLabel = new sap.m.Label({
- 						text: param.Vtxt
- 					});
- 					var oInput = new sap.m.Input({
- 						// placeholder: "Enter product",
- 						class: "sapUiSmallMarginBottom",
- 						type: "Text",
- 						showValueHelp: true,
- 						valueHelpIconSrc: "sap-icon://arrow-left",
- 						// valueHelpRequest: this.handleValueHelp.bind(this)
- 					});
- 					oForm.addContent(oLabel);
- 					oForm.addContent(oInput);
- 					break;
-
- 				default:
- 				}
- 			});
-
- 			// 		// Create label
- 			// 		for(let i=0 ; i<5; i++){
- 			// 			var oLabel = new sap.m.Label({
- 			// 				text: 'test'+i
- 			// 			});
-
- 			// 			// Create input
- 			// 			var oInput = new sap.m.Input({
- 			// 				placeholder: "Enter product",
- 			// 				class: "sapUiSmallMarginBottom",
- 			// 				type: "Text",
- 			// 				showValueHelp: true,
- 			// 				valueHelpIconSrc: "sap-icon://arrow-left",
- 			// 				// valueHelpRequest: this.handleValueHelp.bind(this)
- 			// 			});
- 			// 			oForm.insertContent(oLabel, i+1);
- 			// 			oForm.insertContent(oInput, i+2);
-
- 			// 		}
- 			// var oLabel = new sap.m.Label({
- 			//     text: 'test'
- 			// });
-
- 			// // Create input
- 			// var oInput = new sap.m.Input({
- 			//     placeholder: "Enter product",
- 			//     class: "sapUiSmallMarginBottom",
- 			//     type: "Text",
- 			//     showValueHelp: true,
- 			//     valueHelpIconSrc: "sap-icon://arrow-left",
- 			//     // valueHelpRequest: this.handleValueHelp.bind(this)
- 			// });
- 			// debugger;
- 			// oForm.insertContent(oLabel, 2);
- 			// // oForm.insertContent(oInput, 3);
- 			// // oForm.insertContent(oInput, 4);
- 			// // oForm.insertContent(oInput, 5);          
- 			// // oForm.insertContent(oInput, 6);
- 			// // Add both controls
- 			// // oForm.addContent(oLabel);
- 			// // oForm.addContent(oInput);
- 		},
- 		// {
- 		// 	"VNAM": "ZES_PERIOD",
- 		// 	"VARTYP": "1",
- 		// 	"VPARSEL": "P",
- 		// 	"IOBJNM": "/CPMB/ZED08MN__/CPMB/YEAR",
- 		// 	"LS_VALUE": [
- 		//   {
- 		// 	"SIGN": ">=",
- 		// 	"OPTION": "I",
- 		// 	"LOW": "1",
- 		// 	"HIGH": ""
- 		//   }
- 		// 	]
- 		//   }
- 		// {
- 		// 	"Fiscal year": {
- 		// 		"type": "",
- 		// 		"values": [
- 		// 			"2024"
- 		// 		]
- 		// 	},
- 		// 	"Categort 1": {
- 		// 		"type": "",
- 		// 		"values": [
- 		// 			"1",
- 		// 			"2",
- 		// 			"3",
- 		// 			"4"
- 		// 		],
- 		// 		"selects": [
- 		// 			{
- 		// 				"selectedKey": "",
- 		// 				"selectedItem": ""
- 		// 			},
- 		// 			{
- 		// 				"selectedKey": "I",
- 		// 				"selectedItem": "Include"
- 		// 			},
- 		// 			{
- 		// 				"selectedKey": "",
- 		// 				"selectedItem": ""
- 		// 			},
- 		// 			{
- 		// 				"selectedKey": "I",
- 		// 				"selectedItem": "Include"
- 		// 			}
- 		// 		]
- 		// 	},
- 		// 	"Org Entity Test": {
- 		// 		"type": "",
- 		// 		"values": [
- 		// 			"123",
- 		// 			"456"
- 		// 		]
- 		// 	},
- 		// 	"Corp Acc": {
- 		// 		"type": "",
- 		// 		"values": [
- 		// 			"CORP"
- 		// 		]
- 		// 	}
- 		// }
-
- 		// callBSPService: function(queryData) {
- 		// 	var sBSPUrl = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/ZFI_QUERY_BSP/uri");
-
- 		// 	return new Promise((resolve, reject) => {
- 		// 		$.ajax({
- 		// 			url: sBSPUrl,
- 		// 			type: "GET",
- 		// 			data: {
- 		// 				query: queryData
- 		// 			},
- 		// 			dataType: "json",
- 		// 			success: function(data) {
- 		// 				console.log("BSP Response:", data);
- 		// 				resolve(data);
- 		// 			},
- 		// 			error: function(xhr, status, error) {
- 		// 				console.error("BSP Error:", error);
- 		// 				reject(error);
- 		// 			}
- 		// 		});
- 		// 	});
- 		// }
-
- 		loadDynamicWidgetConfigFragment: function () {
- 			var oContainer = this.byId("dynamicWidgetConfigContainer");
- 			if (oContainer && oContainer.getItems().length === 0) {
- 				if (!this._oDynamicWidgetConfigFragment) {
- 					this._oDynamicWidgetConfigFragment = sap.ui.xmlfragment(
- 						"dynamicWidgetConfig",
- 						"mobilefinance.MobileFinance.fragments.DynamicWidgetConfig",
- 						this
- 					);
- 					var params = {
- 						"widgetId": "test"
- 					};
- 					this._oDynamicWidgetConfigFragment.data("params", params);
- 					this.getView().addDependent(this._oDynamicWidgetConfigFragment);
- 				}
- 				oContainer.addItem(this._oDynamicWidgetConfigFragment);
-
- 			}
- 		},
-
- 		showDynamicWidgetConfig: function (widgetId) {
- 			this.loadDynamicWidgetConfigFragment();
- 			var oContainer = this.byId("dynamicWidgetConfigContainer");
- 			if (oContainer) {
- 				oContainer.setVisible(true);
- 			}
- 			this.getDynamicWidgetParams();
- 			// this.onLoadDyanmicWidgetData('00505684457C1FE0A6D3C64CCF25CE18');
- 			this.onLoadDyanmicWidgetData(widgetId);
- 		},
-
- 		getDynamicWidgetParams: function () {
- 			if (this._oDynamicWidgetConfigFragment) {
- 				console.log(this._oDynamicWidgetConfigFragment.data("params"));
- 				return this._oDynamicWidgetConfigFragment.data("params");
- 			}
- 			return null;
- 		},
-
- 		// Chatbot Selection Methods
- 		onLoadChatbotSelectionData: function () {
- 			var that = this;
- 			var oModel = this.getOwnerComponent().getModel("finmobview");
-
- 			// Initialize the model with default values
- 			var oChatbotModel = new JSONModel({
- 				selectedIndex: 0,
- 				useFlutter: true,
- 				useCloudera: false,
- 				showClouderaUrl: false,
- 				clouderaUrl: "",
- 				recordId: ""
- 			});
- 			this.getView().setModel(oChatbotModel, "oChatbotSelectionModel");
-
- 			// Load existing data
- 			oModel.read("/ChatbotSelectionSet", {
- 				success: function (oData) {
- 					if (oData.results && oData.results.length > 0) {
- 						var chatbotData = oData.results[0];
- 						oChatbotModel.setProperty("/recordId", chatbotData.Ztabid);
- 						oChatbotModel.setProperty("/useCloudera", chatbotData.Zcloudera);
- 						oChatbotModel.setProperty("/useFlutter", !chatbotData.Zcloudera);
- 						oChatbotModel.setProperty("/selectedIndex", chatbotData.Zcloudera ? 1 : 0);
- 						oChatbotModel.setProperty("/showClouderaUrl", chatbotData.Zcloudera);
- 						oChatbotModel.setProperty("/clouderaUrl", chatbotData.ZclouderaUrl || "");
- 					} else {
- 						// Generate a random 3-character ID if no record exists
- 						var randomId = that.generateRandomId(3);
- 						oChatbotModel.setProperty("/recordId", randomId);
- 					}
- 				},
- 				error: function (oError) {
- 					MessageToast.show("Error loading chatbot selection data");
- 					// Generate a random 3-character ID on error
- 					var randomId = that.generateRandomId(3);
- 					oChatbotModel.setProperty("/recordId", randomId);
- 				}
- 			});
- 		},
-
- 		generateRandomId: function (length) {
- 			var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
- 			var result = '';
- 			for (var i = 0; i < length; i++) {
- 				result += chars.charAt(Math.floor(Math.random() * chars.length));
- 			}
- 			return result;
- 		},
-
- 		onChatbotTypeSelect: function (oEvent) {
- 			var selectedIndex = oEvent.getParameter("selectedIndex");
- 			var oChatbotModel = this.getView().getModel("oChatbotSelectionModel");
-
- 			if (selectedIndex === 0) {
- 				// Flutter selected
- 				oChatbotModel.setProperty("/useFlutter", true);
- 				oChatbotModel.setProperty("/useCloudera", false);
- 				oChatbotModel.setProperty("/showClouderaUrl", false);
- 			} else if (selectedIndex === 1) {
- 				// Cloudera selected
- 				oChatbotModel.setProperty("/useFlutter", false);
- 				oChatbotModel.setProperty("/useCloudera", true);
- 				oChatbotModel.setProperty("/showClouderaUrl", true);
- 			}
- 		},
-
- 		onSaveChatbotSelection: function () {
- 			var that = this;
- 			var oModel = this.getOwnerComponent().getModel("finmobview");
- 			var oChatbotModel = this.getView().getModel("oChatbotSelectionModel");
-
- 			var useCloudera = oChatbotModel.getProperty("/useCloudera");
- 			var clouderaUrl = oChatbotModel.getProperty("/clouderaUrl");
- 			var recordId = oChatbotModel.getProperty("/recordId");
-
- 			// Validate Cloudera URL if Cloudera is selected
- 			if (useCloudera && !clouderaUrl) {
- 				MessageBox.error("Please enter Cloudera URL");
- 				return;
- 			}
-
- 			var payload = {
- 				Ztabid: recordId,
- 				Zcloudera: useCloudera,
- 				ZclouderaUrl: useCloudera ? clouderaUrl : ""
- 			};
-
- 			// Check if record exists
- 			oModel.read("/ChatbotSelectionSet", {
- 				success: function (oData) {
- 					if (oData.results && oData.results.length > 0) {
- 						// Update existing record
- 						var existingRecordId = oData.results[0].Ztabid;
- 						payload.Ztabid = existingRecordId;
-
- 						oModel.update("/ChatbotSelectionSet('" + existingRecordId + "')", payload, {
- 							success: function () {
- 								MessageToast.show("Chatbot selection updated successfully");
- 								oChatbotModel.setProperty("/recordId", existingRecordId);
- 							},
- 							error: function (oError) {
- 								MessageBox.error("Error updating chatbot selection");
- 							}
- 						});
- 					} else {
- 						// Create new record
- 						oModel.create("/ChatbotSelectionSet", payload, {
- 							success: function (oData) {
- 								MessageToast.show("Chatbot selection saved successfully");
- 								oChatbotModel.setProperty("/recordId", oData.Ztabid);
- 							},
- 							error: function (oError) {
- 								MessageBox.error("Error saving chatbot selection");
- 							}
- 						});
- 					}
- 				},
- 				error: function (oError) {
- 					// If read fails, try to create
- 					oModel.create("/ChatbotSelectionSet", payload, {
- 						success: function (oData) {
- 							MessageToast.show("Chatbot selection saved successfully");
- 							oChatbotModel.setProperty("/recordId", oData.Ztabid);
- 						},
- 						error: function (oError) {
- 							MessageBox.error("Error saving chatbot selection");
- 						}
- 					});
- 				}
- 			});
- 		},
+ 		
+ 		onWidgetPress: function(oEvent) {
+ 				// var that = oController;
+			debugger;
+			var oBindingContext = oEvent.getSource().getBindingContext("oWidgetDataModel");
+			var oRowData = oBindingContext.getObject();
+
+
+			// console.log("Row pressed - Row contents:", oRowData);
+
+			// this.getView().byId("widgetConfig").setVisible(true);
+			// this.getView().byId("pageText").setText(oRowData.ZpageName);
+
+			// // Navigate to another fragment
+			// this.navigateToWidgetFragment (oRowData.ZpageId);
+			// this.getView().byId("dynamicWidgetConfigContainer").setVisible(true);
+			this.showDynamicWidgetConfig(oRowData.WidgetId);
+			// var oFragment = sap.ui.xmlfragment(
+			// 	"mobilefinance.MobileFinance.fragments.DynamicWidgetConfig",
+			// 	this
+			// );
+
+			// var params = {};
+
+			// // Pass parameters to fragment
+			// oFragment.data("params", params);
+
+			// this.byId("dynamicWidgetConfig").removeAllContent();
+			// this.byId("dynamicWidgetConfig").addContent(oFragment);
+
+			// if (!this.oFragment) {
+			// 	// this.openWidgetConfig = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.AddNewPage", this);
+			// 	this.getView().addDependent(this.oFragment);
+
+			// }
+			// this.oFragment.open();
+		},
+
+		onWidgetDrop: function(oEvent) {
+			var oDraggedItem = oEvent.getParameter("draggedControl");
+			var oDroppedItem = oEvent.getParameter("droppedControl");
+			var sDropPosition = oEvent.getParameter("dropPosition");
+
+			var oModel = this.getView().getModel("oWidgetDataModel");
+			var aData = oModel.getData();
+
+			// If aData is not an array, it might be wrapped in an object
+			if (!Array.isArray(aData)) {
+				sap.m.MessageToast.show("Unable to reorder: Invalid data structure");
+				return;
+			}
+
+			// Get the binding contexts
+			var oDraggedContext = oDraggedItem.getBindingContext("oWidgetDataModel");
+			var oDroppedContext = oDroppedItem.getBindingContext("oWidgetDataModel");
+
+			if (!oDraggedContext || !oDroppedContext) {
+				return;
+			}
+
+			// Get the indices from the binding path
+			var sDraggedPath = oDraggedContext.getPath();
+			var sDroppedPath = oDroppedContext.getPath();
+
+			var iDraggedIndex = parseInt(sDraggedPath.substring(sDraggedPath.lastIndexOf("/") + 1));
+			var iDroppedIndex = parseInt(sDroppedPath.substring(sDroppedPath.lastIndexOf("/") + 1));
+
+			// Clone the dragged item data to avoid reference issues
+			var oDraggedItemData = JSON.parse(JSON.stringify(aData[iDraggedIndex]));
+
+			// Remove from old position
+			aData.splice(iDraggedIndex, 1);
+
+			// Calculate new index
+			var iNewIndex = iDroppedIndex;
+			if (iDraggedIndex < iDroppedIndex) {
+				iNewIndex = iDroppedIndex - 1;
+			}
+
+			if (sDropPosition === "After") {
+				iNewIndex++;
+			}
+
+			// Insert at new position
+			aData.splice(iNewIndex, 0, oDraggedItemData);
+
+			// Update sequence numbers for all items
+			aData.forEach(function(oItem, iIndex) {
+				oItem.SequenceNo = iIndex + 1;
+			});
+
+			// Update the model with the reordered data - force a full refresh
+			oModel.setData([]);
+			oModel.setData(aData);
+			oModel.refresh(true);
+
+			sap.m.MessageToast.show("Widget order updated. Click 'Update' to save changes.");
+		},
+
+		
+		closeAddWidgetDialog: function() {
+			if (this.AddNewWidgetDialog) {
+				this.AddNewWidgetDialog.close();
+			}
+		},
+		
+		widgetSearchHelp: async function(oEvent) {
+			debugger;
+			var oWidgetListDropdownData = await this.getSearchHelpData('Widget_ID');
+			var oWidgetListModel = new sap.ui.model.json.JSONModel();
+			oWidgetListModel.setData(oWidgetListDropdownData);
+			this.getView().setModel(oWidgetListModel, "oWidgetListDropdownData");
+			
+			    this._oCurrentInput = oEvent.getSource();
+
+			
+			var oView = this.getView();
+			// this._sInputId = oEvent.getSource().getId();
+			
+			if (!this._pValueHelpDialog) {
+				this._pValueHelpDialog = sap.ui.xmlfragment("mobilefinance.MobileFinance.fragments.SearchDialog", this);
+				this.getView().addDependent(this._pValueHelpDialog);
+
+			}
+			this._pValueHelpDialog.open();
+	
+
+		},
+		_handleValueHelpSearch: function(oEvent) {
+    var sValue = oEvent.getParameter("value");
+    var oFilter = new sap.ui.model.Filter("Text", sap.ui.model.FilterOperator.Contains, sValue);
+    var oBinding = oEvent.getSource().getBinding("items");
+    oBinding.filter([oFilter]);
+},
+
+_handleValueHelpClose: function(oEvent) {
+     var oSelectedItem = oEvent.getParameter("selectedItem");
+    if (oSelectedItem && this._oCurrentInput) {
+        var sSelectedId = oSelectedItem.getDescription();
+        var sSelectedText = oSelectedItem.getTitle();
+        
+        // Use the stored input reference
+        this._oCurrentInput.setValue(sSelectedText || sSelectedId);
+        this._oCurrentInput.data("selectedId", sSelectedId);
+        this._oCurrentInput.data("selectedText", sSelectedText);
+        
+        // Clear the reference
+        this._oCurrentInput = null;
+    }
+    oEvent.getSource().getBinding("items").filter([]);
+},
+
+
+		// Legacy function - keeping structure but delegating to helper
+		_onAddInputLegacy: async function ()  {
+			debugger;
+			var that = this;
+			var oForm = this.byId("bexQueryParameterForm");
+			var aQueryParam = await this.getQueryParameter();
+			aQueryParam.forEach(function(param) {
+				var oFormComponent = [];
+				switch (param.Vparsel) {
+					case 'M':
+						// var oLabel = new sap.m.Label({
+						// 	text: param.Vtxt
+						// });
+						// var oInput = new sap.m.Input({
+						// 	// placeholder: "Enter product",
+						// 	class: "sapUiSmallMarginBottom",
+						// 	type: "Text",
+						// 	showValueHelp: true,
+						// 	valueHelpIconSrc: "sap-icon://arrow-left",
+						// 	// valueHelpRequest: this.handleValueHelp.bind(this)
+						// });
+						// var oAddButton = new  sap.m.Button({
+						// 	enabled: true,
+						// 	icon: "sap-icon://add",
+						// 	press: that.handleAddPress.bind(that,'M')
+						// });
+
+						var oLabel = new sap.m.Label({
+							text: param.Vtxt
+						});
+						var oMultiInputBox = new sap.m.VBox({
+							class: "sapUiMediumMargin",
+							items: [
+								new sap.m.HBox({
+									class: "sapUiSmallMarginBottom",
+									items: [
+										new sap.m.Input({
+											// placeholder: "Enter product",
+											class: "sapUiSmallMarginBottom",
+											type: "Text",
+											showValueHelp: true,
+											valueHelpIconSrc: "sap-icon://arrow-left",
+											// valueHelpRequest: this.handleValueHelp.bind(this)
+										}),
+									 new  sap.m.Button({
+											enabled: true,
+											icon: "sap-icon://add",
+											press: that.handleAddPress.bind(that,'M')
+										})
+								]})
+							]});
+						
+						
+						oForm.addContent(oLabel);
+						oForm.addContent(oMultiInputBox);
+						// oForm.addContent(oAddButton);
+						
+					  break;
+					case "S":
+					
+						// Label
+						var oLabel = new sap.m.Label({
+							text: param.Vtxt
+						});
+						var oSelectOptionBox = 	new sap.m.VBox({
+							class: "sapUiMediumMargin",
+							items: [
+								new sap.m.HBox({
+									class: "sapUiSmallMarginBottom",
+									items: [
+										// Range Select
+										new sap.m.Select({
+											forceSelection: false,
+											items: {
+												path: "inputParamModel>/selectOptionRange",
+												template: new sap.ui.core.Item({
+													key: "{inputParamModel>Value}",
+													text: "{inputParamModel>Value}"
+												})
+											},
+											// selectedKey: "{inputParamModel>/selectOptionRange}",
+											icon: "sap-icon://filter",
+											autoAdjustWidth: true,
+											// change: function(oEvent) {
+											// 	// Handle change event directly
+											// 	var sSelectedKey = oEvent.getSource().getSelectedKey();
+											// 	// Your logic here
+											// }
+										}),
+										
+										new sap.m.Input({
+											class: "sapUiSmallMarginEnd",
+											type: "Text",
+											placeholder: "Enter product",
+											showValueHelp: true,
+											valueHelpIconSrc: "sap-icon://arrow-left",
+											valueHelpRequest: "handleValueHelp"
+										}),
+										
+										// "to" Text
+										new sap.m.Text({
+											text: "to",
+											class: "sapUiSmallMarginEnd"
+										}),
+										
+										// Second Input Field
+										new sap.m.Input({
+											type: "Text",
+											placeholder: "Enter product",
+											showValueHelp: true,
+											valueHelpIconSrc: "sap-icon://arrow-left",
+											valueHelpRequest: "handleValueHelp"
+										}),
+										new sap.m.Button({
+											enabled: true,
+											icon: "sap-icon://add",
+											press: that.handleAddPress.bind(that,'S')
+										})
+									]
+								})
+			
+							]});
+								
+						oForm.addContent(oLabel);
+						oForm.addContent(oSelectOptionBox);
+					  break;
+					case "I":
+						var oLabel = new sap.m.Label({
+							text: param.Vtxt
+						});
+						var oIntervalBox =  new sap.m.VBox({
+							class: "sapUiMediumMargin",
+							items: [
+								new sap.m.HBox({
+									class: "sapUiSmallMarginBottom",
+									items: [
+										new sap.m.Input({
+											// placeholder: "Enter product",
+											class: "sapUiSmallMarginBottom",
+											type: "Text",
+											showValueHelp: true,
+											valueHelpIconSrc: "sap-icon://arrow-left",
+											// valueHelpRequest: this.handleValueHelp.bind(this)
+										}),
+										// "to" Text
+										new sap.m.Text({
+											text: "to",
+											class: "sapUiSmallMarginEnd"
+										}),
+										
+										// Second Input Field
+										new sap.m.Input({
+											type: "Text",
+											placeholder: "Enter product",
+											showValueHelp: true,
+											valueHelpIconSrc: "sap-icon://arrow-left",
+											valueHelpRequest: "handleValueHelp"
+										}),
+		
+									]})
+
+							]})
+						
+						oForm.addContent(oLabel);
+						oForm.addContent(oIntervalBox);
+					
+						break;
+					case "P":
+						var oLabel = new sap.m.Label({
+							text: param.Vtxt
+						});
+						var oInput = new sap.m.Input({
+							// placeholder: "Enter product",
+							class: "sapUiSmallMarginBottom",
+							type: "Text",
+							showValueHelp: true,
+							valueHelpIconSrc: "sap-icon://arrow-left",
+							// valueHelpRequest: this.handleValueHelp.bind(this)
+						});
+						oForm.addContent(oLabel);
+						oForm.addContent(oInput);
+						break;
+					
+					default:
+				  }
+			});
+
+		
+			
+
+    
+    // 		// Create label
+	// 		for(let i=0 ; i<5; i++){
+	// 			var oLabel = new sap.m.Label({
+	// 				text: 'test'+i
+	// 			});
+				
+	// 			// Create input
+	// 			var oInput = new sap.m.Input({
+	// 				placeholder: "Enter product",
+	// 				class: "sapUiSmallMarginBottom",
+	// 				type: "Text",
+	// 				showValueHelp: true,
+	// 				valueHelpIconSrc: "sap-icon://arrow-left",
+	// 				// valueHelpRequest: this.handleValueHelp.bind(this)
+	// 			});
+	// 			oForm.insertContent(oLabel, i+1);
+	// 			oForm.insertContent(oInput, i+2);
+
+	// 		}
+    // var oLabel = new sap.m.Label({
+    //     text: 'test'
+    // });
+    
+    // // Create input
+    // var oInput = new sap.m.Input({
+    //     placeholder: "Enter product",
+    //     class: "sapUiSmallMarginBottom",
+    //     type: "Text",
+    //     showValueHelp: true,
+    //     valueHelpIconSrc: "sap-icon://arrow-left",
+    //     // valueHelpRequest: this.handleValueHelp.bind(this)
+    // });
+	// debugger;
+    // oForm.insertContent(oLabel, 2);
+    // // oForm.insertContent(oInput, 3);
+	// // oForm.insertContent(oInput, 4);
+	// // oForm.insertContent(oInput, 5);          
+	// // oForm.insertContent(oInput, 6);
+    // // Add both controls
+    // // oForm.addContent(oLabel);
+    // // oForm.addContent(oInput);
+		},
+		// {
+		// 	"VNAM": "ZES_PERIOD",
+		// 	"VARTYP": "1",
+		// 	"VPARSEL": "P",
+		// 	"IOBJNM": "/CPMB/ZED08MN__/CPMB/YEAR",
+		// 	"LS_VALUE": [
+			//   {
+			// 	"SIGN": ">=",
+			// 	"OPTION": "I",
+			// 	"LOW": "1",
+			// 	"HIGH": ""
+			//   }
+		// 	]
+		//   }
+		// {
+		// 	"Fiscal year": {
+		// 		"type": "",
+		// 		"values": [
+		// 			"2024"
+		// 		]
+		// 	},
+		// 	"Categort 1": {
+		// 		"type": "",
+		// 		"values": [
+		// 			"1",
+		// 			"2",
+		// 			"3",
+		// 			"4"
+		// 		],
+		// 		"selects": [
+		// 			{
+		// 				"selectedKey": "",
+		// 				"selectedItem": ""
+		// 			},
+		// 			{
+		// 				"selectedKey": "I",
+		// 				"selectedItem": "Include"
+		// 			},
+		// 			{
+		// 				"selectedKey": "",
+		// 				"selectedItem": ""
+		// 			},
+		// 			{
+		// 				"selectedKey": "I",
+		// 				"selectedItem": "Include"
+		// 			}
+		// 		]
+		// 	},
+		// 	"Org Entity Test": {
+		// 		"type": "",
+		// 		"values": [
+		// 			"123",
+		// 			"456"
+		// 		]
+		// 	},
+		// 	"Corp Acc": {
+		// 		"type": "",
+		// 		"values": [
+		// 			"CORP"
+		// 		]
+		// 	}
+		// }
+	
+
+		// callBSPService: function(queryData) {
+		// 	var sBSPUrl = this.getOwnerComponent().getManifestEntry("/sap.app/dataSources/ZFI_QUERY_BSP/uri");
+			
+		// 	return new Promise((resolve, reject) => {
+		// 		$.ajax({
+		// 			url: sBSPUrl,
+		// 			type: "GET",
+		// 			data: {
+		// 				query: queryData
+		// 			},
+		// 			dataType: "json",
+		// 			success: function(data) {
+		// 				console.log("BSP Response:", data);
+		// 				resolve(data);
+		// 			},
+		// 			error: function(xhr, status, error) {
+		// 				console.error("BSP Error:", error);
+		// 				reject(error);
+		// 			}
+		// 		});
+		// 	});
+		// }
+
+		loadDynamicWidgetConfigFragment: function() {
+			var oContainer = this.byId("dynamicWidgetConfigContainer");
+			if (oContainer && oContainer.getItems().length === 0) {
+				if (!this._oDynamicWidgetConfigFragment) {
+					this._oDynamicWidgetConfigFragment = sap.ui.xmlfragment(
+						"dynamicWidgetConfig", 
+						"mobilefinance.MobileFinance.fragments.DynamicWidgetConfig", 
+						this
+					);
+					var params = {"widgetId":"test"};
+					this._oDynamicWidgetConfigFragment.data("params", params);
+					this.getView().addDependent(this._oDynamicWidgetConfigFragment);
+				}
+				oContainer.addItem(this._oDynamicWidgetConfigFragment);
+				
+			}
+		},
+
+		showDynamicWidgetConfig: function(widgetId) {
+			this.loadDynamicWidgetConfigFragment();
+			var oContainer = this.byId("dynamicWidgetConfigContainer");
+			if (oContainer) {
+				oContainer.setVisible(true);
+			}
+			this.getDynamicWidgetParams();
+			// this.onLoadDyanmicWidgetData('00505684457C1FE0A6D3C64CCF25CE18');
+			this.onLoadDyanmicWidgetData(widgetId);
+		},
+
+		getDynamicWidgetParams: function() {
+			if (this._oDynamicWidgetConfigFragment) {
+				console.log(this._oDynamicWidgetConfigFragment.data("params"));
+				return this._oDynamicWidgetConfigFragment.data("params");
+			}
+			return null;
+		}
+
+	// Chatbot Selection Methods
+	onLoadChatbotSelectionData: function() {
+		var that = this;
+		var oModel = this.getOwnerComponent().getModel("finmobview");
+
+		// Initialize the model with default values
+		var oChatbotModel = new JSONModel({
+			selectedIndex: 0,
+			useFlutter: true,
+			useCloudera: false,
+			showClouderaUrl: false,
+			clouderaUrl: "",
+			recordId: ""
+		});
+		this.getView().setModel(oChatbotModel, "oChatbotSelectionModel");
+
+		// Load existing data
+		oModel.read("/ChatbotSelectionSet", {
+			success: function(oData) {
+				if (oData.results && oData.results.length > 0) {
+					var chatbotData = oData.results[0];
+					oChatbotModel.setProperty("/recordId", chatbotData.Ztabid);
+					oChatbotModel.setProperty("/useCloudera", chatbotData.Zcloudera);
+					oChatbotModel.setProperty("/useFlutter", !chatbotData.Zcloudera);
+					oChatbotModel.setProperty("/selectedIndex", chatbotData.Zcloudera ? 1 : 0);
+					oChatbotModel.setProperty("/showClouderaUrl", chatbotData.Zcloudera);
+					oChatbotModel.setProperty("/clouderaUrl", chatbotData.ZclouderaUrl || "");
+				} else {
+					// Generate a random 3-character ID if no record exists
+					var randomId = that.generateRandomId(3);
+					oChatbotModel.setProperty("/recordId", randomId);
+				}
+			},
+			error: function(oError) {
+				MessageToast.show("Error loading chatbot selection data");
+				// Generate a random 3-character ID on error
+				var randomId = that.generateRandomId(3);
+				oChatbotModel.setProperty("/recordId", randomId);
+			}
+		});
+	},
+
+	generateRandomId: function(length) {
+		var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+		var result = '';
+		for (var i = 0; i < length; i++) {
+			result += chars.charAt(Math.floor(Math.random() * chars.length));
+		}
+		return result;
+	},
+
+	onChatbotTypeSelect: function(oEvent) {
+		var selectedIndex = oEvent.getParameter("selectedIndex");
+		var oChatbotModel = this.getView().getModel("oChatbotSelectionModel");
+
+		if (selectedIndex === 0) {
+			// Flutter selected
+			oChatbotModel.setProperty("/useFlutter", true);
+			oChatbotModel.setProperty("/useCloudera", false);
+			oChatbotModel.setProperty("/showClouderaUrl", false);
+		} else if (selectedIndex === 1) {
+			// Cloudera selected
+			oChatbotModel.setProperty("/useFlutter", false);
+			oChatbotModel.setProperty("/useCloudera", true);
+			oChatbotModel.setProperty("/showClouderaUrl", true);
+		}
+	},
+
+	onSaveChatbotSelection: function() {
+		var that = this;
+		var oModel = this.getOwnerComponent().getModel("finmobview");
+		var oChatbotModel = this.getView().getModel("oChatbotSelectionModel");
+
+		var useCloudera = oChatbotModel.getProperty("/useCloudera");
+		var clouderaUrl = oChatbotModel.getProperty("/clouderaUrl");
+		var recordId = oChatbotModel.getProperty("/recordId");
+
+		// Validate Cloudera URL if Cloudera is selected
+		if (useCloudera && !clouderaUrl) {
+			MessageBox.error("Please enter Cloudera URL");
+			return;
+		}
+
+		var payload = {
+			Ztabid: recordId,
+			Zcloudera: useCloudera,
+			ZclouderaUrl: useCloudera ? clouderaUrl : ""
+		};
+
+		// Check if record exists
+		oModel.read("/ChatbotSelectionSet", {
+			success: function(oData) {
+				if (oData.results && oData.results.length > 0) {
+					// Update existing record
+					var existingRecordId = oData.results[0].Ztabid;
+					payload.Ztabid = existingRecordId;
+
+					oModel.update("/ChatbotSelectionSet('" + existingRecordId + "')", payload, {
+						success: function() {
+							MessageToast.show("Chatbot selection updated successfully");
+							oChatbotModel.setProperty("/recordId", existingRecordId);
+						},
+						error: function(oError) {
+							MessageBox.error("Error updating chatbot selection");
+						}
+					});
+				} else {
+					// Create new record
+					oModel.create("/ChatbotSelectionSet", payload, {
+						success: function(oData) {
+							MessageToast.show("Chatbot selection saved successfully");
+							oChatbotModel.setProperty("/recordId", oData.Ztabid);
+						},
+						error: function(oError) {
+							MessageBox.error("Error saving chatbot selection");
+						}
+					});
+				}
+			},
+			error: function(oError) {
+				// If read fails, try to create
+				oModel.create("/ChatbotSelectionSet", payload, {
+					success: function(oData) {
+						MessageToast.show("Chatbot selection saved successfully");
+						oChatbotModel.setProperty("/recordId", oData.Ztabid);
+					},
+					error: function(oError) {
+						MessageBox.error("Error saving chatbot selection");
+					}
+				});
+			}
+		});
+	},
 
  	});
  });
+

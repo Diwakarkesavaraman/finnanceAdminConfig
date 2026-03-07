@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Notification" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblnotid" text="Notication ID"></Label>
+			<Input id="inpnotid" value="" visible="false" required="true"></Input>
+			<Label id="lblnotname" text="Notification Title"></Label>
+			<Input id="inpnotname" value="" required="true"></Input>
+			<Label id="lblnotdes" text="Notification Description"></Label>
+			<!--<Input id="inpnotdes" value="" required="true"></Input>-->
+			<TextArea id="inpnotdes" rows="5" width="100%" growing="true" growingMaxLines="10" placeholder="Enter Notification Description"
+				required="true"/>
+			<Label id="lblisexternal" text="Is External Navigation"></Label>
+			<CheckBox id="lnpisexternal" select="onExternalToggle"/>
+			<Label id="lblexternal" text="External URL" visible="false"></Label>
+			<Input id="lnpexternal" value="" visible="false"></Input>
+			<Label id="lblnotnav" text="Navigation" visible="true"></Label>
+			<ComboBox id="inpnotnav" visible="true" items="{oLevelIdDataModel>/}">
+				<core:Item key="{oLevelIdDataModel>ZlevelId}" text="{oLevelIdDataModel>Ztitle}"/>
+			</ComboBox>
+			<Label id="lblexpiryDate" text="Expiry Date"></Label>
+			<DatePicker id="inpexpiryDate" class="customDatePicker" formatOptions="{UTC: true}"></DatePicker>
+			<Label id="lblnotvis" text="Visibility"></Label>
+			<CheckBox id="inpnotvis" text="" selected="" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="CloseNotificationTabDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddNotificationTab" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

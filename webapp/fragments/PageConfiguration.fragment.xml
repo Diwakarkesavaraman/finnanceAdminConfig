@@ -104,41 +104,41 @@
 					<Text id="pageWidgetDetailTitle" text="Widget Config" class="sapUiTinyMarginBegin"/>
 				</HBox>
 				<HBox>
-					<Button type="Reject" text="Delete" press="onDeleteWidget"/>
+					<Button type="Reject" text="Delete" press="onDeleteWidgetToPageConfig"/>
 					<ToolbarSpacer width="0.5rem"/>
-					<Button type="Accept" text="Update" press="onUpdateWidget"/>
+					<Button type="Accept" text="Update" press="onUpdateWidgetToPageConfig"/>
 					<ToolbarSpacer width="0.5rem"/>
-					<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddWidget"/>
+					<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddWidgetToPageConfig"/>
 				</HBox>
 			</HBox>
 			<Table id="pageWidgetDetailTable" alternateRowColors="false" items="{ path: 'oWidgetDataModel>/' }" growing="true"
 				class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onWidgetSelectionChange">
-				<dragDropConfig>
-					<dnd:DragInfo xmlns:dnd="sap.ui.core.dnd" sourceAggregation="items" />
-					<dnd:DropInfo xmlns:dnd="sap.ui.core.dnd" targetAggregation="items" dropPosition="Between" dropLayout="Vertical" drop="onWidgetDrop"/>
-				</dragDropConfig>
+				<!--<dragDropConfig>-->
+				<!--	<dnd:DragInfo xmlns:dnd="sap.ui.core.dnd" sourceAggregation="items" />-->
+				<!--	<dnd:DropInfo xmlns:dnd="sap.ui.core.dnd" targetAggregation="items" dropPosition="Between" dropLayout="Vertical" drop="onWidgetDrop"/>-->
+				<!--</dragDropConfig>-->
 				<columns>
-					<Column width="5rem">
+					<!--<Column width="5rem">-->
+					<!--	<header>-->
+					<!--		<Text text="Tile ID" class="whiteLabel"/>-->
+					<!--	</header>-->
+					<!--</Column>-->
+					<Column width="10rem">
 						<header>
-							<Text text="Tile ID" class="whiteLabel"/>
+							<Text text="Page Name" class="whiteLabel"/>
 						</header>
 					</Column>
-					<Column width="5rem">
-						<header>
-							<Text text="Page ID" class="whiteLabel"/>
-						</header>
-					</Column>
-					<Column width="5rem">
-						<header>
-							<Text text="Widget ID" class="whiteLabel"/>
-						</header>
-					</Column>
+					<!--<Column width="5rem">-->
+					<!--	<header>-->
+					<!--		<Text text="Widget ID" class="whiteLabel"/>-->
+					<!--	</header>-->
+					<!--</Column>-->
 					<Column width="12rem">
 						<header>
 							<Text text="Widget Name" class="whiteLabel"/>
 						</header>
 					</Column>
-					<Column width="5rem">
+					<Column>
 						<header>
 							<Text text="Roles" class="whiteLabel"/>
 						</header>
@@ -150,11 +150,11 @@
 					</Column>
 				</columns>
 				<items>
-					<ColumnListItem vAlign="Middle" type="Navigation" press="onWidgetPress">
+					<ColumnListItem vAlign="Middle">
 						<cells>
-							<Input value="{oWidgetDataModel>ZtitleName}"/>
+							<!--<Input value="{oWidgetDataModel>ZtitleName}"/>-->
 							<Input value="{oWidgetDataModel>ZpageName}"/>
-							<Input value="{oWidgetDataModel>WidgetId}"/>
+							<!--<Input value="{oWidgetDataModel>WidgetId}"/>-->
 							<Input value="{oWidgetDataModel>WidgetName}"/>
 							<Input value="{oWidgetDataModel>Zrole}"/>
 							<CheckBox text="" selected="{oWidgetDataModel>Zvisibility}"/>

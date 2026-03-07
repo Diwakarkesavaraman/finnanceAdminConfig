@@ -2,8 +2,8 @@
 	xmlns:variant="sap.ui.comp.variants">
 	<Dialog title="Add New Financial Dashboard Item" width="500em">
 		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
-			<Label id="lblnfdaid" text="KPI ID"></Label>
-			<Input id="inpnfdaid" value="" visible="false" required="true"></Input>
+			<!--<Label id="lblnfdaid" text="KPI ID"></Label>-->
+			<!--<Input id="inpnfdaid" value="" visible="false" required="true"></Input>-->
 			<Label id="lblnfdacat" text="Category"></Label>
 			<!--<Input id="inpnfdacat" value="" required="true"></Input>-->
 			<ComboBox id="inpnfdacat" required="true" items="{oFincalTabModel>/}">

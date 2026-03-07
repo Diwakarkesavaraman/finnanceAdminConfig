@@ -17,11 +17,11 @@
 				<Table id="tabvisiblity" alternateRowColors="false" items="{ path: 'oVisiblityModel>/', sorter: {path: 'ZkpiId', descending: false}}"
 					growing="true" class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
 					<columns>
-						<Column width="7rem">
-							<header>
-								<Text text="KPI ID" class="whiteLabel"></Text>
-							</header>
-						</Column>
+						<!--<Column width="7rem">-->
+						<!--	<header>-->
+						<!--		<Text text="KPI ID" class="whiteLabel"></Text>-->
+						<!--	</header>-->
+						<!--</Column>-->
 						<Column width="15rem">
 							<header>
 								<Text text="Category" class="whiteLabel"></Text>
@@ -37,7 +37,7 @@
 								<Text text="Tool Tip" class="whiteLabel"></Text>
 							</header>
 						</Column>
-						<Column width="22rem">
+						<Column>
 							<header>
 								<Text text="Roles" class="whiteLabel"></Text>
 							</header>
@@ -52,7 +52,7 @@
 						<ColumnListItem vAlign="Middle">
 							<cells>
 								<!--<Input value="{oVisiblityModel>ZkpiId}"></Input>-->
-								<Text text="{oVisiblityModel>ZkpiId}"></Text>
+								<!--<Text text="{oVisiblityModel>ZkpiId}"></Text>-->
 								<!--<Input value="{oVisiblityModel>Zcategory}"></Input>-->
 								<Text text="{oVisiblityModel>Zcategory}"></Text>
 								<Input value="{oVisiblityModel>ZkpiTitle}"></Input>

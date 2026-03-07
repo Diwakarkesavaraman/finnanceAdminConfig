@@ -1,0 +1,78 @@
+<core:FragmentDefinition xmlns:form="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified"
+	xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:viz="sap.viz.ui5.controls" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+	xmlns:viz.data="sap.viz.ui5.data" xmlns:w="sap.ui.integration.widgets" xmlns:f="sap.f" xmlns:tnt="sap.tnt" beforeShow="onBeforeShow">
+	<ScrollContainer id="admincontrolnotification" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
+		<Panel height="100%" class="admgisreppanelcls">
+			<content>
+				<HBox class="tblhdrcls">
+					<Text text="Notification Config"/>
+					<HBox>
+						<Button type="Reject" text="Delete" press="onDeleteNotifyTabCon"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Accept" text="Update" press="onUpdateNotificationTab"/>
+						<ToolbarSpacer width="0.5rem"/>
+						<Button type="Emphasized" icon="sap-icon://add" text="Add" press="onAddNewNotificationTab"/>
+					</HBox>
+				</HBox>
+				<Table id="notificationTab" alternateRowColors="false" items="{ path: 'oNotifyTabModel>/', sorter: {path: 'ZkpiId', descending: false}}"
+					growing="true" class="blueBackground surveytablecls" mode="MultiSelect" selectionChange="onSelectionChange">
+					<columns>
+						<Column width="7rem">
+							<header>
+								<Text text="Notification Title" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="15rem">
+							<header>
+								<Text text="Description" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="7rem">
+							<header>
+								<Text text="External" class="whiteLabel"/>
+							</header>
+						</Column>
+						<Column width="15rem">
+							<header>
+								<Text text="Navigation" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="10rem">
+							<header>
+								<Text text="Expiry Date" class="whiteLabel"></Text>
+							</header>
+						</Column>
+						<Column width="5rem">
+							<header>
+								<Text text="Visibility" class="whiteLabel"></Text>
+							</header>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem vAlign="Middle">
+							<cells>
+								<!--<Text text="{oNotifyTabModel>ZnotifyId}"></Text>-->
+								<Input value="{oNotifyTabModel>ZnotifyName}"></Input>
+								<Input value="{oNotifyTabModel>Zdescription}"></Input>
+								<CheckBox selected="{oNotifyTabModel>Zisexternal}"/>
+								<!--<Input value="{oNotifyTabModel>ZnavigationId}"></Input>-->
+								<VBox>
+									<!-- Navigation ComboBox -->
+									<ComboBox selectedKey="{oNotifyTabModel>ZnavigationId}" items="{oLevelIdDataModel>/}" visible="{= !${oNotifyTabModel>Zisexternal} }">
+										<core:Item key="{oLevelIdDataModel>ZlevelId}" text="{oLevelIdDataModel>Ztitle}"/>
+									</ComboBox>
+									<!-- External URL Input -->
+									<Input value="{oNotifyTabModel>Zexternalurl}" placeholder="Enter External URL" visible="{= ${oNotifyTabModel>Zisexternal} }"/>
+								</VBox>
+								<DatePicker id="inpexpirydate"
+									value="{path:'oNotifyTabModel>ZexpiryDate', type:'sap.ui.model.type.Date', formatOptions: { UTC: true, style: 'medium', strictParsing: true }}"
+									placeholder="mm/dd/yyyy" change="onLoadFilterData" class="customDatePicker" required="true"></DatePicker>
+								<CheckBox text="" selected="{oNotifyTabModel>Zvisibility}"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</content>
+		</Panel>
+	</ScrollContainer>
+</core:FragmentDefinition>

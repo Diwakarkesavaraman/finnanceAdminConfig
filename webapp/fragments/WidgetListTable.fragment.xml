@@ -31,6 +31,7 @@
 									<Text text="{widgetListModel>Text}"/>
 									<HBox>
 										<Button text="Duplicate Widget" icon="sap-icon://duplicate" press="onDuplicateWidgetFromList"/>
+										<ToolbarSpacer width="0.5rem"/>
 									<Button text="Delete" type="Reject" press="onDeleteWidgetFromList"/>
 									</HBox>
 								</cells>

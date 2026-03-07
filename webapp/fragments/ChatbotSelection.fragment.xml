@@ -1,0 +1,31 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m">
+	<Panel id="chatbotSelectionContainer" visible="true" height="100%" class="admgisreppanelcls">
+		<content>
+			<VBox class="sapUiMediumMargin">
+				<HBox class="tblhdrcls">
+					<Text text="Chatbot Selection Configuration"/>
+					<HBox>
+						<Button type="Accept" text="Save" press="onSaveChatbotSelection"/>
+					</HBox>
+				</HBox>
+
+				<VBox class="sapUiMediumMarginTop sapUiMediumMarginBegin">
+					<Label text="Select Chatbot Type" class="sapUiSmallMarginBottom"/>
+					<RadioButtonGroup id="chatbotTypeRadioGroup" columns="1" select="onChatbotTypeSelect" selectedIndex="{oChatbotSelectionModel>/selectedIndex}">
+						<RadioButton text="Use Flutter ChatBot" selected="{oChatbotSelectionModel>/useFlutter}"/>
+						<RadioButton text="Use Cloudera Chatbot" selected="{oChatbotSelectionModel>/useCloudera}"/>
+					</RadioButtonGroup>
+
+					<VBox id="clouderaUrlContainer" visible="{oChatbotSelectionModel>/showClouderaUrl}" class="sapUiMediumMarginTop">
+						<Label text="Cloudera URL" class="sapUiSmallMarginBottom" required="true"/>
+						<Input
+							id="clouderaUrlInput"
+							value="{oChatbotSelectionModel>/clouderaUrl}"
+							placeholder="Enter Cloudera URL"
+							width="100%"/>
+					</VBox>
+				</VBox>
+			</VBox>
+		</content>
+	</Panel>
+</core:FragmentDefinition>

@@ -1,0 +1,27 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Survey" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label id="lblnsurid" text="Survey ID"></Label>
+			<Input id="inpnsurid" value="" visible="false" required="true"></Input>
+			<Label id="lblnsurname" text="Survey Name"></Label>
+			<Input id="inpnsurname" value="" required="true"></Input>
+			<Label id="lblnsurveyurl" text="Survey Url"></Label>
+			<Input id="inpnsurveyurl" value="" required="true"></Input>
+			<Label id="lblsurstartDate" text="Start Date"></Label>
+			<DatePicker id="inpsurstartDate" class="customDatePicker" required="true"></DatePicker>
+			<Label id="lblsurendDate" text="End Date"></Label>
+			<DatePicker id="inpsurendDate" class="customDatePicker" required="true" formatOptions="{UTC: true}"></DatePicker>
+			<Label id="lblnsurrole" text="Roles"></Label>
+			<Input id="inpnsurrole" value=""></Input>
+			<Label id="lblnsurvis" text="Visibility"></Label>
+			<!--<Input id="inpgisvis" value="" required="true"></Input>-->
+			<CheckBox id="inpnsurvis" text="" selected="" required="true"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="CloseSurveyTabDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add" press="onAddSurveyTab" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

@@ -16,13 +16,14 @@ sap.ui.define([
 	"sap/viz/ui5/controls/VizFrame",
 	"sap/viz/ui5/data/FlattenedDataset",
 	"sap/viz/ui5/controls/common/feeds/FeedItem"
-], function (JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Column, Text, ColumnListItem, Label, MultiInput, Token, SelectDialog, StandardListItem, ComboBox, VizFrame, FlattenedDataset, FeedItem) {
+], function (JSONModel, MessageBox, MessageToast, Filter, FilterOperator, Column, Text, ColumnListItem, Label, MultiInput, Token,
+	SelectDialog, StandardListItem, ComboBox, VizFrame, FlattenedDataset, FeedItem) {
 	"use strict";
 
 	return {
 		// Default color palette for auto-assignment
 		// DEFAULT_COLORS: ["FF6B6B", "4ECDC4", "45B7D1", "FFA07A", "98D8C8", "F7DC6F", "BB8FCE", "85C1E2", "F8B195", "C06C84", "6C5B7B", "355C7D", "99B898", "FECEAB", "E84A5F", "2A363B", "FF847C", "84CEEB", "5AB9EA", "C1C8E4"],
-		DEFAULT_COLORS:[
+		DEFAULT_COLORS: [
 			'84BD00',
 			'00843D',
 			'0033A0',
@@ -35,36 +36,36 @@ sap.ui.define([
 			'638E35',
 			'4CA977',
 			'4C70BC'
-		  ],
+		],
 
 		onLoadWidgetListData: async function (oController) {
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
-			
+
 			// Show busy indicator
 			var oBusyIndicator = that.byId("widgetListBusyIndicator");
 			if (oBusyIndicator) {
 				oBusyIndicator.setVisible(true);
 			}
-			
+
 			var aFilters = [new Filter("Filter", FilterOperator.EQ, "Widget_ID")];
-			
+
 			try {
 				return new Promise((resolve, reject) => {
 					finmobview.read("/WidgetSearchHelpSet", {
 						filters: aFilters,
 						success: function (data) {
 							console.log("Widget list data fetched:", data);
-							
+
 							// Create and set widget list model
 							var oWidgetListModel = new JSONModel(data.results);
 							that.getView().setModel(oWidgetListModel, "widgetListModel");
-							
+
 							// Hide busy indicator
 							if (oBusyIndicator) {
 								oBusyIndicator.setVisible(false);
 							}
-							
+
 							resolve(data.results);
 						},
 						error: function (oError) {
@@ -82,12 +83,12 @@ sap.ui.define([
 								}
 							}
 							MessageBox.error(msg);
-							
+
 							// Hide busy indicator
 							if (oBusyIndicator) {
 								oBusyIndicator.setVisible(false);
 							}
-							
+
 							reject(oError);
 						}
 					});
@@ -105,24 +106,24 @@ sap.ui.define([
 			var that = oController;
 			var oBindingContext = oEvent.getSource().getBindingContext("widgetListModel");
 			var oSelectedWidget = oBindingContext.getObject();
-			
+
 			console.log("Selected widget:", oSelectedWidget);
-			
+
 			// Hide widget list and show create dynamic widget config
 			that.byId("widgetListContainer").setVisible(false);
 			that.byId("createDynamicWidgetConfigContainer").setVisible(true);
-			
+
 			// Load the selected widget data
 			this.onLoadCreateDynamicWidgetData(that, oSelectedWidget.Id);
 		},
 
 		onAddNewWidget: function (oController, oEvent) {
 			var that = oController;
-			
+
 			// Hide widget list and show create dynamic widget config
 			that.byId("widgetListContainer").setVisible(false);
 			that.byId("createDynamicWidgetConfigContainer").setVisible(true);
-			
+
 			// Clear form and load with empty data
 			this._clearCreateForm(that);
 			this.onLoadCreateDynamicWidgetData(that, null);
@@ -132,16 +133,16 @@ sap.ui.define([
 		// 	var that = oController;
 		// 	var oBindingContext = oEvent.getSource().getBindingContext("widgetListModel");
 		// 	var oSelectedWidget = oBindingContext.getObject();
-			
+
 		// 	console.log("Edit widget:", oSelectedWidget);
-			
+
 		// 	// Prevent event bubbling to avoid triggering row press
 		// 	oEvent.stopPropagation();
-			
+
 		// 	// Hide widget list and show create dynamic widget config
 		// 	that.byId("widgetListContainer").setVisible(false);
 		// 	that.byId("createDynamicWidgetConfigContainer").setVisible(true);
-			
+
 		// 	// Load the selected widget data for editing
 		// 	this.onLoadCreateDynamicWidgetData(that, oSelectedWidget.Id);
 		// },
@@ -150,7 +151,7 @@ sap.ui.define([
 			var that = oController;
 			var oBindingContext = oEvent.getSource().getBindingContext("widgetListModel");
 			var oSelectedWidget = oBindingContext.getObject();
-			
+
 			// Prevent event bubbling to avoid triggering row press
 			if (oEvent.preventDefault) {
 				oEvent.preventDefault();
@@ -163,7 +164,7 @@ sap.ui.define([
 			if (oBrowserEvent && oBrowserEvent.stopPropagation) {
 				oBrowserEvent.stopPropagation();
 			}
-			
+
 			MessageBox.confirm("Are you sure you want to delete the widget '" + (oSelectedWidget.Text || oSelectedWidget.Id) + "'?", {
 				title: "Confirm Delete",
 				onClose: function (oAction) {
@@ -205,11 +206,11 @@ sap.ui.define([
 
 		onBackToWidgetList: function (oController, oEvent) {
 			var that = oController;
-			
+
 			// Hide create dynamic widget config and show widget list
 			that.byId("createDynamicWidgetConfigContainer").setVisible(false);
 			that.byId("widgetListContainer").setVisible(true);
-			
+
 			// Refresh the widget list
 			this.onLoadWidgetListData(that);
 		},
@@ -219,7 +220,7 @@ sap.ui.define([
 			var that = oController;
 			var self = this;
 			var finmobview = that.getView().getModel("finmobview");
-			
+
 			sap.ui.core.BusyIndicator.show(0);
 
 			// Create a model for selected values
@@ -231,23 +232,30 @@ sap.ui.define([
 				selectedDataSource: "",
 				inputParameter: "",
 				mapping: "",
-					systemName: "",
-					dataSourceType: "",
+				systemName: "",
+				dataSourceType: "",
 			});
 			that.getView().setModel(oCreateWidgetValuesModel, "createWidgetValues");
 
 			// Initialize input parameter model for select options
 			var oInputParamModel = new JSONModel({
-				selectOptionRange: [
-					{ Value: "EQ" },
-					{ Value: "NE" },
-					{ Value: "BT" },
-					{ Value: "NB" },
-					{ Value: "GT" },
-					{ Value: "GE" },
-					{ Value: "LT" },
-					{ Value: "LE" }
-				]
+				selectOptionRange: [{
+					Value: "EQ"
+				}, {
+					Value: "NE"
+				}, {
+					Value: "BT"
+				}, {
+					Value: "NB"
+				}, {
+					Value: "GT"
+				}, {
+					Value: "GE"
+				}, {
+					Value: "LT"
+				}, {
+					Value: "LE"
+				}]
 			});
 			that.getView().setModel(oInputParamModel, "inputParamModel");
 
@@ -288,7 +296,7 @@ sap.ui.define([
 					oWidgetValues.setProperty("/systemName", aCreateSystemTypes[0].Id);
 				}
 			}
-			
+
 			// Set default chart type if available
 			if (aCreateChartTypes && aCreateChartTypes.length > 0) {
 				var oWidgetValues = that.getView().getModel("createWidgetValues");
@@ -318,9 +326,6 @@ sap.ui.define([
 
 			var aCreateDefaultHeirarchy = await that.getSearchHelpData('DEFAULT_HIER');
 
-			
-
-
 			// Initialize metadata and JSON data models
 			var oCreateMetaDataModel = new JSONModel([]);
 			that.getView().setModel(oCreateMetaDataModel, "createMetaDataModel");
@@ -338,7 +343,7 @@ sap.ui.define([
 						var oModel = that.getView().getModel("createWidgetValues");
 						var oCurrentData = oModel.getData();
 						var oWidgetData = oData.results[0];
-						
+
 						oCurrentData.widgetId = oWidgetData.WidgetId;
 						oCurrentData.widgetName = oWidgetData.WidgetName;
 						oCurrentData.selectedWidgetType = oWidgetData.WidgetType;
@@ -352,23 +357,23 @@ sap.ui.define([
 						oCurrentData.selectionType = oWidgetData.SelectionType;
 						oCurrentData.timeframe = oWidgetData.TimeFrame;
 						oCurrentData.pageId = oWidgetData.ZpageId;
-						oCurrentData.enableTimeRange = oWidgetData.TimeRange ==='X' ? true : false;
+						oCurrentData.enableTimeRange = oWidgetData.TimeRange === 'X' ? true : false;
 						oCurrentData.dataSourceType = oWidgetData.SourceType;
 						oCurrentData.isTimeDimension = oWidgetData.Istimedim === 'X' ? true : false;
 						oCurrentData.periodRange = oWidgetData.PeriodRange || '';
-						oCurrentData.systemName = oWidgetData.SystemName;					
-					oCurrentData.tableMapping = oWidgetData.TableMapping || "";
+						oCurrentData.systemName = oWidgetData.SystemName;
+						oCurrentData.tableMapping = oWidgetData.TableMapping || "";
 						oModel.setData(oCurrentData);
-						
+
 						// Show widget ID fields
 						that.getView().byId("createWidgetId").setVisible(true);
 						that.getView().byId("createWidgetIdLabel").setVisible(true);
-						
+
 						// Load form data
 						if (oWidgetData.DataSource) {
 							self.onCreateAddInput(that, oWidgetData.DataSource);
 						}
-						
+
 						sap.ui.core.BusyIndicator.hide();
 					},
 					error: function (oError) {
@@ -393,7 +398,7 @@ sap.ui.define([
 			debugger;
 			console.log("Create Widget Type Changed");
 			var that = oController;
-			
+
 			// Check if metadata is available (form has been created)
 			var oMetaDataModel = that.getView().getModel("createMetaDataModel");
 			if (oMetaDataModel && oMetaDataModel.getData() && oMetaDataModel.getData().length > 0) {
@@ -414,7 +419,7 @@ sap.ui.define([
 			// Update form visibility based on widget type
 			var oChartBindingForm = that.byId("createDataMappingForm");
 			var oDataBindingForm = that.byId("createTileMappingForm");
-		var oTableMappingForm = that.byId("createTableMappingForm");
+			var oTableMappingForm = that.byId("createTableMappingForm");
 
 			if (selectedWidgetType === "o3value" || selectedWidgetType === "o1value") {
 				// Show Data Binding, hide Chart Binding
@@ -429,12 +434,12 @@ sap.ui.define([
 					if (oDataParent && oDataParent.setVisible) {
 						oDataParent.setVisible(true);
 					}
-			if (oTableMappingForm) {
-				var oTableParent = oTableMappingForm.getParent();
-				if (oTableParent && oTableParent.setVisible) {
-					oTableParent.setVisible(false);
-				}
-			}
+					if (oTableMappingForm) {
+						var oTableParent = oTableMappingForm.getParent();
+						if (oTableParent && oTableParent.setVisible) {
+							oTableParent.setVisible(false);
+						}
+					}
 				}
 			} else if (selectedWidgetType === "ochrt") {
 				// Show Chart Binding, hide Data Binding and Table Mapping
@@ -450,12 +455,12 @@ sap.ui.define([
 						oDataParent.setVisible(false);
 					}
 				}
-			if (oTableMappingForm) {
-				var oTableParent = oTableMappingForm.getParent();
-				if (oTableParent && oTableParent.setVisible) {
-					oTableParent.setVisible(false);
+				if (oTableMappingForm) {
+					var oTableParent = oTableMappingForm.getParent();
+					if (oTableParent && oTableParent.setVisible) {
+						oTableParent.setVisible(false);
+					}
 				}
-			}
 			} else {
 				// Show all forms for other widget types
 				if (oChartBindingForm) {
@@ -486,16 +491,16 @@ sap.ui.define([
 		onCreateWidgetNameChange: function (oController, oEvent) {
 			// Update chart preview when widget name changes
 			var that = oController;
-			
+
 			// Get the current widget name from the input field
 			var sNewWidgetName = oEvent.getSource().getValue();
-			
+
 			// Update the model with the new widget name
 			var oWidgetValues = that.getView().getModel("createWidgetValues");
 			oWidgetValues.setProperty("/widgetName", sNewWidgetName);
-			
+
 			var sSelectedChartType = oWidgetValues.getData().selectedChartType;
-			
+
 			if (sSelectedChartType) {
 				// Refresh the chart preview with the new widget name
 				this._showChartPreview(oController, sSelectedChartType);
@@ -527,21 +532,21 @@ sap.ui.define([
 			var finmobview = that.getView().getModel("finmobview");
 			var dataSource = that.byId("createDataSourceId").getValue();
 			var dataSourceType = that.byId("createDataSourceType").getSelectedKey();
-			
+
 			if (!dataSource) {
 				MessageToast.show("Please enter a data source");
 				return;
 			}
-			
+
 			// Hide button and show busy indicator
 			var oButton = that.byId("createCheckBtn");
 			var oBusyIndicator = that.byId("createBusyIndicator");
 			oButton.setVisible(false);
 			oBusyIndicator.setVisible(true);
-			
+
 			var aFilters = [
 				new Filter("Query_Name", FilterOperator.EQ, dataSource),
-				new Filter("Source_Type" , FilterOperator.EQ, dataSourceType)
+				new Filter("Source_Type", FilterOperator.EQ, dataSourceType)
 			];
 			finmobview.read("/QueryValidation", {
 				filters: aFilters,
@@ -551,12 +556,12 @@ sap.ui.define([
 					if (response.IsExist) {
 						that.byId("createSuccessIcon").setVisible(true);
 						var dataSource = response.Query_Name;
-						
+
 						// Show the tab bar and hide busy indicator
 						oBusyIndicator.setVisible(false);
 						that.byId("createTabBarBusyIndicator").setVisible(false);
 						that.byId("createIconTabBarInlineMode").setVisible(true);
-						
+
 						// Load query parameters and fetch output data
 						self.onCreateAddInput(that, dataSource);
 						self.fetchQueryOutput(that, []);
@@ -582,7 +587,6 @@ sap.ui.define([
 			});
 		},
 
-
 		onCreateSavePress: function (oController, oEvent) {
 			debugger;
 			var that = oController;
@@ -594,10 +598,10 @@ sap.ui.define([
 			//Fetch mapping from createTileMappingForm
 			var tileMappingData = this.getCreateTileMappingFormValues(oController);
 			//Fetch mapping from createHierarchyMappingForm
-			var hierarchyFormData = this.getCreateHierarchyFormValues(oController); 
-		//Fetch mapping from createTableMappingForm
-		var tableMappingData = this.getCreateTableMappingFormValues(oController);
-			
+			var hierarchyFormData = this.getCreateHierarchyFormValues(oController);
+			//Fetch mapping from createTableMappingForm
+			var tableMappingData = this.getCreateTableMappingFormValues(oController);
+
 			var oPayload = {
 				"WidgetType": oWidgetData.selectedWidgetType,
 				"WidgetName": oWidgetData.widgetName,
@@ -621,16 +625,16 @@ sap.ui.define([
 				"Filter": filterMappingData,
 				"Status": "Draft",
 				"SourceType": oWidgetData.dataSourceType || "",
-				"Istimedim":mappingFormData.isTimeDimension ? 'X': '' || '',
-				"TimeRange":hierarchyFormData.enableTimeRange ? 'X': '' || '',
-				"SystemName":oWidgetData.systemName || "",
+				"Istimedim": mappingFormData.isTimeDimension ? 'X' : '' || '',
+				"TimeRange": hierarchyFormData.enableTimeRange ? 'X' : '' || '',
+				"SystemName": oWidgetData.systemName || "",
 				"ChartLabel": JSON.stringify(mappingFormData.yLabels) || "",
 				"PeriodRange": mappingFormData.periodRange || "",
 				"TableMapping": tableMappingData || ""
 			};
-			
+
 			sap.ui.core.BusyIndicator.show(0);
-			
+
 			if (oWidgetData.widgetId) {
 				// Update existing widget
 				finmobview.update("/WidgetConfigurationSet('" + oWidgetData.widgetId + "')", oPayload, {
@@ -692,7 +696,7 @@ sap.ui.define([
 			// var sNewWidgetId = sap.ui.core.Fragment.byId("DuplicateWidgetDialog", "duplicateWidgetIdInput").getValue();
 
 			// Validate inputs
-			if (!sNewWidgetName ) {
+			if (!sNewWidgetName) {
 				MessageBox.error("Please enter both widget name and widget ID");
 				return;
 			}
@@ -707,7 +711,7 @@ sap.ui.define([
 			var filterMappingData = this.getCreateFilterMappingFormValues(that);
 			var tileMappingData = this.getCreateTileMappingFormValues(that);
 			var hierarchyFormData = this.getCreateHierarchyFormValues(that);
-		var tableMappingData = this.getCreateTableMappingFormValues(that);
+			var tableMappingData = this.getCreateTableMappingFormValues(that);
 
 			// Create payload with new widget name and ID but same data
 			var oPayload = {
@@ -787,7 +791,7 @@ sap.ui.define([
 			this.onLoadCreateDynamicWidgetData(that, oSelectedWidget.Id);
 
 			// Wait for the data to be loaded, then open the duplicate dialog
-			setTimeout(function() {
+			setTimeout(function () {
 				// Load and open the duplicate widget dialog
 				if (!that._oDuplicateWidgetDialog) {
 					that._oDuplicateWidgetDialog = sap.ui.xmlfragment("DuplicateWidgetDialog",
@@ -808,13 +812,12 @@ sap.ui.define([
 		onCreateDeleteWidget: function (oController, widgetId) {
 			var that = oController;
 			var finmobview = that.getView().getModel("finmobview");
-		
-			
+
 			if (!widgetId) {
 				MessageToast.show("No widget to delete");
 				return;
 			}
-			
+
 			finmobview.remove("/WidgetConfigurationSet(WidgetId='" + widgetId + "')", {
 				success: function (oData) {
 					console.log("Successfully deleted:", oData);
@@ -835,7 +838,7 @@ sap.ui.define([
 			var aContent = oForm.getContent();
 			var oFormData = {};
 			var sCurrentLabel = "";
-			
+
 			aContent.forEach(function (oControl) {
 				if (oControl instanceof sap.m.Label) {
 					sCurrentLabel = oControl.getText();
@@ -871,11 +874,11 @@ sap.ui.define([
 					});
 				}
 			});
-			
+
 			// Update the input parameter in the model
 			var oCreateWidgetValues = that.getView().getModel("createWidgetValues");
 			oCreateWidgetValues.setProperty("/inputParameter", JSON.stringify(oFormData));
-			
+
 			console.log("Create Widget Form Values:", oFormData);
 			MessageToast.show("Form values saved for Create Widget Config");
 
@@ -883,12 +886,12 @@ sap.ui.define([
 			return JSON.stringify(oFormData);
 		},
 
-		getQueryParameter: function(oController, datasource) {
+		getQueryParameter: function (oController, datasource) {
 			return new Promise((resolve, reject) => {
 				var finmobview = oController.getView().getModel("finmobview");
 				var dataSourceValue = datasource || '';
 				var aFilters = [new Filter("DataSource", FilterOperator.EQ, dataSourceValue)];
-				
+
 				finmobview.read("/VariableMetaDataSet", {
 					filters: aFilters,
 					success: function (data) {
@@ -923,7 +926,7 @@ sap.ui.define([
 			oForm.removeAllContent();
 			var aQueryParam = await this.getQueryParameter(oController, dataSource);
 			debugger;
-		
+
 			// Get existing inputParameter data if available
 			var oSelectedData = that.getView().getModel("createWidgetValues").getData();
 			var aExistingInputParam = [];
@@ -934,120 +937,85 @@ sap.ui.define([
 					console.error("Error parsing inputParameter:", e);
 				}
 			}
-		
-			aQueryParam.forEach(function(param) {
+
+			aQueryParam.forEach(function (param) {
 				switch (param.Vparsel) {
-					case 'M':
-						var oLabel = new sap.m.Label({
-							text: param.Vtxt
-						});
-						// Create initial multi-input items
-						var aMultiInputItems = [];
-						
-						// Check if there are existing values for this parameter
-						var existingParam = aExistingInputParam.find(p => p.VNAM === param.Vnam);
-						if (existingParam && existingParam.LS_VALUE && existingParam.LS_VALUE.length > 0) {
-							existingParam.LS_VALUE.forEach(function(value) {
-								aMultiInputItems.push(new sap.m.HBox({
-									class: "sapUiSmallMarginBottom",
-									items: [
-										new sap.m.Input({
-											class: "sapUiSmallMarginBottom",
-											type: "Text",
-											value: value.LOW,
-											showValueHelp: true,
-											valueHelpIconSrc: "sap-icon://arrow-left"
-										}),
-										new sap.m.Button({
-											enabled: true,
-											icon: "sap-icon://add",
-											press: function(oEvent) {
-												this.handleCreateAddPress(oController, 'M', oEvent);
-											}.bind(this)
-										})
-									]
-								}));
-							}.bind(this));
-						} else {
-							// Create empty input box
+				case 'M':
+					var oLabel = new sap.m.Label({
+						text: param.Vtxt
+					});
+					// Create initial multi-input items
+					var aMultiInputItems = [];
+
+					// Check if there are existing values for this parameter
+					var existingParam = aExistingInputParam.find(p => p.VNAM === param.Vnam);
+					if (existingParam && existingParam.LS_VALUE && existingParam.LS_VALUE.length > 0) {
+						existingParam.LS_VALUE.forEach(function (value) {
 							aMultiInputItems.push(new sap.m.HBox({
 								class: "sapUiSmallMarginBottom",
 								items: [
 									new sap.m.Input({
 										class: "sapUiSmallMarginBottom",
 										type: "Text",
+										value: value.LOW,
 										showValueHelp: true,
 										valueHelpIconSrc: "sap-icon://arrow-left"
 									}),
 									new sap.m.Button({
 										enabled: true,
 										icon: "sap-icon://add",
-										press: function(oEvent) {
+										press: function (oEvent) {
 											this.handleCreateAddPress(oController, 'M', oEvent);
 										}.bind(this)
 									})
 								]
 							}));
-						}
-						var oMultiInputBox = new sap.m.VBox({
-							class: "sapUiMediumMargin",
-							items: aMultiInputItems
-						});
-						oForm.addContent(oLabel);
-						oForm.addContent(oMultiInputBox);
-						break;
-					case "S":
-						var oLabel = new sap.m.Label({
-							text: param.Vtxt
-						});
-						// Create initial select option items
-						var aSelectOptionItems = [];
-						
-						// Check if there are existing values for this parameter
-						var existingParam = aExistingInputParam.find(p => p.VNAM === param.Vnam);
-						if (existingParam && existingParam.LS_VALUE && existingParam.LS_VALUE.length > 0) {
-							existingParam.LS_VALUE.forEach(function(value) {
-								aSelectOptionItems.push(new sap.m.HBox({
+						}.bind(this));
+					} else {
+						// Create empty input box
+						aMultiInputItems.push(new sap.m.HBox({
+							class: "sapUiSmallMarginBottom",
+							items: [
+								new sap.m.Input({
 									class: "sapUiSmallMarginBottom",
-									items: [
-										new sap.m.Select({
-											forceSelection: false,
-											selectedKey: value.OPTION,
-											items: {
-												path: "inputParamModel>/selectOptionRange",
-												template: new sap.ui.core.Item({
-													key: "{inputParamModel>Value}",
-													text: "{inputParamModel>Value}"
-												})
-											},
-											icon: "sap-icon://filter",
-											autoAdjustWidth: true,
-											class: "sapUiSmallMarginEnd"
-										}),
-										new sap.m.Input({
-											class: "sapUiSmallMarginBottom",
-											type: "Text",
-											value: value.LOW,
-											showValueHelp: true,
-											valueHelpIconSrc: "sap-icon://value-help"
-										}),
-										new sap.m.Button({
-											enabled: true,
-											icon: "sap-icon://add",
-											press: function(oEvent) {
-												this.handleCreateAddPress(oController, 'S', oEvent);
-											}.bind(this)
-										})
-									]
-								}));
-							}.bind(this));
-						} else {
-							// Create empty select option box
+									type: "Text",
+									showValueHelp: true,
+									valueHelpIconSrc: "sap-icon://arrow-left"
+								}),
+								new sap.m.Button({
+									enabled: true,
+									icon: "sap-icon://add",
+									press: function (oEvent) {
+										this.handleCreateAddPress(oController, 'M', oEvent);
+									}.bind(this)
+								})
+							]
+						}));
+					}
+					var oMultiInputBox = new sap.m.VBox({
+						class: "sapUiMediumMargin",
+						items: aMultiInputItems
+					});
+					oForm.addContent(oLabel);
+					oForm.addContent(oMultiInputBox);
+					break;
+				case "S":
+					var oLabel = new sap.m.Label({
+						text: param.Vtxt
+					});
+					// Create initial select option items
+					var aSelectOptionItems = [];
+
+					// Check if there are existing values for this parameter
+					var existingParam = aExistingInputParam.find(p => p.VNAM === param.Vnam);
+					if (existingParam && existingParam.LS_VALUE && existingParam.LS_VALUE.length > 0) {
+						existingParam.LS_VALUE.forEach(function (value) {
 							aSelectOptionItems.push(new sap.m.HBox({
 								class: "sapUiSmallMarginBottom",
 								items: [
 									new sap.m.Select({
 										forceSelection: false,
+										selectedKey: value.OPTION,
 										items: {
 											path: "inputParamModel>/selectOptionRange",
 											template: new sap.ui.core.Item({
@@ -1062,66 +1030,101 @@ sap.ui.define([
 									new sap.m.Input({
 										class: "sapUiSmallMarginBottom",
 										type: "Text",
+										value: value.LOW,
 										showValueHelp: true,
 										valueHelpIconSrc: "sap-icon://value-help"
 									}),
 									new sap.m.Button({
 										enabled: true,
 										icon: "sap-icon://add",
-										press: function(oEvent) {
+										press: function (oEvent) {
 											this.handleCreateAddPress(oController, 'S', oEvent);
 										}.bind(this)
 									})
 								]
 							}));
-						}
-						var oSelectOptionBox = new sap.m.VBox({
-							class: "sapUiMediumMargin",
-							items: aSelectOptionItems
-						});
-						oForm.addContent(oLabel);
-						oForm.addContent(oSelectOptionBox);
-						break;
-					case "I":
-						var oLabel = new sap.m.Label({
-							text: param.Vtxt
-						});
-						// Get existing values for interval
-						var sLowValue = "";
-						var sHighValue = "";
-						var existingParam = aExistingInputParam.find(p => p.VNAM === param.Vnam);
-						if (existingParam && existingParam.LS_VALUE && existingParam.LS_VALUE.length > 0) {
-							sLowValue = existingParam.LS_VALUE[0].LOW || "";
-							sHighValue = existingParam.LS_VALUE[0].HIGH || "";
-						}
-						
-						var oIntervalBox = new sap.m.HBox({
-							class: "sapUiMediumMargin",
+						}.bind(this));
+					} else {
+						// Create empty select option box
+						aSelectOptionItems.push(new sap.m.HBox({
+							class: "sapUiSmallMarginBottom",
 							items: [
-								new sap.m.Input({
-									class: "sapUiSmallMarginEnd",
-									type: "Text",
-									value: sLowValue,
-									placeholder: "Low",
-									showValueHelp: true,
-									valueHelpIconSrc: "sap-icon://value-help"
-								}),
-								new sap.m.Text({
-									text: "to",
+								new sap.m.Select({
+									forceSelection: false,
+									items: {
+										path: "inputParamModel>/selectOptionRange",
+										template: new sap.ui.core.Item({
+											key: "{inputParamModel>Value}",
+											text: "{inputParamModel>Value}"
+										})
+									},
+									icon: "sap-icon://filter",
+									autoAdjustWidth: true,
 									class: "sapUiSmallMarginEnd"
 								}),
 								new sap.m.Input({
+									class: "sapUiSmallMarginBottom",
 									type: "Text",
-									value: sHighValue,
-									placeholder: "High",
 									showValueHelp: true,
 									valueHelpIconSrc: "sap-icon://value-help"
+								}),
+								new sap.m.Button({
+									enabled: true,
+									icon: "sap-icon://add",
+									press: function (oEvent) {
+										this.handleCreateAddPress(oController, 'S', oEvent);
+									}.bind(this)
 								})
 							]
-						});
-						oForm.addContent(oLabel);
-						oForm.addContent(oIntervalBox);
-						break;
+						}));
+					}
+					var oSelectOptionBox = new sap.m.VBox({
+						class: "sapUiMediumMargin",
+						items: aSelectOptionItems
+					});
+					oForm.addContent(oLabel);
+					oForm.addContent(oSelectOptionBox);
+					break;
+				case "I":
+					var oLabel = new sap.m.Label({
+						text: param.Vtxt
+					});
+					// Get existing values for interval
+					var sLowValue = "";
+					var sHighValue = "";
+					var existingParam = aExistingInputParam.find(p => p.VNAM === param.Vnam);
+					if (existingParam && existingParam.LS_VALUE && existingParam.LS_VALUE.length > 0) {
+						sLowValue = existingParam.LS_VALUE[0].LOW || "";
+						sHighValue = existingParam.LS_VALUE[0].HIGH || "";
+					}
+
+					var oIntervalBox = new sap.m.HBox({
+						class: "sapUiMediumMargin",
+						items: [
+							new sap.m.Input({
+								class: "sapUiSmallMarginEnd",
+								type: "Text",
+								value: sLowValue,
+								placeholder: "Low",
+								showValueHelp: true,
+								valueHelpIconSrc: "sap-icon://value-help"
+							}),
+							new sap.m.Text({
+								text: "to",
+								class: "sapUiSmallMarginEnd"
+							}),
+							new sap.m.Input({
+								type: "Text",
+								value: sHighValue,
+								placeholder: "High",
+								showValueHelp: true,
+								valueHelpIconSrc: "sap-icon://value-help"
+							})
+						]
+					});
+					oForm.addContent(oLabel);
+					oForm.addContent(oIntervalBox);
+					break;
 				}
 			}.bind(this));
 			debugger;
@@ -1133,7 +1136,7 @@ sap.ui.define([
 			var oClickedButton = oEvent.getSource().getParent().getParent();
 			var oForm = that.byId("createBexQueryParameterForm");
 			var iButtonIndex = oForm.getContent().findIndex(obj => obj.sId === oClickedButton.sId);
-			
+
 			if (paramQueryType === 'S') {
 				var oSelectOptionBox = new sap.m.VBox({
 					class: "sapUiMediumMargin",
@@ -1163,7 +1166,7 @@ sap.ui.define([
 								new sap.m.Button({
 									enabled: true,
 									icon: "sap-icon://add",
-									press: function(oEvent) {
+									press: function (oEvent) {
 										this.handleCreateAddPress(oController, 'S', oEvent);
 									}.bind(this)
 								})
@@ -1188,7 +1191,7 @@ sap.ui.define([
 								new sap.m.Button({
 									enabled: true,
 									icon: "sap-icon://add",
-									press: function(oEvent) {
+									press: function (oEvent) {
 										this.handleCreateAddPress(oController, 'M', oEvent);
 									}.bind(this)
 								})
@@ -1200,308 +1203,340 @@ sap.ui.define([
 			}
 		},
 
-	
-	createTableMappingForm: function (oController) {
-		var that = oController;
-		var self = this;
-	
-		// Table Mapping Form - For table/hierarchy widgets
-		var oTableMappingForm = that.byId("createTableMappingForm");
-		oTableMappingForm.removeAllContent();
-	
-		// Get metadata model
-		var oMetaDataModel = that.getView().getModel("createMetaDataModel");
-		if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
-			return;
-		}
-	
-		// Initialize table columns model
-		var oTableColumnsModel = new sap.ui.model.json.JSONModel([]);
-		that.getView().setModel(oTableColumnsModel, "createTableColumnsModel");
-	
-		// Add Columns label and button
-		var oAddColumnsLabel = new sap.m.Label({
-			text: "Add Columns"
-		});
-	
-		var oAddColumnButton = new sap.m.Button({
-			text: "Add Column",
-			icon: "sap-icon://add",
-			type: "Emphasized",
-			press: function() {
-				self.addTableColumn(that);
+		createTableMappingForm: function (oController) {
+			var that = oController;
+			var self = this;
+
+			// Table Mapping Form - For table/hierarchy widgets
+			var oTableMappingForm = that.byId("createTableMappingForm");
+			oTableMappingForm.removeAllContent();
+
+			// Get metadata model
+			var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+			if (!oMetaDataModel || !oMetaDataModel.getData() || oMetaDataModel.getData().length === 0) {
+				return;
 			}
-		}).addStyleClass("sapUiSmallMarginTop");
 
-		oTableMappingForm.addContent(oAddColumnsLabel);
-		oTableMappingForm.addContent(new sap.m.Label({ text: "" }));
+			// Initialize table columns model
+			var oTableColumnsModel = new sap.ui.model.json.JSONModel([]);
+			that.getView().setModel(oTableColumnsModel, "createTableColumnsModel");
 
-		// Create container for column rows
-		var oColumnsContainer = new sap.m.VBox({
-			width: "100%"
-		});
+			// Add Columns label and button
+			var oAddColumnsLabel = new sap.m.Label({
+				text: "Add Columns"
+			});
+			oAddColumnsLabel.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
 
-		oTableMappingForm.addContent(new sap.m.Label({ text: "" }));
-		oTableMappingForm.addContent(oColumnsContainer);
 
-		oTableMappingForm.addContent(new sap.m.Label({ text: "" }));
-		oTableMappingForm.addContent(oAddColumnButton);
-	
-		// Store reference for later use
-		that._oTableColumnsContainer = oColumnsContainer;
-	},
-	
-	addTableColumn: function(oController, oColumnData) {
-		var that = oController;
-		var oMetaDataModel = that.getView().getModel("createMetaDataModel");
-	
-		if (!that._oTableColumnsContainer) {
-			return;
-		}
-	
-		// Create a VBox for the entire column row
-		var oColumnRow = new sap.m.VBox({
-			width: "100%"
-		}).addStyleClass("sapUiSmallMarginBottom");
-	
-		// First row - Select Measures, Display Text, and Unit
-		var oFirstRow = new sap.m.HBox({
-			alignItems: "Center",
-			width: "100%"
-		}).addStyleClass("sapUiTinyMarginBottom");
-
-		// Second row - Scale, Decimals, Suffix, and Delete button
-		var oSecondRow = new sap.m.HBox({
-			alignItems: "Center",
-			width: "100%"
-		});
-	
-		// Display Text input (declared first so it can be referenced in Select change handler)
-		var oDisplayTextInput = new sap.m.Input({
-			width: "95%",
-			placeholder: "Display Text",
-			value: oColumnData && oColumnData.displayText ? oColumnData.displayText : ""
-		});
-
-		// Select Measures dropdown
-		var oSelectMeasure = new sap.m.Select({
-			width: "95%",
-			forceSelection: false,
-			selectedKey: oColumnData && oColumnData.selectMeasure ? oColumnData.selectMeasure : "",
-			change: function(oEvent) {
-				var oSelectedItem = oEvent.getParameter("selectedItem");
-				if (oSelectedItem) {
-					var sDisplayText = oSelectedItem.getText();
-					// Auto-fill Display Text with selected column text
-					oDisplayTextInput.setValue(sDisplayText);
+			var oAddColumnButton = new sap.m.Button({
+				text: "Add Column",
+				icon: "sap-icon://add",
+				type: "Emphasized",
+				 width: "140px",
+				press: function () {
+					self.addTableColumn(that);
 				}
-			}
-		});
+			}).addStyleClass("sapUiSmallMarginTop");
+oAddColumnButton.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
 
-		// Populate with metadata
-		if (oMetaDataModel && oMetaDataModel.getData()) {
-			var aMetaData = oMetaDataModel.getData();
-			aMetaData.forEach(function(item) {
-				oSelectMeasure.addItem(new sap.ui.core.Item({
-					key: item.FIELDNAME,
-					text: item.SCRTEXT_L || item.FIELDNAME
-				}));
+			// oTableMappingForm.addContent(oAddColumnsLabel);
+			// oTableMappingForm.addContent(new sap.m.Label({
+			// 	text: ""
+			// }));
+
+			// // Create container for column rows
+			var oColumnsContainer = new sap.m.VBox({
+				width: "100%"
+			});
+			oColumnsContainer.setLayoutData(new sap.ui.layout.GridData({ 
+    span: "XL12 L12 M12 S12", 
+    linebreak: true 
+}));
+
+			// oTableMappingForm.addContent(new sap.m.Label({
+			// 	text: ""
+			// }));
+			// oTableMappingForm.addContent(oColumnsContainer);
+
+			// oTableMappingForm.addContent(new sap.m.Label({
+			// 	text: ""
+			// }));
+			// oTableMappingForm.addContent(oAddColumnButton);
+			oTableMappingForm.addContent(oAddColumnsLabel);
+oTableMappingForm.addContent(new sap.m.Label({ text: "" }));
+oTableMappingForm.addContent(new sap.m.Label({ text: "" }));
+oTableMappingForm.addContent(oColumnsContainer);
+oTableMappingForm.addContent(new sap.m.Label({ text: "" }));
+oTableMappingForm.addContent(oAddColumnButton);
+
+			// Store reference for later use
+			that._oTableColumnsContainer = oColumnsContainer;
+		},
+
+		addTableColumn: function (oController, oColumnData) {
+			var that = oController;
+			var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+
+			if (!that._oTableColumnsContainer) {
+				return;
+			}
+
+			// Create a VBox for the entire column row
+			var oColumnRow = new sap.m.VBox({
+				width: "100%"
+			}).addStyleClass("sapUiSmallMarginBottom");
+
+			// First row - Select Measures, Display Text, and Unit
+			var oFirstRow = new sap.m.HBox({
+				alignItems: "Center",
+				width: "100%"
+			}).addStyleClass("sapUiTinyMarginBottom");
+
+			// Second row - Scale, Decimals, Suffix, and Delete button
+			var oSecondRow = new sap.m.HBox({
+				alignItems: "Center",
+				width: "100%"
 			});
 
-			// Set initial Display Text value if column data exists and display text is empty
-			if (oColumnData && oColumnData.selectMeasure && !oColumnData.displayText) {
-				var oSelectedItem = oSelectMeasure.getSelectedItem();
-				if (oSelectedItem) {
-					oDisplayTextInput.setValue(oSelectedItem.getText());
+			// Display Text input (declared first so it can be referenced in Select change handler)
+			var oDisplayTextInput = new sap.m.Input({
+				width: "95%",
+				placeholder: "Display Text",
+				value: oColumnData && oColumnData.displayText ? oColumnData.displayText : ""
+			});
+
+			// Select Measures dropdown
+			var oSelectMeasure = new sap.m.Select({
+				width: "95%",
+				forceSelection: false,
+				selectedKey: oColumnData && oColumnData.selectMeasure ? oColumnData.selectMeasure : "",
+				change: function (oEvent) {
+					var oSelectedItem = oEvent.getParameter("selectedItem");
+					if (oSelectedItem) {
+						var sDisplayText = oSelectedItem.getText();
+						// Auto-fill Display Text with selected column text
+						oDisplayTextInput.setValue(sDisplayText);
+					}
+				}
+			});
+
+			// Populate with metadata
+			if (oMetaDataModel && oMetaDataModel.getData()) {
+				var aMetaData = oMetaDataModel.getData();
+				aMetaData.forEach(function (item) {
+					oSelectMeasure.addItem(new sap.ui.core.Item({
+						key: item.FIELDNAME,
+						text: item.SCRTEXT_L || item.FIELDNAME
+					}));
+				});
+
+				// Set initial Display Text value if column data exists and display text is empty
+				if (oColumnData && oColumnData.selectMeasure && !oColumnData.displayText) {
+					var oSelectedItem = oSelectMeasure.getSelectedItem();
+					if (oSelectedItem) {
+						oDisplayTextInput.setValue(oSelectedItem.getText());
+					}
 				}
 			}
-		}
 
-		var oSelectMeasureVBox = new sap.m.VBox({
-			width: "33.33%",
-			items: [
-				new sap.m.Label({ text: "Select Columns" }),
-				oSelectMeasure
-			]
-		});
+			var oSelectMeasureVBox = new sap.m.VBox({
+				width: "33.33%",
+				items: [
+					new sap.m.Label({
+						text: "Select Columns"
+					}),
+					oSelectMeasure
+				]
+			});
 
-		var oDisplayTextVBox = new sap.m.VBox({
-			width: "33.33%",
-			items: [
-				new sap.m.Label({ text: "Display Text" }),
-				oDisplayTextInput
-			]
-		});
+			var oDisplayTextVBox = new sap.m.VBox({
+				width: "33.33%",
+				items: [
+					new sap.m.Label({
+						text: "Display Text"
+					}),
+					oDisplayTextInput
+				]
+			});
 
-		// Unit input
-		var oUnitInput = new sap.m.Input({
-			width: "95%",
-			placeholder: "Unit",
-			value: oColumnData && oColumnData.unit ? oColumnData.unit : ""
-		});
+			// Unit input
+			var oUnitInput = new sap.m.Input({
+				width: "95%",
+				placeholder: "Unit",
+				value: oColumnData && oColumnData.unit ? oColumnData.unit : ""
+			});
 
-		var oUnitVBox = new sap.m.VBox({
-			width: "33.33%",
-			items: [
-				new sap.m.Label({ text: "Unit" }),
-				oUnitInput
-			]
-		});
-	
-		// Scale input
-		var oScaleSelect = new sap.m.Select({
-			width: "95%",
-			selectedKey: oColumnData && oColumnData.scale ? oColumnData.scale : "noScaling",
-			items: [
-				new sap.ui.core.Item({
-					key: "noScaling",
-					text: "No Scaling"
-				}),
-				new sap.ui.core.Item({
-					key: "billion",
-					text: "in Billion (B)"
-				}),
-				new sap.ui.core.Item({
-					key: "million",
-					text: "in Million (M)"
-				}),
-				new sap.ui.core.Item({
-					key: "thousand",
-					text: "in Thousand (K)"
-				})
-			]
-		});
+			var oUnitVBox = new sap.m.VBox({
+				width: "33.33%",
+				items: [
+					new sap.m.Label({
+						text: "Unit"
+					}),
+					oUnitInput
+				]
+			});
 
-		var oScaleVBox = new sap.m.VBox({
-			width: "25%",
-			items: [
-				new sap.m.Label({ text: "Scale" }),
-				oScaleSelect
-			]
-		});
+			// Scale input
+			var oScaleSelect = new sap.m.Select({
+				width: "95%",
+				selectedKey: oColumnData && oColumnData.scale ? oColumnData.scale : "noScaling",
+				items: [
+					new sap.ui.core.Item({
+						key: "noScaling",
+						text: "No Scaling"
+					}),
+					new sap.ui.core.Item({
+						key: "billion",
+						text: "in Billion (B)"
+					}),
+					new sap.ui.core.Item({
+						key: "million",
+						text: "in Million (M)"
+					}),
+					new sap.ui.core.Item({
+						key: "thousand",
+						text: "in Thousand (K)"
+					})
+				]
+			});
 
-		// Decimals input
-		var oDecimalsSelect = new sap.m.Select({
-			width: "95%",
-			selectedKey: oColumnData && oColumnData.decimals ? oColumnData.decimals : "d0",
-			items: [
-				new sap.ui.core.Item({
-					key: "d0",
-					text: "0 decimals"
-				}),
-				new sap.ui.core.Item({
-					key: "d1",
-					text: "1 decimals"
-				}),
-				new sap.ui.core.Item({
-					key: "d2",
-					text: "2 decimals"
-				}),
-				new sap.ui.core.Item({
-					key: "d3",
-					text: "3 decimals"
-				})
-			]
-		});
+			var oScaleVBox = new sap.m.VBox({
+				width: "25%",
+				items: [
+					new sap.m.Label({
+						text: "Scale"
+					}),
+					oScaleSelect
+				]
+			});
 
-		var oDecimalsVBox = new sap.m.VBox({
-			width: "25%",
-			items: [
-				new sap.m.Label({ text: "Decimals" }),
-				oDecimalsSelect
-			]
-		});
-	
-		// Suffix input
-		var oSuffixInput = new sap.m.Input({
-			width: "95%",
-			placeholder: "Suffix",
-			value: oColumnData && oColumnData.suffix ? oColumnData.suffix : ""
-		});
-	
-		var oSuffixVBox = new sap.m.VBox({
-			width: "25%",
-			items: [
-				new sap.m.Label({ text: "Suffix" }),
-				oSuffixInput
-			]
-		});
-	
-		// Delete button
-		var oDeleteButton = new sap.m.Button({
-			icon: "sap-icon://delete",
-			type: "Reject",
-			width: "25%",
-			press: function() {
-				that._oTableColumnsContainer.removeItem(oColumnRow);
+			// Decimals input
+			var oDecimalsSelect = new sap.m.Select({
+				width: "95%",
+				selectedKey: oColumnData && oColumnData.decimals ? oColumnData.decimals : "d0",
+				items: [
+					new sap.ui.core.Item({
+						key: "d0",
+						text: "0 decimals"
+					}),
+					new sap.ui.core.Item({
+						key: "d1",
+						text: "1 decimals"
+					}),
+					new sap.ui.core.Item({
+						key: "d2",
+						text: "2 decimals"
+					}),
+					new sap.ui.core.Item({
+						key: "d3",
+						text: "3 decimals"
+					})
+				]
+			});
+
+			var oDecimalsVBox = new sap.m.VBox({
+				width: "25%",
+				items: [
+					new sap.m.Label({
+						text: "Decimals"
+					}),
+					oDecimalsSelect
+				]
+			});
+
+			// Suffix input
+			var oSuffixInput = new sap.m.Input({
+				width: "95%",
+				placeholder: "Suffix",
+				value: oColumnData && oColumnData.suffix ? oColumnData.suffix : ""
+			});
+
+			var oSuffixVBox = new sap.m.VBox({
+				width: "25%",
+				items: [
+					new sap.m.Label({
+						text: "Suffix"
+					}),
+					oSuffixInput
+				]
+			});
+
+			// Delete button
+			var oDeleteButton = new sap.m.Button({
+				icon: "sap-icon://delete",
+				type: "Reject",
+				width: "25%",
+				press: function () {
+					that._oTableColumnsContainer.removeItem(oColumnRow);
+				}
+			});
+
+			var oDeleteVBox = new sap.m.VBox({
+				width: "25%",
+				items: [
+					new sap.m.Label({
+						text: " "
+					}),
+					oDeleteButton
+				]
+			});
+
+			// Add controls to rows
+			oFirstRow.addItem(oSelectMeasureVBox);
+			oFirstRow.addItem(oDisplayTextVBox);
+			oFirstRow.addItem(oUnitVBox);
+
+			oSecondRow.addItem(oScaleVBox);
+			oSecondRow.addItem(oDecimalsVBox);
+			oSecondRow.addItem(oSuffixVBox);
+			oSecondRow.addItem(oDeleteVBox);
+
+			// Add rows to column container
+			oColumnRow.addItem(oFirstRow);
+			oColumnRow.addItem(oSecondRow);
+
+			// Add column row to container
+			that._oTableColumnsContainer.addItem(oColumnRow);
+		},
+
+		getCreateTableMappingFormValues: function (oController) {
+			var that = oController;
+
+			if (!that._oTableColumnsContainer) {
+				return JSON.stringify([]);
 			}
-		});
-	
-		var oDeleteVBox = new sap.m.VBox({
-			width: "25%",
-			items: [
-				new sap.m.Label({ text: " " }),
-				oDeleteButton
-			]
-		});
-	
-		// Add controls to rows
-		oFirstRow.addItem(oSelectMeasureVBox);
-		oFirstRow.addItem(oDisplayTextVBox);
-		oFirstRow.addItem(oUnitVBox);
 
-		oSecondRow.addItem(oScaleVBox);
-		oSecondRow.addItem(oDecimalsVBox);
-		oSecondRow.addItem(oSuffixVBox);
-		oSecondRow.addItem(oDeleteVBox);
-	
-		// Add rows to column container
-		oColumnRow.addItem(oFirstRow);
-		oColumnRow.addItem(oSecondRow);
-	
-		// Add column row to container
-		that._oTableColumnsContainer.addItem(oColumnRow);
-	},
-	
-	getCreateTableMappingFormValues: function (oController) {
-		var that = oController;
-	
-		if (!that._oTableColumnsContainer) {
-			return JSON.stringify([]);
-		}
-	
-		var aColumns = [];
-		var aColumnRows = that._oTableColumnsContainer.getItems();
-	
-		aColumnRows.forEach(function(oColumnRow) {
-			var aRows = oColumnRow.getItems();
-			if (aRows.length >= 2) {
-				var oFirstRow = aRows[0];
-				var oSecondRow = aRows[1];
+			var aColumns = [];
+			var aColumnRows = that._oTableColumnsContainer.getItems();
 
-				var oColumn = {
-					column: oFirstRow.getItems()[0].getItems()[1].getSelectedKey(),
-					displayText: oFirstRow.getItems()[1].getItems()[1].getValue(),
-					unit: oFirstRow.getItems()[2].getItems()[1].getValue(),
-					scale: oSecondRow.getItems()[0].getItems()[1].getSelectedKey(),
-					decimals: oSecondRow.getItems()[1].getItems()[1].getSelectedKey(),
-					suffix: oSecondRow.getItems()[2].getItems()[1].getValue()
-				};
+			aColumnRows.forEach(function (oColumnRow) {
+				var aRows = oColumnRow.getItems();
+				if (aRows.length >= 2) {
+					var oFirstRow = aRows[0];
+					var oSecondRow = aRows[1];
 
-				aColumns.push(oColumn);
-			}
-		});
-	
-		return JSON.stringify(aColumns);
-	},
+					var oColumn = {
+						column: oFirstRow.getItems()[0].getItems()[1].getSelectedKey(),
+						displayText: oFirstRow.getItems()[1].getItems()[1].getValue(),
+						unit: oFirstRow.getItems()[2].getItems()[1].getValue(),
+						scale: oSecondRow.getItems()[0].getItems()[1].getSelectedKey(),
+						decimals: oSecondRow.getItems()[1].getItems()[1].getSelectedKey(),
+						suffix: oSecondRow.getItems()[2].getItems()[1].getValue()
+					};
 
+					aColumns.push(oColumn);
+				}
+			});
+
+			return JSON.stringify(aColumns);
+		},
 
 		getCreateMappingFormValues: function (oController) {
 			debugger;
 			var that = oController;
 			var oModel = that.getView().getModel("selectedValues");
 			var oCurrentData = oModel.getData();
-		
+
 			var oForm = that.getView().byId("createDataMappingForm");
 			var aFormContent = oForm.getContent();
 
@@ -1526,7 +1561,7 @@ sap.ui.define([
 						// Handle VBox container for Measures
 						if (oNextControl instanceof sap.m.VBox && sLabelText === "Select Measures") {
 							var aMeasureRows = oNextControl.getItems();
-							aMeasureRows.forEach(function(oRow) {
+							aMeasureRows.forEach(function (oRow) {
 								if (oRow instanceof sap.m.VBox) {
 									// Each measure row is now a VBox containing two HBoxes
 									var aHBoxes = oRow.getItems();
@@ -1578,7 +1613,7 @@ sap.ui.define([
 						// Handle MultiInput controls first (before Input check since MultiInput extends Input)
 						else if (oNextControl instanceof sap.m.MultiInput) {
 							var aTokens = oNextControl.getTokens();
-							var aTokenValues = aTokens.map(function(oToken) {
+							var aTokenValues = aTokens.map(function (oToken) {
 								return oToken.getKey();
 							});
 							// Check if it's the Timeframe field
@@ -1600,23 +1635,21 @@ sap.ui.define([
 								aFields.push(oNextControl.getSelectedKey());
 							}
 						}
-					// Handle Input controls (but not MultiInput which was already handled)
-					else if (oNextControl instanceof sap.m.Input) {
-						// Check if it's the Period Range field
-						if (sLabelText === "Period Range") {
-							sPeriodRange = oNextControl.getValue();
+						// Handle Input controls (but not MultiInput which was already handled)
+						else if (oNextControl instanceof sap.m.Input) {
+							// Check if it's the Period Range field
+							if (sLabelText === "Period Range") {
+								sPeriodRange = oNextControl.getValue();
+							}
 						}
-					}
-
 
 					}
-				}// Handle CheckBox controls
+				} // Handle CheckBox controls
 				else if (oControl instanceof sap.m.CheckBox) {
 					// This is the Time/Period Dimension checkbox
 					bIsTimeDimension = oControl.getSelected();
 				}
 			}
-
 
 			oDataMapping['x'] = aFields[0];
 			oDataMapping['y'] = aYMeasures.length > 0 ? aYMeasures : aFields.slice(1);
@@ -1637,65 +1670,65 @@ sap.ui.define([
 			var aHierarchyFormContent = oHierarchyForm.getContent();
 			var oHierarchyValues = {};
 			var aPageIds = [];
-		var bEnableTimeRange = false;
-		var sTimeframe = "";
-			
-		// Loop through hierarchy form content to get Page ID from table
-		for (var j = 0; j < aHierarchyFormContent.length; j++) {
-			var oHierarchyControl = aHierarchyFormContent[j];
-			
-			// Handle CheckBox controls for Enable Time Range
-			if (oHierarchyControl instanceof sap.m.CheckBox) {
-				bEnableTimeRange = oHierarchyControl.getSelected();
-			}
-			
-			// Handle Table controls for Page ID
-			if (oHierarchyControl instanceof sap.m.Table) {
-				var oPageIdTableModel = that.getView().getModel("createPageIdTableModel");
-				if (oPageIdTableModel) {
-					var aTableData = oPageIdTableModel.getData();
-					aPageIds = aTableData.map(function(oItem) {
-						return oItem.Id;
-					});
-			
-			// // Handle Select controls for Timeframe
-			// if (oHierarchyControl instanceof sap.m.Select) {
-			// 	if (oHierarchyControl.getParent() instanceof sap.m.VBox) {
-			// 		// Check if it's the Timeframe select by looking at the previous control
-			// 		var iPrevIndex = j - 1;
-			// 		if (iPrevIndex >= 0 && aHierarchyFormContent[iPrevIndex] instanceof sap.m.Label) {
-			// 			var sLabelText = aHierarchyFormContent[iPrevIndex].getText();
-			// 			if (sLabelText === "Timeframe") {
-			// 				sTimeframe = oHierarchyControl.getSelectedKey();
-			// 			}
-			// 		}
-			// 	}
-			// }
+			var bEnableTimeRange = false;
+			var sTimeframe = "";
 
-			
+			// Loop through hierarchy form content to get Page ID from table
+			for (var j = 0; j < aHierarchyFormContent.length; j++) {
+				var oHierarchyControl = aHierarchyFormContent[j];
+
+				// Handle CheckBox controls for Enable Time Range
+				if (oHierarchyControl instanceof sap.m.CheckBox) {
+					bEnableTimeRange = oHierarchyControl.getSelected();
+				}
+
+				// Handle Table controls for Page ID
+				if (oHierarchyControl instanceof sap.m.Table) {
+					var oPageIdTableModel = that.getView().getModel("createPageIdTableModel");
+					if (oPageIdTableModel) {
+						var aTableData = oPageIdTableModel.getData();
+						aPageIds = aTableData.map(function (oItem) {
+							return oItem.Id;
+						});
+
+						// // Handle Select controls for Timeframe
+						// if (oHierarchyControl instanceof sap.m.Select) {
+						// 	if (oHierarchyControl.getParent() instanceof sap.m.VBox) {
+						// 		// Check if it's the Timeframe select by looking at the previous control
+						// 		var iPrevIndex = j - 1;
+						// 		if (iPrevIndex >= 0 && aHierarchyFormContent[iPrevIndex] instanceof sap.m.Label) {
+						// 			var sLabelText = aHierarchyFormContent[iPrevIndex].getText();
+						// 			if (sLabelText === "Timeframe") {
+						// 				sTimeframe = oHierarchyControl.getSelectedKey();
+						// 			}
+						// 		}
+						// 	}
+						// }
+
+					}
+				}
+				// Handle MultiInput controls for Timeframe
+				if (oHierarchyControl instanceof sap.m.MultiInput) {
+					// Check if it's the Timeframe MultiInput by looking at the previous control
+					var iPrevIndex = j - 1;
+					if (iPrevIndex >= 0 && aHierarchyFormContent[iPrevIndex] instanceof sap.m.Label) {
+						var sLabelText = aHierarchyFormContent[iPrevIndex].getText();
+						if (sLabelText === "Timeframe") {
+							var aTokens = oHierarchyControl.getTokens();
+							var aTimeframeValues = aTokens.map(function (oToken) {
+								return oToken.getKey();
+							});
+							// Store timeframe as JSON array
+							sTimeframe = aTimeframeValues.length > 0 ? JSON.stringify(aTimeframeValues) : "";
+						}
+					}
 				}
 			}
-		// Handle MultiInput controls for Timeframe
-		if (oHierarchyControl instanceof sap.m.MultiInput) {
-			// Check if it's the Timeframe MultiInput by looking at the previous control
-			var iPrevIndex = j - 1;
-			if (iPrevIndex >= 0 && aHierarchyFormContent[iPrevIndex] instanceof sap.m.Label) {
-				var sLabelText = aHierarchyFormContent[iPrevIndex].getText();
-				if (sLabelText === "Timeframe") {
-					var aTokens = oHierarchyControl.getTokens();
-					var aTimeframeValues = aTokens.map(function(oToken) {
-						return oToken.getKey();
-					});
-					// Store timeframe as JSON array
-					sTimeframe = aTimeframeValues.length > 0 ? JSON.stringify(aTimeframeValues) : "";
-				}
-			}
-		}
-		}
-			
+
 			oHierarchyValues['pageId'] = aPageIds;
-			oHierarchyValues['enableTimeRange'] = bEnableTimeRange;			
-			oHierarchyValues['timeframe'] = sTimeframe;			return oHierarchyValues;
+			oHierarchyValues['enableTimeRange'] = bEnableTimeRange;
+			oHierarchyValues['timeframe'] = sTimeframe;
+			return oHierarchyValues;
 		},
 
 		getCreateFilterMappingFormValues: function (oController) {
@@ -1728,11 +1761,11 @@ sap.ui.define([
 							var oVBoxWithFields = oHBox.getItems()[0];
 							if (oVBoxWithFields instanceof sap.m.VBox) {
 								var aFieldItems = oVBoxWithFields.getItems();
-								
+
 								// Find the Select and ComboBox controls
 								var oFilterFieldSelect = null;
 								var oFilterValueSelect = null;
-								
+
 								for (var k = 0; k < aFieldItems.length; k++) {
 									if (aFieldItems[k] instanceof sap.m.Select) {
 										oFilterFieldSelect = aFieldItems[k];
@@ -1740,7 +1773,7 @@ sap.ui.define([
 										oFilterValueSelect = aFieldItems[k];
 									}
 								}
-								
+
 								if (oFilterFieldSelect && oFilterValueSelect) {
 									var sSelectedField = oFilterFieldSelect.getSelectedKey();
 									var sSelectedValue = oFilterValueSelect.getValue();
@@ -1770,19 +1803,18 @@ sap.ui.define([
 			var oWidgetValues = that.getView().getModel("createWidgetValues");
 			var sSelectedWidgetType = oWidgetValues.getData().selectedWidgetType;
 			var iNumberOfFields = 0; // Default to 1 field
-			
+
 			if (sSelectedWidgetType.includes("1")) { // 1 Value Widget
 				iNumberOfFields = 1;
-			}else if (sSelectedWidgetType.includes("2")) { // 2 Value Widget
+			} else if (sSelectedWidgetType.includes("2")) { // 2 Value Widget
 				iNumberOfFields = 2;
-			} 
-			else if (sSelectedWidgetType.includes("3")) { // 3 Value Widget
+			} else if (sSelectedWidgetType.includes("3")) { // 3 Value Widget
 				iNumberOfFields = 3;
 			}
 
 			// Get form content and iterate through it to find field pairs
 			var aFormContent = oForm.getContent();
-			
+
 			// Extract aggregation data
 			// Index 0: Aggregation Label, Index 1: Aggregation Dimension Select, Index 2: Is Time Dimension CheckBox
 			var oAggregation = null;
@@ -1810,130 +1842,130 @@ sap.ui.define([
 				sSelectionType = aFormContent[4].getSelectedKey();
 			}
 
-
-		// New form structure: Aggregation Label, Aggregation Dimension Select, Is Time Dimension CheckBox, then VBox containers (one per field)
-		// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix), HBox3 (with 1 VBox for Selection Type)
-		// Skip the first 3 controls and start from index 3
+			// New form structure: Aggregation Label, Aggregation Dimension Select, Is Time Dimension CheckBox, then VBox containers (one per field)
+			// Each VBox contains: Field Label, Field Select, HBox1 (with 3 VBoxes for Display Text, Unit, Color), HBox2 (with 3 VBoxes for Scale, Decimals, Suffix), HBox3 (with 1 VBox for Selection Type)
+			// Skip the first 3 controls and start from index 3
 			for (var i = 3; i < aFormContent.length && i < (3 + iNumberOfFields); i++) {
 				var oFieldBox = aFormContent[i]; // Get the VBox for this field
 
 				if (oFieldBox instanceof sap.m.VBox) {
-				var aFieldBoxItems = oFieldBox.getItems();
-				// aFieldBoxItems[0] = Field Label
-				// aFieldBoxItems[1] = Field Select
-				// aFieldBoxItems[2] = HBox1 containing the first 3 fields
-				// aFieldBoxItems[3] = HBox2 containing the second 3 fields
-				// aFieldBoxItems[4] = HBox3 containing selection type
+					var aFieldBoxItems = oFieldBox.getItems();
+					// aFieldBoxItems[0] = Field Label
+					// aFieldBoxItems[1] = Field Select
+					// aFieldBoxItems[2] = HBox1 containing the first 3 fields
+					// aFieldBoxItems[3] = HBox2 containing the second 3 fields
+					// aFieldBoxItems[4] = HBox3 containing selection type
 
-				var oFieldSelect = aFieldBoxItems[1];
-				var oHBox1 = aFieldBoxItems[2];
-				var oHBox2 = aFieldBoxItems[3];
-				var oHBox3 = aFieldBoxItems[4];
+					var oFieldSelect = aFieldBoxItems[1];
+					var oHBox1 = aFieldBoxItems[2];
+					var oHBox2 = aFieldBoxItems[3];
+					var oHBox3 = aFieldBoxItems[4];
 
-				if (oFieldSelect instanceof sap.m.Select && oHBox1 instanceof sap.m.HBox && oHBox2 instanceof sap.m.HBox && oHBox3 instanceof sap.m.HBox) {
-					var sSelectedField = oFieldSelect.getSelectedKey();
+					if (oFieldSelect instanceof sap.m.Select && oHBox1 instanceof sap.m.HBox && oHBox2 instanceof sap.m.HBox && oHBox3 instanceof sap.m
+						.HBox) {
+						var sSelectedField = oFieldSelect.getSelectedKey();
 
-					// Get the three VBoxes from HBox1
-					var aHBox1Items = oHBox1.getItems();
-					var oTextVBox = aHBox1Items[0]; // Display Text VBox
-					var oUnitVBox = aHBox1Items[1]; // Unit VBox
-					var oColorVBox = aHBox1Items[2]; // Color VBox
+						// Get the three VBoxes from HBox1
+						var aHBox1Items = oHBox1.getItems();
+						var oTextVBox = aHBox1Items[0]; // Display Text VBox
+						var oUnitVBox = aHBox1Items[1]; // Unit VBox
+						var oColorVBox = aHBox1Items[2]; // Color VBox
 
-					// Get the three VBoxes from HBox2
-					var aHBox2Items = oHBox2.getItems();
-					var oScaleVBox = aHBox2Items[0]; // Scale VBox
-					var oDecimalsVBox = aHBox2Items[1]; // Decimals VBox
-					var oSuffixVBox = aHBox2Items[2]; // Suffix VBox
+						// Get the three VBoxes from HBox2
+						var aHBox2Items = oHBox2.getItems();
+						var oScaleVBox = aHBox2Items[0]; // Scale VBox
+						var oDecimalsVBox = aHBox2Items[1]; // Decimals VBox
+						var oSuffixVBox = aHBox2Items[2]; // Suffix VBox
 
-					// Extract input values from each VBox (items[1] is the Input control)
-					var sDisplayText = "";
-					var sUnit = "";
-					var sColor = "";
-					var sScale = "";
-					var sDecimals = "";
-					var sSuffix = "";
+						// Extract input values from each VBox (items[1] is the Input control)
+						var sDisplayText = "";
+						var sUnit = "";
+						var sColor = "";
+						var sScale = "";
+						var sDecimals = "";
+						var sSuffix = "";
 
-					if (oTextVBox && oTextVBox instanceof sap.m.VBox) {
-						var oTextInput = oTextVBox.getItems()[1];
-						if (oTextInput instanceof sap.m.Input) {
-							sDisplayText = oTextInput.getValue();
-						}
-					}
-
-					if (oUnitVBox && oUnitVBox instanceof sap.m.VBox) {
-						var oUnitInput = oUnitVBox.getItems()[1];
-						if (oUnitInput instanceof sap.m.Input) {
-							sUnit = oUnitInput.getValue();
-						}
-					}
-
-					if (oColorVBox && oColorVBox instanceof sap.m.VBox) {
-						var oColorControl = oColorVBox.getItems()[1];
-						// Check if it's an HBox (new structure with color picker and preview)
-						if (oColorControl instanceof sap.m.HBox) {
-							// Get the first item from HBox which is the color input
-							var oColorInput = oColorControl.getItems()[0];
-							if (oColorInput instanceof sap.m.Input) {
-								sColor = oColorInput.getValue();
-							}
-						} else if (oColorControl instanceof sap.m.Input) {
-							// Old structure (backward compatibility)
-							sColor = oColorControl.getValue();
-						}
-					}
-
-					if (oScaleVBox && oScaleVBox instanceof sap.m.VBox) {
-						var oScaleSelect = oScaleVBox.getItems()[1];
-						if (oScaleSelect instanceof sap.m.Select) {
-							sScale = oScaleSelect.getSelectedKey();
-						}
-					}
-
-					if (oDecimalsVBox && oDecimalsVBox instanceof sap.m.VBox) {
-						var oDecimalsSelect = oDecimalsVBox.getItems()[1];
-						if (oDecimalsSelect instanceof sap.m.Select) {
-							sDecimals = oDecimalsSelect.getSelectedKey();
-						}
-					}
-
-					if (oSuffixVBox && oSuffixVBox instanceof sap.m.VBox) {
-						var oSuffixInput = oSuffixVBox.getItems()[1];
-						if (oSuffixInput instanceof sap.m.Input) {
-							sSuffix = oSuffixInput.getValue();
-						}
-					}
-
-					// Get Selection Type from HBox3
-					var sSelectionType = "";
-					if (oHBox3 instanceof sap.m.HBox) {
-						var aHBox3Items = oHBox3.getItems();
-						var oSelectionTypeVBox = aHBox3Items[0]; // Selection Type VBox
-
-						if (oSelectionTypeVBox && oSelectionTypeVBox instanceof sap.m.VBox) {
-							var oSelectionTypeSelect = oSelectionTypeVBox.getItems()[1];
-							if (oSelectionTypeSelect instanceof sap.m.Select) {
-								sSelectionType = oSelectionTypeSelect.getSelectedKey();
+						if (oTextVBox && oTextVBox instanceof sap.m.VBox) {
+							var oTextInput = oTextVBox.getItems()[1];
+							if (oTextInput instanceof sap.m.Input) {
+								sDisplayText = oTextInput.getValue();
 							}
 						}
-					}
 
-					if (sSelectedField) {
-						var oTileValue = {
-							field: sSelectedField,
-							label: sDisplayText,
-							// label: sDisplayText || sSelectedField, // Use field name as default if no display text
-							unit: sUnit || "",
-							color: sColor || "",
-							scale: sScale || "",
-							decimals: sDecimals || "",
-							suffix: sSuffix || "",
-							selectiontype: sSelectionType || "",
-							variance: sSelectionType === "VARIANCE" ? "X" : ""
-						};
+						if (oUnitVBox && oUnitVBox instanceof sap.m.VBox) {
+							var oUnitInput = oUnitVBox.getItems()[1];
+							if (oUnitInput instanceof sap.m.Input) {
+								sUnit = oUnitInput.getValue();
+							}
+						}
 
-						aTileValues.push(oTileValue);
+						if (oColorVBox && oColorVBox instanceof sap.m.VBox) {
+							var oColorControl = oColorVBox.getItems()[1];
+							// Check if it's an HBox (new structure with color picker and preview)
+							if (oColorControl instanceof sap.m.HBox) {
+								// Get the first item from HBox which is the color input
+								var oColorInput = oColorControl.getItems()[0];
+								if (oColorInput instanceof sap.m.Input) {
+									sColor = oColorInput.getValue();
+								}
+							} else if (oColorControl instanceof sap.m.Input) {
+								// Old structure (backward compatibility)
+								sColor = oColorControl.getValue();
+							}
+						}
+
+						if (oScaleVBox && oScaleVBox instanceof sap.m.VBox) {
+							var oScaleSelect = oScaleVBox.getItems()[1];
+							if (oScaleSelect instanceof sap.m.Select) {
+								sScale = oScaleSelect.getSelectedKey();
+							}
+						}
+
+						if (oDecimalsVBox && oDecimalsVBox instanceof sap.m.VBox) {
+							var oDecimalsSelect = oDecimalsVBox.getItems()[1];
+							if (oDecimalsSelect instanceof sap.m.Select) {
+								sDecimals = oDecimalsSelect.getSelectedKey();
+							}
+						}
+
+						if (oSuffixVBox && oSuffixVBox instanceof sap.m.VBox) {
+							var oSuffixInput = oSuffixVBox.getItems()[1];
+							if (oSuffixInput instanceof sap.m.Input) {
+								sSuffix = oSuffixInput.getValue();
+							}
+						}
+
+						// Get Selection Type from HBox3
+						var sSelectionType = "";
+						if (oHBox3 instanceof sap.m.HBox) {
+							var aHBox3Items = oHBox3.getItems();
+							var oSelectionTypeVBox = aHBox3Items[0]; // Selection Type VBox
+
+							if (oSelectionTypeVBox && oSelectionTypeVBox instanceof sap.m.VBox) {
+								var oSelectionTypeSelect = oSelectionTypeVBox.getItems()[1];
+								if (oSelectionTypeSelect instanceof sap.m.Select) {
+									sSelectionType = oSelectionTypeSelect.getSelectedKey();
+								}
+							}
+						}
+
+						if (sSelectedField) {
+							var oTileValue = {
+								field: sSelectedField,
+								label: sDisplayText,
+								// label: sDisplayText || sSelectedField, // Use field name as default if no display text
+								unit: sUnit || "",
+								color: sColor || "",
+								scale: sScale || "",
+								decimals: sDecimals || "",
+								suffix: sSuffix || "",
+								selectiontype: sSelectionType || "",
+								variance: sSelectionType === "VARIANCE" ? "X" : ""
+							};
+
+							aTileValues.push(oTileValue);
+						}
 					}
-				}
 				}
 			}
 
@@ -1950,16 +1982,16 @@ sap.ui.define([
 		createTileMappingForm: function (oController) {
 			var that = oController;
 			var self = this;
-			
+
 			// Tile Mapping Form - Dynamic based on Widget Type
 			var oTileMappingForm = that.byId("createTileMappingForm");
 			oTileMappingForm.removeAllContent();
-			
+
 			// Get selected widget type to determine number of fields
 			var oWidgetValues = that.getView().getModel("createWidgetValues");
 			var sSelectedWidgetType = oWidgetValues.getData().selectedWidgetType;
 			var iNumberOfFields = 0; // Default to 1 field
-			
+
 			if (sSelectedWidgetType.includes("1")) { // 1 Value Widget
 				iNumberOfFields = 1;
 			} else if (sSelectedWidgetType.includes("2")) { // 2 Value Widget
@@ -1982,7 +2014,7 @@ sap.ui.define([
 			var oMetaDataModel = that.getView().getModel("createMetaDataModel");
 			if (oMetaDataModel && oMetaDataModel.getData()) {
 				var aMetaData = oMetaDataModel.getData();
-				aMetaData.forEach(function(item) {
+				aMetaData.forEach(function (item) {
 					oAggDimensionSelect.addItem(new sap.ui.core.Item({
 						key: item.FIELDNAME,
 						text: item.SCRTEXT_L || item.FIELDNAME
@@ -1995,6 +2027,9 @@ sap.ui.define([
 				text: "Is Time Dimension",
 				selected: false
 			});
+			oAggregationDimensionLabel.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oAggDimensionSelect.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oIsTimeDimensionCheckBox.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
 
 			oTileMappingForm.addContent(oAggregationDimensionLabel);
 			oTileMappingForm.addContent(oAggDimensionSelect);
@@ -2015,18 +2050,17 @@ sap.ui.define([
 					width: "100%",
 					showSecondaryValues: true
 				});
-				
+
 				// Manually populate field select items from metadata
 				var oMetaDataModel = that.getView().getModel("createMetaDataModel");
 				var aMetaData = oMetaDataModel.getData();
-				aMetaData.forEach(function(item) {
+				aMetaData.forEach(function (item) {
 					oFieldSelect.addItem(new sap.ui.core.ListItem({
 						key: item.FIELDNAME,
 						text: item.SCRTEXT_L,
 						additionalText: item.FIELDNAME
 					}));
 				});
-				
 
 				// Create VBox for Display Text (Label + Input stacked vertically)
 				var oTextVBox = new sap.m.VBox({
@@ -2060,7 +2094,7 @@ sap.ui.define([
 
 				// Create VBox for Color (Label + Input with color picker)
 				// Use IIFE to create closure for each iteration
-				var oColorVBox = (function(iFieldIndex) {
+				var oColorVBox = (function (iFieldIndex) {
 					// Default color palette for auto-assignment
 					var aDefaultColors = self.DEFAULT_COLORS;
 
@@ -2085,7 +2119,7 @@ sap.ui.define([
 					});
 
 					// Update preview background color
-					var fnUpdateColorPreview = function(sColorValue) {
+					var fnUpdateColorPreview = function (sColorValue) {
 						if (sColorValue) {
 							// Remove # if present and add it for CSS
 							var sCleanColor = sColorValue.replace("#", "");
@@ -2097,198 +2131,206 @@ sap.ui.define([
 
 					// Set initial color preview
 					if (sDefaultColor) {
-						setTimeout(function() {
+						setTimeout(function () {
 							fnUpdateColorPreview(sDefaultColor);
 						}, 100);
 					}
 
 					// Update preview when color input changes
-					oColorInput.attachChange(function(oEvent) {
+					oColorInput.attachChange(function (oEvent) {
 						var sValue = oEvent.getParameter("value");
 						fnUpdateColorPreview(sValue);
 					});
 
 					// Update preview in real-time as user types
-					oColorInput.attachLiveChange(function(oEvent) {
+					oColorInput.attachLiveChange(function (oEvent) {
 						var sValue = oEvent.getParameter("value");
 						fnUpdateColorPreview(sValue);
 					});
 
 					// Color picker dialog
-					oColorInput.attachValueHelpRequest(function() {
+					oColorInput.attachValueHelpRequest(function () {
 						var sOriginalColor = oColorInput.getValue() || "#000000";
 						var sSelectedColor = sOriginalColor;
 
-					// Function to convert RGB to Hex (without # prefix)
-					var fnRgbToHex = function(rgb) {
-						// Handle rgb(r, g, b) format
-						var rgbMatch = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-						if (rgbMatch) {
-							var r = parseInt(rgbMatch[1]);
-							var g = parseInt(rgbMatch[2]);
-							var b = parseInt(rgbMatch[3]);
-							return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
-						}
-						// If already hex, remove # if present
-						if (rgb && rgb.startsWith("#")) {
-							return rgb.substring(1);
-						}
-						return rgb;
-					};
-
-					// Hex code input inside dialog (without # prefix)
-					var oHexInput = new sap.m.Input({
-						value: fnRgbToHex(sOriginalColor),
-						placeholder: "Enter hex code (e.g., FF5733)",
-						width: "100%",
-						liveChange: function(oEvent) {
-							var sHexValue = oEvent.getParameter("value");
-							// Remove # if user enters it
-							sHexValue = sHexValue.replace("#", "");
-							if (sHexValue && sHexValue.match(/^[0-9A-Fa-f]{6}$/)) {
-								sSelectedColor = sHexValue;
-								oColorPicker.setColorString("#" + sHexValue);
-								oDialogPreview.$().find("input").css("background-color", "#" + sHexValue);
+						// Function to convert RGB to Hex (without # prefix)
+						var fnRgbToHex = function (rgb) {
+							// Handle rgb(r, g, b) format
+							var rgbMatch = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+							if (rgbMatch) {
+								var r = parseInt(rgbMatch[1]);
+								var g = parseInt(rgbMatch[2]);
+								var b = parseInt(rgbMatch[3]);
+								return ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase();
 							}
-						}
-					});
+							// If already hex, remove # if present
+							if (rgb && rgb.startsWith("#")) {
+								return rgb.substring(1);
+							}
+							return rgb;
+						};
 
-					// Color preview in dialog
-					var oDialogPreview = new sap.m.Input({
-						width: "100%",
-						editable: false,
-						value: " ",
-						backgroundDesign: "Transparent"
-					});
+						// Hex code input inside dialog (without # prefix)
+						var oHexInput = new sap.m.Input({
+							value: fnRgbToHex(sOriginalColor),
+							placeholder: "Enter hex code (e.g., FF5733)",
+							width: "100%",
+							liveChange: function (oEvent) {
+								var sHexValue = oEvent.getParameter("value");
+								// Remove # if user enters it
+								sHexValue = sHexValue.replace("#", "");
+								if (sHexValue && sHexValue.match(/^[0-9A-Fa-f]{6}$/)) {
+									sSelectedColor = sHexValue;
+									oColorPicker.setColorString("#" + sHexValue);
+									oDialogPreview.$().find("input").css("background-color", "#" + sHexValue);
+								}
+							}
+						});
 
-					var oColorPicker = new sap.ui.unified.ColorPicker({
-						colorString: sOriginalColor.startsWith("#") ? sOriginalColor : "#" + sOriginalColor,
-						mode: sap.ui.unified.ColorPickerMode.HSL,
-						displayMode: sap.ui.unified.ColorPickerDisplayMode.Default,
-						change: function(oEvent) {
-							var sColorString = oEvent.getParameter("colorString");
-							// Convert RGB to Hex (without #)
-							var sHexColor = fnRgbToHex(sColorString);
-							sSelectedColor = sHexColor;
-							oHexInput.setValue(sHexColor);
-							oDialogPreview.$().find("input").css("background-color", "#" + sHexColor);
-						}
-					});
-
-					// Create color palette tiles using Input controls styled as color swatches
-					var aColorTiles = self.DEFAULT_COLORS.map(function(sColor) {
-						var oColorBox = new sap.m.Input({
-							width: "40px",
-							height: "40px",
+						// Color preview in dialog
+						var oDialogPreview = new sap.m.Input({
+							width: "100%",
 							editable: false,
-							value: "",
-							backgroundDesign: "Transparent",
-							customData: [
-								new sap.ui.core.CustomData({
-									key: "color",
-									value: sColor
-								})
-							]
+							value: " ",
+							backgroundDesign: "Transparent"
 						});
 
-						// Add press event using attachBrowserEvent
-						oColorBox.attachBrowserEvent("click", function() {
-							sSelectedColor = sColor;
-							oColorPicker.setColorString("#" + sColor);
-							oHexInput.setValue(sColor);
-							oDialogPreview.$().find("input").css("background-color", "#" + sColor);
+						var oColorPicker = new sap.ui.unified.ColorPicker({
+							colorString: sOriginalColor.startsWith("#") ? sOriginalColor : "#" + sOriginalColor,
+							mode: sap.ui.unified.ColorPickerMode.HSL,
+							displayMode: sap.ui.unified.ColorPickerDisplayMode.Default,
+							change: function (oEvent) {
+								var sColorString = oEvent.getParameter("colorString");
+								// Convert RGB to Hex (without #)
+								var sHexColor = fnRgbToHex(sColorString);
+								sSelectedColor = sHexColor;
+								oHexInput.setValue(sHexColor);
+								oDialogPreview.$().find("input").css("background-color", "#" + sHexColor);
+							}
 						});
 
-						return oColorBox;
-					});
-
-					// Create FlexBox for color palette
-					var oColorPalette = new sap.m.FlexBox({
-						width: "380px",
-						wrap: "Wrap",
-						items: aColorTiles,
-						justifyContent: "Start"
-					});
-
-					var oColorDialog = new sap.m.Dialog({
-						title: "Select Color",
-						content: [
-							new sap.m.VBox({
-								items: [
-									new sap.m.Label({ text: "Quick Colors:" }),
-									oColorPalette,
-									new sap.m.Label({ text: "Custom Color Picker:" }).addStyleClass("sapUiSmallMarginTop"),
-									oColorPicker,
-									new sap.m.Label({ text: "Hex Code:" }).addStyleClass("sapUiSmallMarginTop"),
-									oHexInput,
-									new sap.m.Label({ text: "Preview:" }).addStyleClass("sapUiSmallMarginTop"),
-									oDialogPreview
+						// Create color palette tiles using Input controls styled as color swatches
+						var aColorTiles = self.DEFAULT_COLORS.map(function (sColor) {
+							var oColorBox = new sap.m.Input({
+								width: "40px",
+								height: "40px",
+								editable: false,
+								value: "",
+								backgroundDesign: "Transparent",
+								customData: [
+									new sap.ui.core.CustomData({
+										key: "color",
+										value: sColor
+									})
 								]
-							})
-						],
-						beginButton: new sap.m.Button({
-							text: "OK",
-							press: function() {
-								// Apply the selected color
-								oColorInput.setValue(sSelectedColor);
-								fnUpdateColorPreview(sSelectedColor);
-								oColorDialog.close();
-							}
-						}),
-						endButton: new sap.m.Button({
-							text: "Cancel",
-							press: function() {
-								// Restore original color
-								oColorDialog.close();
-							}
-						}),
-						afterOpen: function() {
-							// Set initial preview color after dialog is rendered
-							setTimeout(function() {
-								var sColorForPreview = sOriginalColor.startsWith("#") ? sOriginalColor : "#" + sOriginalColor;
-								oDialogPreview.$().find("input").css("background-color", sColorForPreview);
+							});
 
-								// Style color palette tiles with their respective colors
-								aColorTiles.forEach(function(oTile) {
-									var sColor = oTile.data("color");
-									oTile.$().find("input").css({
-										"background-color": "#" + sColor,
-										"border": "2px solid #ccc",
-										"border-radius": "4px",
-										"cursor": "pointer"
+							// Add press event using attachBrowserEvent
+							oColorBox.attachBrowserEvent("click", function () {
+								sSelectedColor = sColor;
+								oColorPicker.setColorString("#" + sColor);
+								oHexInput.setValue(sColor);
+								oDialogPreview.$().find("input").css("background-color", "#" + sColor);
+							});
+
+							return oColorBox;
+						});
+
+						// Create FlexBox for color palette
+						var oColorPalette = new sap.m.FlexBox({
+							width: "380px",
+							wrap: "Wrap",
+							items: aColorTiles,
+							justifyContent: "Start"
+						});
+
+						var oColorDialog = new sap.m.Dialog({
+							title: "Select Color",
+							content: [
+								new sap.m.VBox({
+									items: [
+										new sap.m.Label({
+											text: "Quick Colors:"
+										}),
+										oColorPalette,
+										new sap.m.Label({
+											text: "Custom Color Picker:"
+										}).addStyleClass("sapUiSmallMarginTop"),
+										oColorPicker,
+										new sap.m.Label({
+											text: "Hex Code:"
+										}).addStyleClass("sapUiSmallMarginTop"),
+										oHexInput,
+										new sap.m.Label({
+											text: "Preview:"
+										}).addStyleClass("sapUiSmallMarginTop"),
+										oDialogPreview
+									]
+								})
+							],
+							beginButton: new sap.m.Button({
+								text: "OK",
+								press: function () {
+									// Apply the selected color
+									oColorInput.setValue(sSelectedColor);
+									fnUpdateColorPreview(sSelectedColor);
+									oColorDialog.close();
+								}
+							}),
+							endButton: new sap.m.Button({
+								text: "Cancel",
+								press: function () {
+									// Restore original color
+									oColorDialog.close();
+								}
+							}),
+							afterOpen: function () {
+								// Set initial preview color after dialog is rendered
+								setTimeout(function () {
+									var sColorForPreview = sOriginalColor.startsWith("#") ? sOriginalColor : "#" + sOriginalColor;
+									oDialogPreview.$().find("input").css("background-color", sColorForPreview);
+
+									// Style color palette tiles with their respective colors
+									aColorTiles.forEach(function (oTile) {
+										var sColor = oTile.data("color");
+										oTile.$().find("input").css({
+											"background-color": "#" + sColor,
+											"border": "2px solid #ccc",
+											"border-radius": "4px",
+											"cursor": "pointer"
+										});
 									});
-								});
-							}, 100);
-						},
-						afterClose: function() {
-							oColorDialog.destroy();
-						}
+								}, 100);
+							},
+							afterClose: function () {
+								oColorDialog.destroy();
+							}
+						});
+
+						oColorDialog.open();
 					});
 
-					oColorDialog.open();
-				});
+					// HBox for color input and preview
+					var oColorHBox = new sap.m.HBox({
+						width: "100%",
+						alignItems: "Center",
+						items: [
+							oColorInput,
+							oColorPreview
+						]
+					});
 
-				// HBox for color input and preview
-				var oColorHBox = new sap.m.HBox({
-					width: "100%",
-					alignItems: "Center",
-					items: [
-						oColorInput,
-						oColorPreview
-					]
-				});
-
-				// Return the VBox
-				return new sap.m.VBox({
-					width: "33.33%",
-					items: [
-						new Label({
-							text: "Color " + k
-						}),
-						oColorHBox
-					]
-				});
-			})(k); // Immediately invoke the function with field index
+					// Return the VBox
+					return new sap.m.VBox({
+						width: "33.33%",
+						items: [
+							new Label({
+								text: "Color " + k
+							}),
+							oColorHBox
+						]
+					});
+				})(k); // Immediately invoke the function with field index
 
 				// Create VBox for Scale (Label + Select stacked vertically)
 				var oScaleSelect = new sap.m.Select({
@@ -2379,7 +2421,7 @@ sap.ui.define([
 				// Populate selection type items
 				var oTitleBindingModel = that.getView().getModel("createDataBindingTypeDropdownData");
 				var aTileBindingData = oTitleBindingModel.getData();
-				aTileBindingData.forEach(function(item) {
+				aTileBindingData.forEach(function (item) {
 					oSelectionTypeSelect.addItem(new sap.ui.core.ListItem({
 						key: item.Id,
 						text: item.Text,
@@ -2427,6 +2469,11 @@ sap.ui.define([
 					items: [oFieldLabel, oFieldSelect, oHBoxFields1, oHBoxFields2, oHBoxFields3],
 					class: "sapUiSmallMarginBottom"
 				});
+				// ADD THIS - forces each field block onto its own row
+oFieldBox.setLayoutData(new sap.ui.layout.GridData({
+    span: "XL12 L12 M12 S12",
+    linebreak: true
+}));
 
 				// Add the field box to form
 				oTileMappingForm.addContent(oFieldBox);
@@ -2442,7 +2489,7 @@ sap.ui.define([
 				var oColumn3Control = aSelectionTypeControls[2].control; // k=3
 
 				// Handler for column 3 changes
-				oColumn3Control.attachChange(function(oEvent) {
+				oColumn3Control.attachChange(function (oEvent) {
 					var sColumn3Value = oEvent.getSource().getSelectedKey();
 					if (sColumn3Value === "VARIANCE") {
 						// Sync column 2 with column 1
@@ -2452,7 +2499,7 @@ sap.ui.define([
 				});
 
 				// Handler for column 1 changes
-				oColumn1Control.attachChange(function(oEvent) {
+				oColumn1Control.attachChange(function (oEvent) {
 					// Check if column 3 is set to VARIANCE
 					var sColumn3Value = oColumn3Control.getSelectedKey();
 					if (sColumn3Value === "VARIANCE") {
@@ -2465,6 +2512,218 @@ sap.ui.define([
 
 			return iNumberOfFields;
 		},
+// 		createTileMappingForm: function (oController) {
+//     var that = oController;
+//     var self = this;
+
+//     // Get the Panel instead of SimpleForm
+//     var oTileMappingPanel = that.byId("createTileMappingForm");
+//     oTileMappingPanel.destroyContent(); // destroyContent for Panel
+
+//     var oWidgetValues = that.getView().getModel("createWidgetValues");
+//     var sSelectedWidgetType = oWidgetValues.getData().selectedWidgetType;
+//     var iNumberOfFields = 0;
+
+//     if (sSelectedWidgetType.includes("1")) {
+//         iNumberOfFields = 1;
+//     } else if (sSelectedWidgetType.includes("2")) {
+//         iNumberOfFields = 2;
+//     } else if (sSelectedWidgetType.includes("3")) {
+//         iNumberOfFields = 3;
+//     }
+
+//     // Master VBox to hold everything
+//     var oMasterVBox = new sap.m.VBox({ width: "100%" });
+
+//     // --- Aggregation Dimension Row ---
+//     var oAggDimensionSelect = new sap.m.Select({ width: "40%" });
+//     var oMetaDataModel = that.getView().getModel("createMetaDataModel");
+//     if (oMetaDataModel && oMetaDataModel.getData()) {
+//         oMetaDataModel.getData().forEach(function (item) {
+//             oAggDimensionSelect.addItem(new sap.ui.core.Item({
+//                 key: item.FIELDNAME,
+//                 text: item.SCRTEXT_L || item.FIELDNAME
+//             }));
+//         });
+//     }
+
+//     var oIsTimeDimensionCheckBox = new sap.m.CheckBox({
+//         text: "Is Time Dimension",
+//         selected: false
+//     });
+
+//     oMasterVBox.addItem(new sap.m.VBox({
+//         width: "100%",
+//         class: "sapUiSmallMarginBottom",
+//         items: [
+//             new sap.m.Label({ text: "Aggregation Dimension", design: "Bold" }),
+//             new sap.m.HBox({
+//                 width: "100%",
+//                 alignItems: "Center",
+//                 items: [oAggDimensionSelect, 
+//                     new sap.m.ToolbarSpacer({ width: "1rem" }),
+//                     oIsTimeDimensionCheckBox
+//                 ]
+//             })
+//         ]
+//     }));
+
+//     // --- Separator ---
+//     oMasterVBox.addItem(new sap.m.Label({ text: "" })); // spacer
+
+//     var aSelectionTypeControls = [];
+
+//     for (var k = 1; k <= iNumberOfFields; k++) {
+
+//         // Field Select
+//         var oFieldSelect = new sap.m.Select({
+//             width: "40%",
+//             showSecondaryValues: true
+//         });
+
+//         var aMetaData = oMetaDataModel.getData();
+//         aMetaData.forEach(function (item) {
+//             oFieldSelect.addItem(new sap.ui.core.ListItem({
+//                 key: item.FIELDNAME,
+//                 text: item.SCRTEXT_L,
+//                 additionalText: item.FIELDNAME
+//             }));
+//         });
+
+//         // VBox for Display Text
+//         var oTextVBox = new sap.m.VBox({
+//             width: "33.33%",
+//             items: [
+//                 new sap.m.Label({ text: "Display Text " + k }),
+//                 new sap.m.Input({ width: "95%", placeholder: "Enter display text for field " + k })
+//             ]
+//         });
+
+//         // VBox for Unit
+//         var oUnitVBox = new sap.m.VBox({
+//             width: "33.33%",
+//             items: [
+//                 new sap.m.Label({ text: "Unit " + k }),
+//                 new sap.m.Input({ width: "95%", placeholder: "Enter unit for field " + k })
+//             ]
+//         });
+
+//         // Color VBox - keep your existing IIFE logic exactly as-is
+//         var oColorVBox = (function (iFieldIndex) {
+//             // ... your existing color VBox IIFE code unchanged ...
+//         })(k);
+
+//         // Scale VBox
+//         var oScaleVBox = new sap.m.VBox({
+//             width: "33.33%",
+//             items: [
+//                 new sap.m.Label({ text: "Scale " + k }),
+//                 new sap.m.Select({
+//                     width: "95%",
+//                     items: [
+//                         new sap.ui.core.Item({ key: "noScaling", text: "No Scaling" }),
+//                         new sap.ui.core.Item({ key: "billion",   text: "in Billion (B)" }),
+//                         new sap.ui.core.Item({ key: "million",   text: "in Million (M)" }),
+//                         new sap.ui.core.Item({ key: "thousand",  text: "in Thousand (K)" })
+//                     ]
+//                 })
+//             ]
+//         });
+
+//         // Decimals VBox
+//         var oDecimalsVBox = new sap.m.VBox({
+//             width: "33.33%",
+//             items: [
+//                 new sap.m.Label({ text: "Decimals " + k }),
+//                 new sap.m.Select({
+//                     width: "95%",
+//                     items: [
+//                         new sap.ui.core.Item({ key: "d0", text: "0 decimals" }),
+//                         new sap.ui.core.Item({ key: "d1", text: "1 decimals" }),
+//                         new sap.ui.core.Item({ key: "d2", text: "2 decimals" }),
+//                         new sap.ui.core.Item({ key: "d3", text: "3 decimals" })
+//                     ]
+//                 })
+//             ]
+//         });
+
+//         // Suffix VBox
+//         var oSuffixVBox = new sap.m.VBox({
+//             width: "33.33%",
+//             items: [
+//                 new sap.m.Label({ text: "Suffix " + k }),
+//                 new sap.m.Input({ width: "95%", placeholder: "Enter suffix for field " + k })
+//             ]
+//         });
+
+//         // Selection Type VBox
+//         var oSelectionTypeSelect = new sap.m.Select({ width: "95%" });
+//         var oTitleBindingModel = that.getView().getModel("createDataBindingTypeDropdownData");
+//         oTitleBindingModel.getData().forEach(function (item) {
+//             oSelectionTypeSelect.addItem(new sap.ui.core.ListItem({
+//                 key: item.Id,
+//                 text: item.Text,
+//                 additionalText: item.Id
+//             }));
+//         });
+
+//         aSelectionTypeControls.push({ index: k, control: oSelectionTypeSelect });
+
+//         var oSelectionTypeVBox = new sap.m.VBox({
+//             width: "33.33%",
+//             items: [
+//                 new sap.m.Label({ text: "Selection Type " + k }),
+//                 oSelectionTypeSelect
+//             ]
+//         });
+
+//         // Divider line between fields
+//         var oDivider = new sap.m.Label({
+//             text: "── Field " + k + " ──",
+//             design: "Bold"
+//         });
+
+//         // Assemble this field's block
+//         var oFieldBlock = new sap.m.VBox({
+//             width: "100%",
+//             class: "sapUiMediumMarginBottom",
+//             items: [
+//                 oDivider,
+//                 new sap.m.Label({ text: "Select Field " + k, design: "Bold" }),
+//                 oFieldSelect,
+//                 new sap.m.HBox({ width: "100%", items: [oTextVBox, oUnitVBox, oColorVBox] }),
+//                 new sap.m.HBox({ width: "100%", items: [oScaleVBox, oDecimalsVBox, oSuffixVBox] }),
+//                 new sap.m.HBox({ width: "100%", items: [oSelectionTypeVBox] })
+//             ]
+//         });
+
+//         oMasterVBox.addItem(oFieldBlock);
+//     }
+
+//     // Add the master VBox to the Panel
+//     oTileMappingPanel.addContent(oMasterVBox);
+
+//     // --- Your existing change handler logic unchanged ---
+//     if (aSelectionTypeControls.length >= 3) {
+//         var oColumn1Control = aSelectionTypeControls[0].control;
+//         var oColumn2Control = aSelectionTypeControls[1].control;
+//         var oColumn3Control = aSelectionTypeControls[2].control;
+
+//         oColumn3Control.attachChange(function (oEvent) {
+//             if (oEvent.getSource().getSelectedKey() === "VARIANCE") {
+//                 oColumn2Control.setSelectedKey(oColumn1Control.getSelectedKey());
+//             }
+//         });
+
+//         oColumn1Control.attachChange(function (oEvent) {
+//             if (oColumn3Control.getSelectedKey() === "VARIANCE") {
+//                 oColumn2Control.setSelectedKey(oEvent.getSource().getSelectedKey());
+//             }
+//         });
+//     }
+
+//     return iNumberOfFields;
+// },
 
 		fetchQueryOutput: function (oController, aFilterParams) {
 			debugger;
@@ -2473,7 +2732,7 @@ sap.ui.define([
 			var finmobview = that.getView().getModel("finmobview");
 			var oBusyIndicator = that.byId("createTabBarBusyIndicator");
 			var oIconTabBar = that.byId("createIconTabBarInlineMode");
-			
+
 			if (oBusyIndicator) {
 				oBusyIndicator.setVisible(true);
 			}
@@ -2486,7 +2745,7 @@ sap.ui.define([
 			var aFilters = [
 				new Filter("DatasourceName", FilterOperator.EQ, sDataSource),
 				new Filter("InputParameter", FilterOperator.EQ, JSON.stringify(aFilterParams)),
-				new Filter("SourceType",FilterOperator.EQ, sSourceType)
+				new Filter("SourceType", FilterOperator.EQ, sSourceType)
 			];
 
 			finmobview.read("/Query_Output", {
@@ -2498,7 +2757,7 @@ sap.ui.define([
 					if (oIconTabBar) {
 						oIconTabBar.setVisible(true);
 					}
-					
+
 					console.log("Create Query Output:", data);
 
 					if (data.results && data.results.length > 0) {
@@ -2514,43 +2773,47 @@ sap.ui.define([
 						// Create and set jsonDataModel for the table
 						var oJsonDataModel = new JSONModel(jsonData);
 						that.getView().setModel(oJsonDataModel, "createJsonDataModel");
-						
+
 						// Create dynamic columns for the table
 						var oTable = that.getView().byId("createJsonDataTable");
 						if (oTable && jsonData.length > 0) {
 							// Clear existing columns
 							oTable.removeAllColumns();
-							
+
 							// Get column names from first data row
 							var aColumnNames = Object.keys(jsonData[0]);
-							
+
 							// Create columns dynamically with proper display names
-							aColumnNames.forEach(function(sColumnName) {
+							aColumnNames.forEach(function (sColumnName) {
 								// Find the corresponding SCRTEXT_L from metadata
 								var sDisplayName = sColumnName; // Default to field name
-								var oMetaField = metaData.find(function(oItem) {
+								var oMetaField = metaData.find(function (oItem) {
 									return oItem.FIELDNAME === sColumnName;
 								});
 								if (oMetaField && oMetaField.SCRTEXT_L) {
 									sDisplayName = oMetaField.SCRTEXT_L;
 								}
-								
+
 								var oColumn = new Column({
-									header: new Text({text: sDisplayName})
+									header: new Text({
+										text: sDisplayName
+									})
 								});
 								oTable.addColumn(oColumn);
 							});
-							
+
 							// Clear and recreate template
 							oTable.removeAllItems();
-							var oCells = aColumnNames.map(function(sColumnName) {
-								return new Text({text: "{createJsonDataModel>" + sColumnName + "}"});
+							var oCells = aColumnNames.map(function (sColumnName) {
+								return new Text({
+									text: "{createJsonDataModel>" + sColumnName + "}"
+								});
 							});
-							
+
 							var oColumnListItem = new ColumnListItem({
 								cells: oCells
 							});
-							
+
 							oTable.bindItems({
 								path: "createJsonDataModel>/",
 								template: oColumnListItem
@@ -2582,33 +2845,33 @@ sap.ui.define([
 							}
 						});
 
-					// Period Range field (Label and Input)
-					var oPeriodRangeLabel = new sap.m.Label({
-						text: "Period Range",
-						required: false,
-						visible: false
-					});
+						// Period Range field (Label and Input)
+						var oPeriodRangeLabel = new sap.m.Label({
+							text: "Period Range",
+							required: false,
+							visible: false
+						});
 
-					var oPeriodRangeInput = new sap.m.Input({
-						visible: false,
-						width: "100%",
-						placeholder: "Enter period range (e.g., 1-12)",
-						type: "Text"
-					});
+						var oPeriodRangeInput = new sap.m.Input({
+							visible: false,
+							width: "100%",
+							placeholder: "Enter period range (e.g., 1-12)",
+							type: "Text"
+						});
 
-					// Checkbox for Time/Period Dimension
-					var oTimeDimensionCheckBox = new sap.m.CheckBox({
-						text: "Is Time/Period Dimension",
-						select: function(oEvent) {
-							var bSelected = oEvent.getParameter("selected");
-							// Toggle Timeframe and Period Range field visibility
-							oTimeframeLabel.setVisible(bSelected);
-							oTimeframeSelect.setVisible(bSelected);
-							oPeriodRangeLabel.setVisible(bSelected);
-							oPeriodRangeInput.setVisible(bSelected);
-						}
-					});
-						
+						// Checkbox for Time/Period Dimension
+						var oTimeDimensionCheckBox = new sap.m.CheckBox({
+							text: "Is Time/Period Dimension",
+							select: function (oEvent) {
+								var bSelected = oEvent.getParameter("selected");
+								// Toggle Timeframe and Period Range field visibility
+								oTimeframeLabel.setVisible(bSelected);
+								oTimeframeSelect.setVisible(bSelected);
+								oPeriodRangeLabel.setVisible(bSelected);
+								oPeriodRangeInput.setVisible(bSelected);
+							}
+						});
+
 						// var oXInput = new Input({
 						// 	class: "sapUiSmallMarginEnd",
 						// 	type: "Text",
@@ -2665,7 +2928,7 @@ sap.ui.define([
 						});
 
 						// Function to add a new measure row
-						var fnAddMeasureRow = function(sMeasureValue, sLabelValue, sUnit, sColor, sScale, sDecimals, sSuffix) {
+						var fnAddMeasureRow = function (sMeasureValue, sLabelValue, sUnit, sColor, sScale, sDecimals, sSuffix) {
 							// Default color palette for auto-assignment
 							var aDefaultColors = self.DEFAULT_COLORS;
 
@@ -2705,12 +2968,12 @@ sap.ui.define([
 							if (oMetaDataModel && oMetaDataModel.getData() && oMetaDataModel.getData().length > 0) {
 								// Filter out the field already selected in X Axis
 								var sSelectedXField = oXSelect.getSelectedKey();
-								var aFilteredData = oMetaDataModel.getData().filter(function(oItem) {
+								var aFilteredData = oMetaDataModel.getData().filter(function (oItem) {
 									return oItem.FIELDNAME !== sSelectedXField;
 								});
 
 								// Add items to select
-								aFilteredData.forEach(function(oItem) {
+								aFilteredData.forEach(function (oItem) {
 									oMeasureSelect.addItem(new sap.ui.core.Item({
 										key: oItem.FIELDNAME,
 										text: oItem.SCRTEXT_L || oItem.FIELDNAME
@@ -2758,7 +3021,7 @@ sap.ui.define([
 							});
 
 							// Update Display Text when measure selection changes
-							oMeasureSelect.attachChange(function(oEvent) {
+							oMeasureSelect.attachChange(function (oEvent) {
 								var oSelectedItem = oEvent.getParameter("selectedItem");
 								if (oSelectedItem && !oDisplayTextInput.getValue()) {
 									oDisplayTextInput.setValue(oSelectedItem.getText());
@@ -2799,7 +3062,7 @@ sap.ui.define([
 							});
 
 							// Update preview background color
-							var fnUpdateColorPreview = function(sColorValue) {
+							var fnUpdateColorPreview = function (sColorValue) {
 								if (sColorValue) {
 									// Remove # if present and add it for CSS
 									var sCleanColor = sColorValue.replace("#", "");
@@ -2811,30 +3074,30 @@ sap.ui.define([
 
 							// Set initial color preview
 							if (sColor) {
-								setTimeout(function() {
+								setTimeout(function () {
 									fnUpdateColorPreview(sColor);
 								}, 100);
 							}
 
 							// Update preview when color input changes
-							oColorInput.attachChange(function(oEvent) {
+							oColorInput.attachChange(function (oEvent) {
 								var sValue = oEvent.getParameter("value");
 								fnUpdateColorPreview(sValue);
 							});
 
 							// Update preview in real-time as user types
-							oColorInput.attachLiveChange(function(oEvent) {
+							oColorInput.attachLiveChange(function (oEvent) {
 								var sValue = oEvent.getParameter("value");
 								fnUpdateColorPreview(sValue);
 							});
 
 							// Color picker dialog
-							oColorInput.attachValueHelpRequest(function() {
+							oColorInput.attachValueHelpRequest(function () {
 								var sOriginalColor = oColorInput.getValue() || "#000000";
 								var sSelectedColor = sOriginalColor;
 
 								// Function to convert RGB to Hex (without # prefix)
-								var fnRgbToHex = function(rgb) {
+								var fnRgbToHex = function (rgb) {
 									// Handle rgb(r, g, b) format
 									var rgbMatch = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
 									if (rgbMatch) {
@@ -2855,7 +3118,7 @@ sap.ui.define([
 									value: fnRgbToHex(sOriginalColor),
 									placeholder: "Enter hex code (e.g., FF5733)",
 									width: "100%",
-									liveChange: function(oEvent) {
+									liveChange: function (oEvent) {
 										var sHexValue = oEvent.getParameter("value");
 										// Remove # if user enters it
 										sHexValue = sHexValue.replace("#", "");
@@ -2879,7 +3142,7 @@ sap.ui.define([
 									colorString: sOriginalColor.startsWith("#") ? sOriginalColor : "#" + sOriginalColor,
 									mode: sap.ui.unified.ColorPickerMode.HSL,
 									displayMode: sap.ui.unified.ColorPickerDisplayMode.Default,
-									change: function(oEvent) {
+									change: function (oEvent) {
 										var sColorString = oEvent.getParameter("colorString");
 										// Convert RGB to Hex (without #)
 										var sHexColor = fnRgbToHex(sColorString);
@@ -2890,7 +3153,7 @@ sap.ui.define([
 								});
 
 								// Create color palette tiles using Input controls styled as color swatches
-								var aColorTiles = self.DEFAULT_COLORS.map(function(sColor) {
+								var aColorTiles = self.DEFAULT_COLORS.map(function (sColor) {
 									var oColorBox = new sap.m.Input({
 										width: "40px",
 										height: "40px",
@@ -2906,7 +3169,7 @@ sap.ui.define([
 									});
 
 									// Add press event using attachBrowserEvent
-									oColorBox.attachBrowserEvent("click", function() {
+									oColorBox.attachBrowserEvent("click", function () {
 										sSelectedColor = sColor;
 										oColorPicker.setColorString("#" + sColor);
 										oHexInput.setValue(sColor);
@@ -2930,20 +3193,28 @@ sap.ui.define([
 									content: [
 										new sap.m.VBox({
 											items: [
-												new sap.m.Label({ text: "Quick Colors:" }),
+												new sap.m.Label({
+													text: "Quick Colors:"
+												}),
 												oColorPalette,
-												new sap.m.Label({ text: "Custom Color Picker:" }).addStyleClass("sapUiSmallMarginTop"),
+												new sap.m.Label({
+													text: "Custom Color Picker:"
+												}).addStyleClass("sapUiSmallMarginTop"),
 												oColorPicker,
-												new sap.m.Label({ text: "Hex Code:" }).addStyleClass("sapUiSmallMarginTop"),
+												new sap.m.Label({
+													text: "Hex Code:"
+												}).addStyleClass("sapUiSmallMarginTop"),
 												oHexInput,
-												new sap.m.Label({ text: "Preview:" }).addStyleClass("sapUiSmallMarginTop"),
+												new sap.m.Label({
+													text: "Preview:"
+												}).addStyleClass("sapUiSmallMarginTop"),
 												oDialogPreview
 											]
 										})
 									],
 									beginButton: new sap.m.Button({
 										text: "OK",
-										press: function() {
+										press: function () {
 											// Apply the selected color
 											oColorInput.setValue(sSelectedColor);
 											fnUpdateColorPreview(sSelectedColor);
@@ -2952,19 +3223,19 @@ sap.ui.define([
 									}),
 									endButton: new sap.m.Button({
 										text: "Cancel",
-										press: function() {
+										press: function () {
 											// Restore original color
 											oColorDialog.close();
 										}
 									}),
-									afterOpen: function() {
+									afterOpen: function () {
 										// Set initial preview color after dialog is rendered
-										setTimeout(function() {
+										setTimeout(function () {
 											var sColorForPreview = sOriginalColor.startsWith("#") ? sOriginalColor : "#" + sOriginalColor;
 											oDialogPreview.$().find("input").css("background-color", sColorForPreview);
 
 											// Style color palette tiles with their respective colors
-											aColorTiles.forEach(function(oTile) {
+											aColorTiles.forEach(function (oTile) {
 												var sColor = oTile.data("color");
 												oTile.$().find("input").css({
 													"background-color": "#" + sColor,
@@ -2975,7 +3246,7 @@ sap.ui.define([
 											});
 										}, 100);
 									},
-									afterClose: function() {
+									afterClose: function () {
 										oColorDialog.destroy();
 									}
 								});
@@ -3091,7 +3362,7 @@ sap.ui.define([
 							var oDeleteButton = new sap.m.Button({
 								icon: "sap-icon://delete",
 								type: "Reject",
-								press: function() {
+								press: function () {
 									oMeasuresContainer.removeItem(oMeasureVBox);
 									oMeasureVBox.destroy();
 								}
@@ -3131,17 +3402,25 @@ sap.ui.define([
 							text: "Add Measure",
 							icon: "sap-icon://add",
 							type: "Emphasized",
-							press: function() {
+							 width: "150px",  // ADD THIS
+							press: function () {
 								fnAddMeasureRow("", "", "", "", "", "", "");
 							}
 						}).addStyleClass("sapUiSmallMarginTop");
 
 						// Add initial row
 						fnAddMeasureRow("", "", "", "", "", "", "");
+						
+						oXLabel.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oXSelect.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oTimeDimensionCheckBox.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oPeriodRangeLabel.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oPeriodRangeInput.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oYLabel.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oMeasuresContainer.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oAddMeasureButton.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
 
 						//Add two more fields called timeframe and Page id. the timeframe field is Select control with options fetched from await that.getSearchHelpData('time_frame'); and Page id is Input field
-
-
 
 						oForm.addContent(oXLabel);
 						oForm.addContent(oXSelect);
@@ -3183,9 +3462,9 @@ sap.ui.define([
 
 						var oFilterSwitch = new sap.m.Switch({
 							state: false,
-							change: function(oEvent) {
+							change: function (oEvent) {
 								var bState = oEvent.getParameter("state");
-								
+
 								// Remove existing filter fields
 								var aContent = oFilterForm.getContent();
 								for (var i = aContent.length - 1; i >= 0; i--) {
@@ -3193,7 +3472,7 @@ sap.ui.define([
 										oFilterForm.removeContent(aContent[i]);
 									}
 								}
-								
+
 								if (bState) {
 									// Create filter fields when switch is enabled
 									createFilterFields();
@@ -3202,31 +3481,38 @@ sap.ui.define([
 						});
 
 						// Function to create filter fields
-						var createFilterFields = function() {
+						var createFilterFields = function () {
 							// Add initial filter field
 							addFilterField();
-							
+
 							// Add button to add more filter fields
 							var oAddFilterButton = new sap.m.Button({
 								text: "Add Filter",
 								icon: "sap-icon://add",
-								press: function() {
+								width: "150px",
+								type: "Emphasized",
+								press: function () {
 									addFilterField();
 								}
-							});
-							
+							}).addStyleClass("sapUiSmallMarginTop");
+							oAddFilterButton.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+
 							oFilterForm.addContent(oAddFilterButton);
 						};
-						
+
 						// Function to add a single filter field
-						var addFilterField = function() {
+						var addFilterField = function () {
 							var oMetaDataModel = that.getView().getModel("createMetaDataModel");
 							var aMetaData = oMetaDataModel.getData();
-							
+
 							// Create a container for this filter field set
 							var oFilterContainer = new sap.m.VBox();
 							oFilterContainer.addStyleClass("sapUiMediumMarginBottom");
-							
+							oFilterContainer.setLayoutData(new sap.ui.layout.GridData({ 
+    span: "XL12 L12 M12 S12", 
+    linebreak: true 
+}));
+
 							var oFilterLabel = new Label({
 								text: "Select Filter Field"
 							});
@@ -3235,9 +3521,9 @@ sap.ui.define([
 								width: "100%",
 								showSecondaryValues: true
 							});
-							
+
 							// Manually populate filter select items from metadata
-							aMetaData.forEach(function(item) {
+							aMetaData.forEach(function (item) {
 								if (!item.FIELDNAME.startsWith("VALUE")) {
 									oFilterSelect.addItem(new sap.ui.core.ListItem({
 										key: item.FIELDNAME,
@@ -3250,41 +3536,41 @@ sap.ui.define([
 							var oFilterValueLabel = new Label({
 								text: "Filter Value"
 							});
-							
+
 							var oFilterValueSelect = new sap.m.ComboBox({
 								width: "100%",
 								showSecondaryValues: true,
 								placeholder: "Select or enter value"
 							});
-							
+
 							// Create remove button for this filter field
 							var oRemoveButton = new sap.m.Button({
-								text: "Remove",
+								// text: "Remove",
 								icon: "sap-icon://delete",
-								type: "Transparent",
-								press: function() {
+								type: "Reject",
+								press: function () {
 									oFilterForm.removeContent(oFilterContainer);
 								}
-							});
-							
+							}).addStyleClass("sapUiSmallMarginTop");
+
 							// Function to populate filter value select based on selected field
-							var populateFilterValues = function(sFieldName) {
+							var populateFilterValues = function (sFieldName) {
 								oFilterValueSelect.destroyItems();
-								
+
 								// Get unique values from createJsonDataModel for the selected field
 								var oJsonDataModel = that.getView().getModel("createJsonDataModel");
 								if (oJsonDataModel) {
 									var aJsonData = oJsonDataModel.getData();
 									var aUniqueValues = [];
-									
-									aJsonData.forEach(function(item) {
+
+									aJsonData.forEach(function (item) {
 										if (item[sFieldName] && aUniqueValues.indexOf(item[sFieldName]) === -1) {
 											aUniqueValues.push(item[sFieldName]);
 										}
 									});
-									
+
 									// Add unique values to filter value select
-									aUniqueValues.forEach(function(value) {
+									aUniqueValues.forEach(function (value) {
 										oFilterValueSelect.addItem(new sap.ui.core.ListItem({
 											key: value,
 											text: value
@@ -3292,13 +3578,13 @@ sap.ui.define([
 									});
 								}
 							};
-							
+
 							// Add change event to filter select to populate filter value select
-							oFilterSelect.attachChange(function(oEvent) {
+							oFilterSelect.attachChange(function (oEvent) {
 								var sSelectedField = oEvent.getParameter("selectedItem").getKey();
 								populateFilterValues(sSelectedField);
 							});
-							
+
 							// Initially populate filter value select with first field's values
 							if (aMetaData.length > 0) {
 								populateFilterValues(aMetaData[0].FIELDNAME);
@@ -3316,13 +3602,13 @@ sap.ui.define([
 									oRemoveButton
 								]
 							});
-							
+
 							oFilterContainer.addItem(oFieldHBox);
-							
+
 							// Add the container to the form (before the Add Filter button if it exists)
 							var aFormContent = oFilterForm.getContent();
 							var iInsertIndex = aFormContent.length;
-							
+
 							// Find the Add Filter button and insert before it
 							for (var i = 0; i < aFormContent.length; i++) {
 								if (aFormContent[i] instanceof sap.m.Button && aFormContent[i].getText() === "Add Filter") {
@@ -3330,10 +3616,13 @@ sap.ui.define([
 									break;
 								}
 							}
-							
+
 							oFilterForm.insertContent(oFilterContainer, iInsertIndex);
 						};
 
+						// Enable Filter Label + Switch
+oFilterSwitchLabel.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oFilterSwitch.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
 						// Add switch components to form
 						oFilterForm.addContent(oFilterSwitchLabel);
 						oFilterForm.addContent(oFilterSwitch);
@@ -3341,89 +3630,87 @@ sap.ui.define([
 						// Create Tile Mapping Form
 						var iNumberOfFields = self.createTileMappingForm(that);
 
-
 						// Create Table Mapping Form
 						self.createTableMappingForm(that);
 						// Create Hierarchy Mapping Form
 						var oHierarchyForm = that.byId("createHierarchyMappingForm");
 						oHierarchyForm.removeAllContent();
-						
-// Enable Time Range field
-					var oEnableTimeRangeCheckBox = new sap.m.CheckBox({
-						text: "Enable Time Range",
-						selected: false,
-						select: function(oEvent) {
-							var bSelected = oEvent.getParameter("selected");
-							// Toggle Timeframe field visibility
-							if (oTimeframeLabel) {
-								oTimeframeLabel.setVisible(bSelected);
-							}
-							if (oTimeframeSelect) {
-								oTimeframeSelect.setVisible(bSelected);
-							}
-						}
-					});
 
-					// Timeframe field (moved from createDataMappingForm)
-					var oTimeframeLabel = new sap.m.Label({
-						text: "Timeframe",
-						required: false,
-						visible: false
-					});
-
-					var oTimeframeSelect = new sap.m.MultiInput({
-						visible: false,
-						width: "100%",
-						valueHelpRequest: function(oEvent) {
-							var oMultiInput = oEvent.getSource();
-							var oModel = that.getView().getModel("createTimeFrameTypeDropdownData");
-							var aData = oModel.getData();
-
-							// Get existing tokens to pre-select in dialog
-							var aExistingTokenKeys = oMultiInput.getTokens().map(function(oToken) {
-								return oToken.getKey();
-							});
-
-							// Create SelectDialog
-							var oSelectDialog = new sap.m.SelectDialog({
-								title: "Select Timeframes",
-								multiSelect: true,
-								items: aData.map(function(oItem) {
-									return new sap.m.StandardListItem({
-										title: oItem.Text,
-										description: oItem.Text,
-										selected: aExistingTokenKeys.indexOf(oItem.Id) !== -1,
-										customData: [new sap.ui.core.CustomData({
-											key: "itemKey",
-											value: oItem.Id
-										})]
-									});
-								}),
-								confirm: function(oConfirmEvent) {
-									// Clear existing tokens
-									oMultiInput.removeAllTokens();
-
-									// Add selected items as tokens
-									var aSelectedItems = oConfirmEvent.getParameter("selectedItems");
-									aSelectedItems.forEach(function(oItem) {
-										var sKey = oItem.getCustomData()[0].getValue();
-										var sText = oItem.getTitle();
-										oMultiInput.addToken(new sap.m.Token({
-											key: sKey,
-											text: sText
-										}));
-									});
-								},
-								cancel: function() {
-									oSelectDialog.destroy();
+						// Enable Time Range field
+						var oEnableTimeRangeCheckBox = new sap.m.CheckBox({
+							text: "Enable Time Range",
+							selected: false,
+							select: function (oEvent) {
+								var bSelected = oEvent.getParameter("selected");
+								// Toggle Timeframe field visibility
+								if (oTimeframeLabel) {
+									oTimeframeLabel.setVisible(bSelected);
 								}
-							});
+								if (oTimeframeSelect) {
+									oTimeframeSelect.setVisible(bSelected);
+								}
+							}
+						});
 
-							oSelectDialog.open();
-						}
-					});
+						// Timeframe field (moved from createDataMappingForm)
+						var oTimeframeLabel = new sap.m.Label({
+							text: "Timeframe",
+							required: false,
+							visible: false
+						});
 
-					
+						var oTimeframeSelect = new sap.m.MultiInput({
+							visible: false,
+							width: "100%",
+							valueHelpRequest: function (oEvent) {
+								var oMultiInput = oEvent.getSource();
+								var oModel = that.getView().getModel("createTimeFrameTypeDropdownData");
+								var aData = oModel.getData();
+
+								// Get existing tokens to pre-select in dialog
+								var aExistingTokenKeys = oMultiInput.getTokens().map(function (oToken) {
+									return oToken.getKey();
+								});
+
+								// Create SelectDialog
+								var oSelectDialog = new sap.m.SelectDialog({
+									title: "Select Timeframes",
+									multiSelect: true,
+									items: aData.map(function (oItem) {
+										return new sap.m.StandardListItem({
+											title: oItem.Text,
+											description: oItem.Text,
+											selected: aExistingTokenKeys.indexOf(oItem.Id) !== -1,
+											customData: [new sap.ui.core.CustomData({
+												key: "itemKey",
+												value: oItem.Id
+											})]
+										});
+									}),
+									confirm: function (oConfirmEvent) {
+										// Clear existing tokens
+										oMultiInput.removeAllTokens();
+
+										// Add selected items as tokens
+										var aSelectedItems = oConfirmEvent.getParameter("selectedItems");
+										aSelectedItems.forEach(function (oItem) {
+											var sKey = oItem.getCustomData()[0].getValue();
+											var sText = oItem.getTitle();
+											oMultiInput.addToken(new sap.m.Token({
+												key: sKey,
+												text: sText
+											}));
+										});
+									},
+									cancel: function () {
+										oSelectDialog.destroy();
+									}
+								});
+
+								oSelectDialog.open();
+							}
+						});
+
 						// Page ID field
 						var oPageIdLabel = new sap.m.Label({
 							text: "Page ID",
@@ -3431,183 +3718,367 @@ sap.ui.define([
 							visible: true
 						});
 
-					// Create a JSON model for Page ID table data
-					var oPageIdTableModel = new sap.ui.model.json.JSONModel([]);
-					that.getView().setModel(oPageIdTableModel, "createPageIdTableModel");
+						// Create a JSON model for Page ID table data
+						var oPageIdTableModel = new sap.ui.model.json.JSONModel([]);
+						that.getView().setModel(oPageIdTableModel, "createPageIdTableModel");
 
-					// Add Page ID button
-					var oAddPageIdButton = new sap.m.Button({
-						text: "Add Page ID",
-						icon: "sap-icon://add",
-						press: async function() {
-							debugger;
-							// Create value help dialog for Page ID
-							if (!that._oCreatePageIdValueHelpDialog) {
-								that._oCreatePageIdValueHelpDialog = new sap.m.SelectDialog({
-									title: "Select Page ID",
-									multiSelect: true,
-									items: {
-										path: "createPageTypeDropdownData>/",
-										template: new sap.m.StandardListItem({
-											title: "{createPageTypeDropdownData>Text}",
-											description: "{createPageTypeDropdownData>Id}",
-											info: "{createPageTypeDropdownData>ZtabName}"
-										})
-									},
-									confirm: function(oEvent) {
-										var aSelectedContexts = oEvent.getParameter("selectedContexts");
-										if (aSelectedContexts && aSelectedContexts.length) {
-											var aCurrentData = oPageIdTableModel.getData();
-											aSelectedContexts.forEach(function(oContext) {
-												var oData = oContext.getObject();
-												// Check if already exists
-												var bExists = aCurrentData.some(function(item) {
-													return item.Id === oData.Id;
+						// Add Page ID button
+						// var oAddPageIdButton = new sap.m.Button({
+						// 	text: "Add Page ID",
+						// 	icon: "sap-icon://add",
+						// 	press: async function() {
+						// 		debugger;
+						// 		// Create value help dialog for Page ID
+						// 		if (!that._oCreatePageIdValueHelpDialog) {
+						// 			that._oCreatePageIdValueHelpDialog = new sap.m.SelectDialog({
+						// 				title: "Select Page ID",
+						// 				multiSelect: true,
+						// 				items: {
+						// 					path: "createPageTypeDropdownData>/",
+						// 					template: new sap.m.StandardListItem({
+						// 						title: "{createPageTypeDropdownData>Text}",
+						// 						description: "{createPageTypeDropdownData>Id}",
+						// 						info: "{createPageTypeDropdownData>ZtabName}"
+						// 					})
+						// 				},
+						// 				confirm: function(oEvent) {
+						// 					var aSelectedContexts = oEvent.getParameter("selectedContexts");
+						// 					if (aSelectedContexts && aSelectedContexts.length) {
+						// 						var aCurrentData = oPageIdTableModel.getData();
+						// 						aSelectedContexts.forEach(function(oContext) {
+						// 							var oData = oContext.getObject();
+						// 							// Check if already exists
+						// 							var bExists = aCurrentData.some(function(item) {
+						// 								return item.Id === oData.Id;
+						// 							});
+						// 							if (!bExists) {
+						// 								aCurrentData.push({
+						// 									Id: oData.Id,
+						// 									Text: oData.Text,
+						// 									ZtabName: oData.ZtabName
+						// 								});
+						// 							}
+						// 						});
+						// 						oPageIdTableModel.setData(aCurrentData);
+						// 						oPageIdTableModel.refresh(true);
+						// 					}
+						// 				},
+						// 				search: function(oEvent) {
+						// 					var sValue = oEvent.getParameter("value");
+						// 					var oFilter = new sap.ui.model.Filter("Text", sap.ui.model.FilterOperator.Contains, sValue);
+						// 					var oBinding = oEvent.getSource().getBinding("items");
+						// 					oBinding.filter([oFilter]);
+						// 				}
+						// 			});
+						// 			that.getView().addDependent(that._oCreatePageIdValueHelpDialog);
+						// 		}
+
+						// 		// Fetch data from DynamicPageSet endpoint
+						// 		var finmobview = that.getView().getModel("finmobview");
+						// 		try {
+						// 			var aPageData = await new Promise((resolve, reject) => {
+						// 				finmobview.read("/DynamicPageSet", {
+						// 					success: function(data) {
+						// 						// Transform data: map ZpageName to Text, ZpageId to Id, and include ZtabName
+						// 						var aTransformedData = data.results.map(function(item) {
+						// 							return {
+						// 								Text: item.ZpageName,
+						// 								Id: item.ZpageId,
+						// 								ZtabName: item.ZtabName
+						// 							};
+						// 						});
+						// 						resolve(aTransformedData);
+						// 					},
+						// 					error: function(oError) {
+						// 						reject(oError);
+						// 					}
+						// 				});
+						// 			});
+
+						// 			// Set the model and open dialog
+						// 			var oPageTypeModel = new JSONModel(aPageData);
+						// 			that._oCreatePageIdValueHelpDialog.setModel(oPageTypeModel, "createPageTypeDropdownData");
+						// 			that._oCreatePageIdValueHelpDialog.open();
+						// 		} catch (error) {
+						// 			MessageBox.error("Failed to fetch page data: " + error.message);
+						// 		}
+						// 	}
+						// });
+						var oAddPageIdButton = new sap.m.Button({
+							text: "Add Page ID",
+							icon: "sap-icon://add",
+							width: "150px",
+							type: "Emphasized",
+							press: async function () {
+								debugger;
+
+								// Show busy indicator
+								sap.ui.core.BusyIndicator.show(0);
+
+								try {
+									// Fetch data from DynamicPageSet endpoint
+									var finmobview = that.getView().getModel("finmobview");
+									var aPageData = await new Promise((resolve, reject) => {
+										finmobview.read("/DynamicPageSet", {
+											success: function (data) {
+												// Transform data: map ZpageName to Text, ZpageId to Id, and include ZtabName
+												var aTransformedData = data.results.map(function (item) {
+													return {
+														Text: item.ZpageName,
+														Id: item.ZpageId,
+														ZtabName: item.ZtabName
+													};
 												});
-												if (!bExists) {
-													aCurrentData.push({
-														Id: oData.Id,
-														Text: oData.Text,
-														ZtabName: oData.ZtabName
-													});
-												}
-											});
-											oPageIdTableModel.setData(aCurrentData);
-											oPageIdTableModel.refresh(true);
-										}
-									},
-									search: function(oEvent) {
-										var sValue = oEvent.getParameter("value");
-										var oFilter = new sap.ui.model.Filter("Text", sap.ui.model.FilterOperator.Contains, sValue);
-										var oBinding = oEvent.getSource().getBinding("items");
-										oBinding.filter([oFilter]);
-									}
-								});
-								that.getView().addDependent(that._oCreatePageIdValueHelpDialog);
-							}
+												resolve(aTransformedData);
+											},
+											error: function (oError) {
+												reject(oError);
+											}
+										});
+									});
 
-							// Fetch data from DynamicPageSet endpoint
-							var finmobview = that.getView().getModel("finmobview");
-							try {
-								var aPageData = await new Promise((resolve, reject) => {
-									finmobview.read("/DynamicPageSet", {
-										success: function(data) {
-											// Transform data: map ZpageName to Text, ZpageId to Id, and include ZtabName
-											var aTransformedData = data.results.map(function(item) {
-												return {
-													Text: item.ZpageName,
-													Id: item.ZpageId,
-													ZtabName: item.ZtabName
-												};
+									// Create or recreate the dialog fresh each time
+									if (that._oCreatePageIdValueHelpDialog) {
+										that._oCreatePageIdValueHelpDialog.destroy();
+										that._oCreatePageIdValueHelpDialog = null;
+									}
+
+									// Get current table data to mark already selected items
+									var oPageIdTableModel = that.getView().getModel("createPageIdTableModel");
+									var aCurrentPageIds = [];
+									if (oPageIdTableModel) {
+										aCurrentPageIds = oPageIdTableModel.getData().map(function (item) {
+											return item.Id;
+										});
+									}
+
+									// Create the dialog
+									that._oCreatePageIdValueHelpDialog = new sap.m.SelectDialog({
+										title: "Select Page ID",
+										multiSelect: true,
+										growing: true,
+										growingThreshold: 20,
+										items: aPageData.map(function (oItem) {
+											return new sap.m.StandardListItem({
+												title: oItem.Text,
+												description: oItem.Id,
+												info: oItem.ZtabName,
+												selected: aCurrentPageIds.indexOf(oItem.Id) !== -1,
+												type: "Active",
+												customData: [
+													new sap.ui.core.CustomData({
+														key: "pageId",
+														value: oItem.Id
+													}),
+													new sap.ui.core.CustomData({
+														key: "pageText",
+														value: oItem.Text
+													}),
+													new sap.ui.core.CustomData({
+														key: "tabName",
+														value: oItem.ZtabName
+													})
+												]
 											});
-											resolve(aTransformedData);
+										}),
+										confirm: function (oEvent) {
+											var aSelectedItems = oEvent.getParameter("selectedItems");
+											if (aSelectedItems && aSelectedItems.length > 0) {
+												var oPageIdTableModel = that.getView().getModel("createPageIdTableModel");
+												var aCurrentData = oPageIdTableModel ? oPageIdTableModel.getData() : [];
+
+												// Create a map of existing IDs for faster lookup
+												var oExistingIds = {};
+												aCurrentData.forEach(function (item) {
+													oExistingIds[item.Id] = true;
+												});
+
+												// Add only new selections
+												aSelectedItems.forEach(function (oItem) {
+													var aCustomData = oItem.getCustomData();
+													var sId = aCustomData[0].getValue();
+													var sText = aCustomData[1].getValue();
+													var sTabName = aCustomData[2].getValue();
+
+													// Only add if not already in the list
+													if (!oExistingIds[sId]) {
+														aCurrentData.push({
+															Id: sId,
+															Text: sText,
+															ZtabName: sTabName
+														});
+														oExistingIds[sId] = true;
+													}
+												});
+
+												// Update the model
+												if (!oPageIdTableModel) {
+													oPageIdTableModel = new sap.ui.model.json.JSONModel(aCurrentData);
+													that.getView().setModel(oPageIdTableModel, "createPageIdTableModel");
+												} else {
+													oPageIdTableModel.setData(aCurrentData);
+												}
+												oPageIdTableModel.refresh(true);
+
+												// Show success message
+												sap.m.MessageToast.show(aSelectedItems.length + " page(s) added successfully");
+											}
+
+											// Clean up dialog
+											that._oCreatePageIdValueHelpDialog.destroy();
+											that._oCreatePageIdValueHelpDialog = null;
 										},
-										error: function(oError) {
-											reject(oError);
+										cancel: function () {
+											// Clean up dialog
+											that._oCreatePageIdValueHelpDialog.destroy();
+											that._oCreatePageIdValueHelpDialog = null;
+										},
+										search: function (oEvent) {
+											var sValue = oEvent.getParameter("value");
+											var aFilters = [];
+
+											if (sValue) {
+												aFilters.push(new sap.ui.model.Filter({
+													filters: [
+														new sap.ui.model.Filter("Text", sap.ui.model.FilterOperator.Contains, sValue),
+														new sap.ui.model.Filter("Id", sap.ui.model.FilterOperator.Contains, sValue),
+														new sap.ui.model.Filter("ZtabName", sap.ui.model.FilterOperator.Contains, sValue)
+													],
+													and: false
+												}));
+											}
+
+											var oBinding = oEvent.getSource().getBinding("items");
+											oBinding.filter(aFilters);
 										}
 									});
-								});
 
-								// Set the model and open dialog
-								var oPageTypeModel = new JSONModel(aPageData);
-								that._oCreatePageIdValueHelpDialog.setModel(oPageTypeModel, "createPageTypeDropdownData");
-								that._oCreatePageIdValueHelpDialog.open();
-							} catch (error) {
-								MessageBox.error("Failed to fetch page data: " + error.message);
-							}
-						}
-					});
+									that.getView().addDependent(that._oCreatePageIdValueHelpDialog);
 
-					
-					// Page ID Table with drag and drop
-					var oPageIdTable = new sap.m.Table({
-						mode: sap.m.ListMode.Delete,
-						delete: function(oEvent) {
-							var oItem = oEvent.getParameter("listItem");
-							var oContext = oItem.getBindingContext("createPageIdTableModel");
-							var iIndex = oContext.getPath().split("/")[1];
-							var aData = oPageIdTableModel.getData();
-							aData.splice(iIndex, 1);
-							oPageIdTableModel.setData(aData);
-							oPageIdTableModel.refresh(true);
-						},
-						columns: [
-							new sap.m.Column({
-								width: "3em",
-								header: new sap.m.Text({ text: "" })
-							}),
-							new sap.m.Column({
-								header: new sap.m.Text({ text: "Page ID" })
-							}),
-							new sap.m.Column({
-								header: new sap.m.Text({ text: "Description" })
-							}),
-							new sap.m.Column({
-								header: new sap.m.Text({ text: "Tab Name" })
-							})
-						],
-						items: {
-							path: "createPageIdTableModel>/",
-							template: new sap.m.ColumnListItem({
-								cells: [
-									new sap.ui.core.Icon({
-										src: "sap-icon://resize-vertical",
-										color: "#0854a0"
-									}),
-									new sap.m.Text({ text: "{createPageIdTableModel>Id}" }),
-									new sap.m.Text({ text: "{createPageIdTableModel>Text}" }),
-									new sap.m.Text({ text: "{createPageIdTableModel>ZtabName}" })
-								]
-							})
-						},
-						dragDropConfig: [
-							new sap.ui.core.dnd.DragInfo({
-								sourceAggregation: "items"
-							}),
-							new sap.ui.core.dnd.DropInfo({
-								targetAggregation: "items",
-								dropPosition: "Between",
-								drop: function(oEvent) {
-									var oDraggedItem = oEvent.getParameter("draggedControl");
-									var oDroppedItem = oEvent.getParameter("droppedControl");
-									var sDropPosition = oEvent.getParameter("dropPosition");
-									
-									var oDraggedContext = oDraggedItem.getBindingContext("createPageIdTableModel");
-									var oDroppedContext = oDroppedItem ? oDroppedItem.getBindingContext("createPageIdTableModel") : null;
-									
-									if (!oDraggedContext) {
-										return;
-									}
-									
-									var iDraggedIndex = parseInt(oDraggedContext.getPath().split("/")[1]);
-									var aData = oPageIdTableModel.getData();
-									var oDraggedData = aData[iDraggedIndex];
-									
-									// Remove from old position
-									aData.splice(iDraggedIndex, 1);
-									
-									// Calculate new position
-									var iNewIndex;
-									if (oDroppedContext) {
-										iNewIndex = parseInt(oDroppedContext.getPath().split("/")[1]);
-										if (iDraggedIndex < iNewIndex) {
-											iNewIndex--;
-										}
-										if (sDropPosition === "After") {
-											iNewIndex++;
-										}
-									} else {
-										iNewIndex = aData.length;
-									}
-									
-									// Insert at new position
-									aData.splice(iNewIndex, 0, oDraggedData);
-									oPageIdTableModel.setData(aData);
-									oPageIdTableModel.refresh(true);
+									// Hide busy indicator
+									sap.ui.core.BusyIndicator.hide();
+
+									// Open the dialog
+									that._oCreatePageIdValueHelpDialog.open();
+
+								} catch (error) {
+									sap.ui.core.BusyIndicator.hide();
+									sap.m.MessageBox.error("Failed to fetch page data: " + error.message);
+									console.error("Error fetching page data:", error);
 								}
-							})
-						]
-					});
+							}
+						}).addStyleClass("sapUiSmallMarginTop");
+
+						// Page ID Table with drag and drop
+						var oPageIdTable = new sap.m.Table({
+							mode: sap.m.ListMode.Delete,
+							delete: function (oEvent) {
+								var oItem = oEvent.getParameter("listItem");
+								var oContext = oItem.getBindingContext("createPageIdTableModel");
+								var iIndex = oContext.getPath().split("/")[1];
+								var aData = oPageIdTableModel.getData();
+								aData.splice(iIndex, 1);
+								oPageIdTableModel.setData(aData);
+								oPageIdTableModel.refresh(true);
+							},
+							columns: [
+								new sap.m.Column({
+									width: "3em",
+									header: new sap.m.Text({
+										text: ""
+									})
+								}),
+								new sap.m.Column({
+									header: new sap.m.Text({
+										text: "Page ID"
+									})
+								}),
+								new sap.m.Column({
+									header: new sap.m.Text({
+										text: "Description"
+									})
+								}),
+								new sap.m.Column({
+									header: new sap.m.Text({
+										text: "Tab Name"
+									})
+								})
+							],
+							items: {
+								path: "createPageIdTableModel>/",
+								template: new sap.m.ColumnListItem({
+									cells: [
+										new sap.ui.core.Icon({
+											src: "sap-icon://resize-vertical",
+											color: "#0854a0"
+										}),
+										new sap.m.Text({
+											text: "{createPageIdTableModel>Id}"
+										}),
+										new sap.m.Text({
+											text: "{createPageIdTableModel>Text}"
+										}),
+										new sap.m.Text({
+											text: "{createPageIdTableModel>ZtabName}"
+										})
+									]
+								})
+							},
+							dragDropConfig: [
+								new sap.ui.core.dnd.DragInfo({
+									sourceAggregation: "items"
+								}),
+								new sap.ui.core.dnd.DropInfo({
+									targetAggregation: "items",
+									dropPosition: "Between",
+									drop: function (oEvent) {
+										var oDraggedItem = oEvent.getParameter("draggedControl");
+										var oDroppedItem = oEvent.getParameter("droppedControl");
+										var sDropPosition = oEvent.getParameter("dropPosition");
+
+										var oDraggedContext = oDraggedItem.getBindingContext("createPageIdTableModel");
+										var oDroppedContext = oDroppedItem ? oDroppedItem.getBindingContext("createPageIdTableModel") : null;
+
+										if (!oDraggedContext) {
+											return;
+										}
+
+										var iDraggedIndex = parseInt(oDraggedContext.getPath().split("/")[1]);
+										var aData = oPageIdTableModel.getData();
+										var oDraggedData = aData[iDraggedIndex];
+
+										// Remove from old position
+										aData.splice(iDraggedIndex, 1);
+
+										// Calculate new position
+										var iNewIndex;
+										if (oDroppedContext) {
+											iNewIndex = parseInt(oDroppedContext.getPath().split("/")[1]);
+											if (iDraggedIndex < iNewIndex) {
+												iNewIndex--;
+											}
+											if (sDropPosition === "After") {
+												iNewIndex++;
+											}
+										} else {
+											iNewIndex = aData.length;
+										}
+
+										// Insert at new position
+										aData.splice(iNewIndex, 0, oDraggedData);
+										oPageIdTableModel.setData(aData);
+										oPageIdTableModel.refresh(true);
+									}
+								})
+							]
+						});
+						
+						oEnableTimeRangeCheckBox.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oTimeframeLabel.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oTimeframeSelect.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oPageIdLabel.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oAddPageIdButton.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
+oPageIdTable.setLayoutData(new sap.ui.layout.GridData({ span: "XL12 L12 M12 S12", linebreak: true }));
 
 						oHierarchyForm.addContent(oEnableTimeRangeCheckBox);
 						oHierarchyForm.addContent(oTimeframeLabel);
@@ -3617,9 +4088,6 @@ sap.ui.define([
 						oHierarchyForm.addContent(oPageIdTable);
 
 						// Data Binding Form
-
-
-
 
 						// Handle existing mapping data if available
 						var oModel = that.getView().getModel("createWidgetValues");
@@ -3683,7 +4151,7 @@ sap.ui.define([
 								console.error("Error parsing mapping data:", e);
 							}
 						}
-						
+
 						// Handle isTimeDimension checkbox
 						if (oTimeDimensionCheckBox) {
 							var bIsTimeDimension = oCurrentData.isTimeDimension || false;
@@ -3706,7 +4174,7 @@ sap.ui.define([
 								}
 							}
 						}
-						
+
 						// Handle Page ID mapping  
 						debugger;
 						if (oCurrentData.pageId) {
@@ -3720,76 +4188,75 @@ sap.ui.define([
 									aPageIds = [];
 								}
 							}
-							
-						if (Array.isArray(aPageIds)) {
-							try {
-								// Get the Page ID table model
-								var oPageIdTableModel = that.getView().getModel("createPageIdTableModel");
-								if (oPageIdTableModel) {
-									var aTableData = [];
-									
-									// Populate table data for each page ID
-									aPageIds.forEach(function(sPageId) {
-										if (sPageId) {
-											// Find the corresponding text and ZtabName from createPageTypeDropdownData
-											var oPageTypeModel = that.getView().getModel("createPageTypeDropdownData");
-											var sDisplayText = sPageId; // Default to page ID
-											var sZtabName = ""; // Default ZtabName
 
-											if (oPageTypeModel && oPageTypeModel.getData()) {
-												var aPageTypeData = oPageTypeModel.getData();
-												var oPageType = aPageTypeData.find(function(oItem) {
-													return oItem.Id === sPageId;
-												});
-												if (oPageType) {
-													if (oPageType.Text) {
-														sDisplayText = oPageType.Text;
-													}
-													if (oPageType.ZtabName) {
-														sZtabName = oPageType.ZtabName;
+							if (Array.isArray(aPageIds)) {
+								try {
+									// Get the Page ID table model
+									var oPageIdTableModel = that.getView().getModel("createPageIdTableModel");
+									if (oPageIdTableModel) {
+										var aTableData = [];
+
+										// Populate table data for each page ID
+										aPageIds.forEach(function (sPageId) {
+											if (sPageId) {
+												// Find the corresponding text and ZtabName from createPageTypeDropdownData
+												var oPageTypeModel = that.getView().getModel("createPageTypeDropdownData");
+												var sDisplayText = sPageId; // Default to page ID
+												var sZtabName = ""; // Default ZtabName
+
+												if (oPageTypeModel && oPageTypeModel.getData()) {
+													var aPageTypeData = oPageTypeModel.getData();
+													var oPageType = aPageTypeData.find(function (oItem) {
+														return oItem.Id === sPageId;
+													});
+													if (oPageType) {
+														if (oPageType.Text) {
+															sDisplayText = oPageType.Text;
+														}
+														if (oPageType.ZtabName) {
+															sZtabName = oPageType.ZtabName;
+														}
 													}
 												}
+
+												aTableData.push({
+													Id: sPageId,
+													Text: sDisplayText,
+													ZtabName: sZtabName
+												});
 											}
+										});
 
-											aTableData.push({
-												Id: sPageId,
-												Text: sDisplayText,
-												ZtabName: sZtabName
-											});
-										}
-									});
-
-									oPageIdTableModel.setData(aTableData);
-									oPageIdTableModel.refresh(true);
+										oPageIdTableModel.setData(aTableData);
+										oPageIdTableModel.refresh(true);
+									}
+								} catch (e) {
+									console.log("Could not populate Page ID table:", e);
 								}
-							} catch (e) {
-								console.log("Could not populate Page ID table:", e);
+							}
+
+							// Populate Table Mapping columns if available
+							if (oCurrentData.tableMapping) {
+								try {
+									var aTableColumns = JSON.parse(oCurrentData.tableMapping);
+									if (Array.isArray(aTableColumns) && aTableColumns.length > 0) {
+										aTableColumns.forEach(function (oColumnData) {
+											self.addTableColumn(that, oColumnData);
+										});
+									}
+								} catch (e) {
+									console.log("Could not populate table columns:", e);
+								}
 							}
 						}
 
-						// Populate Table Mapping columns if available
-						if (oCurrentData.tableMapping) {
-							try {
-								var aTableColumns = JSON.parse(oCurrentData.tableMapping);
-								if (Array.isArray(aTableColumns) && aTableColumns.length > 0) {
-									aTableColumns.forEach(function(oColumnData) {
-										self.addTableColumn(that, oColumnData);
-									});
-								}
-							} catch (e) {
-								console.log("Could not populate table columns:", e);
-							}
-						}
-						}
-						
 						// Handle Enable Time Range checkbox
-			
-						
+
 						// Handle Timeframe restoration and visibility
 						if (oEnableTimeRangeCheckBox) {
 							var bEnableTimeRange = oCurrentData.enableTimeRange || false;
 							oEnableTimeRangeCheckBox.setSelected(bEnableTimeRange);
-							
+
 							// Restore Timeframe value and set visibility based on checkbox
 							if (oTimeframeSelect && oCurrentData.timeframe) {
 								// Clear any existing tokens first
@@ -3812,9 +4279,9 @@ sap.ui.define([
 								var oTimeframeModel = that.getView().getModel("createTimeFrameTypeDropdownData");
 								if (oTimeframeModel && oTimeframeModel.getData()) {
 									var aTimeframeData = oTimeframeModel.getData();
-									aTimeframeValues.forEach(function(sTimeframeId) {
+									aTimeframeValues.forEach(function (sTimeframeId) {
 										// Find the text for this timeframe ID
-										var oTimeframeItem = aTimeframeData.find(function(oItem) {
+										var oTimeframeItem = aTimeframeData.find(function (oItem) {
 											return oItem.Id === sTimeframeId;
 										});
 										if (oTimeframeItem) {
@@ -3840,37 +4307,39 @@ sap.ui.define([
 						if (oCurrentData.filter) {
 							try {
 								var filterData = JSON.parse(oCurrentData.filter);
-								
+
 								// Check if filter data exists and has entries
 								if (filterData && Array.isArray(filterData) && filterData.length > 0) {
 									// Enable the filter switch
-									var oFilterSwitch = oFilterForm.getContent().find(function(control) {
+									var oFilterSwitch = oFilterForm.getContent().find(function (control) {
 										return control instanceof sap.m.Switch;
 									});
 									if (oFilterSwitch) {
 										oFilterSwitch.setState(true);
 										// Trigger the change event to create initial filter field
-										oFilterSwitch.fireChange({ state: true });
-										
+										oFilterSwitch.fireChange({
+											state: true
+										});
+
 										// Wait for the form to be created, then set values for each filter
-										setTimeout(function() {
+										setTimeout(function () {
 											// Add additional filter fields if needed (first one is already created)
 											for (var filterIndex = 1; filterIndex < filterData.length; filterIndex++) {
 												addFilterField();
 											}
 											debugger;
-											
+
 											// Set the field and value selections for all filters
-											filterData.forEach(function(filterItem, index) {
+											filterData.forEach(function (filterItem, index) {
 												if (filterItem.field && filterItem.value) {
 													// Find the filter containers
 													var aFormContent = oFilterForm.getContent();
 													var oFilterContainer = null;
 													var containerIndex = 0;
-													
+
 													// Find the Nth filter container (VBox with class sapUiMediumMarginBottom)
 													for (var i = 0; i < aFormContent.length; i++) {
-														if (aFormContent[i] instanceof sap.m.VBox && 
+														if (aFormContent[i] instanceof sap.m.VBox &&
 															aFormContent[i].hasStyleClass("sapUiMediumMarginBottom")) {
 															if (containerIndex === index) {
 																oFilterContainer = aFormContent[i];
@@ -3879,7 +4348,7 @@ sap.ui.define([
 															containerIndex++;
 														}
 													}
-													
+
 													if (oFilterContainer) {
 														// Navigate to the field controls within the container
 														var oHBox = oFilterContainer.getItems()[0];
@@ -3887,11 +4356,11 @@ sap.ui.define([
 															var oVBoxWithFields = oHBox.getItems()[0];
 															if (oVBoxWithFields instanceof sap.m.VBox) {
 																var aFieldItems = oVBoxWithFields.getItems();
-																
+
 																// Find the Select and ComboBox controls
 																var oFilterFieldSelect = null;
 																var oFilterValueSelect = null;
-																
+
 																for (var k = 0; k < aFieldItems.length; k++) {
 																	if (aFieldItems[k] instanceof sap.m.Select) {
 																		oFilterFieldSelect = aFieldItems[k];
@@ -3899,35 +4368,35 @@ sap.ui.define([
 																		oFilterValueSelect = aFieldItems[k];
 																	}
 																}
-																
+
 																if (oFilterFieldSelect && oFilterValueSelect) {
 																	// Set the selected field
 																	oFilterFieldSelect.setSelectedKey(filterItem.field);
-																	
+
 																	// Populate and set the filter value
-																	var populateAndSetFilterValue = function(fieldName, fieldValue, valueSelect) {
+																	var populateAndSetFilterValue = function (fieldName, fieldValue, valueSelect) {
 																		valueSelect.destroyItems();
-																		
+
 																		// Get unique values from createJsonDataModel for the selected field
 																		var oJsonDataModel = that.getView().getModel("createJsonDataModel");
 																		if (oJsonDataModel) {
 																			var aJsonData = oJsonDataModel.getData();
 																			var aUniqueValues = [];
-																			
-																			aJsonData.forEach(function(item) {
+
+																			aJsonData.forEach(function (item) {
 																				if (item[fieldName] && aUniqueValues.indexOf(item[fieldName]) === -1) {
 																					aUniqueValues.push(item[fieldName]);
 																				}
 																			});
-																			
+
 																			// Add unique values to filter value select
-																			aUniqueValues.forEach(function(value) {
+																			aUniqueValues.forEach(function (value) {
 																				valueSelect.addItem(new sap.ui.core.ListItem({
 																					key: value,
 																					text: value
 																				}));
 																			});
-																			
+
 																			// Set the selected value
 																			// For ComboBox, use setValue to handle both dropdown and free text values
 																			if (valueSelect instanceof sap.m.ComboBox) {
@@ -3939,7 +4408,7 @@ sap.ui.define([
 																			}
 																		}
 																	};
-																	
+
 																	populateAndSetFilterValue(filterItem.field, filterItem.value, oFilterValueSelect);
 																}
 															}
@@ -3962,7 +4431,7 @@ sap.ui.define([
 							try {
 								var oTileMappingForm = that.byId("createTileMappingForm");
 								var aTileMappingContent = oTileMappingForm.getContent();
-								
+
 								// Parse SelectionType (it may be a JSON string or a plain string)
 								var selectionTypeData = oCurrentData.selectionType;
 								var sSelectionType = "";
@@ -4081,8 +4550,8 @@ sap.ui.define([
 																	oColorInput.setValue(tileData.color);
 
 																	// Update the preview - use immediate function to capture variables
-																	(function(input, preview, color) {
-																		setTimeout(function() {
+																	(function (input, preview, color) {
+																		setTimeout(function () {
 																			if (preview && preview.$() && preview.$().find("input").length > 0) {
 																				var sCleanColor = color.replace("#", "");
 																				preview.$().find("input").css("background-color", "#" + sCleanColor);
@@ -4152,7 +4621,6 @@ sap.ui.define([
 							}
 						}
 
-
 					}
 				},
 				error: function (oError) {
@@ -4162,7 +4630,7 @@ sap.ui.define([
 					if (oIconTabBar) {
 						oIconTabBar.setVisible(true);
 					}
-					
+
 					var responseText = oError.responseText;
 					var msg = "Error fetching data";
 
@@ -4195,33 +4663,33 @@ sap.ui.define([
 				inputParameter: "",
 				mapping: ""
 			});
-			
+
 			// Clear the forms
 			var oBexForm = that.byId("createBexQueryParameterForm");
 			if (oBexForm) {
 				oBexForm.removeAllContent();
 			}
-			
+
 			var oMappingForm = that.byId("createDataMappingForm");
 			if (oMappingForm) {
 				oMappingForm.removeAllContent();
 			}
 
-		var oTableMappingForm = that.byId("createTableMappingForm");
-		if (oTableMappingForm) {
-			oTableMappingForm.removeAllContent();
-			that._oTableColumnsContainer = null;
-		}
-			
+			var oTableMappingForm = that.byId("createTableMappingForm");
+			if (oTableMappingForm) {
+				oTableMappingForm.removeAllContent();
+				that._oTableColumnsContainer = null;
+			}
+
 			// Hide success indicators
 			that.byId("createSuccessIcon").setVisible(false);
 			that.byId("createBusyIndicator").setVisible(false);
 			that.byId("createCheckBtn").setVisible(true);
-			
+
 			// Hide widget ID fields
 			that.byId("createWidgetId").setVisible(false);
 			that.byId("createWidgetIdLabel").setVisible(false);
-			
+
 			// Hide tab bar
 			var oTabBar = that.byId("createIconTabBarInlineMode");
 			var oBusyIndicator = that.byId("createTabBarBusyIndicator");
@@ -4238,12 +4706,12 @@ sap.ui.define([
 			if (oForm) {
 				oForm.setEditable(true);
 			}
-			
+
 			// Update button visibility
 			that.byId("editBtn").setEnabled(false);
 			that.byId("saveBtn").setVisible(true);
 			that.byId("submitBtn").setVisible(false);
-			
+
 			MessageToast.show("Edit mode enabled for Create Widget Config");
 		},
 
@@ -4251,12 +4719,12 @@ sap.ui.define([
 			var that = oController;
 			// Clear form and reset state
 			this._clearCreateForm(oController);
-			
+
 			// Update button visibility
 			that.byId("editBtn").setEnabled(false);
 			that.byId("saveBtn").setVisible(true);
 			that.byId("submitBtn").setVisible(false);
-			
+
 			MessageToast.show("Create Widget Config cancelled and form cleared");
 		},
 
@@ -4264,7 +4732,7 @@ sap.ui.define([
 			var that = oController;
 			var oDefaultContent = that.byId("defaultPreviewContent");
 			var oChartContainer = that.byId("chartPreviewContainer");
-			
+
 			if (!sChartType) {
 				// Show default content if no chart type selected
 				oDefaultContent.setVisible(true);
@@ -4287,11 +4755,11 @@ sap.ui.define([
 
 			// Add widget name as title
 			var oWidgetTitle = new Text({
-				text: sWidgetName,
-				class: "sapUiLargeText"
-			}).addStyleClass("sapUiMediumMarginBottom")
-			 .addStyleClass("widgetTitleText");
-			
+					text: sWidgetName,
+					class: "sapUiLargeText"
+				}).addStyleClass("sapUiMediumMarginBottom")
+				.addStyleClass("widgetTitleText");
+
 			oChartContainer.addItem(oWidgetTitle);
 
 			// Add field and value texts based on widget type
@@ -4314,7 +4782,7 @@ sap.ui.define([
 			}
 
 			var iNumberOfFields = 0;
-			
+
 			// Determine number of fields based on widget type
 			if (sWidgetType.includes("2")) { // 2 Value Widget
 				iNumberOfFields = 2;
@@ -4325,20 +4793,25 @@ sap.ui.define([
 			}
 
 			// Sample field data
-			var aSampleFieldData = [
-				{ field: "Revenue", value: "€ 125,430" },
-				{ field: "Profit", value: "€ 42,150" },
-				{ field: "Growth", value: "15.2%" }
-			];
+			var aSampleFieldData = [{
+				field: "Revenue",
+				value: "€ 125,430"
+			}, {
+				field: "Profit",
+				value: "€ 42,150"
+			}, {
+				field: "Growth",
+				value: "15.2%"
+			}];
 
 			// Create field and value texts
 			for (var i = 0; i < iNumberOfFields && i < aSampleFieldData.length; i++) {
 				var oFieldValueContainer = new sap.m.HBox({
-					justifyContent: "SpaceBetween",
-					alignItems: "Center",
-					width: "100%"
-				}).addStyleClass("sapUiSmallMarginBottom")
-				 .addStyleClass("fieldValueContainer");
+						justifyContent: "SpaceBetween",
+						alignItems: "Center",
+						width: "100%"
+					}).addStyleClass("sapUiSmallMarginBottom")
+					.addStyleClass("fieldValueContainer");
 
 				var oFieldText = new Text({
 					text: aSampleFieldData[i].field + ":",
@@ -4352,7 +4825,7 @@ sap.ui.define([
 
 				oFieldValueContainer.addItem(oFieldText);
 				oFieldValueContainer.addItem(oValueText);
-				
+
 				oContainer.addItem(oFieldValueContainer);
 			}
 
@@ -4363,12 +4836,19 @@ sap.ui.define([
 
 		_createSampleBarChart: function (oContainer) {
 			// Sample data for bar chart
-			var aSampleData = [
-				{ Category: "Q1", Value: 120 },
-				{ Category: "Q2", Value: 142 },
-				{ Category: "Q3", Value: 108 },
-				{ Category: "Q4", Value: 175 }
-			];
+			var aSampleData = [{
+				Category: "Q1",
+				Value: 120
+			}, {
+				Category: "Q2",
+				Value: 142
+			}, {
+				Category: "Q3",
+				Value: 108
+			}, {
+				Category: "Q4",
+				Value: 175
+			}];
 
 			var oModel = new JSONModel(aSampleData);
 
@@ -4426,14 +4906,31 @@ sap.ui.define([
 
 		_createSampleLineChart: function (oContainer) {
 			// Sample data for line chart
-			var aSampleData = [
-				{ Month: "Jan", Sales: 120, Target: 100 },
-				{ Month: "Feb", Sales: 142, Target: 110 },
-				{ Month: "Mar", Sales: 108, Target: 120 },
-				{ Month: "Apr", Sales: 175, Target: 130 },
-				{ Month: "May", Sales: 190, Target: 140 },
-				{ Month: "Jun", Sales: 165, Target: 150 }
-			];
+			var aSampleData = [{
+				Month: "Jan",
+				Sales: 120,
+				Target: 100
+			}, {
+				Month: "Feb",
+				Sales: 142,
+				Target: 110
+			}, {
+				Month: "Mar",
+				Sales: 108,
+				Target: 120
+			}, {
+				Month: "Apr",
+				Sales: 175,
+				Target: 130
+			}, {
+				Month: "May",
+				Sales: 190,
+				Target: 140
+			}, {
+				Month: "Jun",
+				Sales: 165,
+				Target: 150
+			}];
 
 			var oModel = new JSONModel(aSampleData);
 

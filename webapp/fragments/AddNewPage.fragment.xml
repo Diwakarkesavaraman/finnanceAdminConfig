@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
 	xmlns:variant="sap.ui.comp.variants">
-	<Dialog title="Add New Page" width="500em">
+	<Dialog title="Add New Page" width="600em">
 		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
 			<Label text="Page Title"></Label>
             <Input id="pageTitleInput" value="" required="true"></Input>

@@ -1,0 +1,28 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core"
+	xmlns:variant="sap.ui.comp.variants">
+	<Dialog title="Add New Widget" width="500em">
+		<f:SimpleForm editable="true" class="" layout="ResponsiveGridLayout" columnsM="5" columnsL="5" columnsXL="5" labelSpanM="5" labelSpanL="5">
+			<Label text="Widget ID"></Label>
+            <ComboBox id="widgetIDInputconfig"
+                      items="{aDataSourceDropdownData>/}"
+                      filterSecondaryValues="true"
+                      showSecondaryValues="true"
+                      required="true"
+                      placeholder="Select Widget ID...">
+                <core:ListItem key="{aDataSourceDropdownData>Id}"
+                              text="{aDataSourceDropdownData>Text}"
+                              additionalText="{aDataSourceDropdownData>Id}"/>
+            </ComboBox>
+            <Label text="Roles"></Label>
+            <Input id="widgetRolesInputconfig" value=""></Input>
+
+            <Label text="Visibility"></Label>
+            <CheckBox id="widgetVisibilityCheckBoxconfig" text="" selected="false"/>
+		</f:SimpleForm>
+		<buttons>
+			<Button text="Cancel" type="Default" press="closeAddWidgetConfigDialog"/>
+			<Button type="Emphasized" icon="sap-icon://add"  press="onAddWidgetConfigItem" text="Add"/>
+			<!--<Button type="Reject" press="onclearfilter" text="Clear"/>-->
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

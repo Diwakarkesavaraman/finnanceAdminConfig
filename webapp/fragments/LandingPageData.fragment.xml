@@ -91,7 +91,7 @@
 							<dnd:DropInfo targetAggregation="items" dropPosition="Between" dropLayout="Vertical" drop="onPageDrop"/>
 						</dragDropConfig>
 						<columns>
-							<Column width="9rem">
+							<Column width="10rem">
 								<header>
 									<Text text="Page Title" class="whiteLabel"/>
 								</header>
@@ -155,32 +155,32 @@
 							<dnd:DropInfo targetAggregation="items" dropPosition="Between" dropLayout="Vertical" drop="onWidgetDrop"/>
 						</dragDropConfig>
 						<columns>
-							<Column width="5rem">
+							<!--<Column width="5rem">-->
+							<!--	<header>-->
+							<!--		<Text text="Tile ID" class="whiteLabel"/>-->
+							<!--	</header>-->
+							<!--</Column>-->
+							<Column width="10rem">
 								<header>
-									<Text text="Tile ID" class="whiteLabel"/>
+									<Text text="Page Name" class="whiteLabel"/>
 								</header>
 							</Column>
-							<Column width="5rem">
-								<header>
-									<Text text="Page ID" class="whiteLabel"/>
-								</header>
-							</Column>
-							<Column width="5rem">
-								<header>
-									<Text text="Widget ID" class="whiteLabel"/>
-								</header>
-							</Column>
-							<Column width="12rem">
+							<!--<Column width="5rem">-->
+							<!--	<header>-->
+							<!--		<Text text="Widget ID" class="whiteLabel"/>-->
+							<!--	</header>-->
+							<!--</Column>-->
+							<Column>
 								<header>
 									<Text text="Widget Name" class="whiteLabel"/>
 								</header>
 							</Column>
-							<Column width="5rem">
+							<Column>
 								<header>
 									<Text text="Roles" class="whiteLabel"/>
 								</header>
 							</Column>
-							<Column width="7rem">
+							<Column width="5rem">
 								<header>
 									<Text text="Visibility" class="whiteLabel"/>
 								</header>
@@ -194,9 +194,9 @@
 						<items>
 							<ColumnListItem vAlign="Middle" type="Navigation" press="onWidgetPress">
 								<cells>
-									<Input value="{oWidgetDataModel>ZtitleName}"/>
+									<!--<Input value="{oWidgetDataModel>ZtitleName}"/>-->
 									<Input value="{oWidgetDataModel>ZpageName}"/>
-									<Input value="{oWidgetDataModel>WidgetId}"/>
+									<!--<Input value="{oWidgetDataModel>WidgetId}"/>-->
 									<Input value="{oWidgetDataModel>WidgetName}"/>
 									<Input value="{oWidgetDataModel>Zrole}"/>
 									<CheckBox text="" selected="{oWidgetDataModel>Zvisibility}"/>

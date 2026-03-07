@@ -4,7 +4,7 @@
 	<ScrollContainer id="admincontrolgiscalendar" horizontal="true" vertical="true" height="50%" class="sapUiContentPadding">
 		<Panel height="100%" class="admgisreppanelcls">
 			<content>
-				<IconTabBar id="calendarIconTabBar" select="onCalendarTabSelect" class="sapUiResponsiveContentPadding">
+				<IconTabBar id="calendarIconTabBar" select="onCalendarTabSelect" class="sapUiResponsiveContentPadding admncntrlstabcls">
 					<items>
 						<!-- Financial Calendar Config Tab -->
 						<IconTabFilter text="Financial Calendar Config" key="calendar">
